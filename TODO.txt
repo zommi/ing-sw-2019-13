@@ -19,4 +19,7 @@ DUBBI:
 	
 2.	Se è utile fare le’iteminterface 	
 3.	Json per le armi oppure strategy pattern 	
-4.	I punti bisogna modellarli? 
+4.	I punti bisogna modellarli?
+
+5. 	Ma per gli Ammocubes è meglio una sola classe con un attributo per il colore 	
+	oppure una interfaccia da cui ereditano le 3 classi dei cubi dei vari colori? 
