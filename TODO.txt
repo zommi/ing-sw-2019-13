@@ -1,0 +1,22 @@
+1/04/19
+AmmoTile e WeaponCard sono sia collectable che drawable perchè nel momento in cui le metto nel tabellone le sto pescando. 
+Quelli che erano nel placeable li abbiamo divisi in:
+
+1.Quelli che vanno della playerboard (DamageToken, SkullToken, FirstplayerToken e AmmoCube)
+ 2.PointCard (è CardInterface)
+ 3.Character. 
+Playerhand contiene WeaponCard, PowerupCard, PointCard.
+Bisogna realizzare anche i mazzi [MAZZO, MAZZOPOWERUP, MAZZOWEAPON).
+
+
+
+
+2/04/19
+Bisogna aggiungere le sottoclassi di character. 
+
+DUBBI:	
+1.	Pacchetto da sparare
+	
+2.	Se è utile fare le’iteminterface 	
+3.	Json per le armi oppure strategy pattern 	
+4.	I punti bisogna modellarli? 
