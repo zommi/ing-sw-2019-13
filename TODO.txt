@@ -15,22 +15,29 @@ Bisogna realizzare anche i mazzi [MAZZO, MAZZOPOWERUP, MAZZOWEAPON).
 Bisogna aggiungere le sottoclassi di character. 
 
 DUBBI:	
-1.	Pacchetto da sparare   //DA CHIEDERE
+1.	Pacchetto da sparare: BUONA IDEA.
 	
-2.	Se è utile fare le’iteminterface  //DA CHIEDERE 	
-3.	Json per le armi oppure strategy pattern: json simple library. 	
-4.	I punti bisogna modellarli? Si perché devono essere poi associati alla risorsa 
-	grafica giusta.
+2.	Se è utile fare le’iteminterface: Evitare di creare interfacce o 
+	classi vuote basta mettere flag booleani. 	
+3.	Json per le armi oppure strategy pattern: json simple library, BUONA IDEA. 	
+4.	I punti bisogna modellarli? Devono essere poi associati alla risorsa 
+	grafica giusta. Possiamo però farlo vedere accanto alla plancia del giocatore, non 
+	serve avere la classe del punto 
 
 5. 	Ma per gli Ammocubes è meglio una sola classe con un attributo per il colore 	
 	oppure una interfaccia da cui ereditano le 3 classi dei cubi dei vari colori? 
-	Perché comunque la powerupcard è anche un ammocube.  //DA CHIEDERE
-
-6.	Interfaccia comune tra le board      //DA CHIEDERE
+	Perché comunque la powerupcard è anche un ammocube: FARE ATTRIBUTO, NON SERVE FARE 
+	INTERFACCIA
 
 7.	Come si tiene traccia della posizione? Si fa una mappa come matrice? Si fa una 
 	matrice di oggetti, non di int. Getvisibleplayer() da ogni cella. Per i quadratini 
 	NULL a quel punto possiamo scrivere che è una cella vuota, cioè proprio l'oggetto 
 	cella vuota. 
+
+Per il menu iniziale va bene la macchina a stati.
+Per la prossima volta bisogna capire come fare il controllerò dal punto di vista della gestione delle azione, lo scorrere dei turni.
+lo stato = modello
+transizione = controller
+implemento a livello di model ciò che è chiaro (mappa e cose semplici) e poi comincio a pensare gestione delle azioni, come vengono passati i parametri ecc.
 
 Cambiare stato in base ai danni [mosse adrenaliniche]
