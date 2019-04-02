@@ -15,16 +15,20 @@ Bisogna realizzare anche i mazzi [MAZZO, MAZZOPOWERUP, MAZZOWEAPON).
 Bisogna aggiungere le sottoclassi di character. 
 
 DUBBI:	
-1.	Pacchetto da sparare
+1.	Pacchetto da sparare   //DA CHIEDERE
 	
-2.	Se è utile fare le’iteminterface 	
-3.	Json per le armi oppure strategy pattern 	
-4.	I punti bisogna modellarli?
+2.	Se è utile fare le’iteminterface  //DA CHIEDERE 	
+3.	Json per le armi oppure strategy pattern: json simple library. 	
+4.	I punti bisogna modellarli? Si perché devono essere poi associati alla risorsa 
+	grafica giusta.
 
 5. 	Ma per gli Ammocubes è meglio una sola classe con un attributo per il colore 	
 	oppure una interfaccia da cui ereditano le 3 classi dei cubi dei vari colori? 
-	Perché comunque la powerupcard è anche un ammocube.
+	Perché comunque la powerupcard è anche un ammocube.  //DA CHIEDERE
 
-6.	Interfaccia comune tra le board
+6.	Interfaccia comune tra le board      //DA CHIEDERE
 
-7.	Come si tiene traccia della posizione? Si fa una mappa come matrice? 
+7.	Come si tiene traccia della posizione? Si fa una mappa come matrice? Si fa una 
+	matrice di oggetti, non di int. Getvisibleplayer() da ogni cella. Per i quadratini 
+	NULL a quel punto possiamo scrivere che è una cella vuota, cioè proprio l'oggetto 
+	cella vuota.  
