@@ -31,4 +31,6 @@ DUBBI:
 7.	Come si tiene traccia della posizione? Si fa una mappa come matrice? Si fa una 
 	matrice di oggetti, non di int. Getvisibleplayer() da ogni cella. Per i quadratini 
 	NULL a quel punto possiamo scrivere che è una cella vuota, cioè proprio l'oggetto 
-	cella vuota.  
+	cella vuota. 
+
+Cambiare stato in base ai danni [mosse adrenaliniche]
