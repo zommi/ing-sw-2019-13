@@ -22,4 +22,9 @@ DUBBI:
 4.	I punti bisogna modellarli?
 
 5. 	Ma per gli Ammocubes è meglio una sola classe con un attributo per il colore 	
-	oppure una interfaccia da cui ereditano le 3 classi dei cubi dei vari colori? 
+	oppure una interfaccia da cui ereditano le 3 classi dei cubi dei vari colori? 
+	Perché comunque la powerupcard è anche un ammocube.
+
+6.	Interfaccia comune tra le board
+
+7.	Come si tiene traccia della posizione? Si fa una mappa come matrice? 
