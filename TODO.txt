@@ -41,3 +41,16 @@ transizione = controller
 implemento a livello di model ciò che è chiaro (mappa e cose semplici) e poi comincio a pensare gestione delle azioni, come vengono passati i parametri ecc.
 
 Cambiare stato in base ai danni [mosse adrenaliniche]
+
+
+4/04/19
+Per UML:
+Nell'implementazione delle armi mancano i diversi comportamenti delle singole armi. Quindi dobbiamo suddividerli in base a ciò che fanno [come possono sparare].
+Mancano da modellare gli stati.
+
+Per martedi dobbiamo scrivere anche il codice del Model. Oltre a fare i test e la doc.
+Quindi dobbiamo identificare tutti i metodi.
+DOMANI: Io e tommy [se teo non può] cerchiamo di identificare tutti i metodi delle classi.
+SABATO: Cominciamo a scrivere codice delle classi perchè altrimenti non ce la facciamo.
+DOMENICA: Test junit e doc
+LUNEDI: tutto quello che ci manca
