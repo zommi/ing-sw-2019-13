@@ -16,3 +16,4 @@ ing-sw-2019-13.iml
 
 #qua vanno aggiunti tutti i file che usiamo per il gioco ma che non vogliamo su git
 #**.mp4 ad esempio ignora tutti i file con estensione mp4
+.DS_Store
