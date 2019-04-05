@@ -54,3 +54,18 @@ DOMANI: Io e tommy [se teo non può] cerchiamo di identificare tutti i metodi de
 SABATO: Cominciamo a scrivere codice delle classi perchè altrimenti non ce la facciamo.
 DOMENICA: Test junit e doc
 LUNEDI: tutto quello che ci manca
+
+
+
+5/04/19
+DA RICORDARE:
+Abbiamo fatto un pattern state anche per le mosse adrenaliniche. Dato che nella PlayerBoard dobbiamo comunque salvare anche il numero di danni e gli autori degli stessi, possiamo farlo tramite per esempio una lista dei damagetoken. Quindi il player chiamerà il metodo getremaininghp nella board, che le conta e poi in base al risultato capisce in quale stato adrenalinico è. In base a ciò può eseguire altro codice per le mosse.
+
+In Item display() serve a...?
+
+Abbiamo tolto DOOR perchè tanto basta verificare che ci siano due celle adiacenti di colore diverso.
+
+Abbiamo fatto derivare Ownable da ItemInterface perchè in questo modo abbiamo Ammotile [che può restituire sia ammocubes che powerupcards] che può avere un'istanza di entrambe.
+
+Abbiamo pensato che possa servire il mazzo di cose scartate. Quindi abbiamo aggiunto il metodo discard nelle carte. Diciamo che il discard nelle powerup si aggiunge al mazzo delle carte scartate, mentre il discard nelle armi si fa quando ne si hanno 3 in mano e se ne vuole prendere un'altra.
+**AGGIORNAMENTO** Abbiamo implementato il mazzo di carte scartate mettendo due liste dentro a powerupdesk: una lista attiva e una lista di scarto. Quando la lista attiva diventa vuota, si shuffla la lista di scarto.
