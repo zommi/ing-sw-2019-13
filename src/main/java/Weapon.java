@@ -13,6 +13,9 @@ public class Weapon {
     }
 
 
+    public void choose(){
+
+    }
 
 
     /**

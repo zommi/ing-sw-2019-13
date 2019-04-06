@@ -6,31 +6,17 @@ import java.util.*;
  */
 public abstract class Ownable implements ItemInterface {
 
-    /**
-     * Default constructor
-     */
-    public Ownable() {
-    }
-
-    /**
-     * 
-     */
     private ConcretePlayer owner;
 
     /**
-     * @return
+     * Contructor with 1 parameter
      */
-    public ConcretePlayer getOwner() {
-        // TODO implement here
-        return null;
+    public Ownable(ConcretePlayer p) {
+        owner = p;
     }
 
-    /**
-     * @return
-     */
-    public ConcretePlayer setOwner() {
-        // TODO implement here
-        return null;
+    public ConcretePlayer getOwner() {
+        return this.owner;
     }
 
 }

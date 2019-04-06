@@ -7,9 +7,10 @@ import java.util.*;
 public class DamageToken extends Ownable {
 
     /**
-     * Default constructor
+     * Constructor with one parameter
      */
-    public DamageToken() {
+    public DamageToken(ConcretePlayer p) {
+        super(p);
     }
 
 

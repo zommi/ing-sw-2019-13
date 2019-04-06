@@ -6,77 +6,57 @@ import java.util.*;
  */
 public class WeaponCard implements CollectableInterface implements CardInterface {
 
+    private List<AmmoCube> cost;
+    private String name;
+    private Weapon weapon;
+    private List<Character> aim;
+    private WeaponDeck weaponDeck;
     /**
-     * Default constructor
+     * Initialize the card cost
      */
-    public WeaponCard() {
+    public WeaponCard(List<AmmoCube> cardcost, String namecard, Weapon weap, WeaponDeck weapdeck) {
+        this.cost = cardcost;
+        this.name = namecard;
+        this.weapon = weap;
+        this.weaponDeck = weapdeck;
     }
 
-    /**
-     * 
-     */
-    public List<AmmoCube> cost;
 
-
-    /**
-     * @return
-     */
-    public void collect() {
-        // TODO implement here
-        return;
-    }
-
-    /**
-     * @return
-     */
     public List<AmmoCube> getCost() {
-        // TODO implement here
-        return null;
+        return cost;
     }
 
 
-    /**
-     * @return
-     */
-    public void play() {
-        // TODO implement here
-        return;
-    }
-
-    /**
-     * @return
-     */
-    public void draw() {
-        // TODO implement here
-        return;
-    }
-
-    /**
-     * @return
-     */
-    public void getEffect() {
-        // TODO implement here
-        return;
-    }
-
-    /**
-     * @return
-     */
     public void getName() {
-        // TODO implement here
+        return name;
+    }
+
+    public void play() {
+
+        aim = weapon.aim(); //questa è la lista di personaggi a cui posso sparare
+        weapon.charge();
+        weapon.shoot(weapon.choose(aim)); //in qualche modo fa scegliere allo user la persona a cui vuole sparare
+    }
+
+
+    public void draw() {
+        //mi serve un attibuto size per il mazzo
+        if(weaponDeck.getSize() > 0)
+            weaponDeck.draw();
+        else
+            //stampo che non ci son piu carte da pescare dal mazzo.
         return;
     }
 
-    /**
-     * @return
-     */
-    public void discard() {
-        // TODO implement here
+
+    public void getEffect() {
+        // da leggere da file
         return;
     }
+
 
     @Override
     public void display() {
-
+        //da mostrare GUI
     }
 }

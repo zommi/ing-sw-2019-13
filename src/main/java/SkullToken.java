@@ -7,9 +7,10 @@ import java.util.*;
 public class SkullToken extends Ownable {
 
     /**
-     * Default constructor
+     * Constructor with one parameter
      */
-    public SkullToken() {
+    public SkullToken(ConcretePlayer p) {
+        super(p);
     }
 
 

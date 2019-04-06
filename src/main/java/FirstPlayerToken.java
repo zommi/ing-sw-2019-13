@@ -7,9 +7,9 @@ import java.util.*;
 public class FirstPlayerToken extends Ownable {
 
     /**
-     * Default constructor
+     * Constructor with one parameter
      */
-    public FirstPlayerToken() {
+    public FirstPlayerToken(ConcretePlayer p) {
+        super(p);
     }
-
 }

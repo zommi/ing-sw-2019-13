@@ -6,47 +6,31 @@ import java.util.*;
  */
 public class AmmoCube extends Ownable {
 
-    /**
-     * Default constructor
-     */
-    public AmmoCube() {
-    }
-
-    /**
-     * 
-     */
+    private Color color;
     private boolean valid;
 
-    /**
-     * 
-     */
-    private Color color;
-
-
+    public AmmoCube(Color c) {
+        this.color = c;
+    }
 
 
     /**
-     * @return
+     * Reverses the value of valid.
      */
     public void toggleValid() {
-        // TODO implement here
-        return null;
+        if(this.valid == true)
+            this.valid = false;
+        else
+            this.valid = true;
     }
 
-    /**
-     * @return
-     */
+
     public boolean isValid() {
-        // TODO implement here
-        return false;
+        return this.valid;
     }
 
-    /**
-     * @return
-     */
     public Color getColor() {
-        // TODO implement here
-        return null;
+        return this.color;
     }
 
 }
