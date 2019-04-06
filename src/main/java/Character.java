@@ -5,13 +5,14 @@ import java.util.*;
  * 
  */
 public class Character {
-    Figure figure;
-    Square position;
+    private Figure figure;
+    private Square position;
 
     /**
      * Default constructor
      */
-    public Character() {
+    public Character(Figure f) {
+        this.figure = f;
     }
 
 
@@ -23,6 +24,7 @@ public class Character {
      * @param sq
      */
     public void move(Square sq) {
+
         /*
             if(position.distance(sq) <= 3){
             setPosition(sq);
@@ -40,6 +42,8 @@ public class Character {
     public void spawn(SpawnPoint sp) {
         if(position == null){
             setPosition(sp.getSquare());
+        } else{
+            System.out.println("Invalid move");
         }
     }
 }
