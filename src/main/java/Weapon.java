@@ -1,4 +1,6 @@
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -13,15 +15,10 @@ public class Weapon {
     }
 
 
-    public void choose(){
-
-    }
-
-
     /**
      * @return
      */
-    private void shoot() {
+    private void shoot(Character char) {
         // TODO implement here
         return;
     }
@@ -29,9 +26,9 @@ public class Weapon {
     /**
      * @return
      */
-    public List<Character> aim() {
+    public ArrayList<ArrayList<Character>> aim() {
         // TODO implement here
-        return null;
+        return null;   //devo usare arraylist
     }
 
     /**
