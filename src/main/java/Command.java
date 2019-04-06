@@ -9,6 +9,6 @@ public interface Command {
     /**
      * 
      */
-    private void execute();
+    public void execute();
 
 }

@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class WeaponCard extends CardInterface implements CollectableInterface, CardInterface {
+public class WeaponCard implements CollectableInterface implements CardInterface {
 
     /**
      * Default constructor
@@ -18,15 +18,12 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
     public List<AmmoCube> cost;
 
 
-
-
-
     /**
      * @return
      */
     public void collect() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -37,19 +34,13 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
         return null;
     }
 
-    /**
-     * 
-     */
-    public void collect() {
-        // TODO implement here
-    }
 
     /**
      * @return
      */
     public void play() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -57,7 +48,7 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
      */
     public void draw() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -65,7 +56,7 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
      */
     public void getEffect() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -73,7 +64,7 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
      */
     public void getName() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -81,7 +72,11 @@ public class WeaponCard extends CardInterface implements CollectableInterface, C
      */
     public void discard() {
         // TODO implement here
-        return null;
+        return;
     }
 
+    @Override
+    public void display() {
+
+    }
 }

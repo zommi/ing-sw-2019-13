@@ -26,7 +26,7 @@ public class Room {
     /**
      * @return
      */
-    public List<Squares> getSquares() {
+    public List<Square> getSquares() {
         // TODO implement here
         return null;
     }

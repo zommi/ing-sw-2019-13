@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class AmmoTile extends CollectableInterface implements CollectableInterface {
+public class AmmoTile implements CollectableInterface {
 
     /**
      * Default constructor
@@ -27,4 +27,8 @@ public class AmmoTile extends CollectableInterface implements CollectableInterfa
         // TODO implement here
     }
 
+    @Override
+    public void display() {
+        //TODO
+    }
 }

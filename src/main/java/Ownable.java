@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public abstract class Ownable extends ItemInterface {
+public abstract class Ownable implements ItemInterface {
 
     /**
      * Default constructor

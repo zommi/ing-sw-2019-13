@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * 
  */
-public class PowerupCard extends CardInterface implements CardInterface {
+public class PowerupCard implements CardInterface implements CardInterface {
 
     /**
      * Default constructor
