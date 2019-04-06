@@ -5,6 +5,8 @@ import java.util.*;
  * 
  */
 public class Character {
+    Figure figure;
+    Square position;
 
     /**
      * Default constructor
@@ -13,20 +15,31 @@ public class Character {
     }
 
 
-
+    private void setPosition(Square position){
+        this.position = position;
+    }
     /**
-     * 
+     *
+     * @param sq
      */
-    private void move() {
-        // TODO implement here
+    public void move(Square sq) {
+        /*
+            if(position.distance(sq) <= 3){
+            setPosition(sq);
+        }
+         */
     }
 
     /**
      * @return
      */
     public Square getPosition() {
-        // TODO implement here
-        return null;
+        return position;
     }
 
+    public void spawn(SpawnPoint sp) {
+        if(position == null){
+            setPosition(sp.getSquare());
+        }
+    }
 }

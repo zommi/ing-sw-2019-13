@@ -6,14 +6,17 @@ import java.util.*;
  */
 public class Room {
 
+    private Color color;
+
     /**
      * Default constructor
      */
     public Room() {
     }
 
-
-
+    public Color getColor() {
+        return color;
+    }
 
     /**
      * @return
