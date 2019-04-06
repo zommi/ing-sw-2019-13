@@ -11,13 +11,29 @@ public abstract class PlayerAbstract {
     /**
      * @return
      */
+    PlayerAbstract(){
+    }
+
+
     public PlayerAbstract(String name) {
         this.name = name;
         this.character = chooseCharacter();
     }
 
-    private Character chooseCharacter() {
-
+    public Character chooseCharacter() {
+        int idSelection;
+        Scanner sc = new Scanner(System.in);
+        //save a list with all the available characters
+        List<Character> list = Character.getValidCharacters();
+        //Read input
+        do {
+            System.out.println("Choose your character:" + list.toString());
+            idSelection = sc.nextInt();
+        } while(!list.contains(Character.getValue(idSelection)));
+        System.out.println("You chose: " + Character.getValue(idSelection) +". Great Choice!");
+        //set True corresponding cell
+        Character.setTaken(idSelection);
+        return Character.getValue(idSelection);
     }
 
     /**
@@ -30,8 +46,7 @@ public abstract class PlayerAbstract {
     /**
      * @return
      */
-    public void move(Square sq) {
-        character.move(sq);
+    public void move() {
     }
 
     /**
@@ -50,6 +65,7 @@ public abstract class PlayerAbstract {
      * @return
      */
     public PlayerState getPlayerState() {
+        return null;
     }
 
 }
