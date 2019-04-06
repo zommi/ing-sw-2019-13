@@ -11,9 +11,13 @@ public abstract class PlayerAbstract {
     /**
      * @return
      */
-    public PlayerAbstract(String name, Character character) {
+    public PlayerAbstract(String name) {
         this.name = name;
-        this.character = character;
+        this.character = chooseCharacter();
+    }
+
+    private Character chooseCharacter() {
+
     }
 
     /**
