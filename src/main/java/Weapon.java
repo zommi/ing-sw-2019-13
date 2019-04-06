@@ -20,13 +20,13 @@ public class Weapon {
      */
     private void shoot() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
      * @return
      */
-    public List<Characters> aim() {
+    public List<Character> aim() {
         // TODO implement here
         return null;
     }

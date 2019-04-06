@@ -18,7 +18,7 @@ public class GameState {
      */
     public void nextState() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -26,7 +26,7 @@ public class GameState {
      */
     public void pauseGame() {
         // TODO implement here
-        return null;
+        return;
     }
 
 }

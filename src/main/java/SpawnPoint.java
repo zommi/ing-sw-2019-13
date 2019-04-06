@@ -18,7 +18,7 @@ public class SpawnPoint {
     /**
      * @return
      */
-    public List<WeaponCard getWeaponCards() {
+    public List<WeaponCard> getWeaponCards() {
         // TODO implement here
         return null;
     }

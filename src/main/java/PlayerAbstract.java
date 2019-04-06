@@ -23,7 +23,7 @@ public abstract class PlayerAbstract {
      */
     public void spawn() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -31,7 +31,7 @@ public abstract class PlayerAbstract {
      */
     public void move() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -39,7 +39,7 @@ public abstract class PlayerAbstract {
      */
     public void shoot() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class PlayerAbstract {
      */
     public void collect() {
         // TODO implement here
-        return null;
+        return;
     }
 
     /**
