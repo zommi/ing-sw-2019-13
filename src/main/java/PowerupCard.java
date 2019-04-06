@@ -1,72 +1,63 @@
 
 import java.util.*;
 
-/**
- * 
- */
-public class PowerupCard implements CardInterface implements CardInterface {
 
-    /**
-     * Default constructor
-     */
-    public PowerupCard() {
-    }
+public class PowerupCard implements CardInterface{
 
-    /**
-     * 
-     */
     private Color color;
+    private Powerup powerup;
+    private PowerupDeck powerupDeck;
 
 
-
-
-
-
-    /**
-     * @return
-     */
-    public void useAsAmmoCube() {
-        // TODO implement here
-        return null;
+    public PowerupCard(Color color, Powerup powerup, PowerupDeck powerupDeck) {
+        this.color = color;
+        this.powerup = powerup;
+        this.powerupDeck = powerupDeck;
     }
 
-    /**
-     * @return
-     */
+
+    public Color useAsAmmoCube() { //This method returns a color. Then the player will modify his attributes.
+        return(color);
+    }
+
+
+
+
     public void play() {
-        // TODO implement here
-        return null;
+        powerup.usePowerup();
+        return;
     }
 
-    /**
-     * @return
-     */
+
+
+
     public void draw() {
-        // TODO implement here
-        return null;
+        if(powerupDeck.isEmpty()) //If it's empty, the deck need to be recharged.
+            powerupDeck.restore();
+        powerupDeck.draw();
+        }
+        return;
     }
 
-    /**
-     * @return
-     */
+
+
+
     public void getEffect() {
         // TODO implement here
         return null;
     }
 
-    /**
-     * @return
-     */
+
+
     public void getName() {
-        // TODO implement here
+        // TODO da file
         return null;
     }
 
-    /**
-     * @return
-     */
+
+
     public void discard() {
-        // TODO implement here
+        powerupDeck.discard(this); //It will add the card to the discardedcards.
         return null;
     }
 

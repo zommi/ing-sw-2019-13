@@ -28,7 +28,7 @@ public class Weapon {
      */
     public ArrayList<ArrayList<Character>> aim() {
         // TODO implement here
-        return null;   //devo usare arraylist
+        return null;  //REMEMBER: .clone()!
     }
 
     /**

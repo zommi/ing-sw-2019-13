@@ -38,12 +38,12 @@ public class WeaponCard implements CollectableInterface implements CardInterface
 
     public void play() {
         ArrayList<ArrayList<Character>> aim;
-        aim = weapon.aim(); //questa è la lista di personaggi a cui posso sparare
+        aim = weapon.aim(); //This returns the list of characters I can shoot
         weapon.charge();
 
 
         String s;
-        //l'utente dovrà scegliere tramite questo metodo il giocatore che vuole attaccare. Potrebbe per esempio inserire un intero a indicare l'indice della lista
+        //The user will have to choose the character he wants to shoot. He could for example insert an int to indicate the index of the list.
         System.out.println("Enter the index of the character you want to shoot : ");
 
         try{
@@ -58,31 +58,30 @@ public class WeaponCard implements CollectableInterface implements CardInterface
         }
 
 
-        //questo mi restituisce l'indice di aim che a me interessa
-        weapon.shoot(aim.get(Integer.valueOf(s))); //in qualche modo fa scegliere allo user la persona a cui vuole sparare
+        //This returns the index of aim I am interested to
+        weapon.shoot(aim.get(Integer.valueOf(s)));
     }
 
 
 
 
     public void draw() {
-        //mi serve un attibuto size per il mazzo
         if(weaponDeck.getSize() > 0)
             weaponDeck.draw();
         else
-            //stampo che non ci son piu carte da pescare dal mazzo.
+            //The GUI will show that there are no more card to draw from the deck
         return;
     }
 
 
     public void getEffect() {
-        // da leggere da file
+        // TODO READ FROM FILE
         return;
     }
 
 
     @Override
     public void display() {
-        //da mostrare GUI
+        // TODO
     }
 }
