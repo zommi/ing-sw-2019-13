@@ -69,3 +69,16 @@ Abbiamo fatto derivare Ownable da ItemInterface perchè in questo modo abbiamo A
 
 Abbiamo pensato che possa servire il mazzo di cose scartate. Quindi abbiamo aggiunto il metodo discard nelle carte. Diciamo che il discard nelle powerup si aggiunge al mazzo delle carte scartate, mentre il discard nelle armi si fa quando ne si hanno 3 in mano e se ne vuole prendere un'altra.
 **AGGIORNAMENTO** Abbiamo implementato il mazzo di carte scartate mettendo due liste dentro a powerupdesk: una lista attiva e una lista di scarto. Quando la lista attiva diventa vuota, si shuffla la lista di scarto.
+
+
+6/04/19
+Da aggiungere in playerboard e playerhand i contatori di ammocubes e powerup. CONSIDERAZIONE: quando voglio usare il powerup come un ammocube, sarà il player stesso a chiamare il metodo "useasammocube" per capire il colore della carta e poi modificherà lui i suoi campi.
+
+
+Da aggiungere ad entrambe anche una lista di carte: altrimenti da dove si pescano???
+Da aggiungere ad entrambe anche un metodo draw(), che viene chiamato dalle classi delle carte e che le rimuove dal mazzo.
+Da aggiungere a weaponsdeck un metodo isempty().
+
+Nella classe powerupdeck inoltre discard deve prendere in ingresso un parametro che è la carta.
+
+I powerup vanno a modificare i bullet. Dobbiamo decidere bene come implementare le armi. Io posso anche codificarli dentro alle classi che abbiamo fatto però poi dobbiamo decidere
