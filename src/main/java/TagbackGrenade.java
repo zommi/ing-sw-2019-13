@@ -6,6 +6,8 @@ import java.util.*;
  */
 public class TagbackGrenade implements Powerup {
 
+    //This PowerUp can be used during another's turn. So we can check the value of bullet.getDamage() everytime a player receive a bullet
+    //if it is > 0 then this can be used. 
 
     private Bullet bullet;
     private boolean isvalid; //This boolean tells me if I can use this powerup card or not, depending on if I have received a damage from a character I can see.

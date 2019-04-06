@@ -17,7 +17,7 @@ public class Teleporter implements Powerup {
         bullet.getTeleporterFlag() = 1;
     }
 
-    
+
     public void usePowerup() {
         // TODO implement here
         return null;
