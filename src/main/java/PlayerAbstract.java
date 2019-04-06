@@ -17,6 +17,7 @@ public abstract class PlayerAbstract {
     }
 
     private Character chooseCharacter() {
+
     }
 
     /**
