@@ -6,63 +6,38 @@ import java.util.*;
  */
 public class Bullet {
 
-    /**
-     * Default constructor
-     */
     public Bullet() {
     }
 
-    /**
-     * 
-     */
+
     private int damage;
-
-    /**
-     * 
-     */
     private int push;
-
-    /**
-     * 
-     */
     private char pushOrientation;
-
-    /**
-     * 
-     */
     private int marks;
+    private boolean teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
 
 
-    /**
-     * @return
-     */
     public int getDamage() {
-        // TODO implement here
-        return 0;
+        return this.damage;
     }
 
-    /**
-     * @return
-     */
+
+    public boolean getTeleporterFlag(){
+        return this.teleporterflag;
+    }
+
     public int getMarks() {
-        // TODO implement here
-        return 0;
+        return this.marks;
     }
 
-    /**
-     * @return
-     */
+
     public char getPushOrientation() {
-        // TODO implement here
-        return "0";
+        return this.pushOrientation;
     }
 
-    /**
-     * @return
-     */
+
     public int getPushValue() {
-        // TODO implement here
-        return 0;
+        return this.push;
     }
 
 }
