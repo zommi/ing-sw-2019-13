@@ -37,8 +37,8 @@ public class WeaponCard implements CollectableInterface implements CardInterface
 
 
     public void play() {
-        ArrayList<ArrayList<Character>> aim;
-        aim = weapon.aim(); //This returns the list of characters I can shoot
+        ArrayList<ArrayList<Character>> possibleTargets;
+        possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
         weapon.charge();
 
 
@@ -58,8 +58,8 @@ public class WeaponCard implements CollectableInterface implements CardInterface
         }
 
 
-        //This returns the index of aim I am interested to
-        weapon.shoot(aim.get(Integer.valueOf(s)));
+        //This returns the index of possibleTargets I am interested to
+        weapon.shoot(possibleTargets.get(Integer.valueOf(s)));
     }
 
 

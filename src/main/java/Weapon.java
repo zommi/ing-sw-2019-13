@@ -26,7 +26,7 @@ public class Weapon {
     /**
      * @return
      */
-    public ArrayList<ArrayList<Character>> aim() {
+    public ArrayList<ArrayList<Character>> getPossibleTargets() {
         // TODO implement here
         return null;  //REMEMBER: .clone()!
     }
