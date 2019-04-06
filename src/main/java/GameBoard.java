@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class GameBoard {
 
-    ArrayList<SpawnPoint> spawnPoints;
+    private ArrayList<SpawnPoint> spawnPoints;
 
 
     public GameBoard() {

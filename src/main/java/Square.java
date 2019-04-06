@@ -1,19 +1,24 @@
 
 import java.util.*;
 
-public class Square {
+public class Square implements SquareInterface{
 
     private ArrayList<Character> charactersList;
     private Room room;
+    private Color color
     private int xValue;
     private int yValue;
     // the following are just for visible squares
-    private Square nSquare;
-    private Square wSquare;
-    private Square eSquare;
-    private Square sSquare;
+    private SquareInterface nSquare;
+    private SquareInterface wSquare;
+    private SquareInterface eSquare;
+    private SquareInterface sSquare;
 
-    public Square() {
+    public Square(int x, int y, char color) {
+        this.xValue = x;
+        this.yValue = y;
+        //this.color = color;
+
         //new character list
         this.charactersList= new ArrayList<Character>();
 
@@ -24,21 +29,38 @@ public class Square {
         return room;
     }
 
-    public Square geteSquare() {
+
+    public SquareInterface geteSquare() {
         return eSquare;
     }
-
-    public Square getnSquare() {
+    public void seteSquare(SquareInterface eSquare) {
+        this.eSquare = eSquare;
+    }
+    public SquareInterface getnSquare() {
         return nSquare;
     }
-
-    public Square getwSquare() {
+    public void setnSquare(SquareInterface nSquare) {
+        this.nSquare = nSquare;
+    }
+    public SquareInterface getwSquare() {
         return wSquare;
     }
-
-    public Square getsSquare() {
+    public void setwSquare(SquareInterface wSquare) {
+        this.wSquare = wSquare;
+    }
+    public SquareInterface getsSquare() {
         return sSquare;
     }
+    public void setsSquare(SquareInterface sSquare) {
+        this.sSquare = sSquare;
+    }
+    public int getxValue() {
+        return xValue;
+    }
+    public int getyValue() {
+        return yValue;
+    }
+
 
     /**
      * @return
