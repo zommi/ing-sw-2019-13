@@ -1,4 +1,5 @@
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -6,10 +7,11 @@ import java.util.*;
  */
 public class GameBoard {
 
-    /**
-     * Default constructor
-     */
+    ArrayList<SpawnPoint> spawnPoints;
+
+
     public GameBoard() {
+
     }
 
 

@@ -2,33 +2,21 @@
 import java.util.*;
 
 /**
- * 
+ *
  */
-public class SpawnPoint {
+public class SpawnPoint extends Square {
 
-    /**
-     * Default constructor
-     */
+    private ArrayList<WeaponCard> weaponCards;
+
     public SpawnPoint() {
+        weaponCards = new ArrayList<WeaponCard>();
     }
 
-
-
-
-    /**
-     * @return
-     */
     public List<WeaponCard> getWeaponCards() {
-        // TODO implement here
-        return null;
+        return (ArrayList<WeaponCard>) weaponCards.clone();
     }
 
-    /**
-     * @return
-     */
-    public Square getSquare() {
-        // TODO implement here
-        return null;
+    public void addWeaponCard(WeaponCard weaponCard){
+        weaponCards.add(weaponCard);
     }
-
 }

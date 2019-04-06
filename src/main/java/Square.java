@@ -44,15 +44,16 @@ public class Square {
      * @return
      */
     public List<Character> getCharacters() {
-        return charactersList;
+        return (ArrayList<Character>)  charactersList.clone();
     }
 
     public void addCharacter(Character character) {
+
         charactersList.add(character);
     }
-
-
-
+    public void removeCharacter(Character character) {
+        charactersList.remove(character);
+    }
 
     public List<Room> getVisibleRooms() {
         ArrayList<Room> roomsList = new ArrayList<Room>();
@@ -66,7 +67,6 @@ public class Square {
             roomsList.add(eSquare.getRoom());
 
         return roomsList;
-
 
     }
 
