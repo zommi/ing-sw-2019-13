@@ -25,8 +25,8 @@ public class ConcretePlayer extends PlayerAbstract {
     public void move() {
         Scanner sc = new Scanner(System.in);
         String move;
-        Square currentPos = character.getPosition();
-        Square nextSquare = currentPos;
+        SquareInterface currentPos = character.getPosition();
+        SquareInterface nextSquare = currentPos;
         List<Square> possibleMoves;
         boolean valid = false;
         for (int i = 0; i < 3; i++) {
@@ -112,6 +112,6 @@ public class ConcretePlayer extends PlayerAbstract {
     public void receiveBullet(Bullet b){
         board.addDamageToken(b.getDamage());
         board.addMarks(b.getMarks());
-        //TODO
+        //character.move();
     }
 }
