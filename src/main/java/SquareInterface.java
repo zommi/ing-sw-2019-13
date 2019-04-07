@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface SquareInterface {
 
     public Room getRoom();
@@ -14,4 +16,6 @@ public interface SquareInterface {
     public int getxValue();
     public int getyValue();
     public void removeCharacter(Character character);
+
+    public List<Square> getAdjacentSquares();
 }
