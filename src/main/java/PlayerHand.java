@@ -1,19 +1,20 @@
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * 
  */
 public class PlayerHand {
 
-    ArrayList<CardInterface> cardHand;
-    ArrayList<CardInterface> powerupHand;
+    private ArrayList<CardInterface> weaponHand;
+    private ArrayList<CardInterface> powerupHand;
 
     /**
-     * Default constructor
+     *
      */
     public PlayerHand() {
-        cardHand = new ArrayList<>();
+        weaponHand = new ArrayList<>();
         powerupHand = new ArrayList<>();
     }
 
@@ -21,24 +22,35 @@ public class PlayerHand {
     /**
      * @return
      */
-    public ArrayList<WeaponCard> getWeapons() {
-        return (ArrayList<WeaponCard>) cardHand.clone();
+    public List<WeaponCard> getWeapons() {
+        return (ArrayList<WeaponCard>) weaponHand.clone();
     }
 
     /**
      * @return
      */
     public List<PowerupCard> getPowerups() {
-        // TODO implement here
-        return null;
+        return (ArrayList<PowerupCard>) powerupHand.clone();
     }
 
     /**
      * @return
+     * @param choice
      */
-    public void playCard() {
-        // TODO implement here
-        return null;
+    public void playCard(int choice, char c) {
+        System.out.println("Playing Card...");
+        switch (c){
+            case 'w' : weaponHand.get(choice).play();
+                break;
+            case 'p' : powerupHand.get(choice).play();
+                break;
+            default: System.err.println("UNEXPECTED CARD REQUEST!");
+                break;
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Weapons: " + weaponHand.toString() + "\n" + "Powerups: " + powerupHand.toString();
+    }
 }
