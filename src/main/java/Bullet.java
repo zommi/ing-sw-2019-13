@@ -42,6 +42,6 @@ public class Bullet {
     public int getMarks() {
         return this.marks;
     }
-
+    
 
 }

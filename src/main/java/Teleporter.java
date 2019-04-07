@@ -10,16 +10,19 @@ public class Teleporter implements Powerup {
 
     //This one does not affect the opponents, it only affects the character that is using it.
     public Teleporter() {
-        bullet.getDamage() = 0;
-        bullet.getMarks() = 0; //It gives one mark to the visible character that shot me.
-        bullet.getPushValue() = 0; //It does not move the character.
-        bullet.getPushOrientation() = 0; //As a consequence it does not have a push orientation.
-        bullet.getTeleporterFlag() = 1;
     }
 
 
     public void usePowerup() {
         // TODO implement here
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter a coordinate x you want to move: ");
+        int x = reader.nextInt(); // Scans the next token of the input as an int.
+        System.out.println("Enter a coordinate y you want to move: ");
+        int y = reader.nextInt();
+        reader.close();
+
+        bullet = new Bullet(x, y, 0, 0, 1);
         return null;
     }
 

@@ -1,5 +1,4 @@
-
-import java.util.*;
+import java.util.Scanner;
 
 public class TargetingScope implements Powerup {
 
@@ -16,9 +15,16 @@ public class TargetingScope implements Powerup {
 
     public void usePowerup() {
         // TODO implement here
-        //It has to prepare the bullet with the push and the pushorientation that the user wants.
-        //private int push;  //It can be 1 or 2. Maybe we could use an enum.
-        //private char pushOrientation;
+
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter a coordinate x you want to move the target: ");
+        int x = reader.nextInt(); // Scans the next token of the input as an int.
+        System.out.println("Enter a coordinate y you want to move the target: ");
+        int y = reader.nextInt();
+        reader.close();
+
+        bullet = new Bullet(x, y, 0, 0, 0);
+
         return null;
     }
 
