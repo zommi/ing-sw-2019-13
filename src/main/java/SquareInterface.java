@@ -13,4 +13,5 @@ public interface SquareInterface {
     public void setsSquare(SquareInterface sSquare);
     public int getxValue();
     public int getyValue();
+    public void removeCharacter(Character character);
 }
