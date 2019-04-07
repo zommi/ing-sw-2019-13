@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Map {
 
     private ArrayList<SpawnPoint> spawnPoints;
-    private ArrayList<ArrayList<SquareInterface>> squares;
+    private ArrayList<ArrayList<SquareAbstract>> squares;
 
 
     public Map(int mapNum) {
@@ -32,9 +32,9 @@ public class Map {
             }
             scanner.close();
 
-            squares = new ArrayList<ArrayList<SquareInterface>>();
+            squares = new ArrayList<ArrayList<SquareAbstract>>();
             for(int i=0; i<list.size(); i++){
-                squares.add(new ArrayList<SquareInterface>());
+                squares.add(new ArrayList<SquareAbstract>());
             }
 
             int row = 0, col = 0;       //will be incremented by 2
@@ -44,7 +44,6 @@ public class Map {
                 col = 0;
                 while(col < list.get(row).length()){
                     c = list.get(row).charAt(col);
-                    //if(c!= ' ' && c!='-' && c!='/'){
                     if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
                         SpawnPoint tempSquare = new SpawnPoint(row/2+1, col/2+1, c);
                         squares.get(row).add(tempSquare);

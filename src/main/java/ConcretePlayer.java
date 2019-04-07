@@ -27,8 +27,8 @@ public class ConcretePlayer extends PlayerAbstract {
     public void move() {
         Scanner sc = new Scanner(System.in);
         String move;
-        SquareInterface currentPos = character.getPosition();
-        SquareInterface nextSquare = currentPos;
+        SquareAbstract currentPos = character.getPosition();
+        SquareAbstract nextSquare = currentPos;
         List<Square> possibleMoves;
         boolean valid = false;
         for (int i = 0; i < 3; i++) {

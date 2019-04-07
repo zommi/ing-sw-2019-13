@@ -8,6 +8,9 @@ public class Room {
 
     private Color color;
 
+    private ArrayList<SquareAbstract> squareList;
+
+
     /**
      * Default constructor
      */
@@ -18,9 +21,10 @@ public class Room {
         return color;
     }
 
-    /**
-     * @return
-     */
+    public void addSquare(SquareAbstract square){
+        squareList.add(square);
+    }
+
     public List<Character> getCharacters() {
         // TODO implement here
         return null;
@@ -29,9 +33,8 @@ public class Room {
     /**
      * @return
      */
-    public List<Square> getSquares() {
-        // TODO implement here
-        return null;
+    public List<SquareAbstract> getSquares() {
+        return (ArrayList<SquareAbstract>) squareList.clone();
     }
 
 }

@@ -15,7 +15,7 @@ public enum Character {
     private static boolean[] figureChosen = new boolean[Constants.NUM_FIGURES];
     private int id;
 
-    private SquareInterface position;
+    private SquareAbstract position;
 
     Character(int id){
         this.id = id;
@@ -68,14 +68,14 @@ public enum Character {
         }
     }
 
-    private void setPosition(SquareInterface position){
+    private void setPosition(SquareAbstract position){
         this.position = position;
     }
     /**
      *
      * @param sq
      */
-    public void move(SquareInterface sq) {
+    public void move(SquareAbstract sq) {
         getPosition().removeCharacter(this);
         setPosition(sq);
         sq.addCharacter(this);
@@ -95,7 +95,7 @@ public enum Character {
     /**
      * @return
      */
-    public SquareInterface getPosition() {
+    public SquareAbstract getPosition() {
         return position;
     }
 

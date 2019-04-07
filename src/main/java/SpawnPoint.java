@@ -4,7 +4,7 @@ import java.util.*;
 /**
  *
  */
-public class SpawnPoint implements SquareInterface {
+public class SpawnPoint extends SquareAbstract {
 
     private ArrayList<WeaponCard> weaponCards;
     private ArrayList<Character> charactersList;
@@ -13,10 +13,10 @@ public class SpawnPoint implements SquareInterface {
     private int xValue;
     private int yValue;
     // the following are just for visible squares
-    private SquareInterface nSquare;
-    private SquareInterface wSquare;
-    private SquareInterface eSquare;
-    private SquareInterface sSquare;
+    private SquareAbstract nSquare;
+    private SquareAbstract wSquare;
+    private SquareAbstract eSquare;
+    private SquareAbstract sSquare;
 
     public SpawnPoint(int x, int y, char color) {
         this.xValue = x;
