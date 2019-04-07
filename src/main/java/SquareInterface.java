@@ -18,4 +18,6 @@ public interface SquareInterface {
     public void removeCharacter(Character character);
 
     public List<Square> getAdjacentSquares();
+
+    void addCharacter(Character character);
 }
