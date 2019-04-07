@@ -9,9 +9,8 @@ public class TargetingScope implements Powerup {
     private Bullet bullet;
 
     public TargetingScope() {
-        bullet.getDamage() = 0;
-        bullet.getMarks() = 0; //It does not give more marks.
-        bullet.getTeleporterFlag() = 0;
+        bullet = new Bullet(0, 0, 0, 0, 0);
+        //it has to ask the user how many squares and in which direction
     }
 
 

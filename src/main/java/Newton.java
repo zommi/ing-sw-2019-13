@@ -12,11 +12,10 @@ public class Newton implements Powerup {
     private int price; //TODO pay one ammocube of any color to use the weapon
 
     public Newton() {
-        bullet.getDamage() = 1;
-        bullet.getMarks() = 0; //It does not give more marks.
-        bullet.getPushValue() = 0; //It does not move the character.
-        bullet.getPushOrientation() = 0; //As a consequence it does not have a push orientation.
-        bullet.getTeleporterFlag() = 0;
+        bullet = new Bullet(0, 0, 1, 0, 0);
+        //It does not give more marks.
+        //It does not move the character.
+        //As a consequence it does not have a push orientation.
     }
 
 
