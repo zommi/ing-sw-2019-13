@@ -11,6 +11,10 @@ public abstract class Ownable implements ItemInterface {
     /**
      * Contructor with 1 parameter
      */
+
+    public Ownable(){
+
+    }
     public Ownable(ConcretePlayer p) {
         owner = p;
     }

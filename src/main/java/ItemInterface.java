@@ -9,6 +9,6 @@ public interface ItemInterface {
     /**
      * @return
      */
-    public void display();
+
 
 }

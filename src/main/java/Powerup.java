@@ -3,6 +3,6 @@ import java.util.*;
 
 public interface Powerup {
 
-    public void usePowerup();
+    public Bullet usePowerup();
 
 }

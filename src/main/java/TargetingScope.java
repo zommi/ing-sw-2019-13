@@ -1,31 +1,38 @@
+import java.lang.reflect.Array;
 import java.util.Scanner;
+import java.util.*;
+
 
 public class TargetingScope implements Powerup {
 
-    // The character can use this card before or after his action. He has to choose another character and move it
-    // 1 or 2 squares in one direction.
 
     private Bullet bullet;
 
+
+    private int price; //TODO pay one ammocube of any color to use the weapon
+
     public TargetingScope() {
-        bullet = new Bullet(0, 0, 0, 0, 0);
-        //it has to ask the user how many squares and in which direction
     }
 
 
-    public void usePowerup() {
-        // TODO implement here
+    public Bullet usePowerup() {
+
+        ArrayList<AmmoCube> cubecost = new ArrayList<AmmoCube>();
+        AmmoCube e = new AmmoCube(UNDEFINED);
+        cubecost.add(e);
+
+        bullet = new Bullet(0, 0, 1, 0, false, cubecost);
+        //It does not give more marks.
+        //It does not move the character.
+        //As a consequence it does not have a push orientation.
 
         Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Enter a coordinate x you want to move the target: ");
-        int x = reader.nextInt(); // Scans the next token of the input as an int.
-        System.out.println("Enter a coordinate y you want to move the target: ");
-        int y = reader.nextInt();
-        reader.close();
+        System.out.println("Enter the target you shot and that you want to use this powerup against: ");
+        //Due to the fact that the player knows if he can use the powerup against him or not, the Newton is not going to check
 
-        bullet = new Bullet(x, y, 0, 0, 0);
-
-        return null;
+        //The user has to choose the target and has to pay one ammocube. I don't know how to represent the cost of the ammocube. We have to
+        //study a solution for it. It has to be the same implementation of the weapons cost.
+        return bullet;
     }
 
 }

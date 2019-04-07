@@ -10,19 +10,18 @@ public class TagbackGrenade implements Powerup {
     //if it is > 0 then this can be used.
 
     private Bullet bullet;
-    private boolean isvalid; //This boolean tells me if I can use this powerup card or not, depending on if I have received a damage from a character I can see.
 
     public TagbackGrenade() {
     }
 
 
-    public void usePowerup() {
+    public Bullet usePowerup() {
         // TODO implement here
 
-        bullet = new Bullet(0,0,0,1,0);
+        bullet = new Bullet(0,0,0,1,false, null);
         //It gives one mark to the visible character that shot me.
         //It does not move the character.
-        return null;
+        return bullet;
     }
 
 }

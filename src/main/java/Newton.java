@@ -1,29 +1,31 @@
-
+import java.util.Scanner;
 import java.util.*;
-
 
 public class Newton implements Powerup {
 
+    // The character can use this card before or after his action. He has to choose another character and move it
+    // 1 or 2 squares in one direction.
 
     private Bullet bullet;
-    private boolean isvalid; //This boolean tells me if I can use this powerup card or not, depending on the fact that my target is also receiving damage or he's only receiving marks.
-
-
-    private int price; //TODO pay one ammocube of any color to use the weapon
 
     public Newton() {
     }
 
 
-    public void usePowerup() {
-        bullet = new Bullet(0, 0, 1, 0, 0);
-        //It does not give more marks.
-        //It does not move the character.
-        //As a consequence it does not have a push orientation.
+    public Bullet usePowerup() {
+        // TODO implement here
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter a coordinate x you want to move the target: ");
+        int x = reader.nextInt(); // Scans the next token of the input as an int.
+        System.out.println("Enter a coordinate y you want to move the target: ");
+        int y = reader.nextInt();
+        reader.close();
 
-        //The user has to choose the target and has to pay one ammocube. I don't know how to represent the cost of the ammocube. We have to
-        //study a solution for it. It has to be the same implementation of the weapons cost.
-        return null;
+        //x and y however needs to be at a maximum of 2 square away HOW CAN I DO IT?
+
+        bullet = new Bullet(x, y, 0, 0, false, null);
+
+        return bullet;
     }
 
 }

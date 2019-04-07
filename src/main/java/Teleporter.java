@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 import java.util.*;
 
 /**
@@ -13,7 +13,7 @@ public class Teleporter implements Powerup {
     }
 
 
-    public void usePowerup() {
+    public Bullet usePowerup() {
         // TODO implement here
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         System.out.println("Enter a coordinate x you want to move: ");
@@ -22,8 +22,8 @@ public class Teleporter implements Powerup {
         int y = reader.nextInt();
         reader.close();
 
-        bullet = new Bullet(x, y, 0, 0, 1);
-        return null;
+        bullet = new Bullet(x, y, 0, 0, true, null);
+        return bullet;
     }
 
 }
