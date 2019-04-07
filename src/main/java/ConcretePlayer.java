@@ -10,6 +10,7 @@ public class ConcretePlayer extends PlayerAbstract {
     private Character character;
     private PlayerHand hand;
     private PlayerBoard board;
+
     /**
      * Default constructor
      */
@@ -60,19 +61,45 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public void shoot() {
+        Scanner sc = new Scanner(System.in);
+        int choice;
         if(hand.getWeapons().size() > 0) {
-            hand.playCard();
+            do {
+                System.out.println("Choose weapon to use: (0/1/2)\n" + hand.getWeapons().toString());
+                choice = sc.nextInt();
+            }while(choice > 2 || choice < 0);
+            hand.playCard(choice,'w');
         } else {
             //implement a try catch
             System.out.println("No cards to use!");
         }
     }
 
+    public void usePowerup() {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        if(hand.getPowerups().size() > 0) {
+            do {
+                System.out.println("Choose powerup to use: \n" + hand.getPowerups().toString());
+                choice = sc.nextInt();
+            }while(choice > 2 || choice < 0);
+            hand.playCard(choice,'w');
+        } else {
+            //implement a try catch
+            System.out.println("No cards to use!");
+        }
+    }
+
+
     /**
      * @return
      */
     public void collect() {
+        //TODO once we sorted out the item position
+    }
 
+    public void showHand(){
+        System.out.println(hand.toString());
     }
 
     /**
@@ -81,14 +108,10 @@ public class ConcretePlayer extends PlayerAbstract {
     public PlayerState getPlayerState() {
         return null;
     }
-}
 
-
-
-
-
-
-
-
-
+    public void receiveBullet(Bullet b){
+        board.addDamageToken(b.getDamage());
+        board.addMarks(b.getMarks());
+        //TODO
+    }
 }
