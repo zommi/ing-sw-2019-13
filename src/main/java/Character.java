@@ -11,8 +11,8 @@ public enum Character {
     VIOLET (3),
     SPROG (4);
 
-    private static final int NUM_FIGURES = 5;
-    private static boolean[] figureChosen = new boolean[NUM_FIGURES];
+
+    private static boolean[] figureChosen = new boolean[Constants.NUM_FIGURES];
     private int id;
 
     private SquareInterface position;
@@ -81,10 +81,16 @@ public enum Character {
         sq.addCharacter(this);
     }
 
+    /*
     public void move(char c)
             throws InvalidMoveException{
-        //TODO
+        if(c == 'n' || c == 's' || c == 'e' || c =='w'){
+
+        }else{
+            throw new InvalidMoveException;
+        }
     }
+    */
 
     /**
      * @return
