@@ -10,15 +10,17 @@ public class ConcretePlayer extends PlayerAbstract {
     private Character character;
     private PlayerHand hand;
     private PlayerBoard board;
+    private GameBoard currentGameBoard;
 
     /**
      * Default constructor
      */
-    public ConcretePlayer(String name) {
+    public ConcretePlayer(String name, GameBoard gameBoard) {
         this.name = name;
         this.character = chooseCharacter();
-        hand = new PlayerHand();
-        board = new PlayerBoard();
+        this.hand = new PlayerHand(this);
+        this.board = new PlayerBoard(this);
+        this.currentGameBoard = gameBoard;
     }
 
 

@@ -75,7 +75,7 @@ public enum Character {
      *
      * @param sq
      */
-    public void move(Square sq) {
+    public void move(SquareInterface sq) {
         getPosition().removeCharacter(this);
         setPosition(sq);
         sq.addCharacter(this);

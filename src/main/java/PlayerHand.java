@@ -9,13 +9,15 @@ public class PlayerHand {
 
     private ArrayList<CardInterface> weaponHand;
     private ArrayList<CardInterface> powerupHand;
+    private ConcretePlayer player;
 
     /**
      *
      */
-    public PlayerHand() {
-        weaponHand = new ArrayList<>();
-        powerupHand = new ArrayList<>();
+    public PlayerHand(ConcretePlayer p) {
+        this.player = p;
+        this.weaponHand = new ArrayList<>();
+        this.powerupHand = new ArrayList<>();
     }
 
 
