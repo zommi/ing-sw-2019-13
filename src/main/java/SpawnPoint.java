@@ -19,12 +19,7 @@ public class SpawnPoint extends SquareAbstract {
     private SquareAbstract sSquare;
 
     public SpawnPoint(int x, int y, char color) {
-        this.xValue = x;
-        this.yValue = y;
-        //this.color = color;
-
-        //new character list
-        this.charactersList= new ArrayList<Character>();
+        super(x,y,color);
 
         weaponCards = new ArrayList<WeaponCard>();
     }
@@ -36,5 +31,9 @@ public class SpawnPoint extends SquareAbstract {
 
     public void addWeaponCard(WeaponCard weaponCard){
         weaponCards.add(weaponCard);
+    }
+
+    public void removeWeaponCard(WeaponCard weaponCard){
+        weaponCards.remove(weaponCard);
     }
 }

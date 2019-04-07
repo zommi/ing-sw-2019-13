@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Square extends SquareAbstract {
 
+    private AmmoTile ammoTile;
     private ArrayList<Character> charactersList;
     private Room room;
     private Color color
@@ -21,25 +22,15 @@ public class Square extends SquareAbstract {
 
     }
 
-    public Room getRoom(){
-        return room;
+    public AmmoTile getAmmoTile() {
+        return ammoTile;
     }
 
-    public Color getColor() {
-        return room.getColor();
+    public void setAmmoTile(AmmoTile ammoTile) {
+        this.ammoTile = ammoTile;
     }
 
-    public List<Square> getAdjacentSquares() {
-        ArrayList<Square> squaresList= new ArrayList<Square>();
-        if(nSquare != null)
-            squaresList.add(nSquare);
-        if(sSquare != null)
-            squaresList.add(sSquare);
-        if(wSquare != null)
-            squaresList.add(wSquare);
-        if(eSquare != null)
-            squaresList.add(eSquare);
-        return squaresList;
+    public void removeAmmoTile(){
+        ammoTile = null;
     }
-
 }

@@ -7,6 +7,7 @@ public class Map {
 
     private ArrayList<SpawnPoint> spawnPoints;
     private ArrayList<ArrayList<SquareAbstract>> squares;
+    private ArrayList<Room> rooms;
 
 
     public Map(int mapNum) {
@@ -15,16 +16,16 @@ public class Map {
             Scanner scanner;
             switch(mapNum){
                 case 1:
-                    scanner = new Scanner(new File("map1.txt"));
+                    scanner = new Scanner(new File("map11.txt"));
                     break;
                 case 2:
-                    scanner = new Scanner(new File("map2.txt"));
+                    scanner = new Scanner(new File("map12.txt"));
                     break;
                 case 3:
-                    scanner = new Scanner(new File("map3.txt"));
+                    scanner = new Scanner(new File("map21.txt"));
                     break;
                 case 4:
-                    scanner = new Scanner(new File("map4.txt"));
+                    scanner = new Scanner(new File("map22.txt"));
                     break;
             }
             while(scanner.hasNextLine()){
@@ -37,7 +38,7 @@ public class Map {
                 squares.add(new ArrayList<SquareAbstract>());
             }
 
-            int row = 0, col = 0;       //will be incremented by 2
+            int row = 0, col = 0;
             int realRow, realCol;
             char c;
             while(row < list.size()){
@@ -85,7 +86,12 @@ public class Map {
     }
 
     public ArrayList<SpawnPoint> getSpawnPoints(){
+        return (ArrayList<SpawnPoint>) spawnPoints.clone();
+    }
 
+    //this method should throw an exception TODO
+    public SquareAbstract getSquareFromXY(int x, int y){
+        return squares.get(x).get(y);
     }
 
 

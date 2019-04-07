@@ -9,6 +9,7 @@ public abstract class SquareAbstract {
     private int xValue;
     private int yValue;
     // the following are just for visible squares
+    //make optional??
     private SquareAbstract nSquare;
     private SquareAbstract wSquare;
     private SquareAbstract eSquare;
@@ -96,7 +97,17 @@ public abstract class SquareAbstract {
 
     }
 
-    public abstract List<Square> getAdjacentSquares();
-
+    public List<SquareAbstract> getAdjacentSquares() {
+        ArrayList<SquareAbstract> squaresList= new ArrayList<SquareAbstract>();
+        if(nSquare != null)
+            squaresList.add(nSquare);
+        if(sSquare != null)
+            squaresList.add(sSquare);
+        if(wSquare != null)
+            squaresList.add(wSquare);
+        if(eSquare != null)
+            squaresList.add(eSquare);
+        return squaresList;
+    }
 
 }
