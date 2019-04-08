@@ -23,7 +23,6 @@ public class WeaponDeck {
 
     public void shuffle() {
         // TODO implement here
-        return null;
     }
 
 }

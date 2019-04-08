@@ -63,7 +63,6 @@ public class Map {
 
             //now we're gonna link all the squares
             row = 0;
-            char c;
             while(row < list.size()){
                 col = 0;
                 while(col < list.get(row).length()){
