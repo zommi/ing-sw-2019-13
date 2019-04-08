@@ -3,37 +3,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-/**
- * 
- */
+
 public class Weapon {
 
-    /**
-     * Default constructor
-     */
+    private Bullet bullet;
+
     public Weapon() {
     }
 
-
-    /**
-     * @return
-     */
-    private void shoot(Character char) {
+    private Bullet shoot() {
         // TODO implement here
         return;
     }
 
-    /**
-     * @return
-     */
+
     public ArrayList<ArrayList<Character>> getPossibleTargets() {
         // TODO implement here
         return null;  //REMEMBER: .clone()!
     }
 
-    /**
-     * @return
-     */
+
     public Bullet charge() {
         // TODO implement here
         return null;

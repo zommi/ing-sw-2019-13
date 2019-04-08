@@ -117,3 +117,25 @@ public class ConcretePlayer extends PlayerAbstract {
         //character.move();
     }
 }
+
+
+/*      ArrayList<ArrayList<Character>> possibleTargets;
+        possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
+        weapon.charge();
+
+
+        String s;
+        //The user will have to choose the character he wants to shoot. He could for example insert an int to indicate the index of the list.
+        System.out.println("Enter the index of the character you want to shoot : ");
+
+        try{
+            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+            s = bufferRead.readLine();
+
+            System.out.println("You chose to shoot character number :  " s);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+*/

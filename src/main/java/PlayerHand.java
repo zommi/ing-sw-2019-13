@@ -42,9 +42,9 @@ public class PlayerHand {
     public void playCard(int choice, char c) {
         System.out.println("Playing Card...");
         switch (c){
-            case 'w' : weaponHand.get(choice).play();
+            case 'w' : weaponHand.get(choice).play(); //which is a weaponcard
                 break;
-            case 'p' : powerupHand.get(choice).play();
+            case 'p' : powerupHand.get(choice).play(); //which is a powerupcard
                 break;
             default: System.err.println("UNEXPECTED CARD REQUEST!");
                 break;
