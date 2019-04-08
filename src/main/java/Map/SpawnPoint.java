@@ -2,6 +2,7 @@ package Map;
 
 import Cards.WeaponCard;
 import Player.Character;
+import
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class SpawnPoint extends SquareAbstract {
     private ArrayList<WeaponCard> weaponCards;
     private ArrayList<Character> charactersList;
     private Room room;
-    private Color color
+    private Color color;
     private int xValue;
     private int yValue;
     // the following are just for visible squares

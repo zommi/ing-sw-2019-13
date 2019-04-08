@@ -1,5 +1,7 @@
 package Player;
 
+import Map.*;
+import Constants.*;
 import java.util.*;
 import java.lang.*;
 /**

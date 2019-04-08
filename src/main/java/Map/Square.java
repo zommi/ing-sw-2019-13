@@ -10,7 +10,7 @@ public class Square extends SquareAbstract {
     private AmmoTile ammoTile;
     private ArrayList<Character> charactersList;
     private Room room;
-    private Color color
+    private Color color;
     private int xValue;
     private int yValue;
     // the following are just for visible squares

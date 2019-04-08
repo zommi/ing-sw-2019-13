@@ -18,7 +18,6 @@ public class StatePause extends GameState {
      */
     public void resume() {
         // TODO implement here
-        return null;
     }
 
     /**
@@ -26,7 +25,6 @@ public class StatePause extends GameState {
      */
     public void goToMenu() {
         // TODO implement here
-        return null;
     }
 
 }
