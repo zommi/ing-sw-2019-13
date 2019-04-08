@@ -11,9 +11,9 @@ public class Map {
 
 
     public Map(int mapNum) {
+        Scanner scanner;
         try{
             List<String> list = new ArrayList<String>();
-            Scanner scanner;
             switch(mapNum){
                 case 1:
                     scanner = new Scanner(new File("map11.txt"));
@@ -31,7 +31,6 @@ public class Map {
             while(scanner.hasNextLine()){
                 list.add(scanner.nextLine());
             }
-            scanner.close();
 
             squares = new ArrayList<ArrayList<SquareAbstract>>();
             for(int i=0; i<list.size(); i++){
@@ -83,21 +82,27 @@ public class Map {
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
+        finally {
+            scanner.close();
+        }
     }
 
     public ArrayList<SpawnPoint> getSpawnPoints(){
         return (ArrayList<SpawnPoint>) spawnPoints.clone();
     }
 
-    //this method should throw an exception TODO
     public static SquareAbstract getSquareFromXY(int x, int y) throws IndexOutOfBoundsException {
 
         try {
             return squares.get(x).get(y);
         }
         catch (IndexOutOfBoundsException e){
-
+            throw e;                                    //TODO throw custom exception
         }
+    }
+
+    public static List<SquareAbstract> getSquaresWithSameX(){
+
     }
 
 
