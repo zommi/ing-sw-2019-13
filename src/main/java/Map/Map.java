@@ -9,39 +9,43 @@ import java.util.Scanner;
 public class Map {
 
     private ArrayList<SpawnPoint> spawnPoints;
-    private static ArrayList<ArrayList<SquareAbstract>> squares;
+    private ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
 
     public Map(int mapNum) {
-        Scanner scanner;
-        try{
-            List<String> list = new ArrayList<String>();
-            switch(mapNum){
-                case 1:
-                    scanner = new Scanner(new File("map11.txt"));
-                    break;
-                case 2:
-                    scanner = new Scanner(new File("map12.txt"));
-                    break;
-                case 3:
-                    scanner = new Scanner(new File("map21.txt"));
-                    break;
-                case 4:
-                    scanner = new Scanner(new File("map22.txt"));
-                    break;
-            }
+        String path;
+        switch(mapNum) {
+
+            case 1:
+                path = "map11.txt";
+                break;
+            case 2:
+                path = "map12.txt";
+                break;
+            case 3:
+                path = "map21.txt";
+                break;
+            case 4:
+                path = "map22.txt";
+                break;
+            default:
+                path = "map11.txt";
+        }
+        try(Scanner scanner = new Scanner(new File(path))){
+            List<String> list = new ArrayList<>();
+
             while(scanner.hasNextLine()){
                 list.add(scanner.nextLine());
             }
 
-            squares = new ArrayList<ArrayList<SquareAbstract>>();
+            squares = new ArrayList<>();
             for(int i=0; i<list.size(); i++){
                 squares.add(new ArrayList<SquareAbstract>());
             }
 
-            int row = 0, col = 0;
-            int realRow, realCol;
+            int row = 0;
+            int col;
             char c;
             while(row < list.size()){
                 col = 0;
@@ -83,9 +87,6 @@ public class Map {
             }
         } catch(FileNotFoundException e){
             e.printStackTrace();
-        }
-        finally {
-            scanner.close();
         }
     }
 

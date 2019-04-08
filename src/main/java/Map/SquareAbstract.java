@@ -1,5 +1,6 @@
 package Map;
 
+import Constants.Color;
 import Player.Character;
 
 import java.util.ArrayList;
