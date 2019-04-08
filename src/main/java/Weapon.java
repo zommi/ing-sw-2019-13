@@ -7,19 +7,17 @@ import java.util.*;
 public class Weapon {
 
     private Bullet bullet;
+    private Command command;
 
     public Weapon() {
     }
 
     private Bullet shoot() {
-        // TODO implement here
-        return;
+        return(command.prepareBullet());
     }
 
-
-    public ArrayList<ArrayList<Character>> getPossibleTargets() {
-        // TODO implement here
-        return null;  //REMEMBER: .clone()!
+    public Command getCommand(){
+        return this.command;
     }
 
 

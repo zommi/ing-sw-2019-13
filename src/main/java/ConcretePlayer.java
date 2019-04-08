@@ -122,7 +122,7 @@ public class ConcretePlayer extends PlayerAbstract {
 /*
         I added a method in WeaponCard called chooseCharacter, you have to call it before calling play(). You have to pass the square to the method
         so that he can tell you who you can choose.
-        
+
         ArrayList<ArrayList<Character>> possibleTargets;
         possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
         weapon.charge();

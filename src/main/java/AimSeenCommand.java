@@ -1,15 +1,13 @@
 
 import java.util.*;
 
-/**
- * 
- */
+
 public class AimSeenCommand {
 
-    /**
-     * Default constructor
-     */
     public AimSeenCommand() {
     }
 
+    public ArrayList<ArrayList<Character>> execute();
+
+    public Bullet prepareBullet();
 }

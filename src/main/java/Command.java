@@ -1,14 +1,10 @@
 
 import java.util.*;
 
-/**
- * 
- */
+
 public interface Command {
 
-    /**
-     * 
-     */
-    public void execute();
+    public ArrayList<ArrayList<Character>> execute();
 
+    public Bullet prepareBullet();
 }

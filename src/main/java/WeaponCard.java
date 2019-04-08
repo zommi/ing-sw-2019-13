@@ -36,9 +36,9 @@ public class WeaponCard implements CollectableInterface implements CardInterface
 
 
     public ArrayList<ArrayList<Character>> chooseCharacter(Square square){
-
-
+        return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
     }
+
 
     public Bullet play() {
         weapon.shoot();
