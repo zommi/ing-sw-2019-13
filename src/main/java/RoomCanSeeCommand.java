@@ -12,6 +12,5 @@ public class RoomCanSeeCommand implements Command {
 
     public ArrayList<ArrayList<Character>> execute(Square square);
 
-    public Bullet prepareBullet();
 
 }

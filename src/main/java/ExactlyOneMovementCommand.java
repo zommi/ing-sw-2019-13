@@ -12,6 +12,4 @@ public class ExactlyOneMovementCommand implements Command {
 
     public ArrayList<ArrayList<Character>> execute(Square square);
 
-    public Bullet prepareBullet();
-
 }
