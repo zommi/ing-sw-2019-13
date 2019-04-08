@@ -17,5 +17,7 @@ public class AimOwnSquareCommand implements Command {
         return (ArrayList<ArrayList<Character>) e.clone();
     };
 
-    public Bullet prepareBullet();
 }
+
+
+

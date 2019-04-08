@@ -10,6 +10,4 @@ public class AimSeenCommand {
     public ArrayList<ArrayList<Character>> execute(Square square){
 
     };
-
-    public Bullet prepareBullet();
 }

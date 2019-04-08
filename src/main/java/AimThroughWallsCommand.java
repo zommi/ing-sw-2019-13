@@ -11,6 +11,5 @@ public class AimThroughWallsCommand implements Command {
 
     public ArrayList<ArrayList<Character>> execute(Square square);
 
-    public Bullet prepareBullet();
 
 }
