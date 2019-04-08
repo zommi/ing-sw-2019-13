@@ -119,7 +119,9 @@ public class ConcretePlayer extends PlayerAbstract {
 }
 
 
-/*      ArrayList<ArrayList<Character>> possibleTargets;
+/*
+        I added a method in WeaponCard called chooseCharacter, you have to call it before calling play()
+        ArrayList<ArrayList<Character>> possibleTargets;
         possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
         weapon.charge();
 

@@ -35,9 +35,12 @@ public class WeaponCard implements CollectableInterface implements CardInterface
 
 
 
+    public Bullet chooseCharacter(){
+
+    }
 
     public Bullet play() {
-        
+        weapon.shoot();
         //it calls SHOOT on weapon
     }
 
