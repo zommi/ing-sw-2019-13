@@ -1,6 +1,7 @@
 package Items;
 
 import Cards.Ownable;
+import Player.*;
 
 /**
  * 

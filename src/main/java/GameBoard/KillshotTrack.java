@@ -38,7 +38,6 @@ public class KillshotTrack {
      */
     public void removeSkull() {
         // TODO implement here
-        return null;
     }
 
 }

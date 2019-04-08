@@ -26,7 +26,6 @@ public class PowerupDeck {
      */
     public void shuffle() {
         // TODO implement here
-        return null;
     }
 
     /**
@@ -42,7 +41,6 @@ public class PowerupDeck {
      */
     public void restore() {
         // TODO implement here
-        return null;
     }
 
     /**
@@ -50,7 +48,8 @@ public class PowerupDeck {
      */
     public void discardCard() {
         // TODO implement here
-        return null;
     }
 
+    public void draw() {
+    }
 }

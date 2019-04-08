@@ -1,6 +1,7 @@
 package Player;
 
 import java.util.*;
+import Map.*;
 
 /**
  * 

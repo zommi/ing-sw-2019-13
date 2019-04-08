@@ -2,6 +2,7 @@ package GameBoard;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import Map.*;
 
 /**
  * 
@@ -25,7 +26,6 @@ public class GameBoard {
      */
     public void setup() {
         // TODO implement here
-        return null;
     }
 
 }
