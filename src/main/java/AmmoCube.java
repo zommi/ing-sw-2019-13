@@ -6,10 +6,10 @@ import java.util.*;
  */
 public class AmmoCube extends Ownable {
 
-    private Color color;
+    private int color;  //Have a look at the costants class.
     private boolean valid;
 
-    public AmmoCube(Color c) {
+    public AmmoCube(int c) {
         this.color = c;
     }
 
@@ -29,7 +29,7 @@ public class AmmoCube extends Ownable {
         return this.valid;
     }
 
-    public Color getColor() {
+    public int getColor() {
         return this.color;
     }
 
