@@ -90,6 +90,9 @@ public abstract class SquareAbstract {
 
     }
 
+    public List<Character> getCharactersThroughWalls(){
+
+    }
 
     public List<Character> getTwoMovementsCharacters(){
         List<Character> charactersList = new ArrayList<>();

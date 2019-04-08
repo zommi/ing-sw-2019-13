@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Map {
 
     private ArrayList<SpawnPoint> spawnPoints;
-    private ArrayList<ArrayList<SquareAbstract>> squares;
+    private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
 
@@ -90,8 +90,14 @@ public class Map {
     }
 
     //this method should throw an exception TODO
-    public SquareAbstract getSquareFromXY(int x, int y){
-        return squares.get(x).get(y);
+    public static SquareAbstract getSquareFromXY(int x, int y) throws IndexOutOfBoundsException {
+
+        try {
+            return squares.get(x).get(y);
+        }
+        catch (IndexOutOfBoundsException e){
+
+        }
     }
 
 
