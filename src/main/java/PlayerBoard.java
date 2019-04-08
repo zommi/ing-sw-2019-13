@@ -1,4 +1,6 @@
 
+import sun.awt.image.IntegerComponentRaster;
+
 import java.util.*;
 
 /**
@@ -7,10 +9,10 @@ import java.util.*;
 public class PlayerBoard{
     ConcretePlayer player;
 
-    private DamageToken[] damage;
+    private int[] damage;
     private int damageTaken;
 
-    private DamageToken[] marks;
+    private List<Integer> marks;
     private int marksOnBoard;
 
     private int[] pointValue;
@@ -32,9 +34,9 @@ public class PlayerBoard{
      */
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
-        this.damage = new DamageToken[Constants.MAX_HP];
+        this.damage = new int[Constants.MAX_HP];
         this.damageTaken = 0;
-        this.marks = new DamageToken[Constants.MAX_MARKS];
+        this.marks = new ArrayList<Integer>();
         this.marksOnBoard = 0;
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
@@ -47,6 +49,9 @@ public class PlayerBoard{
         this.validBlueAmmo = 0;
     }
 
+    private void setDamage(int i, int color) {
+        this.damage[i] = color;
+    }
 
     /**
      * @return
@@ -80,7 +85,7 @@ public class PlayerBoard{
     /**
      * @return
      */
-    //add easter egg when someone dies 7 times in the same game and make him win.
+    //TODO add easter egg when someone dies 7 times in the same game and make him win.
     public void addSkull() {
         if(damageTaken > 10){
             numberOfDeaths++;
@@ -94,11 +99,40 @@ public class PlayerBoard{
         return pointValue[currentPointValueCursor];
     }
 
-    public void addDamage(List<DamageToken> damage) {
-        //TODO
-        damageTaken += damage.size();
+    public void addDamage(int damageInBullet, int color) {
+        int marksActivated = getMarksOfAColor(color);
+        removeMarksOfAColor(color);
+        for(int i = damageTaken; i < damageTaken+marksActivated;i++){
+            setDamage(i,color);
+        }
+        damageTaken += damageInBullet + marksActivated;
+        if(damageTaken > 10){
+            //add skull on player board, remove skull from game board, decrease value of player,
+            //if damage == 12 place a mark on killer
+            addSkull();
+            damageTaken = 0;
+            for(int i = 0; i < Constants.MAX_HP; i++){
+                this.damage[i] = Constants.UNDEFINED;
+            }
+        }
+    }
+
+    private void removeMarksOfAColor(int color) {
+        //get rid of all token of a color
+        marks.removeAll(Collections.singleton(color));
+    }
+
+    private int getMarksOfAColor(int color) {
+        int counter = 0;
+        for(Integer i : marks){
+            if(i == color){counter++;}
+        }
+        return counter;
     }
 
     public void addMarks(int marks) {
+        if(marksOnBoard >= 0 && marksOnBoard <=3){
+
+        }
     }
 }

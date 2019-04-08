@@ -29,7 +29,7 @@ public class ConcretePlayer extends PlayerAbstract {
         String move;
         SquareAbstract currentPos = character.getPosition();
         SquareAbstract nextSquare = currentPos;
-        List<Square> possibleMoves;
+        List<SquareAbstract> possibleMoves;
         boolean valid = false;
         for (int i = 0; i < 3; i++) {
             possibleMoves = currentPos.getAdjacentSquares();
@@ -112,10 +112,12 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public void receiveBullet(Bullet b){
-        board.addDamageToken(b.getDamage());
+        board.addDamage(b.getDamage());
         board.addMarks(b.getMarks());
         //character.move();
     }
+
+
 }
 
 

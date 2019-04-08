@@ -16,6 +16,7 @@ public enum Character {
     private int id;
 
     private SquareAbstract position;
+    private ConcretePlayer concretePlayer;
 
     Character(int id){
         this.id = id;
@@ -32,6 +33,11 @@ public enum Character {
 
     public static boolean isTaken(int id){
         return figureChosen[id];
+    }
+
+    public ConcretePlayer getConcretePlayer(){
+        //TODO implement with clone
+        return concretePlayer;
     }
 
     public static List<Character> getValidCharacters(){
