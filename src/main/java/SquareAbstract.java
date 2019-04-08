@@ -80,18 +80,47 @@ public abstract class SquareAbstract {
         return (ArrayList<Character>)  charactersList.clone();
     }
 
-    pub
+    public List<Character> getVisibleCharacters(){
+        List<Character> visibleCharacters = new ArrayList<>();
+        visibleCharacters.addAll(room.getCharacters());
+        for(Room tempRoom : this.getVisibleRooms()){
+            visibleCharacters.addAll(tempRoom.getCharacters());
+        }
+        return visibleCharacters;
+
+    }
+
+
+    public List<Character> getTwoMovementsCharacters(){
+        List<Character> charactersList = new ArrayList<>();
+        List<SquareAbstract> tempSquareList = new ArrayList<>();
+        tempSquareList.add(this);
+        for(SquareAbstract square : this.getAdjacentSquares()){
+            charactersList.addAll(square.getOneMovementCharacters());
+        }
+        charactersList.removeAll(tempSquareList);
+        return charactersList;
+
+    }
+
+    public List<Character> getOneMovementCharacters(){
+        List<Character> charactersList = new ArrayList<>();
+        for(SquareAbstract square : this.getAdjacentSquares()){
+            charactersList.addAll(square.getCharacters());
+        }
+        return charactersList;
+    }
 
     public List<Room> getVisibleRooms() {
         ArrayList<Room> roomsList = new ArrayList<Room>();
-        if(nSquare != null)
-            roomsList.add(nSquare.getRoom());
-        if(sSquare != null)
-            roomsList.add(sSquare.getRoom());
-        if(wSquare != null)
-            roomsList.add(wSquare.getRoom());
-        if(eSquare != null)
-            roomsList.add(eSquare.getRoom());
+        if(nSquare != null && nSquare.getRoom() != room)
+                roomsList.add(nSquare.getRoom());
+        if(sSquare != null && sSquare.getRoom() != room)
+                roomsList.add(sSquare.getRoom());
+        if(wSquare != null && wSquare.getRoom() != room)
+                roomsList.add(wSquare.getRoom());
+        if(eSquare != null && eSquare.getRoom() != room)
+                roomsList.add(eSquare.getRoom());
 
         return roomsList;
 
