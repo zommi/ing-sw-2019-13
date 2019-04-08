@@ -37,30 +37,26 @@ public class PowerupCard implements CardInterface {
         if(powerupDeck.isEmpty()) //If it's empty, the deck need to be recharged.
             powerupDeck.restore();
         powerupDeck.draw();
-        }
-        return;
     }
+
 
 
 
 
     public void getEffect() {
         // TODO implement here
-        return null;
     }
 
 
 
     public void getName() {
         // TODO da file
-        return null;
     }
 
 
 
     public void discard() {
         powerupDeck.discard(this); //It will add the card to the discardedcards.
-        return null;
     }
 
 }

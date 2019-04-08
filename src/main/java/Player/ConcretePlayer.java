@@ -1,6 +1,9 @@
 package Player;
 
-import Cards.Bullet;
+import Cards.*;
+import Map.*;
+import Exceptions.*;
+import GameBoard.*;
 
 import java.util.*;
 
@@ -121,7 +124,7 @@ public class ConcretePlayer extends PlayerAbstract {
         }catch (InvalidMoveException e){
             System.out.println("Max number of marks reached");
         }
-        character.move(Map.getSquareFromXY(b.getX(),b.getY()));
+        character.move(Map.Map.getSquareFromXY(b.getX(),b.getY()));
     }
 
 

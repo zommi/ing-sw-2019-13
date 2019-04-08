@@ -1,3 +1,5 @@
+package Constants;
+
 public class Constants {
     public static final int MAX_HP = 12;
     public static final int MAX_MARKS = 3;

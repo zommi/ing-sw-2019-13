@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * 
  */
-public class WeaponCard implements CollectableInterface implements CardInterface {
+public class WeaponCard implements CollectableInterface, CardInterface {
 
     private List<AmmoCube> cost;
     private String name;
