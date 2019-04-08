@@ -1,3 +1,5 @@
+package Map;
+
 public enum Color {
     RED,
     BLUE,

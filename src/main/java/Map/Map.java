@@ -1,5 +1,7 @@
 package Map;
 
+import Exceptions.NoSuchSquareException;
+
 import java.util.*;
 import java.io.*;       //maybe less
 import java.util.Scanner;
@@ -92,18 +94,23 @@ public class Map {
         return (ArrayList<SpawnPoint>) spawnPoints.clone();
     }
 
-    public static SquareAbstract getSquareFromXY(int x, int y) throws IndexOutOfBoundsException {
+    public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
 
         try {
             return squares.get(x).get(y);
         }
         catch (IndexOutOfBoundsException e){
-            throw e;                                    //TODO throw custom exception
+            throw new NoSuchSquareException();                                    //TODO throw custom exception
         }
     }
 
     public static List<SquareAbstract> getSquaresWithSameX(){
+        for(int i = 0; i<squares.size(); i++){
+            for(int j = 0; j<squares.get(i).size(); j++){
 
+            }
+        }
+        return;
     }
 
 
