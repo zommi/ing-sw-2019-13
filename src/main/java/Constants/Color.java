@@ -1,4 +1,4 @@
-package Map;
+package Constants;
 
 public enum Color {
     RED,
