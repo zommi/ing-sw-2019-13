@@ -32,7 +32,28 @@ public abstract class SquareAbstract {
     public SquareAbstract(int x, int y, char color) {
         this.xValue = x;
         this.yValue = y;
-        this.color = color;   //TODO
+
+        switch(color){
+
+            case 'R':
+            case 'r': this.color = Color.RED;
+                break;
+            case 'B':
+            case 'b': this.color = Color.BLUE;
+                break;
+            case 'Y':
+            case 'y': this.color = Color.YELLOW;
+                break;
+            case 'G':
+            case 'g': this.color = Color.GREEN;
+                break;
+            case 'W':
+            case 'w': this.color = Color.WHITE;
+                break;
+            case 'P':
+            case 'p': this.color = Color.PURPLE;
+                break;
+        }
 
         //new character list
         this.charactersList= new ArrayList<Character>();
