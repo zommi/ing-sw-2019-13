@@ -7,7 +7,9 @@ public class AimSeenCommand {
     public AimSeenCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute();
+    public ArrayList<ArrayList<Character>> execute(Square square){
+
+    };
 
     public Bullet prepareBullet();
 }
