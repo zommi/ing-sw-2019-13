@@ -35,7 +35,8 @@ public class WeaponCard implements CollectableInterface implements CardInterface
 
 
 
-    public Bullet chooseCharacter(){
+    public ArrayList<ArrayList<Character>> chooseCharacter(Square square){
+
 
     }
 
