@@ -124,7 +124,11 @@ public class ConcretePlayer extends PlayerAbstract {
         }catch (InvalidMoveException e){
             System.out.println("Max number of marks reached");
         }
-        character.move(Map.Map.getSquareFromXY(b.getX(),b.getY()));
+        try {
+            character.move(Map.Map.getSquareFromXY(b.getX(), b.getY()));
+        }catch (NoSuchSquareException e){
+            e.printStackTrace();
+        }
     }
 
 

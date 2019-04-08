@@ -1,5 +1,6 @@
 package Player;
 
+import Exceptions.InvalidMoveException;
 import GameBoard.GameBoard;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +13,15 @@ class PlayerHandTest {
         ConcretePlayer p = new ConcretePlayer("pippo",new GameBoard());
         PlayerHand ph = new PlayerHand(p);
 
-        ph.playCard(2,'w');
-        ph.playCard(1,'p');
-        ph.playCard(2,'q');
+        assertThrows(InvalidMoveException.class, () -> {
+                    ph.playCard(2,'q');
+        });
     }
 
+    /*
+    @Test
+    public void test(){
+        assertEquals(2,2);
+    }
+    */
 }

@@ -1,8 +1,8 @@
 package Player;
 
-import Cards.CardInterface;
-import Cards.PowerupCard;
-import Cards.WeaponCard;
+import Cards.*;
+import Exceptions.InvalidMoveException;
+
 
 import java.util.*;
 
@@ -43,15 +43,14 @@ public class PlayerHand {
      * @return
      * @param choice
      */
-    public void playCard(int choice, char c) {
+    public void playCard(int choice, char c) throws InvalidMoveException {
         System.out.println("Playing Card...");
         switch (c){
             case 'w' : weaponHand.get(choice).play(); //which is a weaponcard
                 break;
             case 'p' : powerupHand.get(choice).play(); //which is a powerupcard
                 break;
-            default: System.err.println("UNEXPECTED CARD REQUEST!");
-                break;
+            default: throw new InvalidMoveException();
         }
     }
 
