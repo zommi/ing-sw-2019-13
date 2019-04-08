@@ -18,7 +18,7 @@ public class TargetingScope implements Powerup {
     public Bullet usePowerup() {
 
         ArrayList<AmmoCube> cubecost = new ArrayList<AmmoCube>();
-        AmmoCube e = new AmmoCube(6); //It is colour undefined.
+        AmmoCube e = new AmmoCube(Constants.UNDEFINED); //It is colour undefined.
         cubecost.add(e);
 
         bullet = new Bullet(0, 0, 1, 0, false, cubecost);
