@@ -12,7 +12,7 @@ public class Map {
     private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
-    public Map(int mapNum) throws FileNotFoundException{
+    public Map(int mapNum) throws FileNotFoundException{    //TODO assign room to every square and viceversa
         String path;
         switch(mapNum) {
 
@@ -40,40 +40,42 @@ public class Map {
 
     private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
         Scanner scanner = new Scanner(new File(path));
-            List<String> readInput = new ArrayList<>();
+        List<String> readInput = new ArrayList<>();
 
-            while(scanner.hasNextLine()){
-                readInput.add(scanner.nextLine());
-            }
+        while(scanner.hasNextLine()){
+            readInput.add(scanner.nextLine());
+        }
 
-            squares = new ArrayList<>();
-            for(int i = 0; i< readInput.size(); i++){
-                squares.add(new ArrayList<>());
-            }
+        scanner.close();        //TODO this may not close if an exception is thrown
 
-            int row = 0;
-            int col;
-            char c;
-            while(row < readInput.size()){
-                col = 0;
-                while(col < readInput.get(row).length()){
-                    c = readInput.get(row).charAt(col);
-                    if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
-                        SpawnPoint tempSquare = new SpawnPoint(row/2+1, col/2+1, c);
-                        squares.get(row).add(tempSquare);
-                        spawnPoints.add(tempSquare);
-                    }
-                    else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
-                        squares.get(row).add(new Square(row/2+1, col/2+1, c));
-                    }
-                    else if(c==' ' && row%2==0 && col%2==0){
-                        squares.get(row).add(null);
-                    }
-                    col++;
+        squares = new ArrayList<>();
+        for(int i = 0; i< readInput.size(); i++){
+            squares.add(new ArrayList<>());
+        }
+
+        int row = 0;
+        int col;
+        char c;
+        while(row < readInput.size()){
+            col = 0;
+            while(col < readInput.get(row).length()){
+                c = readInput.get(row).charAt(col);
+                if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
+                    SpawnPoint tempSquare = new SpawnPoint(row/2+1, col/2+1, c);
+                    squares.get(row).add(tempSquare);
+                    spawnPoints.add(tempSquare);
                 }
-                row++;
+                else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
+                    squares.get(row).add(new Square(row/2+1, col/2+1, c));
+                }
+                else if(c==' ' && row%2==0 && col%2==0){
+                    squares.get(row).add(null);
+                }
+                col++;
             }
-            return readInput;
+            row++;
+        }
+        return readInput;
 
 
     }

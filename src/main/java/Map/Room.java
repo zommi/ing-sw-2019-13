@@ -11,8 +11,9 @@ import java.util.*;
 public class Room {
 
     private Color color;
+    private List<Character> charactersList;
 
-    private ArrayList<SquareAbstract> squareList;
+    private List<SquareAbstract> squareList;
 
 
     /**
@@ -25,20 +26,32 @@ public class Room {
         return color;
     }
 
+    public List<Character> getCharacters(){
+        ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
+        return (ArrayList<Character>)  returnedList.clone();
+    }
+
+    public void addCharacter(Character character){
+        if(!charactersList.contains((character)))
+            charactersList.add(character);
+    }
+
+    public void removeCharacter(Character character){
+        charactersList.remove(character);
+    }
+
     public void addSquare(SquareAbstract square){
         squareList.add(square);
     }
 
-    public List<Character> getCharacters() {
-        // TODO implement here
-        return new ArrayList<Character>();
-    }
+
 
     /**
      * @return
      */
     public List<SquareAbstract> getSquares() {
-        return (ArrayList<SquareAbstract>) squareList.clone();
+        ArrayList<SquareAbstract> returnedList = (ArrayList<SquareAbstract>) squareList;
+        return (ArrayList<SquareAbstract>) returnedList.clone();
     }
 
 }
