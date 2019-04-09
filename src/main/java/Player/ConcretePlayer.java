@@ -22,16 +22,21 @@ public class ConcretePlayer extends PlayerAbstract {
     /**
      * Default constructor
      */
-    public ConcretePlayer(String name, GameBoard gameBoard) {
+    public ConcretePlayer(String name, GameBoard gameBoard, Figure figure) {
         this.name = name;
-        this.character = new Character(chooseFigure());
+        this.character = new Character(chooseFigure(figure));
         this.hand = new PlayerHand(this);
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;
     }
 
+    public Character getCharacter(){
+        return character;
+    }
+
 
     public void move() {
+        //probably this needs to be divided into controller and view
         Scanner sc = new Scanner(System.in);
         String move;
         SquareAbstract currentPos = character.getPosition();
