@@ -14,4 +14,5 @@ public class Constants {
     public static final int WHITE = 4;
     public static final int PURPLE = 5;
     public static final int UNDEFINED = 6;
+    public static final int NUMBER_OF_WEAPONS = 21;
 }
