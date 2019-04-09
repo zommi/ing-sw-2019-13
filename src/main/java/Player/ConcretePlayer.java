@@ -55,41 +55,19 @@ public class ConcretePlayer extends PlayerAbstract {
             }
     }
 
-    public void shoot() {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        if(hand.getWeapons().size() > 0) {
-            do {
-                System.out.println("Choose weapon to use: (0/1/2)\n" + hand.getWeapons().toString());
-                choice = sc.nextInt();
-            }while(choice > 2 || choice < 0);
-            try{
-                hand.playCard(choice,'w');
-            }catch (InvalidMoveException e){
-                e.printStackTrace();
-            }
-        } else {
-            //implement a try catch
-            System.out.println("No cards to use!");
+    public void shoot(int weaponIndex) {
+        try {
+            hand.playCard(weaponIndex,'w');
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
         }
     }
 
-    public void usePowerup() {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        if(hand.getPowerups().size() > 0) {
-            do {
-                System.out.println("Choose powerup to use: \n" + hand.getPowerups().toString());
-                choice = sc.nextInt();
-            }while(choice > 2 || choice < 0);
-            try{
-                hand.playCard(choice,'w');
-            }catch(InvalidMoveException e){
-                e.printStackTrace();
-            }
-        } else {
-            //implement a try catch
-            System.out.println("No cards to use!");
+    public void usePowerup(int powerupIndex) {
+        try{
+            hand.playCard(powerupIndex,'w');
+        }catch(InvalidMoveException e){
+            e.printStackTrace();
         }
     }
 
