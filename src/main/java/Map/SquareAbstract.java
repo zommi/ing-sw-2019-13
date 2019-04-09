@@ -169,6 +169,28 @@ public abstract class SquareAbstract {
         return tempCharactersList;
     }
 
+    public List<SquareAbstract> getTwoSquareInTheSameDirection(char c){
+        List<SquareAbstract> returnedList = new ArrayList<>();
+        switch(c){
+            case 'n': if(nSquare!=null && nSquare.nSquare!=null){
+                returnedList.add(nSquare);
+                returnedList.add(nSquare.nSquare);
+            }
+            case 's': if(sSquare!=null && sSquare.sSquare!=null){
+                returnedList.add(sSquare);
+                returnedList.add(sSquare.sSquare);
+            }
+            case 'w': if(wSquare!=null && wSquare.wSquare!=null){
+                returnedList.add(wSquare);
+                returnedList.add(wSquare.wSquare);
+            }
+            case 'e': if(eSquare!=null && eSquare.eSquare!=null){
+                returnedList.add(eSquare);
+                returnedList.add(eSquare.eSquare);
+            }
+        }
+        return returnedList;
+    }
 
     public List<Room> getVisibleRooms() {                       //own room isn't included in the returned list
         List<Room> roomsList = new ArrayList<>();

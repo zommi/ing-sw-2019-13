@@ -13,24 +13,24 @@ public class Map {
     private static ArrayList<ArrayList<SquareAbstract>> squares;
     private static List<Room> rooms;
 
-    public Map(int mapNum) throws FileNotFoundException{    //TODO assign room to every square and viceversa
+    public Map(int mapNum) {
         String path;
         switch(mapNum) {
 
             case 1:
-                path = "map11.txt";
+                path = "../../../../maps/map11.txt";
                 break;
             case 2:
-                path = "map12.txt";
+                path = "../../../../maps/map12.txt";
                 break;
             case 3:
-                path = "map21.txt";
+                path = "../../../../maps/map21.txt";
                 break;
             case 4:
-                path = "map22.txt";
+                path = "../../../../maps/map22.txt";
                 break;
             default:    //this should never happen
-                path = "map11.txt";
+                path = "../../../../maps/map11.txt";
         }
 
         rooms = new ArrayList<>();

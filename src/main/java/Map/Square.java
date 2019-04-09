@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Square extends SquareAbstract {
 
-    private AmmoTile ammoTile;
+    private AmmoTile ammoTile;                          //TODO optional?
     private ArrayList<Character> charactersList;
     private Room room;
     private Color color;
