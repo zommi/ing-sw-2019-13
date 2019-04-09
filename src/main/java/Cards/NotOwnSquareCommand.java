@@ -13,10 +13,8 @@ public class NotOwnSquareCommand implements Command {
     public ArrayList<ArrayList<Character>> execute(Square square){
         //The not own are all the characters without the ones in my own square.
         //getTakenCharacters da Character
-        ArrayList<Character> e = new ArrayList<Character>();
-        e.add(Character.getTakenCharacters()); //here I have all the characters
-        ArrayList<Character> e1 = new ArrayList<Character>();
-        e.add((ArrayList)square.getCharacters());  //here I have the characters in my square
+        ArrayList<Character> e = (ArrayList<Character>)Character.getTakenCharacters(); //here I have all the characters
+        ArrayList<Character> e1 = (ArrayList)square.getCharacters();  //here I have the characters in my square
         //now I have to merge them
 
 
