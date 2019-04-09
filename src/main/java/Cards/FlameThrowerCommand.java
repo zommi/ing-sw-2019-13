@@ -47,13 +47,13 @@ public class FlameThrowerCommand {
         }
 
         if(this.direction == 'n')
-            return cN.clone();
+            return (ArrayList<ArrayList<Character>>)cN.clone();
         else if(this.direction == 's')
-            return cS.clone();
+            return (ArrayList<ArrayList<Character>>)cS.clone();
         else if(this.direction == 'e')
-            return cE.clone();
+            return (ArrayList<ArrayList<Character>>)cE.clone();
         else if(this.direction == 'w')
-            return cW.clone();
+            return (ArrayList<ArrayList<Character>>)cW.clone();
 
         //now the user has to say to me which direction he wants. Otherwise I don't know what to return.
 
