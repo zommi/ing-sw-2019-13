@@ -1,8 +1,7 @@
 package Cards;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import Map.*;
+
 import Player.Character;
 
 public class NotOwnSquareCommand implements Command {
@@ -10,7 +9,7 @@ public class NotOwnSquareCommand implements Command {
     public NotOwnSquareCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square){
+    public ArrayList<ArrayList<Character>> execute(Map.NoSpawnSquare square){
         //The not own are all the characters without the ones in my own square.
         //getTakenCharacters da Character
         ArrayList<Character> e = (ArrayList<Character>)Character.getTakenCharacters(); //here I have all the characters

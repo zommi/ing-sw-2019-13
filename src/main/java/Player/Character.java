@@ -1,7 +1,5 @@
 package Player;
 
-import Exceptions.CharacterTakenException;
-import Map.*;
 import Constants.*;
 import java.util.*;
 import java.lang.*;
@@ -15,7 +13,7 @@ public class Character {
     private static boolean[] figureChosen = new boolean[Constants.NUM_FIGURES];
 
 
-    private SquareAbstract position;
+    private Map.Square position;
     private ConcretePlayer concretePlayer;
 
 
@@ -62,14 +60,14 @@ public class Character {
     }
 
 
-    private void setPosition(SquareAbstract position){
+    private void setPosition(Map.Square position){
         this.position = position;
     }
     /**
      *
      * @param sq
      */
-    public void move(SquareAbstract sq) {
+    public void move(Map.Square sq) {
         getPosition().removeCharacter(this);
         setPosition(sq);
         sq.addCharacter(this);
@@ -89,11 +87,11 @@ public class Character {
     /**
      * @return
      */
-    public SquareAbstract getPosition() {
+    public Map.Square getPosition() {
         return position;
     }
 
-    public void spawn(SquareAbstract sp) {
+    public void spawn(Map.Square sp) {
         if(position == null){
             sp.addCharacter(this);
             setPosition(sp);

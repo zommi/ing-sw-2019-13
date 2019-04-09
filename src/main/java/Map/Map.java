@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Map {
 
     private static List<SpawnPoint> spawnPoints;
-    private static ArrayList<ArrayList<SquareAbstract>> squares;
+    private static ArrayList<ArrayList<Square>> squares;
     private static List<Room> rooms;
 
     public Map(int mapNum) {
@@ -18,7 +18,7 @@ public class Map {
         switch(mapNum) {
 
             case 1:
-                path = "../../../../maps/map11.txt";
+                path = "../../../../maps/map11.txt";                //TODO path isn't correctly set
                 break;
             case 2:
                 path = "../../../../maps/map12.txt";
@@ -95,7 +95,7 @@ public class Map {
                     spawnPoints.add(tempSquare);
                 }
                 else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
-                    squares.get(row).add(new Square(row/2+1, col/2+1, c));
+                    squares.get(row).add(new NoSpawnSquare(row/2+1, col/2+1, c));
                 }
                 else if(c==' ' && row%2==0 && col%2==0){
                     squares.get(row).add(null);
@@ -136,7 +136,7 @@ public class Map {
         return (ArrayList<SpawnPoint>) returnedList.clone();
     }
 
-    public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
+    public static Square getSquareFromXY(int x, int y) throws NoSuchSquareException {
 
         try {
             return squares.get(x).get(y);
@@ -147,8 +147,8 @@ public class Map {
 
     }
 
-    public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
-        List<SquareAbstract> squareList = new ArrayList<>();
+    public static List<Square> getSquaresWithSameX(Square square){          //passed square won't be in the returned list
+        List<Square> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                 if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
@@ -159,8 +159,8 @@ public class Map {
         return squareList;
     }
 
-    public static List<SquareAbstract> getSquaresWithSameY(SquareAbstract square){              //passed square won't be in the returned list
-        List<SquareAbstract> squareList = new ArrayList<>();
+    public static List<Square> getSquaresWithSameY(Square square){              //passed square won't be in the returned list
+        List<Square> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                 if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)

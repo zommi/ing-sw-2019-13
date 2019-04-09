@@ -1,7 +1,7 @@
 package Cards;
 
 import java.util.*;
-import Map.*;
+
 import Player.Character;
 
 public class AimInvisibleCommand implements Command {
@@ -10,7 +10,7 @@ public class AimInvisibleCommand implements Command {
     public AimInvisibleCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square){
+    public ArrayList<ArrayList<Character>> execute(Map.NoSpawnSquare square){
         ArrayList<Character> e = (ArrayList<Character>)Character.getTakenCharacters();
 
         ArrayList<Character> e1 = (ArrayList)square.getVisibleCharacters();  //here I have the characters that I can see

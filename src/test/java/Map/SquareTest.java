@@ -6,15 +6,40 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SquareTest {
 
+
     @Test
-    void getAmmoTile() {
+    void addCharacter() {
     }
 
     @Test
-    void setAmmoTile() {
+    void removeCharacter() {
     }
 
     @Test
-    void removeAmmoTile() {
+    void getCharacters() {
+    }
+
+    @Test
+    void getVisibleCharacters() {
+    }
+
+    @Test
+    void getCharactersThroughWalls() {
+    }
+
+    @Test
+    void getExactlyOneMovementCharacters() {
+    }
+
+    @Test
+    void getUpToOneMovementCharacters() {
+    }
+
+    @Test
+    void getVisibleRooms() {
+    }
+
+    @Test
+    void getAdjacentSquares() {
     }
 }

@@ -1,8 +1,7 @@
 package Cards;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import Map.*;
+
 import Player.Character;
 
 
@@ -13,7 +12,7 @@ public class AimOwnSquareCommand implements Command {
     }
 
 
-    public ArrayList<ArrayList<Character>> execute(Square square){  //this method returns the arraylist of arraylist of characters that the player can shoot
+    public ArrayList<ArrayList<Character>> execute(Map.NoSpawnSquare square){  //this method returns the arraylist of arraylist of characters that the player can shoot
         ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
         e.add((ArrayList)square.getCharacters());
         return e;
