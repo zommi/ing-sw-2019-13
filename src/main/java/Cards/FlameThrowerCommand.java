@@ -1,8 +1,9 @@
 package Cards;
-import java.lang.reflect.Array;
-import java.util.*;
-import Map.*;
+import Map.Square;
+import Map.SquareAbstract;
 import Player.Character;
+
+import java.util.ArrayList;
 
 
 public class FlameThrowerCommand {
@@ -19,10 +20,10 @@ public class FlameThrowerCommand {
 
     public ArrayList<ArrayList<Character>> execute(Square square) {
 
-        ArrayList<Square> eN = (ArrayList<Square>)square.getTwoSquaresInTheSameDirection('n');
-        ArrayList<Square> eS = (ArrayList<Square>)square.getTwoSquaresInTheSameDirection('s');
-        ArrayList<Square> eW = (ArrayList<Square>)square.getTwoSquaresInTheSameDirection('w');
-        ArrayList<Square> eE = (ArrayList<Square>)square.getTwoSquaresInTheSameDirection('e');
+        ArrayList<SquareAbstract> eN = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('n');
+        ArrayList<SquareAbstract> eS = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('s');
+        ArrayList<SquareAbstract> eW = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('w');
+        ArrayList<SquareAbstract> eE = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('e');
 
         ArrayList<ArrayList<Character>> cN = new ArrayList<ArrayList<Character>>();
         ArrayList<ArrayList<Character>> cS = new ArrayList<ArrayList<Character>>();
@@ -30,19 +31,19 @@ public class FlameThrowerCommand {
         ArrayList<ArrayList<Character>> cE = new ArrayList<ArrayList<Character>>();
 
 
-        for (Square t : eN) {
+        for (SquareAbstract t : eN) {
             cN.add((ArrayList<Character>)t.getCharacters());
         }
 
-        for (Square t : eS) {
+        for (SquareAbstract t : eS) {
             cS.add((ArrayList<Character>)t.getCharacters());
         }
 
-        for (Square t : eW) {
+        for (SquareAbstract t : eW) {
             cW.add((ArrayList<Character>)t.getCharacters());
         }
 
-        for (Square t : eE) {
+        for (SquareAbstract t : eE) {
             cE.add((ArrayList<Character>)t.getCharacters());
         }
 
@@ -52,7 +53,7 @@ public class FlameThrowerCommand {
             return (ArrayList<ArrayList<Character>>)cS.clone();
         else if(this.direction == 'e')
             return (ArrayList<ArrayList<Character>>)cE.clone();
-        else if(this.direction == 'w')
+        else                                                            //if(this.direction == 'w')
             return (ArrayList<ArrayList<Character>>)cW.clone();
 
         //now the user has to say to me which direction he wants. Otherwise I don't know what to return.
