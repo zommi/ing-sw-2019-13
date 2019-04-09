@@ -1,5 +1,8 @@
 package Player;
 
+import java.util.*;
+import Map.*;
+
 /**
  * 
  */
@@ -21,7 +24,7 @@ public abstract class PlayerAbstract {
     /**
      * @return
      */
-    public abstract void spawn(Map.Square sp);
+    public abstract void spawn(SquareAbstract sp);
 
     /**
      * @return

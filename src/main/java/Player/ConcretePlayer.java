@@ -7,6 +7,8 @@ import Exceptions.*;
 import GameBoard.*;
 import Constants.*;
 
+import java.util.*;
+
 /**
  * 
  */
@@ -35,7 +37,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
 
     public void move(char move) {
-        Square currentPos = character.getPosition();
+        SquareAbstract currentPos = character.getPosition();
         switch (move){
             case 'N':
                 character.move(currentPos.getnSquare());
@@ -107,7 +109,7 @@ public class ConcretePlayer extends PlayerAbstract {
         }
     }
 
-    public void spawn(Square sp){
+    public void spawn(SquareAbstract sp){
         character.spawn(sp);
     }
 

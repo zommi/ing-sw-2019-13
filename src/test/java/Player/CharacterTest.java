@@ -1,12 +1,17 @@
 package Player;
 
+import Constants.Constants;
+import Exceptions.CharacterTakenException;
+import GameBoard.GameBoard;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import Map.*;
+import Constants.*;
 
 class CharacterTest {
 
@@ -37,8 +42,8 @@ class CharacterTest {
 
     @Test
     public void testMove(){
-       Square square1 = new NoSpawnSquare(3,3, 'w');
-       Square spawnPoint1 = new SpawnPoint(2,1,'R');
+       SquareAbstract square1 = new Square(3,3, 'w');
+       SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');
        Character character = new Character(Figure.BANSHEE);
 
        ArrayList<Character> tester = new ArrayList<Character>();

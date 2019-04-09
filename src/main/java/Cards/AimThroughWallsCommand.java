@@ -1,7 +1,7 @@
 package Cards;
 
 import java.util.*;
-
+import Map.*;
 import Player.Character;
 
 /**
@@ -12,7 +12,7 @@ public class AimThroughWallsCommand implements Command {
     public AimThroughWallsCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Map.NoSpawnSquare square){
+    public ArrayList<ArrayList<Character>> execute(Square square){
         ArrayList<Character> e = (ArrayList)square.getCharactersThroughWalls();
 
         ArrayList<ArrayList<Character>> result = new ArrayList<ArrayList<Character>>(); //this will be the return for my player

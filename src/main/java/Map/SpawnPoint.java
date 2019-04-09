@@ -9,7 +9,7 @@ import java.util.*;
 /**
  *
  */
-public class SpawnPoint extends Square {
+public class SpawnPoint extends SquareAbstract {
 
     private ArrayList<WeaponCard> weaponCards;
     private ArrayList<Character> charactersList;
@@ -18,10 +18,10 @@ public class SpawnPoint extends Square {
     private int xValue;
     private int yValue;
     // the following are just for visible squares
-    private Square nSquare;
-    private Square wSquare;
-    private Square eSquare;
-    private Square sSquare;
+    private SquareAbstract nSquare;
+    private SquareAbstract wSquare;
+    private SquareAbstract eSquare;
+    private SquareAbstract sSquare;
 
     public SpawnPoint(int x, int y, char color) {
         super(x,y,color);

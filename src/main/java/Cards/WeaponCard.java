@@ -2,6 +2,7 @@ package Cards;
 
 import GameBoard.WeaponDeck;
 import Items.*;
+import Map.*;
 import Player.Character;
 
 import java.util.*;
@@ -38,7 +39,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     public void discard() { }
 
 
-    public ArrayList<ArrayList<Character>> chooseCharacter(Map.NoSpawnSquare square){
+    public ArrayList<ArrayList<Character>> chooseCharacter(Square square){
         return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
     }
 

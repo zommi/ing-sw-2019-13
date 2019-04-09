@@ -12,7 +12,7 @@ public class Room {
 
     private Color color;
     private List<Character> charactersList;
-    private List<Square> squareList;
+    private List<SquareAbstract> squareList;
 
     /**
      * Default constructor
@@ -41,14 +41,14 @@ public class Room {
         charactersList.remove(character);
     }
 
-    public void addSquare(Square square){
+    public void addSquare(SquareAbstract square){
         squareList.add(square);
     }
 
 
-    public List<Square> getSquares() {
-        ArrayList<Square> returnedList = (ArrayList<Square>) squareList;
-        return (ArrayList<Square>) returnedList.clone();
+    public List<SquareAbstract> getSquares() {
+        ArrayList<SquareAbstract> returnedList = (ArrayList<SquareAbstract>) squareList;
+        return (ArrayList<SquareAbstract>) returnedList.clone();
     }
 
 }

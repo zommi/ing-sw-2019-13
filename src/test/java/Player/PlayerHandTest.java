@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerHandTest {
 
-    /*@Test
+    @Test
     public void testPlayCard(){
         ConcretePlayer p = new ConcretePlayer("pippo",new GameBoard(), Figure.DESTRUCTOR);
         assertEquals(Figure.DESTRUCTOR, p.getCharacter().getFigure());
@@ -19,7 +19,7 @@ class PlayerHandTest {
           assertThrows(InvalidMoveException.class, () -> {
               ph.playCard(2,'q');
         });
-    }*/
+    }
     @Test
     public void test(){
         assertEquals(2,2);
