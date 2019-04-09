@@ -24,7 +24,7 @@ public class ConcretePlayer extends PlayerAbstract {
      */
     public ConcretePlayer(String name, GameBoard gameBoard) {
         this.name = name;
-        this.character = chooseCharacter();
+        this.character = new Character(chooseFigure());
         this.hand = new PlayerHand(this);
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;
@@ -140,6 +140,9 @@ public class ConcretePlayer extends PlayerAbstract {
         }
     }
 
+    public void spawn(SquareAbstract sp){
+        character.spawn(sp);
+    }
 
 }
 

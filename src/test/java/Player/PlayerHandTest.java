@@ -13,8 +13,8 @@ class PlayerHandTest {
         ConcretePlayer p = new ConcretePlayer("pippo",new GameBoard());
         PlayerHand ph = new PlayerHand(p);
 
-        assertThrows(InvalidMoveException.class, () -> {
-                    ph.playCard(2,'q');
+          assertThrows(InvalidMoveException.class, () -> {
+              ph.playCard(2,'q');
         });
     }
 

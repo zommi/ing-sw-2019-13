@@ -7,8 +7,6 @@ import Map.*;
  * 
  */
 public abstract class PlayerAbstract {
-    private String name;
-    private Character character;
 
     /**
      * @return
@@ -17,33 +15,26 @@ public abstract class PlayerAbstract {
     }
 
 
-    public PlayerAbstract(String name) {
-        this.name = name;
-        this.character = chooseCharacter();
-    }
-
-    public Character chooseCharacter() {
-        int idSelection;
+    public Figure chooseFigure() {
+        int selection;
         Scanner sc = new Scanner(System.in);
         //save a list with all the available characters
-        List<Character> list = Character.getValidCharacters();
+        List<Figure> list = Character.getValidFigures();
         //Read input
         do {
             System.out.println("Choose your character:" + list.toString());
-            idSelection = sc.nextInt();
-        } while(!list.contains(Character.getValue(idSelection)));
-        System.out.println("You chose: " + Character.getValue(idSelection) +". Great Choice!");
+            selection = sc.nextInt();
+        } while(!list.contains(Figure.getValue(selection)));
+        System.out.println("You chose: " + Figure.getValue(selection) +". Great Choice!");
         //set True corresponding cell
-        Character.setTaken(idSelection);
-        return Character.getValue(idSelection);
+        Character.setTaken(Figure.getValue(selection));
+        return Figure.getValue(selection);
     }
 
     /**
      * @return
      */
-    public void spawn(SpawnPoint sp) {
-        character.spawn(sp);
-    }
+    public abstract void spawn(SquareAbstract sp);
 
     /**
      * @return
