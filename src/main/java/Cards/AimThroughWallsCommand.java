@@ -27,9 +27,15 @@ public class AimThroughWallsCommand implements Command {
             if (square.getxValue() == t.getPosition().getxValue()) {
                 if (square.getyValue() > t.getPosition().getyValue()) { //if this is true then we are considering the SOUTH LIST
                     eS.add(t);
-                } else if (square.getyValue() < t.getPosition().getyValue()) { //if this is true then we are considering the NORTH LIST
+                } else if (square.getyValue() < t.getPosition().getyValue()) {//if this is true then we are considering the NORTH LIST
                     eN.add(t);
+                } else if(square.getyValue() == t.getPosition().getyValue()){
+                    eN.add(t);
+                    eS.add(t);
+                    eW.add(t);
+                    eE.add(t);
                 }
+
             }
             else if(square.getyValue() == t.getPosition().getyValue()){
                  if(square.getxValue() < t.getPosition().getxValue()) { //if this is true then we are considering the EAST LIST
