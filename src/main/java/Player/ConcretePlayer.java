@@ -5,6 +5,7 @@ import Map.Map;
 import Map.*;
 import Exceptions.*;
 import GameBoard.*;
+import Constants.*;
 
 import java.util.*;
 
@@ -75,8 +76,12 @@ public class ConcretePlayer extends PlayerAbstract {
     /**
      * @return
      */
-    public void collect() {
-        //TODO once we sorted out the item position
+    public void collect(AmmoTile item) {
+        board.addAmmo(item);
+    }
+
+    public void collect(WeaponCard card){
+        hand.addCard(card);
     }
 
     public void showHand(){
@@ -90,7 +95,7 @@ public class ConcretePlayer extends PlayerAbstract {
         return null;
     }
 
-    public void receiveBullet(Bullet b, int color){
+    public void receiveBullet(Bullet b, Color color){
         board.addDamage(b.getDamage(),color);
         try{
             board.addMarks(b.getMarks(),color);

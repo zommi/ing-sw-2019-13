@@ -58,4 +58,11 @@ public class PlayerHand {
     public String toString() {
         return "Weapons: " + weaponHand.toString() + "\n" + "Powerups: " + powerupHand.toString();
     }
+
+
+    public void addCard(WeaponCard card){
+        weaponHand.add(card);
+        //TODO add swap on gameboard if size == 3
+    }
+
 }

@@ -1,5 +1,6 @@
 package Player;
 
+import Cards.AmmoTile;
 import Map.*;
 import Constants.*;
 import Exceptions.*;
@@ -13,10 +14,10 @@ import java.util.*;
 public class PlayerBoard{
     ConcretePlayer player;
 
-    private int[] damage;
+    private Color[] damage;
     private int damageTaken;
 
-    private List<Integer> marks;
+    private List<Color> marks;
     private int[] pointValue;
     private int currentPointValueCursor;
     private int numberOfDeaths;
@@ -30,15 +31,16 @@ public class PlayerBoard{
     private ArrayList<AmmoCube> blueAmmo;
     private int validBlueAmmo;
 
+    private int points;
 
     /**
      * Default constructor
      */
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
-        this.damage = new int[Constants.MAX_HP];
+        this.damage = new Color[Constants.MAX_HP];
         this.damageTaken = 0;
-        this.marks = new ArrayList<Integer>();
+        this.marks = new ArrayList<Color>();
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
@@ -50,7 +52,7 @@ public class PlayerBoard{
         this.validBlueAmmo = 0;
     }
 
-    private void setDamage(int i, int color) {
+    private void setDamage(int i, Color color) {
         this.damage[i] = color;
     }
 
@@ -100,7 +102,7 @@ public class PlayerBoard{
         return pointValue[currentPointValueCursor];
     }
 
-    public void addDamage(int damageInBullet, int color) {
+    public void addDamage(int damageInBullet, Color color) {
         int marksActivated = getMarksOfAColor(color);
         removeMarksOfAColor(color);
         for(int i = damageTaken; i < damageTaken+marksActivated;i++){
@@ -113,26 +115,26 @@ public class PlayerBoard{
             addSkull();
             damageTaken = 0;
             for(int i = 0; i < Constants.MAX_HP; i++){
-                this.damage[i] = Constants.UNDEFINED;
+                this.damage[i] = Color.UNDEFINED;
             }
         }
     }
 
-    private void removeMarksOfAColor(int color) {
+    private void removeMarksOfAColor(Color color) {
         //get rid of all token of a color
         marks.removeAll(Collections.singleton(color));
     }
 
-    private int getMarksOfAColor(int color) {
+    private int getMarksOfAColor(Color color) {
         int counter = 0;
-        for(Integer i : marks){
-            if(i == color){counter++;}
+        for(Color c : marks){
+            if(c == color){counter++;}
         }
         return counter;
     }
 
     //add mark on playerboard, if size > 3 then throw exception
-    public void addMarks(int marks, int color)
+    public void addMarks(int marks, Color color)
             throws InvalidMoveException {
         for(int i = 0; i < marks; i++) {
             if (this.marks.size() <= 3) {
@@ -141,5 +143,8 @@ public class PlayerBoard{
                 throw new InvalidMoveException();
             }
         }
+    }
+
+    public void addAmmo(AmmoTile ammo) {
     }
 }
