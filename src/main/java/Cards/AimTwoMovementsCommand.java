@@ -2,9 +2,9 @@ package Cards;
 
 import java.util.*;
 import Map.*;
-/**
- * 
- */
+import Player.Character;
+
+
 public class AimTwoMovementsCommand implements Command {
 
     public AimTwoMovementsCommand() {
