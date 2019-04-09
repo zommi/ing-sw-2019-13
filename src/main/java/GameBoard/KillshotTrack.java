@@ -1,5 +1,6 @@
 package GameBoard;
 
+import Constants.Color;
 import Items.DamageToken;
 
 import java.util.*;
@@ -9,35 +10,37 @@ import java.util.*;
  */
 public class KillshotTrack {
 
-    /**
-     * Default constructor
-     */
-    public KillshotTrack() {
-    }
+    private int remainingSkulls;
+    private Color[] damageTokens;
+    private int[] multiciplityToken;
 
+    public KillshotTrack(int initialSkull) {
+        this.remainingSkulls = initialSkull;
+        this.multiciplityToken = new int[initialSkull];
+    }
 
 
     /**
      * @return
      */
     public int getRemainingSkulls() {
-        // TODO implement here
-        return 0;
+        return this.remainingSkulls;
     }
 
     /**
      * @return
      */
-    public List<DamageToken> getDamageTokens() {
-        // TODO implement here
-        return null;
+    public int getMulticiplity(int index) {
+        return this.multiciplityToken[index];
     }
 
     /**
      * @return
      */
-    public void removeSkull() {
-        // TODO implement here
+    public void removeSkull(int token2Add, Color color2Add) {
+        this.multiciplityToken[remainingSkulls] = token2Add;
+        this.damageTokens[remainingSkulls] = color2Add;
+        remainingSkulls--;
     }
 
 }
