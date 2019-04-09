@@ -26,7 +26,7 @@ public class Room {
         return color;
     }
 
-    public List<Character> getCharacter(){
+    public List<Character> getCharacters(){
         ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
         return (ArrayList<Character>)  returnedList.clone();
     }
