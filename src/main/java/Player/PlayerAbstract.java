@@ -15,20 +15,10 @@ public abstract class PlayerAbstract {
     }
 
 
-    public Figure chooseFigure() {
-        int selection;
-        Scanner sc = new Scanner(System.in);
-        //save a list with all the available characters
-        List<Figure> list = Character.getValidFigures();
-        //Read input
-        do {
-            System.out.println("Choose your character:" + list.toString());
-            selection = sc.nextInt();
-        } while(!list.contains(Figure.getValue(selection)));
-        System.out.println("You chose: " + Figure.getValue(selection) +". Great Choice!");
-        //set True corresponding cell
-        Character.setTaken(Figure.getValue(selection));
-        return Figure.getValue(selection);
+    public Figure chooseFigure(Figure selection) {
+        System.out.println("You chose: " + selection +". Great Choice!");
+        Character.setTaken(selection);
+        return selection;
     }
 
     /**
