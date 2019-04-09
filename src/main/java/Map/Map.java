@@ -12,7 +12,7 @@ public class Map {
     private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
-    public Map(int mapNum) throws FileNotFoundException{
+    public Map(int mapNum) throws FileNotFoundException{    //TODO assign room to every square and viceversa
         String path;
         switch(mapNum) {
 
@@ -46,7 +46,7 @@ public class Map {
             readInput.add(scanner.nextLine());
         }
 
-        scanner.close();
+        scanner.close();        //TODO this may not close if an exception is thrown
 
         squares = new ArrayList<>();
         for(int i = 0; i< readInput.size(); i++){

@@ -32,7 +32,8 @@ public class Room {
     }
 
     public void addCharacter(Character character){
-        charactersList.add(character);
+        if(!charactersList.contains((character)))
+            charactersList.add(character);
     }
 
     public void removeCharacter(Character character){

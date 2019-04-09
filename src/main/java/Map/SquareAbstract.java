@@ -96,10 +96,12 @@ public abstract class SquareAbstract {
 
     public void addCharacter(Character character){
         charactersList.add(character);
+        room.addCharacter(character);
     }
 
     public void removeCharacter(Character character){
         charactersList.remove(character);
+        room.removeCharacter(character);
     }
 
     public List<Character> getCharacters() {
