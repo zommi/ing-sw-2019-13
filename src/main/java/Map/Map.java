@@ -8,12 +8,11 @@ import java.util.Scanner;
 
 public class Map {
 
-    private ArrayList<SpawnPoint> spawnPoints;
+    private static ArrayList<SpawnPoint> spawnPoints;
     private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
-
-    public Map(int mapNum) {
+    public Map(int mapNum) throws FileNotFoundException{
         String path;
         switch(mapNum) {
 
@@ -29,28 +28,36 @@ public class Map {
             case 4:
                 path = "map22.txt";
                 break;
-            default:
+            default:    //this should never happen
                 path = "map11.txt";
         }
-        try(Scanner scanner = new Scanner(new File(path))){
-            List<String> list = new ArrayList<>();
+
+        //the following line populates the double ArrayList of SquareAbstract (squares)
+        List<String> readList = generateSquareStructureFromFile(path);
+        //now we're gonna link all the squares (to build a graph) inside the generated square structure
+        linkSquares(squares, readList);
+    }
+
+    private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
+        Scanner scanner = new Scanner(new File(path));
+            List<String> readInput = new ArrayList<>();
 
             while(scanner.hasNextLine()){
-                list.add(scanner.nextLine());
+                readInput.add(scanner.nextLine());
             }
 
             squares = new ArrayList<>();
-            for(int i=0; i<list.size(); i++){
-                squares.add(new ArrayList<SquareAbstract>());
+            for(int i = 0; i< readInput.size(); i++){
+                squares.add(new ArrayList<>());
             }
 
             int row = 0;
             int col;
             char c;
-            while(row < list.size()){
+            while(row < readInput.size()){
                 col = 0;
-                while(col < list.get(row).length()){
-                    c = list.get(row).charAt(col);
+                while(col < readInput.get(row).length()){
+                    c = readInput.get(row).charAt(col);
                     if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
                         SpawnPoint tempSquare = new SpawnPoint(row/2+1, col/2+1, c);
                         squares.get(row).add(tempSquare);
@@ -66,31 +73,34 @@ public class Map {
                 }
                 row++;
             }
+            return readInput;
 
-            //now we're gonna link all the squares
-            row = 0;
-            while(row < list.size()){
-                col = 0;
-                while(col < list.get(row).length()){
-                    c = list.get(row).charAt(col);
-                    if(c=='-'){
-                        squares.get(row/2).get(col/2).seteSquare(squares.get(row/2).get(col/2+1));
-                        squares.get(row/2).get(col/2+1).setwSquare(squares.get(row/2).get(col/2));
-                    }
-                    else if(c=='|'){
-                        squares.get(row/2).get(col/2).setsSquare(squares.get(row/2+1).get(col/2));
-                        squares.get(row/2+1).get(col/2).setnSquare(squares.get(row/2).get(col/2));
-                    }
-                    col++;
+
+    }
+
+    private static void linkSquares(ArrayList<ArrayList<SquareAbstract>> squares, List<String> list){
+        int row, col;
+        char c;
+        row = 0;
+        while(row < list.size()){
+            col = 0;
+            while(col < list.get(row).length()){
+                c = list.get(row).charAt(col);
+                if(c=='-'){
+                    squares.get(row/2).get(col/2).seteSquare(squares.get(row/2).get(col/2+1));
+                    squares.get(row/2).get(col/2+1).setwSquare(squares.get(row/2).get(col/2));
                 }
-                row++;
+                else if(c=='|'){
+                    squares.get(row/2).get(col/2).setsSquare(squares.get(row/2+1).get(col/2));
+                    squares.get(row/2+1).get(col/2).setnSquare(squares.get(row/2).get(col/2));
+                }
+                col++;
             }
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
+            row++;
         }
     }
 
-    public ArrayList<SpawnPoint> getSpawnPoints(){
+    public List<SpawnPoint> getSpawnPoints(){
         return (ArrayList<SpawnPoint>) spawnPoints.clone();
     }
 

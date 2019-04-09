@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class SquareAbstract {
 
-    private ArrayList<Character> charactersList;
+    private List<Character> charactersList;
 
     private Color color;
     private int xValue;
@@ -57,7 +57,7 @@ public abstract class SquareAbstract {
         }
 
         //new character list
-        this.charactersList= new ArrayList<Character>();
+        this.charactersList= new ArrayList<>();
 
 
     }
@@ -103,10 +103,11 @@ public abstract class SquareAbstract {
     }
 
     public List<Character> getCharacters() {
-        return (ArrayList<Character>)  charactersList.clone();
+        ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
+        return (ArrayList<Character>)  returnedList.clone();
     }
 
-    public List<Character> getVisibleCharacters(){
+    public List<Character> getVisibleCharacters(){                  //same square, same room and visible rooms
         List<Character> visibleCharacters = new ArrayList<>();
         visibleCharacters.addAll(room.getCharacters());
         for(Room tempRoom : this.getVisibleRooms()){
@@ -116,44 +117,55 @@ public abstract class SquareAbstract {
 
     }
 
-    public List<Character> getCharactersThroughWalls(){
-        List<Character> charactersList = new ArrayList<>();
+    public List<Character> getCharactersThroughWalls(){             //in square with same x OR same y, including same square
+        List<Character> tempCharactersList = new ArrayList<>();
         List<SquareAbstract> xSquares = Map.getSquaresWithSameX(this);
         List<SquareAbstract> ySquares = Map.getSquaresWithSameY(this);
         for(SquareAbstract tempSquare : xSquares){
-            charactersList.addAll(tempSquare.getCharacters());
+            tempCharactersList.addAll(tempSquare.getCharacters());
 
         }
         for(SquareAbstract tempSquare : ySquares){
-            charactersList.addAll(tempSquare.getCharacters());
+            tempCharactersList.addAll(tempSquare.getCharacters());
         }
-        charactersList.addAll(this.getCharacters());
-        return charactersList;
+        tempCharactersList.addAll(this.getCharacters());
+        return tempCharactersList;
 
     }
 
-    public List<Character> getTwoMovementsCharacters(){
-        List<Character> charactersList = new ArrayList<>();
+    /*public List<Character> getUpToTwoMovementsCharacters(){
+        List<Character> tempCharactersList = new ArrayList<>();
         List<SquareAbstract> tempSquareList = new ArrayList<>();
         tempSquareList.add(this);
         for(SquareAbstract square : this.getAdjacentSquares()){
-            charactersList.addAll(square.getOneMovementCharacters());
+            tempCharactersList.addAll(square.getOneMovementCharacters());
         }
-        charactersList.removeAll(tempSquareList);
-        return charactersList;
+        tempCharactersList.removeAll(tempSquareList);
+        return tempCharactersList;
 
-    }
+    }*/
 
-    public List<Character> getOneMovementCharacters(){
-        List<Character> charactersList = new ArrayList<>();
+
+    public List<Character> getExactlyOneMovementCharacters(){
+        List<Character> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
-            charactersList.addAll(square.getCharacters());
+            tempCharactersList.addAll(square.getCharacters());
         }
-        return charactersList;
+        return tempCharactersList;
     }
 
-    public List<Room> getVisibleRooms() {
-        ArrayList<Room> roomsList = new ArrayList<Room>();
+    public List<Character> getUpToOneMovementCharacters(){
+        List<Character> tempCharactersList = new ArrayList<>();
+        for(SquareAbstract square : this.getAdjacentSquares()){
+            tempCharactersList.addAll(square.getCharacters());
+        }
+        tempCharactersList.addAll(this.getCharacters());
+        return tempCharactersList;
+    }
+
+
+    public List<Room> getVisibleRooms() {                       //own room isn't included in the returned list
+        List<Room> roomsList = new ArrayList<>();
         if(nSquare != null && nSquare.getRoom() != room)
                 roomsList.add(nSquare.getRoom());
         if(sSquare != null && sSquare.getRoom() != room)
@@ -168,7 +180,7 @@ public abstract class SquareAbstract {
     }
 
     public List<SquareAbstract> getAdjacentSquares() {
-        ArrayList<SquareAbstract> squaresList= new ArrayList<SquareAbstract>();
+        List<SquareAbstract> squaresList= new ArrayList<>();
         if(nSquare != null)
             squaresList.add(nSquare);
         if(sSquare != null)

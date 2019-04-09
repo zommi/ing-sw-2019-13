@@ -31,7 +31,7 @@ public class Room {
 
     public List<Character> getCharacters() {
         // TODO implement here
-        return null;
+        return new ArrayList<Character>();
     }
 
     /**

@@ -3,6 +3,8 @@ package Cards;
 import java.lang.reflect.Array;
 import java.util.*;
 import Map.*;
+import Player.Character;
+
 
 public class AimOwnSquareCommand implements Command {
 
