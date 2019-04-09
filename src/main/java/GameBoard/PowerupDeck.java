@@ -1,5 +1,6 @@
 package GameBoard;
 
+import Cards.CardInterface;
 import Cards.PowerupCard;
 
 import java.util.*;
@@ -46,7 +47,7 @@ public class PowerupDeck {
     /**
      * @return
      */
-    public void discardCard() {
+    public void discardCard(CardInterface card) {
         // TODO implement here
     }
 

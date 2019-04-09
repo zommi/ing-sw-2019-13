@@ -18,10 +18,8 @@ class PlayerHandTest {
         });
     }
 
-    /*
     @Test
     public void test(){
         assertEquals(2,2);
     }
-    */
 }

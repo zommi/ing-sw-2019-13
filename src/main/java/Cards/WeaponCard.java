@@ -1,6 +1,8 @@
 package Cards;
 
 import GameBoard.WeaponDeck;
+import Items.*;
+import Map.*;
 
 import java.util.*;
 
@@ -29,10 +31,12 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     }
 
 
-    public void getName() {
+    public String getName() {
         return name;
     }
 
+    @Override
+    public void discard() { }
 
 
     public ArrayList<ArrayList<Character>> chooseCharacter(Square square){
@@ -41,7 +45,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
 
 
     public Bullet play() {
-        weapon.shoot();
+        return weapon.shoot();
         //it calls SHOOT on weapon
     }
 
@@ -63,8 +67,10 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     }
 
 
+
+
     @Override
-    public void display() {
-        // TODO
+    public void collect() {
+
     }
 }

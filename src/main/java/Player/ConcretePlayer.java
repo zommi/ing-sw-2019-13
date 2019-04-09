@@ -1,6 +1,7 @@
 package Player;
 
 import Cards.*;
+import Map.Map;
 import Map.*;
 import Exceptions.*;
 import GameBoard.*;
@@ -76,7 +77,11 @@ public class ConcretePlayer extends PlayerAbstract {
                 System.out.println("Choose weapon to use: (0/1/2)\n" + hand.getWeapons().toString());
                 choice = sc.nextInt();
             }while(choice > 2 || choice < 0);
-            hand.playCard(choice,'w');
+            try{
+                hand.playCard(choice,'w');
+            }catch (InvalidMoveException e){
+                e.printStackTrace();
+            }
         } else {
             //implement a try catch
             System.out.println("No cards to use!");
@@ -91,7 +96,11 @@ public class ConcretePlayer extends PlayerAbstract {
                 System.out.println("Choose powerup to use: \n" + hand.getPowerups().toString());
                 choice = sc.nextInt();
             }while(choice > 2 || choice < 0);
-            hand.playCard(choice,'w');
+            try{
+                hand.playCard(choice,'w');
+            }catch(InvalidMoveException e){
+                e.printStackTrace();
+            }
         } else {
             //implement a try catch
             System.out.println("No cards to use!");
@@ -125,7 +134,7 @@ public class ConcretePlayer extends PlayerAbstract {
             System.out.println("Max number of marks reached");
         }
         try {
-            character.move(Map.Map.getSquareFromXY(b.getX(), b.getY()));
+            character.move(Map.getSquareFromXY(b.getX(), b.getY()));
         }catch (NoSuchSquareException e){
             e.printStackTrace();
         }

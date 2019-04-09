@@ -1,10 +1,9 @@
 package Cards;
 
 import Cards.Command;
-import Player.Character;
 
 import java.util.*;
-
+import Map.*;
 /**
  * 
  */
@@ -14,7 +13,10 @@ public class RoomCanSeeCommand implements Command {
     public RoomCanSeeCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square);
+    @Override
+    public ArrayList<ArrayList<Character>> execute(Square square) {
+        return null;
+    }
 
 
 }

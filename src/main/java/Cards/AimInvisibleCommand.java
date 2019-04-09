@@ -1,7 +1,7 @@
 package Cards;
 
 import java.util.*;
-
+import Map.*;
 
 public class AimInvisibleCommand implements Command {
 
@@ -9,6 +9,6 @@ public class AimInvisibleCommand implements Command {
     public AimInvisibleCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square);
+    public ArrayList<ArrayList<Character>> execute(Square square){return null;}
 
 }

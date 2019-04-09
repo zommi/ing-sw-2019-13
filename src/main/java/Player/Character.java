@@ -1,5 +1,6 @@
 package Player;
 
+import Exceptions.CharacterTakenException;
 import Map.*;
 import Constants.*;
 import java.util.*;
@@ -21,9 +22,10 @@ public enum Character {
     private SquareAbstract position;
     private ConcretePlayer concretePlayer;
 
+
     Character(int id){
-        this.id = id;
-        setTaken(id);
+            this.id = id;
+            setTaken(id);
     }
 
     private int getId(){
