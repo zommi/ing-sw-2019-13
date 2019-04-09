@@ -33,7 +33,10 @@ class CharacterTest {
         test2.add(Figure.SPROG);
 
         Character testChar = new Character(Figure.DESTRUCTOR);
+        ArrayList<Character> testList = new ArrayList<Character>();
+        testList.add(testChar);
         assertEquals(Character.getValidFigures(),test2);
+        assertEquals(Character.getTakenCharacters(),testList);
 
     }
 
