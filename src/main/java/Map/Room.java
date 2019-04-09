@@ -12,9 +12,7 @@ public class Room {
 
     private Color color;
     private List<Character> charactersList;
-
     private List<SquareAbstract> squareList;
-
 
     /**
      * Default constructor
@@ -48,10 +46,6 @@ public class Room {
     }
 
 
-
-    /**
-     * @return
-     */
     public List<SquareAbstract> getSquares() {
         ArrayList<SquareAbstract> returnedList = (ArrayList<SquareAbstract>) squareList;
         return (ArrayList<SquareAbstract>) returnedList.clone();

@@ -40,7 +40,7 @@ public class Map {
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
         //now we're gonna link all the squares (to build a graph) inside the generated square structure
-        linkSquares(squares, readList);
+        linkSquares(readList);
 
         populateRooms();
     }
@@ -109,7 +109,7 @@ public class Map {
 
     }
 
-    private static void linkSquares(ArrayList<ArrayList<SquareAbstract>> squares, List<String> list){
+    private static void linkSquares(List<String> list){
         int row, col;
         char c;
         row = 0;

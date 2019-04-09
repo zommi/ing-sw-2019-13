@@ -55,6 +55,7 @@ public abstract class SquareAbstract {
             case 'P':
             case 'p': this.color = Color.PURPLE;
                 break;
+            default: this.color = Color.UNDEFINED;
         }
 
         room = Map.getRooms().get(this.color.ordinal());
