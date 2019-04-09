@@ -27,8 +27,7 @@ public class TargetingScope implements Powerup {
         //It does not move the character.
         //As a consequence it does not have a push orientation.
 
-        Scanner reader = new Scanner(System.in);  // Reading from System.in
-        System.out.println("Enter the target you shot and that you want to use this powerup against: ");
+
         //Due to the fact that the player knows if he can use the powerup against him or not, the Newton is not going to check
 
         //The user has to choose the target and has to pay one ammocube. I don't know how to represent the cost of the ammocube. We have to
