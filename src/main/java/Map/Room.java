@@ -19,7 +19,10 @@ public class Room {
     /**
      * Default constructor
      */
-    public Room() {
+    public Room(Color color) {
+        this.color = color;
+        charactersList = new ArrayList<>();
+        squareList = new ArrayList<>();
     }
 
     public Color getColor() {

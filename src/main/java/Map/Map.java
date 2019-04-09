@@ -1,5 +1,6 @@
 package Map;
 
+import Constants.Color;
 import Exceptions.NoSuchSquareException;
 
 import java.util.*;
@@ -8,9 +9,9 @@ import java.util.Scanner;
 
 public class Map {
 
-    private static ArrayList<SpawnPoint> spawnPoints;
+    private static List<SpawnPoint> spawnPoints;
     private static ArrayList<ArrayList<SquareAbstract>> squares;
-    private ArrayList<Room> rooms;
+    private static List<Room> rooms;
 
     public Map(int mapNum) throws FileNotFoundException{    //TODO assign room to every square and viceversa
         String path;
@@ -38,15 +39,35 @@ public class Map {
         linkSquares(squares, readList);
     }
 
-    private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
-        Scanner scanner = new Scanner(new File(path));
-        List<String> readInput = new ArrayList<>();
-
-        while(scanner.hasNextLine()){
-            readInput.add(scanner.nextLine());
+    private static void generateRooms(){
+        rooms = new ArrayList<>();
+        for(Color color : Color.values()){
+            rooms.add(new Room(color));
         }
+        for(int i = 0; i<squares.size(); i++){
+            for(int j = 0; j<squares.get(i).size(); j++){
+                rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
+                //TODO set room in every square
 
-        scanner.close();        //TODO this may not close if an exception is thrown
+            }
+        }
+    }
+
+    private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
+        Scanner scanner = null;
+        List<String> readInput = null;
+        try {
+            scanner = new Scanner(new File(path));
+            readInput = new ArrayList<>();
+
+            while (scanner.hasNextLine()) {
+                readInput.add(scanner.nextLine());
+            }
+        } catch(FileNotFoundException e){
+
+        } finally{
+            scanner.close();
+        }
 
         squares = new ArrayList<>();
         for(int i = 0; i< readInput.size(); i++){
@@ -103,7 +124,8 @@ public class Map {
     }
 
     public List<SpawnPoint> getSpawnPoints(){
-        return (ArrayList<SpawnPoint>) spawnPoints.clone();
+        ArrayList<SpawnPoint> returnedList = (ArrayList<SpawnPoint>) spawnPoints;
+        return (ArrayList<SpawnPoint>) returnedList.clone();
     }
 
     public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
