@@ -12,6 +12,5 @@ public class NotOwnSquareCommand implements Command {
 
     public ArrayList<ArrayList<Character>> execute(Square square){return null;}
 
-    //public Bullet prepareBullet();
 
 }

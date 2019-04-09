@@ -13,7 +13,6 @@ public class RoomCanSeeCommand implements Command {
     public RoomCanSeeCommand() {
     }
 
-    @Override
     public ArrayList<ArrayList<Character>> execute(Square square) {
         return null;
     }

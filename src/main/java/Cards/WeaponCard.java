@@ -35,7 +35,6 @@ public class WeaponCard implements CollectableInterface, CardInterface {
         return name;
     }
 
-    @Override
     public void discard() { }
 
 
@@ -67,9 +66,6 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     }
 
 
-
-
-    @Override
     public void collect() {
 
     }
