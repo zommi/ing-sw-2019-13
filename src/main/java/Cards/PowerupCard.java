@@ -1,7 +1,7 @@
 package Cards;
 
-import Cards.CardInterface;
-import Cards.Powerup;
+import Constants.*;
+import GameBoard.*;
 
 
 public class PowerupCard implements CardInterface {
@@ -9,6 +9,7 @@ public class PowerupCard implements CardInterface {
     private Color color;
     private Powerup powerup;
     private PowerupDeck powerupDeck;
+    String name;
 
 
     public PowerupCard(Color color, Powerup powerup, PowerupDeck powerupDeck) {
@@ -25,9 +26,8 @@ public class PowerupCard implements CardInterface {
 
 
 
-    public void play() {
-        powerup.usePowerup();
-        return;
+    public Bullet play() {
+        return powerup.usePowerup();
     }
 
 
@@ -49,14 +49,14 @@ public class PowerupCard implements CardInterface {
 
 
 
-    public void getName() {
-        // TODO da file
+    public String getName() {
+        return name;
     }
 
 
 
     public void discard() {
-        powerupDeck.discard(this); //It will add the card to the discardedcards.
+        powerupDeck.discardCard(this); //It will add the card to the discardedcards.
     }
 
 }

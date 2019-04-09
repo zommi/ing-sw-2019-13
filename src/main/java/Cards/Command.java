@@ -1,6 +1,7 @@
 package Cards;
 
 import java.util.*;
+import Map.*;
 
 
 public interface Command {

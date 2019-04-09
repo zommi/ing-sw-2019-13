@@ -7,13 +7,13 @@ import Items.*;
 public interface CardInterface extends ItemInterface {
 
 
-    public void play();
+    public Bullet play();
 
     public void draw();
 
     public void getEffect();
 
-    public void getName();
+    public String getName();
 
     public void discard();
 

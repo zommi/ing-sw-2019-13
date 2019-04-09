@@ -1,5 +1,6 @@
 package Items;
 
+import Constants.Color;
 import Cards.Ownable;
 
 /**
@@ -7,10 +8,10 @@ import Cards.Ownable;
  */
 public class AmmoCube extends Ownable {
 
-    private int color;  //Have a look at the costants class.
+    private Color color;  //Have a look at the costants class.
     private boolean valid;
 
-    public AmmoCube(int c) {
+    public AmmoCube(Color c) {
         this.color = c;
     }
 
@@ -30,7 +31,7 @@ public class AmmoCube extends Ownable {
         return this.valid;
     }
 
-    public int getColor() {
+    public Color getColor() {
         return this.color;
     }
 

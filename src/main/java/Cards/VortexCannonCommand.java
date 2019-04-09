@@ -1,21 +1,16 @@
 package Cards;
-
-import Cards.Command;
-
+import java.lang.reflect.Array;
 import java.util.*;
 import Map.*;
-/**
- * 
- */
-public class RoomCanSeeCommand implements Command {
+
+public class VortexCannonCommand implements Command {
 
 
-    public RoomCanSeeCommand() {
+    public VortexCannonCommand() {
     }
 
     public ArrayList<ArrayList<Character>> execute(Square square) {
         return null;
     }
-
-
 }
+

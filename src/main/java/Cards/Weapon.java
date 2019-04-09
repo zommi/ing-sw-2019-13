@@ -1,6 +1,7 @@
 package Cards;
 
 import java.util.*;
+import Items.*;
 
 
 public class Weapon {
@@ -18,7 +19,7 @@ public class Weapon {
         //TODO fill with what I read from the file, also the command.
     }
 
-    private Bullet shoot() { //fills the bullet
+    public Bullet shoot() { //fills the bullet
         bullet = new Bullet(this.x, this.y, this.damage, this.marks, this.teleporterflag,this.cost);
         return(bullet);
     }
