@@ -21,6 +21,7 @@ public class Character {
 
     Character(Figure f){
         this.figure = f;
+        f.setOwner(this);
         setTaken(f);
     }
 
@@ -50,6 +51,15 @@ public class Character {
         return res;
     }
 
+    public static List<Character> getTakenCharacters(){
+        List<Character> res = new ArrayList<Character>();
+        for(Figure f : Figure.values()){
+            if(isTaken(f.getId())){
+                res.add(f.getOwner());
+            }
+        }
+        return res;
+    }
 
 
     private void setPosition(SquareAbstract position){

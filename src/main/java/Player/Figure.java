@@ -8,9 +8,18 @@ public enum Figure {
     SPROG(4);
 
     private int id;
+    private Character owner;
 
     Figure(int id){
         this.id = id;
+    }
+
+    public void setOwner(Character c){
+        this.owner = c;
+    }
+
+    public Character getOwner(){
+        return owner;
     }
 
     public int getId() {
