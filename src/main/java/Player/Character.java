@@ -32,6 +32,8 @@ public class Character {
         return figureChosen[id];
     }
 
+    public Figure getFigure(){ return this.figure;}
+
     public ConcretePlayer getConcretePlayer(){
         //TODO implement with clone
         return concretePlayer;
@@ -83,6 +85,7 @@ public class Character {
 
     public void spawn(SquareAbstract sp) {
         if(position == null){
+            sp.addCharacter(this);
             setPosition(sp);
         } else{
             System.out.println("Invalid move");

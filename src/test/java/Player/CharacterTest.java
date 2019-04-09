@@ -5,6 +5,7 @@ import Exceptions.CharacterTakenException;
 import GameBoard.GameBoard;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -42,13 +43,15 @@ class CharacterTest {
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');
        Character character = new Character(Figure.BANSHEE);
 
+       ArrayList<Character> tester = new ArrayList<Character>();
+       tester.add(character);
        character.spawn(square1);
        assertEquals(character.getPosition(),square1);
-       assertEquals(square1.getCharacters(), Collections.singleton(character));
+       assertEquals(square1.getCharacters(), tester);
        assertEquals(spawnPoint1.getCharacters(), Collections.EMPTY_LIST);
        character.move(spawnPoint1);
        assertEquals(character.getPosition(),spawnPoint1);
-       assertEquals(spawnPoint1.getCharacters(), Collections.singleton(character));
+       assertEquals(spawnPoint1.getCharacters(), tester);
        assertEquals(square1.getCharacters(), Collections.EMPTY_LIST);
     }
 
