@@ -35,43 +35,24 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
 
-    public void move() {
-        //probably this needs to be divided into controller and view
-        Scanner sc = new Scanner(System.in);
-        String move;
+    public void move(char move) {
         SquareAbstract currentPos = character.getPosition();
-        SquareAbstract nextSquare = currentPos;
-        List<SquareAbstract> possibleMoves;
-        boolean valid = false;
-        for (int i = 0; i < 3; i++) {
-            possibleMoves = currentPos.getAdjacentSquares();
-            do {
-                System.out.println("In which direction do you wish to move? (N/S/W/E)");
-                move = sc.nextLine();
-                if (move.equals("N")) {
-                    valid = possibleMoves.contains(currentPos.getnSquare());
-                    nextSquare = currentPos.getnSquare();
-                } else if (move.equals("S")) {
-                    valid = possibleMoves.contains(currentPos.getsSquare());
-                    nextSquare = currentPos.getsSquare();
-                } else if (move.equals("W")) {
-                    valid = possibleMoves.contains(currentPos.getwSquare());
-                    nextSquare = currentPos.getwSquare();
-                } else if (move.equals("E")) {
-                    valid = possibleMoves.contains(currentPos.geteSquare());
-                    nextSquare = currentPos.geteSquare();
-                }
-            } while (!valid);
-            character.move(nextSquare);
-            currentPos = nextSquare;
-            if (i < 2) {
-                System.out.println("Do you wish to move again? (Type 'Yes' if you do)");
-                move = sc.nextLine();
-                if (!move.equals(("Yes"))) {
-                    break;
-                }
+        switch (move){
+            case 'N':
+                character.move(currentPos.getnSquare());
+                break;
+            case 'S':
+                character.move(currentPos.getsSquare());
+                break;
+            case 'E':
+                character.move(currentPos.geteSquare());
+                break;
+            case 'W':
+                character.move(currentPos.getwSquare());
+                break;
+            default:
+                break;
             }
-        }
     }
 
     public void shoot() {
