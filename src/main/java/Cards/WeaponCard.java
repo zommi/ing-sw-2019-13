@@ -3,6 +3,7 @@ package Cards;
 import GameBoard.WeaponDeck;
 import Items.*;
 import Map.*;
+import Player.Character;
 
 import java.util.*;
 
