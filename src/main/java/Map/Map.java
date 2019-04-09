@@ -33,27 +33,35 @@ public class Map {
                 path = "map11.txt";
         }
 
+        rooms = new ArrayList<>();
+        for(Color color : Color.values())
+            rooms.add(new Room(color));
+
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
         //now we're gonna link all the squares (to build a graph) inside the generated square structure
         linkSquares(squares, readList);
+
+        populateRooms();
     }
 
-    private static void generateRooms(){
-        rooms = new ArrayList<>();
-        for(Color color : Color.values()){
-            rooms.add(new Room(color));
-        }
+
+    public static List<Room> getRooms(){
+        ArrayList<Room> returnedList = (ArrayList<Room>) rooms;
+        return (ArrayList<Room>) returnedList.clone();
+    }
+
+    private static void populateRooms(){
+
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                 rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
-                //TODO set room in every square
-
+                //a ref to the room is created in SquareAbstract's constructor
             }
         }
     }
 
-    private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
+    private static List<String> generateSquareStructureFromFile(String path) {
         Scanner scanner = null;
         List<String> readInput = null;
         try {
@@ -64,7 +72,7 @@ public class Map {
                 readInput.add(scanner.nextLine());
             }
         } catch(FileNotFoundException e){
-
+            //TODO handle exception
         } finally{
             scanner.close();
         }
