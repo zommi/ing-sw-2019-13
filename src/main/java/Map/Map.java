@@ -8,12 +8,11 @@ import java.util.Scanner;
 
 public class Map {
 
-    private ArrayList<SpawnPoint> spawnPoints;
+    private static ArrayList<SpawnPoint> spawnPoints;
     private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
-
-    public Map(int mapNum) {
+    public Map(int mapNum) throws FileNotFoundException{
         String path;
         switch(mapNum) {
 
@@ -29,10 +28,18 @@ public class Map {
             case 4:
                 path = "map22.txt";
                 break;
-            default:
+            default:    //this should never happen
                 path = "map11.txt";
         }
-        try(Scanner scanner = new Scanner(new File(path))){
+
+        //the following line populates the double ArrayList of SquareAbstract (squares)
+        List<String> readList = generateSquareStructureFromFile(path);
+        //now we're gonna link all the squares (to build a graph) inside the generated square structure
+        linkSquares(squares, readList);
+    }
+
+    private static List<String> generateSquareStructureFromFile(String path) throws FileNotFoundException{
+        Scanner scanner = new Scanner(new File(path));
             List<String> readInput = new ArrayList<>();
 
             while(scanner.hasNextLine()){
@@ -66,17 +73,12 @@ public class Map {
                 }
                 row++;
             }
-
-            //now we're gonna link all the squares
-            linkSquares(squares, readInput);
+            return readInput;
 
 
-        } catch(FileNotFoundException e){       //TODO propagate exception?
-            e.printStackTrace();
-        }
     }
 
-    private void linkSquares(ArrayList<ArrayList<SquareAbstract>> squares, List<String> list){
+    private static void linkSquares(ArrayList<ArrayList<SquareAbstract>> squares, List<String> list){
         int row, col;
         char c;
         row = 0;
