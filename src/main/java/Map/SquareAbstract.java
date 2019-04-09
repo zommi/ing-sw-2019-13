@@ -103,10 +103,11 @@ public abstract class SquareAbstract {
     }
 
     public List<Character> getCharacters() {
-        return (ArrayList<Character>)  charactersList.clone();
+        ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
+        return (ArrayList<Character>)  returnedList.clone();
     }
 
-    public List<Character> getVisibleCharacters(){
+    public List<Character> getVisibleCharacters(){                  //same square, same room and visible rooms
         List<Character> visibleCharacters = new ArrayList<>();
         visibleCharacters.addAll(room.getCharacters());
         for(Room tempRoom : this.getVisibleRooms()){
@@ -116,7 +117,7 @@ public abstract class SquareAbstract {
 
     }
 
-    public List<Character> getCharactersThroughWalls(){
+    public List<Character> getCharactersThroughWalls(){             //in square with same x OR same y, including same square
         List<Character> tempCharactersList = new ArrayList<>();
         List<SquareAbstract> xSquares = Map.getSquaresWithSameX(this);
         List<SquareAbstract> ySquares = Map.getSquaresWithSameY(this);
@@ -163,7 +164,7 @@ public abstract class SquareAbstract {
     }
 
 
-    public List<Room> getVisibleRooms() {
+    public List<Room> getVisibleRooms() {                       //own room isn't included in the returned list
         List<Room> roomsList = new ArrayList<>();
         if(nSquare != null && nSquare.getRoom() != room)
                 roomsList.add(nSquare.getRoom());
