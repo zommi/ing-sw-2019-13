@@ -117,6 +117,18 @@ public abstract class SquareAbstract {
     }
 
     public List<Character> getCharactersThroughWalls(){
+        List<Character> charactersList = new ArrayList<>();
+        List<SquareAbstract> xSquares = Map.getSquaresWithSameX(this);
+        List<SquareAbstract> ySquares = Map.getSquaresWithSameY(this);
+        for(SquareAbstract tempSquare : xSquares){
+            charactersList.addAll(tempSquare.getCharacters());
+
+        }
+        for(SquareAbstract tempSquare : ySquares){
+            charactersList.addAll(tempSquare.getCharacters());
+        }
+        charactersList.addAll(this.getCharacters());
+        return charactersList;
 
     }
 

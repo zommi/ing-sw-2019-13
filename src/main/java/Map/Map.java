@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Map {
 
     private ArrayList<SpawnPoint> spawnPoints;
-    private ArrayList<ArrayList<SquareAbstract>> squares;
+    private static ArrayList<ArrayList<SquareAbstract>> squares;
     private ArrayList<Room> rooms;
 
 
@@ -100,17 +100,33 @@ public class Map {
             return squares.get(x).get(y);
         }
         catch (IndexOutOfBoundsException e){
-            throw new NoSuchSquareException();                                    //TODO throw custom exception
+            throw new NoSuchSquareException();
         }
+
     }
 
-    public static List<SquareAbstract> getSquaresWithSameX(){
+    public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
+        List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
+                if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
+                    squareList.add(squares.get(i).get(j));
 
             }
         }
-        return;
+        return squareList;
+    }
+
+    public static List<SquareAbstract> getSquaresWithSameY(SquareAbstract square){              //passed square won't be in the returned list
+        List<SquareAbstract> squareList = new ArrayList<>();
+        for(int i = 0; i<squares.size(); i++){
+            for(int j = 0; j<squares.get(i).size(); j++){
+                if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
+                    squareList.add(squares.get(i).get(j));
+
+            }
+        }
+        return squareList;
     }
 
 
