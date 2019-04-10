@@ -3,8 +3,10 @@ package Map;
 import Constants.Color;
 import Exceptions.NoSuchSquareException;
 
-import java.util.*;
-import java.io.*;       //maybe less
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Map {
@@ -21,21 +23,19 @@ public class Map {
                 path = "./maps/map11.txt";
                 break;
             case 2:
-                path = "../../../../maps/map12.txt";
+                path = "./maps/map12.txt";
                 break;
             case 3:
-                path = "../../../../maps/map21.txt";
+                path = "./maps/map21.txt";
                 break;
             case 4:
-                path = "../../../../maps/map22.txt";
+                path = "./maps/map22.txt";
                 break;
             default:    //this should never happen
-                path = "../../../../maps/map11.txt";
+                path = "./maps/map11.txt";
         }
 
-        rooms = new ArrayList<>();
-        for(Color color : Color.values())
-            rooms.add(new Room(color));
+        generateRooms();
 
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
@@ -52,6 +52,12 @@ public class Map {
         return (ArrayList<Room>) returnedList.clone();
     }
 
+    private static void generateRooms(){
+        rooms = new ArrayList<>();
+        for(Color color : Color.values())
+            rooms.add(new Room(color));
+    }
+
     private static void populateRooms(){
 
         for(int i = 0; i<squares.size(); i++){
@@ -59,7 +65,7 @@ public class Map {
                 if(squares.get(i).get(j) != null) {
                     rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
                     squares.get(i).get(j).setRoom(rooms.get(squares.get(i).get(j).getColor().ordinal()));
-                    
+
                 }
             }
         }
