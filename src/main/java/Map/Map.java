@@ -56,9 +56,11 @@ public class Map {
 
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j) != null)
+                if(squares.get(i).get(j) != null) {
                     rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
-                //a ref to the room is created in SquareAbstract's constructor
+                    squares.get(i).get(j).setRoom(rooms.get(squares.get(i).get(j).getColor().ordinal()));
+                    
+                }
             }
         }
     }

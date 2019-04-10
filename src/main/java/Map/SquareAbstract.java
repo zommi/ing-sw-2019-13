@@ -25,6 +25,9 @@ public abstract class SquareAbstract {
     public Room getRoom() {
         return room;
     }
+    public void setRoom(Room room){
+        this.room = room;
+    }
 
     public Color getColor() {
         return color;
@@ -58,7 +61,7 @@ public abstract class SquareAbstract {
             default: this.color = Color.UNDEFINED;
         }
 
-        room = Map.getRooms().get(this.color.ordinal());
+        //room = Map.getRooms().get(this.color.ordinal());
 
         //new character list
         this.charactersList= new ArrayList<>();
