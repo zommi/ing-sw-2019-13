@@ -16,6 +16,8 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     private String name;
     private Weapon weapon;
     private WeaponDeck weaponDeck;
+    private boolean ready;
+
     /**
      * Initialize the card cost
      */
@@ -24,6 +26,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
         this.name = namecard;
         this.weapon = weap;
         this.weaponDeck = weapdeck;
+        this.ready = true;
     }
 
 
@@ -31,6 +34,13 @@ public class WeaponCard implements CollectableInterface, CardInterface {
         return cost;
     }
 
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
 
     public String getName() {
         return name;
