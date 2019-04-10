@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Map {
 
     private static List<SpawnPoint> spawnPoints;
-    private static ArrayList<ArrayList<SquareAbstract>> squares;
+    private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
     private static List<Room> rooms;
 
     public Map(int mapNum) {
@@ -159,11 +159,12 @@ public class Map {
     }
 
     public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
-        List<SquareAbstract> squareList = new ArrayList<>();
+        List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
-                    squareList.add(squares.get(i).get(j));
+                 if(squares.get(i).get(j) != null)
+                    if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
+                            squareList.add(squares.get(i).get(j));
 
             }
         }
@@ -174,8 +175,9 @@ public class Map {
         List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
-                    squareList.add(squares.get(i).get(j));
+                if(squares.get(i).get(j) != null)
+                    if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
+                        squareList.add(squares.get(i).get(j));
 
             }
         }
