@@ -172,7 +172,7 @@ public abstract class SquareAbstract {
         return tempCharactersList;
     }
 
-    public List<SquareAbstract> getTwoSquaresInTheSameDirection(char c){
+    public List<SquareAbstract> getTwoSquaresInTheSameDirection(char c){        //TODO up to two squares
         List<SquareAbstract> returnedList = new ArrayList<>();
         switch(c){
             case 'n': if(nSquare!=null && nSquare.nSquare!=null){

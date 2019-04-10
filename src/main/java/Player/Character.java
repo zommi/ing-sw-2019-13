@@ -19,7 +19,7 @@ public class Character {
     private ConcretePlayer concretePlayer;
 
 
-    Character(Figure f){
+    public Character(Figure f){
         this.figure = f;
         f.setOwner(this);
         setTaken(f);
