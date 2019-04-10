@@ -52,7 +52,7 @@ public class Map {
         return (ArrayList<Room>) returnedList.clone();
     }
 
-    private static void generateRooms(){
+    public static void generateRooms(){             //it's public just for testing
         rooms = new ArrayList<>();
         for(Color color : Color.values())
             rooms.add(new Room(color));
