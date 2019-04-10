@@ -1,9 +1,5 @@
 package GameBoard;
 
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
-import java.util.*;
-
 import Constants.Constants;
 import Map.Map;
 
@@ -20,11 +16,12 @@ public class GameBoard {
 
 
     private GameBoard(int mapChoice, int skullChoice) {
-        try {
+        this.gameMap = new Map(mapChoice);
+        /*try {
             this.gameMap = new Map(mapChoice);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         this.track = new KillshotTrack(skullChoice);
         this.weaponDeck = new WeaponDeck(Constants.NUMBER_OF_WEAPONS);
         this.powerupDeck = new PowerupDeck();

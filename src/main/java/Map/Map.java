@@ -18,7 +18,7 @@ public class Map {
         switch(mapNum) {
 
             case 1:
-                path = "../../../../maps/map11.txt";
+                path = "./maps/map11.txt";
                 break;
             case 2:
                 path = "../../../../maps/map12.txt";
@@ -39,6 +39,7 @@ public class Map {
 
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
+
         //now we're gonna link all the squares (to build a graph) inside the generated square structure
         linkSquares(readList);
 
@@ -55,7 +56,8 @@ public class Map {
 
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
+                if(squares.get(i).get(j) != null)
+                    rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
                 //a ref to the room is created in SquareAbstract's constructor
             }
         }
@@ -78,7 +80,8 @@ public class Map {
         }
 
         squares = new ArrayList<>();
-        for(int i = 0; i< readInput.size(); i++){
+        spawnPoints = new ArrayList<>();
+        for(String s : readInput){
             squares.add(new ArrayList<>());
         }
 
@@ -90,22 +93,22 @@ public class Map {
             while(col < readInput.get(row).length()){
                 c = readInput.get(row).charAt(col);
                 if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
-                    SpawnPoint tempSquare = new SpawnPoint(row/2+1, col/2+1, c);
-                    squares.get(row).add(tempSquare);
+                    SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, c);
+                    squares.get(row/2).add(tempSquare);
                     spawnPoints.add(tempSquare);
                 }
                 else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
-                    squares.get(row).add(new Square(row/2+1, col/2+1, c));
+                    squares.get(row/2).add(new Square(row/2, col/2, c));
                 }
                 else if(c==' ' && row%2==0 && col%2==0){
-                    squares.get(row).add(null);
+                    squares.get(row/2).add(null);
                 }
                 col++;
             }
             row++;
         }
-        return readInput;
 
+        return readInput;
 
     }
 
