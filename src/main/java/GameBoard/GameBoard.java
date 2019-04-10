@@ -20,11 +20,7 @@ public class GameBoard {
 
 
     private GameBoard(int mapChoice, int skullChoice) {
-        try {
-            this.gameMap = new Map(mapChoice);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.gameMap = new Map(mapChoice);
         this.track = new KillshotTrack(skullChoice);
         this.weaponDeck = new WeaponDeck(Constants.NUMBER_OF_WEAPONS);
         this.powerupDeck = new PowerupDeck();

@@ -75,17 +75,6 @@ public class Character {
         sq.addCharacter(this);
     }
 
-    /*
-    public void move(char c)
-            throws InvalidMoveException{
-        if(c == 'n' || c == 's' || c == 'e' || c =='w'){
-
-        }else{
-            throw new InvalidMoveException;
-        }
-    }
-    */
-
     /**
      * @return
      */

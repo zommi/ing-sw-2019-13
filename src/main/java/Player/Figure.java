@@ -12,6 +12,7 @@ public enum Figure {
 
     Figure(int id){
         this.id = id;
+        this.owner = null;
     }
 
     public void setOwner(Character c){
