@@ -1,4 +1,4 @@
-package java.Cards;
+package Cards;
 
 import Cards.AimInvisibleCommand;
 import Map.Map;
