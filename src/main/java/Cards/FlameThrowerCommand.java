@@ -13,7 +13,7 @@ public class FlameThrowerCommand {
     public FlameThrowerCommand() {
     }
 
-    public void setdirection(char c) //i need this method in order to communicate the direction from the controller to the model
+    public void setdirection(char c) //the controller will ask the user to choose between n,s,e,w
     {
         this.direction = c;
     }

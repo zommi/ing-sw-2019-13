@@ -16,7 +16,7 @@ public class Weapon {
     private ArrayList<AmmoCube> cost;
 
     public Weapon() {
-        //TODO fill with what I read from the file, also the command.
+        //TODO reads from file the constants of the bullet and initializes it
     }
 
     public Bullet shoot() { //fills the bullet
@@ -30,7 +30,7 @@ public class Weapon {
 
 
     public Bullet charge() {
-        // TODO implement here
+        // TODO
         return null;
     }
 

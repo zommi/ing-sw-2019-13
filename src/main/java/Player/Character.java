@@ -1,10 +1,10 @@
 package Player;
 
-import Exceptions.CharacterTakenException;
-import Map.*;
-import Constants.*;
-import java.util.*;
-import java.lang.*;
+import Constants.Constants;
+import Map.SquareAbstract;
+
+import java.util.ArrayList;
+import java.util.List;
 /**
  * 
  */
@@ -19,7 +19,7 @@ public class Character {
     private ConcretePlayer concretePlayer;
 
 
-    Character(Figure f){
+    public Character(Figure f){
         this.figure = f;
         f.setOwner(this);
         setTaken(f);
