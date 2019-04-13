@@ -15,9 +15,9 @@ class MapTest {
     public void isMapConstructorOk() throws NoSuchSquareException {
         Map map = new Map(1);
         List<SpawnPoint> spawnPoints = new ArrayList<>();
-        spawnPoints.add(new SpawnPoint(0,3, 'b'));
-        spawnPoints.add(new SpawnPoint(1,0, 'r'));
-        spawnPoints.add(new SpawnPoint(3,4, 'y'));
+        spawnPoints.add(new SpawnPoint(0,3, Color.BLUE));
+        spawnPoints.add(new SpawnPoint(1,0, Color.RED));
+        spawnPoints.add(new SpawnPoint(3,4, Color.YELLOW));
         assertEquals(spawnPoints.get(0).getColor(), map.getSpawnPoints().get(0).getColor());
         assertTrue(Map.getSquareFromXY(2,3) instanceof SpawnPoint);
         assertEquals(Map.getSquareFromXY(1,0).getColor(), Color.RED);

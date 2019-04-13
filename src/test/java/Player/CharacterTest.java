@@ -40,7 +40,7 @@ class CharacterTest {
 
     }
 
-    @Test
+    /*@Test
     public void testMove(){
        SquareAbstract square1 = new Square(3,3, 'w');
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');
@@ -56,6 +56,6 @@ class CharacterTest {
        assertEquals(character.getPosition(),spawnPoint1);
        assertEquals(spawnPoint1.getCharacters(), tester);
        assertEquals(square1.getCharacters(), Collections.EMPTY_LIST);
-    }
+    }*/
 
 }

@@ -33,12 +33,14 @@ public abstract class SquareAbstract {
         return color;
     }
 
-    public SquareAbstract(int x, int y, char color) {
+    public SquareAbstract(int x, int y, Color color) {
         this.xValue = x;
         this.yValue = y;
 
+        this.color = color;
 
-        switch(color){                                  //TODO maybe it could be done with abbreviations inside the enum
+
+        /*switch(color){                                  //TODO maybe it could be done with abbreviations inside the enum
 
             case 'R':
             case 'r': this.color = Color.RED;
@@ -59,7 +61,7 @@ public abstract class SquareAbstract {
             case 'p': this.color = Color.PURPLE;
                 break;
             default: this.color = Color.UNDEFINED;
-        }
+        }*/
 
         //room = Map.getRooms().get(this.color.ordinal());
 

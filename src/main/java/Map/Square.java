@@ -20,7 +20,7 @@ public class Square extends SquareAbstract {
     private SquareAbstract eSquare;
     private SquareAbstract sSquare;
 
-    public Square(int x, int y, char color) {
+    public Square(int x, int y, Color color) {
         super(x,y,color);
 
 

@@ -97,7 +97,7 @@ class SquareAbstractTest {
     void getAdjacentSquares() throws NoSuchSquareException{
         Map map = new Map(1);
         assertTrue(Map.getSquareFromXY(1,2).getAdjacentSquares().contains(Map.getSquareFromXY(1,1)));
-        assertTrue(Map.getSquareFromXY(1,2).getAdjacentSquares().contains(Map.getSquareFromXY(0,2)));
+        assertTrue(Map.getSquareFromXY(0,0).getAdjacentSquares().contains(Map.getSquareFromXY(0,1)));
         assertTrue(Map.getSquareFromXY(1,2).getAdjacentSquares().contains(Map.getSquareFromXY(1,3)));
         assertFalse(Map.getSquareFromXY(1,2).getAdjacentSquares().contains(Map.getSquareFromXY(2,2)));
     }
