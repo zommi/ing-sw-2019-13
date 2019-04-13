@@ -3,14 +3,16 @@ package Map;
 import Constants.Color;
 import Exceptions.NoSuchSquareException;
 
-import java.util.*;
-import java.io.*;       //maybe less
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Map {
 
     private static List<SpawnPoint> spawnPoints;
-    private static ArrayList<ArrayList<SquareAbstract>> squares;
+    private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
     private static List<Room> rooms;
 
     public Map(int mapNum) {
@@ -21,21 +23,19 @@ public class Map {
                 path = "./maps/map11.txt";
                 break;
             case 2:
-                path = "../../../../maps/map12.txt";
+                path = "./maps/map12.txt";
                 break;
             case 3:
-                path = "../../../../maps/map21.txt";
+                path = "./maps/map21.txt";
                 break;
             case 4:
-                path = "../../../../maps/map22.txt";
+                path = "./maps/map22.txt";
                 break;
             default:    //this should never happen
-                path = "../../../../maps/map11.txt";
+                path = "./maps/map11.txt";
         }
 
-        rooms = new ArrayList<>();
-        for(Color color : Color.values())
-            rooms.add(new Room(color));
+        generateRooms();
 
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
@@ -52,13 +52,21 @@ public class Map {
         return (ArrayList<Room>) returnedList.clone();
     }
 
+    public static void generateRooms(){             //it's public just for testing
+        rooms = new ArrayList<>();
+        for(Color color : Color.values())
+            rooms.add(new Room(color));
+    }
+
     private static void populateRooms(){
 
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j) != null)
+                if(squares.get(i).get(j) != null) {
                     rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
-                //a ref to the room is created in SquareAbstract's constructor
+                    squares.get(i).get(j).setRoom(rooms.get(squares.get(i).get(j).getColor().ordinal()));
+
+                }
             }
         }
     }
@@ -151,11 +159,12 @@ public class Map {
     }
 
     public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
-        List<SquareAbstract> squareList = new ArrayList<>();
+        List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
-                    squareList.add(squares.get(i).get(j));
+                 if(squares.get(i).get(j) != null)
+                    if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
+                            squareList.add(squares.get(i).get(j));
 
             }
         }
@@ -166,8 +175,9 @@ public class Map {
         List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
-                if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
-                    squareList.add(squares.get(i).get(j));
+                if(squares.get(i).get(j) != null)
+                    if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
+                        squareList.add(squares.get(i).get(j));
 
             }
         }
