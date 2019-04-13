@@ -23,10 +23,10 @@ public class SpawnPoint extends SquareAbstract {
     private SquareAbstract eSquare;
     private SquareAbstract sSquare;
 
-    public SpawnPoint(int x, int y, Color color) {
+    protected SpawnPoint(int x, int y, Color color) {
         super(x,y,color);
 
-        weaponCards = new ArrayList<WeaponCard>();
+        weaponCards = new ArrayList<>();
     }
 
 

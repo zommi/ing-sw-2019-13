@@ -151,6 +151,15 @@ public class Map {
         return (ArrayList<SpawnPoint>) returnedList.clone();
     }
 
+    public static SpawnPoint getSpawnPoint(Color color){
+        for(SpawnPoint sp : spawnPoints){
+            if(sp.getColor() == color)
+                return sp;
+
+        }
+        return null;
+    }
+
     public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
 
         try {

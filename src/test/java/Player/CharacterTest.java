@@ -2,6 +2,7 @@ package Player;
 
 import Constants.Constants;
 import Exceptions.CharacterTakenException;
+import Exceptions.NoSuchSquareException;
 import GameBoard.GameBoard;
 import org.junit.jupiter.api.Test;
 
@@ -40,13 +41,20 @@ class CharacterTest {
 
     }
 
-    /*@Test
-    public void testMove(){
-       SquareAbstract square1 = new Square(3,3, 'w');
-       SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');
+    @Test
+    public void testMove() throws NoSuchSquareException {
+       Map map = new Map(1);
+
+       /*SquareAbstract square1 = new Square(3,3, 'w');
+       SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');*/
+
+       SquareAbstract square1 = Map.getSquareFromXY(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
+       SquareAbstract spawnPoint1 = Map.getSpawnPoint(Color.RED);
+
+
        Character character = new Character(Figure.BANSHEE);
 
-       ArrayList<Character> tester = new ArrayList<Character>();
+       ArrayList<Character> tester = new ArrayList<>();
        tester.add(character);
        character.spawn(square1);
        assertEquals(character.getPosition(),square1);
@@ -56,6 +64,6 @@ class CharacterTest {
        assertEquals(character.getPosition(),spawnPoint1);
        assertEquals(spawnPoint1.getCharacters(), tester);
        assertEquals(square1.getCharacters(), Collections.EMPTY_LIST);
-    }*/
+    }
 
 }

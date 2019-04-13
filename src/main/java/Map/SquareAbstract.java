@@ -33,7 +33,7 @@ public abstract class SquareAbstract {
         return color;
     }
 
-    public SquareAbstract(int x, int y, Color color) {
+    protected SquareAbstract(int x, int y, Color color) {
         this.xValue = x;
         this.yValue = y;
 
