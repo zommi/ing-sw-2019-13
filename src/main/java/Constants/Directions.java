@@ -9,4 +9,13 @@ public enum Directions {
 
         private String abbreviation;
 
+        public static Directions fromString(String s) {
+                for (Directions dir : Directions.values()) {
+                        if (dir.abbreviation.equalsIgnoreCase(s)) {
+                                return dir;
+                        }
+                }
+                return null;
+        }
+
 }

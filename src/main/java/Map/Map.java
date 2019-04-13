@@ -55,7 +55,8 @@ public class Map {
     public static void generateRooms(){             //it's public just for testing
         rooms = new ArrayList<>();
         for(Color color : Color.values())
-            rooms.add(new Room(color));
+            if (color != Color.UNDEFINED)
+                rooms.add(new Room(color));
     }
 
     private static void populateRooms(){
@@ -96,10 +97,14 @@ public class Map {
         int row = 0;
         int col;
         char c;
+        String s;
         while(row < readInput.size()){
             col = 0;
             while(col < readInput.get(row).length()){
                 c = readInput.get(row).charAt(col);
+                s = String.valueOf(c);
+                s.toLowerCase();
+
                 if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
                     SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, c);
                     squares.get(row/2).add(tempSquare);
