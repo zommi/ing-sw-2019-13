@@ -32,16 +32,16 @@ public class Room {
         return (ArrayList<Character>)  returnedList.clone();
     }
 
-    public void addCharacter(Character character){
+    void addCharacter(Character character){
         if(!charactersList.contains((character)))
             charactersList.add(character);
     }
 
-    public void removeCharacter(Character character){
+    void removeCharacter(Character character){
         charactersList.remove(character);
     }
 
-    public void addSquare(SquareAbstract square){
+    void addSquare(SquareAbstract square){
         squareList.add(square);
     }
 
