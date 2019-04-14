@@ -1,4 +1,5 @@
 package Cards;
+import Constants.Directions;
 import Map.Square;
 import Map.SquareAbstract;
 import Player.Character;
@@ -20,10 +21,10 @@ public class FlameThrowerCommand {
 
     public ArrayList<ArrayList<Character>> execute(Square square) {
 
-        ArrayList<SquareAbstract> eN = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('n');
-        ArrayList<SquareAbstract> eS = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('s');
-        ArrayList<SquareAbstract> eW = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('w');
-        ArrayList<SquareAbstract> eE = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection('e');
+        ArrayList<SquareAbstract> eN = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.NORTH);
+        ArrayList<SquareAbstract> eS = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.SOUTH);
+        ArrayList<SquareAbstract> eW = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.WEST);
+        ArrayList<SquareAbstract> eE = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.EAST);
 
         ArrayList<ArrayList<Character>> cN = new ArrayList<ArrayList<Character>>();
         ArrayList<ArrayList<Character>> cS = new ArrayList<ArrayList<Character>>();

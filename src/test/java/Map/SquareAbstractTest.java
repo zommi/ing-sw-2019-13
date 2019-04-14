@@ -1,5 +1,6 @@
 package Map;
 
+import Constants.Directions;
 import Exceptions.NoSuchSquareException;
 import Player.Character;
 import Player.Figure;
@@ -105,8 +106,8 @@ class SquareAbstractTest {
     @Test
     void getTwoSquaresInTheSameDirection() throws NoSuchSquareException{
         Map map = new Map(1);
-        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection('s').contains(Map.getSquareFromXY(1,2)));
-        assertFalse(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection('s').contains(Map.getSquareFromXY(2,2)));
-        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection('w').contains(Map.getSquareFromXY(0,0)));
+        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(1,2)));
+        assertFalse(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(2,2)));
+        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.WEST).contains(Map.getSquareFromXY(0,0)));
     }
 }

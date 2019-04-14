@@ -1,6 +1,7 @@
 package Map;
 
 import Constants.Color;
+import Constants.Directions;
 import Player.Character;
 
 import java.util.ArrayList;
@@ -39,36 +40,8 @@ public abstract class SquareAbstract {
 
         this.color = color;
 
-
-        /*switch(color){                                  //TODO maybe it could be done with abbreviations inside the enum
-
-            case 'R':
-            case 'r': this.color = Color.RED;
-                break;
-            case 'B':
-            case 'b': this.color = Color.BLUE;
-                break;
-            case 'Y':
-            case 'y': this.color = Color.YELLOW;
-                break;
-            case 'G':
-            case 'g': this.color = Color.GREEN;
-                break;
-            case 'W':
-            case 'w': this.color = Color.WHITE;
-                break;
-            case 'P':
-            case 'p': this.color = Color.PURPLE;
-                break;
-            default: this.color = Color.UNDEFINED;
-        }*/
-
-        //room = Map.getRooms().get(this.color.ordinal());
-
         //new character list
         this.charactersList= new ArrayList<>();
-
-
     }
 
     public SquareAbstract geteSquare() {
@@ -94,6 +67,17 @@ public abstract class SquareAbstract {
     }
     public void setsSquare(SquareAbstract sSquare) {
         this.sSquare = sSquare;
+    }
+
+    public SquareAbstract getNearFromDir(Directions dir){
+        switch(dir){
+            case NORTH: return getnSquare();
+            case SOUTH: return getsSquare();
+            case WEST:  return getwSquare();
+            case EAST:  return geteSquare();
+
+            default:    return null;
+        }
     }
 
     public int getxValue() {
@@ -157,7 +141,7 @@ public abstract class SquareAbstract {
     }*/
 
 
-    public List<Character> getExactlyOneMovementCharacters(){
+    public List<Character> getExactlyOneMovementCharacters(){       //own square is not included
         List<Character> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
@@ -170,30 +154,19 @@ public abstract class SquareAbstract {
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
         }
-        tempCharactersList.addAll(this.getCharacters());
+        tempCharactersList.addAll(this.getCharacters());            //own square is included
         return tempCharactersList;
     }
 
-    public List<SquareAbstract> getTwoSquaresInTheSameDirection(char c){        //TODO up to two squares
+    public List<SquareAbstract> getTwoSquaresInTheSameDirection(Directions dir){
         List<SquareAbstract> returnedList = new ArrayList<>();
-        switch(c){
-            case 'n': if(nSquare!=null && nSquare.nSquare!=null){
-                returnedList.add(nSquare);
-                returnedList.add(nSquare.nSquare);
-            }
-            case 's': if(sSquare!=null && sSquare.sSquare!=null){
-                returnedList.add(sSquare);
-                returnedList.add(sSquare.sSquare);
-            }
-            case 'w': if(wSquare!=null && wSquare.wSquare!=null){
-                returnedList.add(wSquare);
-                returnedList.add(wSquare.wSquare);
-            }
-            case 'e': if(eSquare!=null && eSquare.eSquare!=null){
-                returnedList.add(eSquare);
-                returnedList.add(eSquare.eSquare);
-            }
+
+        if(getNearFromDir(dir) != null){
+            returnedList.add(getNearFromDir(dir));
+            if(getNearFromDir(dir).getNearFromDir(dir) != null)
+                returnedList.add(getNearFromDir(dir).getNearFromDir(dir));
         }
+
         return returnedList;
     }
 
