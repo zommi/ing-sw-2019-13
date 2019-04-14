@@ -1,5 +1,6 @@
 package Map;
 
+import Constants.Color;
 import Constants.Directions;
 import Exceptions.NoSuchSquareException;
 import Player.Character;
@@ -91,7 +92,21 @@ class SquareAbstractTest {
     }
 
     @Test
-    void getVisibleRooms() {
+    void getTwoSquaresInTheSameDirection() throws NoSuchSquareException{
+        Map map = new Map(1);
+        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(1,2)));
+        assertFalse(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(2,2)));
+        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.WEST).contains(Map.getSquareFromXY(0,0)));
+    }
+
+    @Test
+    void getVisibleRooms() throws NoSuchSquareException{
+        Map map = new Map(1);
+        SquareAbstract square1 = Map.getSquareFromXY(1,2);
+        assertTrue(square1.getVisibleRooms().contains(Map.getRoom(Color.BLUE)));
+        assertTrue(square1.getVisibleRooms().contains(Map.getRoom(Color.YELLOW)));
+        assertFalse(square1.getVisibleRooms().contains(Map.getRoom(Color.RED)));
+        assertFalse(square1.getVisibleRooms().contains(Map.getRoom(Color.WHITE)));
     }
 
     @Test
@@ -103,11 +118,5 @@ class SquareAbstractTest {
         assertFalse(Map.getSquareFromXY(1,2).getAdjacentSquares().contains(Map.getSquareFromXY(2,2)));
     }
 
-    @Test
-    void getTwoSquaresInTheSameDirection() throws NoSuchSquareException{
-        Map map = new Map(1);
-        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(1,2)));
-        assertFalse(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(Map.getSquareFromXY(2,2)));
-        assertTrue(Map.getSquareFromXY(0,2).getTwoSquaresInTheSameDirection(Directions.WEST).contains(Map.getSquareFromXY(0,0)));
-    }
+
 }

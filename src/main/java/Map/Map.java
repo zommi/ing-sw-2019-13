@@ -52,6 +52,10 @@ public class Map {
         return (ArrayList<Room>) returnedList.clone();
     }
 
+    public static Room getRoom(Color col){
+        return rooms.get(col.ordinal());
+    }
+
     public static void generateRooms(){             //it's public just for testing
         rooms = new ArrayList<>();
         for(Color color : Color.values())
