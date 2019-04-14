@@ -1,8 +1,9 @@
 package Cards;
 
-import java.util.*;
-import Map.*;
+import Map.SquareAbstract;
 import Player.Character;
+
+import java.util.ArrayList;
 
 
 public class ExactlyOneMovementCommand implements Command {
@@ -11,7 +12,7 @@ public class ExactlyOneMovementCommand implements Command {
     public ExactlyOneMovementCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square){
+    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
         ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
         e.add((ArrayList)square.getExactlyOneMovementCharacters());
         return e;

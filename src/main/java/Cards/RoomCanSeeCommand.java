@@ -1,10 +1,10 @@
 package Cards;
 
-import Cards.Command;
-
-import java.util.*;
-import Map.*;
+import Map.Room;
+import Map.SquareAbstract;
 import Player.Character;
+
+import java.util.ArrayList;
 
 
 public class RoomCanSeeCommand implements Command {
@@ -13,7 +13,7 @@ public class RoomCanSeeCommand implements Command {
     public RoomCanSeeCommand() {
     }
 
-    public ArrayList<ArrayList<Character>> execute(Square square) {
+    public ArrayList<ArrayList<Character>> execute(SquareAbstract square) {
         ArrayList<Room> e = (ArrayList<Room>)square.getVisibleRooms();
         ArrayList<ArrayList<Character>> e1 = new ArrayList<ArrayList<Character>>();
 
