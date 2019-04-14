@@ -233,7 +233,7 @@ public class Map {
      * @param square squares in the returned list will have the same x of this square
      * @return a list of the squares that have the same x coordinate of the given square
      */
-    public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
+    public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){
         List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){

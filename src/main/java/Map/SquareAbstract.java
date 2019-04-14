@@ -23,17 +23,36 @@ public abstract class SquareAbstract {
 
     private Room room;
 
+    /**
+     * Returns the room to which this square belongs.
+     * @return the room to which this square belongs
+     */
     public Room getRoom() {
         return room;
     }
+
+    /**
+     * Sets the room of the square.
+     * @param room must be one of the existing rooms
+     */
     public void setRoom(Room room){
         this.room = room;
     }
 
+    /**
+     * Returns the color of the square.
+     * @return the color of the square
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Creates a square with the specified coordinates and color.
+     * @param x x coordinate of the square
+     * @param y y coordinate of the square
+     * @param color color of the square
+     */
     protected SquareAbstract(int x, int y, Color color) {
         this.xValue = x;
         this.yValue = y;
@@ -44,9 +63,16 @@ public abstract class SquareAbstract {
         this.charactersList= new ArrayList<>();
     }
 
+    /**
+     * @return the square linked on the right if present, or null if there's no right link
+     */
     public SquareAbstract geteSquare() {
         return eSquare;
     }
+
+    /**
+     * @param eSquare
+     */
     public void seteSquare(SquareAbstract eSquare) {
         this.eSquare = eSquare;
     }
@@ -69,6 +95,11 @@ public abstract class SquareAbstract {
         this.sSquare = sSquare;
     }
 
+    /**
+     * Returns the adjacent square in the given direction.
+     * @param dir specifies the relative position of the near square
+     * @return the adjacent square in the given direction
+     */
     public SquareAbstract getNearFromDir(Directions dir){
         switch(dir){
             case NORTH: return getnSquare();
@@ -80,29 +111,56 @@ public abstract class SquareAbstract {
         }
     }
 
+    /**
+     * Returns the x coordinate of the square
+     * @return the x coordinate of the square
+     */
     public int getxValue() {
         return xValue;
     }
+
+    /**
+     * Returns the y coordinate of the square
+     * @return the y coordinate of the square
+     */
     public int getyValue() {
         return yValue;
     }
 
+    /**
+     * Adds the given character to the list of the characters that physically stay on this square.
+     * @param character the character that needs to be added to this square
+     */
     public void addCharacter(Character character){
         charactersList.add(character);
         room.addCharacter(character);
     }
 
+    /**
+     * Removes a character from the list of the characters that physically stay on this square.
+     * @param character the character that needs to be removed from this square
+     */
     public void removeCharacter(Character character){
         charactersList.remove(character);
         room.removeCharacter(character);
     }
 
+    /**
+     * Returns a list of the characters that physically stay on this square.
+     * @return a list of the characters that physically stay on this square
+     */
     public List<Character> getCharacters() {
         ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
         return (ArrayList<Character>)  returnedList.clone();
     }
 
-    public List<Character> getVisibleCharacters(){                  //same square, same room and visible rooms
+    /**
+     * Returns a list with the characters that are visible from this square.
+     * A character is visible if stays on the same square, or in a square of
+     * the same room, or in the room of an adjacent square.
+     * @return a list with the characters that are visible from this square
+     */
+    public List<Character> getVisibleCharacters(){
         List<Character> visibleCharacters = new ArrayList<>();
         visibleCharacters.addAll(room.getCharacters());
         for(Room tempRoom : this.getVisibleRooms()){
@@ -112,7 +170,14 @@ public abstract class SquareAbstract {
 
     }
 
-    public List<Character> getCharactersThroughWalls(){             //in square with same x OR same y, including same square
+    /**
+     * Returns a list with the characters that stand on a square that
+     * has the same x OR the same y of this square. Thus, a character
+     * could be in the same square too.
+     * @return a list with the characters that stand on a square that
+     *        has the same x OR the same y of this square
+     */
+    public List<Character> getCharactersThroughWalls(){
         List<Character> tempCharactersList = new ArrayList<>();
         List<SquareAbstract> xSquares = Map.getSquaresWithSameX(this);
         List<SquareAbstract> ySquares = Map.getSquaresWithSameY(this);
@@ -140,8 +205,11 @@ public abstract class SquareAbstract {
 
     }*/
 
-
-    public List<Character> getExactlyOneMovementCharacters(){       //own square is not included
+    /**
+     * Returns a list with all the characters that stand on the linked adjacent squares.
+     * @return a list with all the characters that stand on the linked adjacent squares
+     */
+    public List<Character> getExactlyOneMovementCharacters(){
         List<Character> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
@@ -149,15 +217,28 @@ public abstract class SquareAbstract {
         return tempCharactersList;
     }
 
+    /**
+     * Returns a list with all the characters that stand on the linked adjacent squares,
+     * plus those that stand on this square.
+     * @return a list with all the characters that stand on the linked adjacent squares,
+     * plus those that stand on this square
+     */
     public List<Character> getUpToOneMovementCharacters(){
         List<Character> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
         }
-        tempCharactersList.addAll(this.getCharacters());            //own square is included
+        tempCharactersList.addAll(this.getCharacters());
         return tempCharactersList;
     }
 
+    /**
+     * Returns two squares that are linked in the given direction to this square.
+     * The returned list may only contain the adjacent square, or may be empty,
+     * accordingly to the map.
+     * @param dir direction
+     * @return a list of at most two squares that are linked in the given direction to this square
+     */
     public List<SquareAbstract> getTwoSquaresInTheSameDirection(Directions dir){
         List<SquareAbstract> returnedList = new ArrayList<>();
 
@@ -170,7 +251,12 @@ public abstract class SquareAbstract {
         return returnedList;
     }
 
-    public List<Room> getVisibleRooms() {                       //own room isn't included in the returned list
+    /**
+     * Returns all the rooms of the adjacent squares. The room
+     * of this square is not included in the returned list.
+     * @return a list with all the rooms of the adjacent squares.
+     */
+    public List<Room> getVisibleRooms() {
         List<Room> roomsList = new ArrayList<>();
         if(nSquare != null && nSquare.getRoom() != room)
                 roomsList.add(nSquare.getRoom());
@@ -185,6 +271,10 @@ public abstract class SquareAbstract {
 
     }
 
+    /**
+     * Returns all the linked adjacent squares.
+     * @return a list with all the linked adjacent squares
+     */
     public List<SquareAbstract> getAdjacentSquares() {
         List<SquareAbstract> squaresList= new ArrayList<>();
         if(nSquare != null)
