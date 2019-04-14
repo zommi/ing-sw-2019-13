@@ -15,6 +15,13 @@ public class Map {
     private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
     private static List<Room> rooms;
 
+    /**
+     * Generates the whole map, including the graph that links
+     * all the squares and the rooms they are assigned to.
+     * @param mapNum One of the different configurations of the map.
+     *               It could go from 1 to 4.
+     */
+
     public Map(int mapNum) {
         String path;
         switch(mapNum) {
@@ -46,23 +53,39 @@ public class Map {
         populateRooms();
     }
 
-
+    /**
+     * Returns a list of the rooms, one for each color.
+     * @return a list of the rooms.
+     */
     public static List<Room> getRooms(){
         ArrayList<Room> returnedList = (ArrayList<Room>) rooms;
         return (ArrayList<Room>) returnedList.clone();
     }
 
+    /**
+     * Returns the room with the specified color
+     * @param col color of the desired room
+     * @return the room with the specified color
+     */
     public static Room getRoom(Color col){
         return rooms.get(col.ordinal());
     }
 
-    public static void generateRooms(){             //it's public just for testing
+    /**
+     * Creates a list with a room for each color. It's just a
+     * list of empty rooms.
+     */
+    public static void generateRooms(){             //TODO it's public just for testing
         rooms = new ArrayList<>();
         for(Color color : Color.values())
             if (color != Color.UNDEFINED)
                 rooms.add(new Room(color));
     }
 
+    /**
+     * Assign every square to his room, accordingly to the square's
+     * color, as specified in the text file in which the map is described.
+     */
     private static void populateRooms(){
 
         for(int i = 0; i<squares.size(); i++){
@@ -76,6 +99,13 @@ public class Map {
         }
     }
 
+    /**
+     * Reads the file at the specified path and writes every line
+     * of it as a string into a list. This list is built just for
+     * making the parsing process easier.
+     * @param path the path of the map file
+     * @return a list with a string for every line of the text file
+     */
     private static List<String> generateSquareStructureFromFile(String path) {
         Scanner scanner = null;
         List<String> readInput = null;
@@ -128,6 +158,12 @@ public class Map {
 
     }
 
+    /**
+     * Looks for '-' and '|' characters in the read file. These symbols
+     * mean that two square are linked, either they are in the same room
+     * or not.
+     * @param list the file that has already been converted into a list of strings
+     */
     private static void linkSquares(List<String> list){
         int row, col;
         char c;
@@ -150,11 +186,20 @@ public class Map {
         }
     }
 
+    /**
+     * Returns a list of the spawn points.
+     * @return a list of the spawn points
+     */
     public List<SpawnPoint> getSpawnPoints(){
         ArrayList<SpawnPoint> returnedList = (ArrayList<SpawnPoint>) spawnPoints;
         return (ArrayList<SpawnPoint>) returnedList.clone();
     }
 
+    /**
+     * Returns the spawn point of the specified color.
+     * @param color the color of the desired spawn point
+     * @return the spawn point of the desired color
+     */
     public static SpawnPoint getSpawnPoint(Color color){
         for(SpawnPoint sp : spawnPoints){
             if(sp.getColor() == color)
@@ -164,6 +209,13 @@ public class Map {
         return null;
     }
 
+    /**
+     * Returns a square, given its coordinates.
+     * @param x x coordinate of the square
+     * @param y y coordinate of the square
+     * @return  the square at the specified coordinates
+     * @throws NoSuchSquareException if there's no square with the given coordinates
+     */
     public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
 
         try {
@@ -175,6 +227,12 @@ public class Map {
 
     }
 
+    /**
+     * Returns a list of the squares that have the same x coordinate of the given square.
+     * Given square is not included in the list.
+     * @param square squares in the returned list will have the same x of this square
+     * @return a list of the squares that have the same x coordinate of the given square
+     */
     public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){          //passed square won't be in the returned list
         List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
@@ -188,6 +246,12 @@ public class Map {
         return squareList;
     }
 
+    /**
+     * Returns a list of the squares that have the same y coordinate of the given square.
+     * Given square is not included in the list.
+     * @param square squares in the returned list will have the same y of this square
+     * @return a list of the squares that have the same y coordinate of the given square
+     */
     public static List<SquareAbstract> getSquaresWithSameY(SquareAbstract square){              //passed square won't be in the returned list
         List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
