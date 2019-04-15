@@ -49,13 +49,13 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     public void discard() { }
 
 
-    public ArrayList<ArrayList<Character>> chooseCharacter(Square square){
+    public ArrayList<ArrayList<Character>> chooseCharacter(SquareAbstract square){
         return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
     }
 
 
-    public Bullet play() {
-        return weapon.shoot();
+    public Bullet play(int extra) {
+        return weapon.shoot(extra);
         //it calls SHOOT on weapon
     }
 

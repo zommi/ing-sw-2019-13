@@ -7,7 +7,7 @@ import Items.*;
 public interface CardInterface extends ItemInterface {
 
 
-    public Bullet play();
+    //public Bullet play(int extra);
 
     public void draw();
 
