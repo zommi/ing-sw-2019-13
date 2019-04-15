@@ -50,7 +50,25 @@ public class Weapon {
 
                 //TODO complete the implementation of all the weapons
             case 4:
-                path = "./.txt";
+                path = "./weapons/TRACTORBEAM.txt";
+                break;
+            case 5:
+                path = "./weapons/T.H.O.R.txt";
+                break;
+            case 6:
+                path = "./weapons/VORTEXCANNON.txt";
+                break;
+            case 7:
+                path = "./weapons/FURNACE.txt";
+                break;
+            case 8:
+                path = "./weapons/PLASMAGUN.txt";
+                break;
+            case 9:
+                path = "./weapons/HEATSEEKER.txt";
+                break;
+            case 10:
+                path = "./weapons/WHISPER.txt";
                 break;
 
 
@@ -61,14 +79,21 @@ public class Weapon {
         }
     }
 
-    public Bullet shoot(int extra) { //fills the bullet
+    public Bullet shoot(int extra, int x, int y) { //fills the bullet
+
         if(extra == 1) { //extra effect number 1
+            this.x1 = x;
+            this.y1 = y;
             bullet = new Bullet(this.x1, this.y1, this.damage1, this.marks1, this.teleporterflag1,this.cost1);
         }
         else if(extra == 2){ //extra effect number 2
+            this.x2 = x;
+            this.y2 = y;
             bullet = new Bullet(this.x2, this.y2, this.damage2, this.marks2, this.teleporterflag2,this.cost2);
         }
-        else {
+        else if(extra == 0){
+            this.x = x;
+            this.y = y;
             bullet = new Bullet(this.x, this.y, this.damage, this.marks, this.teleporterflag, this.cost);
         }
         return bullet;
@@ -93,33 +118,29 @@ public class Weapon {
         }
 
 
+        this.damage = Integer.parseInt(readInput.get(0));
+        this.marks = Integer.parseInt(readInput.get(1));
+        this.teleporterflag = Boolean.parseBoolean(readInput.get(2));
 
-
-        this.x = Integer.parseInt(readInput.get(0));
-        this.y = Integer.parseInt(readInput.get(1));
-        this.damage = Integer.parseInt(readInput.get(2));
-        this.marks = Integer.parseInt(readInput.get(3));
-        this.teleporterflag = Boolean.parseBoolean(readInput.get(4));
-
-        if(Integer.parseInt(readInput.get(5)) != 0) { //it means that it costs some red ammocubes
+        if(Integer.parseInt(readInput.get(3)) != 0) { //it means that it costs some red ammocubes
             cost = new ArrayList<AmmoCube>();
-            for (int i = 0; i < Integer.parseInt(readInput.get(5)); i++) {
+            for (int i = 0; i < Integer.parseInt(readInput.get(3)); i++) {
                 AmmoCube am = new AmmoCube(Color.RED);
                 cost.add(am);
             }
         }
-        if(Integer.parseInt(readInput.get(6)) != 0){ //It means that it costs some blue ammocubes
+        if(Integer.parseInt(readInput.get(4)) != 0){ //It means that it costs some blue ammocubes
             if(cost == null)
                 cost = new ArrayList<AmmoCube>();
-            for(int i = 0; i < Integer.parseInt(readInput.get(6)); i++) {
+            for(int i = 0; i < Integer.parseInt(readInput.get(4)); i++) {
                 AmmoCube am = new AmmoCube(Color.BLUE);
                 cost.add(am);
             }
         }
-        if(Integer.parseInt(readInput.get(7))!= 0) { //it means that it costs some yellow ammocubes
+        if(Integer.parseInt(readInput.get(5))!= 0) { //it means that it costs some yellow ammocubes
             if(cost == null)
                 cost = new ArrayList<AmmoCube>();
-            for (int i = 0; i < Integer.parseInt(readInput.get(6)); i++) {
+            for (int i = 0; i < Integer.parseInt(readInput.get(5)); i++) {
                 AmmoCube am = new AmmoCube(Color.YELLOW);
                 cost.add(am);
             }
@@ -128,64 +149,60 @@ public class Weapon {
 
 
 
-        if(8 < readInput.size()) { //it means that the arraylist has more than 8 elements.
-            this.x1 = Integer.parseInt(readInput.get(8));
-            this.y1 = Integer.parseInt(readInput.get(9));
-            this.damage1 = Integer.parseInt(readInput.get(10));
-            this.marks1 = Integer.parseInt(readInput.get(11));
-            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(12));
+        if(6 < readInput.size()) { //it means that the arraylist has more than 6 elements.
+            this.damage1 = Integer.parseInt(readInput.get(6));
+            this.marks1 = Integer.parseInt(readInput.get(7));
+            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(8));
 
-            if (Integer.parseInt(readInput.get(13)) != 0) { //it means that it costs some red ammocubes
+            if (Integer.parseInt(readInput.get(9)) != 0) { //it means that it costs some red ammocubes
                 cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(13)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(9)); i++) {
                     AmmoCube am = new AmmoCube(Color.RED);
                     cost.add(am);
                 }
             }
-            if (Integer.parseInt(readInput.get(14)) != 0) { //It means that it costs some blue ammocubes
+            if (Integer.parseInt(readInput.get(10)) != 0) { //It means that it costs some blue ammocubes
                 if (cost == null)
                     cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(14)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(10)); i++) {
                     AmmoCube am = new AmmoCube(Color.BLUE);
                     cost.add(am);
                 }
             }
-            if (Integer.parseInt(readInput.get(15)) != 0) { //it means that it costs some yellow ammocubes
+            if (Integer.parseInt(readInput.get(11)) != 0) { //it means that it costs some yellow ammocubes
                 if (cost == null)
                     cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(15)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(11)); i++) {
                     AmmoCube am = new AmmoCube(Color.YELLOW);
                     cost.add(am);
                 }
             }
         }
 
-        if(16 < readInput.size()) {  //it means that the arraylist has more than 16 elements.
-            this.x2 = Integer.parseInt(readInput.get(16));
-            this.y2 = Integer.parseInt(readInput.get(17));
-            this.damage2 = Integer.parseInt(readInput.get(18));
-            this.marks2 = Integer.parseInt(readInput.get(19));
-            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(20));
+        if(12 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
+            this.damage2 = Integer.parseInt(readInput.get(12));
+            this.marks2 = Integer.parseInt(readInput.get(13));
+            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(14));
 
-            if (Integer.parseInt(readInput.get(21)) != 0) { //it means that it costs some red ammocubes
+            if (Integer.parseInt(readInput.get(15)) != 0) { //it means that it costs some red ammocubes
                 cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(21)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(15)); i++) {
                     AmmoCube am = new AmmoCube(Color.RED);
                     cost.add(am);
                 }
             }
-            if (Integer.parseInt(readInput.get(22)) != 0) { //It means that it costs some blue ammocubes
+            if (Integer.parseInt(readInput.get(16)) != 0) { //It means that it costs some blue ammocubes
                 if (cost == null)
                     cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(22)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(16)); i++) {
                     AmmoCube am = new AmmoCube(Color.BLUE);
                     cost.add(am);
                 }
             }
-            if (Integer.parseInt(readInput.get(23)) != 0) { //it means that it costs some yellow ammocubes
+            if (Integer.parseInt(readInput.get(17)) != 0) { //it means that it costs some yellow ammocubes
                 if (cost == null)
                     cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(23)); i++) {
+                for (int i = 0; i < Integer.parseInt(readInput.get(17)); i++) {
                     AmmoCube am = new AmmoCube(Color.YELLOW);
                     cost.add(am);
                 }

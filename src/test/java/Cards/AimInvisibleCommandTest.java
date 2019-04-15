@@ -1,6 +1,7 @@
 package Cards;
 
 import Cards.AimInvisibleCommand;
+import Constants.Color;
 import Map.Map;
 import Map.Square;
 import Player.Character;
@@ -38,6 +39,6 @@ class AimInvisibleCommandTest {
         e1.add(e);
 
         AimInvisibleCommand aim = new AimInvisibleCommand();
-        assertEquals(aim.execute(new Square(0,0,'b')), e1);
+        assertEquals(aim.execute(new Square(0,0, Color.BLUE)), e1);
     }
 }
