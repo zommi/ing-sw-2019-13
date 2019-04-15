@@ -3,12 +3,12 @@ package Player;
 /**
  * 
  */
-public class BetterShootPlayerState extends PlayerState {
+public class ShootImprovedPlayerState extends PlayerState {
 
     /**
      * Default constructor
      */
-    public BetterShootPlayerState() {
+    public ShootImprovedPlayerState() {
     }
 
 }

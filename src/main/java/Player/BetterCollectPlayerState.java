@@ -3,12 +3,10 @@ package Player;
 /**
  * 
  */
-public class BetterCollectPlayerState extends PlayerState {
+public class CollectImprovedPlayerState extends PlayerState {
 
-    /**
-     * Default constructor
-     */
-    public BetterCollectPlayerState() {
+
+    public CollectImprovedPlayerState() {
     }
 
 }
