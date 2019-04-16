@@ -1,12 +1,8 @@
 package Player;
 
-import Constants.Constants;
-import Exceptions.CharacterTakenException;
 import Exceptions.NoSuchSquareException;
-import GameBoard.GameBoard;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -48,7 +44,7 @@ class CharacterTest {
        /*SquareAbstract square1 = new Square(3,3, 'w');
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');*/
 
-       SquareAbstract square1 = Map.getSquareFromXY(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
+       SquareAbstract square1 = Map.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
        SquareAbstract spawnPoint1 = Map.getSpawnPoint(Color.RED);
 
 

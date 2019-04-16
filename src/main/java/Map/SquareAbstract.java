@@ -12,8 +12,8 @@ public abstract class SquareAbstract {
     private List<Character> charactersList;
 
     private Color color;
-    private int xValue;
-    private int yValue;
+    private int row;
+    private int col;
     // the following are just for visible squares
     //make optional??
     private SquareAbstract nSquare;
@@ -48,14 +48,14 @@ public abstract class SquareAbstract {
     }
 
     /**
-     * Creates a square with the specified coordinates and color.
-     * @param x x coordinate of the square
-     * @param y y coordinate of the square
+     * Creates a square with the specified row, column and color.
+     * @param row row of the square
+     * @param col column of the square
      * @param color color of the square
      */
-    protected SquareAbstract(int x, int y, Color color) {
-        this.xValue = x;
-        this.yValue = y;
+    protected SquareAbstract(int row, int col, Color color) {
+        this.row = row;
+        this.col = col;
 
         this.color = color;
 
@@ -112,19 +112,19 @@ public abstract class SquareAbstract {
     }
 
     /**
-     * Returns the x coordinate of the square
-     * @return the x coordinate of the square
+     * Returns the row of the square
+     * @return the row of the square
      */
-    public int getxValue() {
-        return xValue;
+    public int getRow() {
+        return row;
     }
 
     /**
-     * Returns the y coordinate of the square
-     * @return the y coordinate of the square
+     * Returns the column of the square
+     * @return the column of the square
      */
-    public int getyValue() {
-        return yValue;
+    public int getCol() {
+        return col;
     }
 
     /**
@@ -172,15 +172,15 @@ public abstract class SquareAbstract {
 
     /**
      * Returns a list with the characters that stand on a square that
-     * has the same x OR the same y of this square. Thus, a character
+     * has the same row OR the same column of this square. Thus, a character
      * could be in the same square too.
      * @return a list with the characters that stand on a square that
-     *        has the same x OR the same y of this square
+     *        has the same row OR the same column of this square
      */
     public List<Character> getCharactersThroughWalls(){
         List<Character> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> xSquares = Map.getSquaresWithSameX(this);
-        List<SquareAbstract> ySquares = Map.getSquaresWithSameY(this);
+        List<SquareAbstract> xSquares = Map.getSquaresWithSameRow(this);
+        List<SquareAbstract> ySquares = Map.getSquaresWithSameCol(this);
         for(SquareAbstract tempSquare : xSquares){
             tempCharactersList.addAll(tempSquare.getCharacters());
 

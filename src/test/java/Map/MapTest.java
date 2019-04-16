@@ -19,10 +19,10 @@ class MapTest {
         spawnPoints.add(new SpawnPoint(1,0, Color.RED));
         spawnPoints.add(new SpawnPoint(3,4, Color.YELLOW));
         assertEquals(spawnPoints.get(0).getColor(), map.getSpawnPoints().get(0).getColor());
-        assertTrue(Map.getSquareFromXY(2,3) instanceof SpawnPoint);
-        assertEquals(Map.getSquareFromXY(1,0).getColor(), Color.RED);
-        assertEquals(Map.getSquareFromXY(2,1).getColor(), Color.WHITE);
-        assertTrue(Map.getSquareFromXY(2,1) instanceof Square);
+        assertTrue(Map.getSquare(2,3) instanceof SpawnPoint);
+        assertEquals(Map.getSquare(1,0).getColor(), Color.RED);
+        assertEquals(Map.getSquare(2,1).getColor(), Color.WHITE);
+        assertTrue(Map.getSquare(2,1) instanceof Square);
 
     }
 
@@ -39,23 +39,23 @@ class MapTest {
     @Test
     void getSquareFromXY() throws NoSuchSquareException{
         Map map = new Map(1);
-        assertTrue(Map.getSquareFromXY(1,0).getColor() == Color.RED);
+        assertTrue(Map.getSquare(1,0).getColor() == Color.RED);
     }
 
     @Test
     void getSquaresWithSameX() throws NoSuchSquareException{
         Map map = new Map(1);
-        assertTrue(Map.getSquaresWithSameX(Map.getSquareFromXY(1,2)).contains(Map.getSquareFromXY(1,0)));
-        assertTrue(Map.getSquaresWithSameX(Map.getSquareFromXY(1,2)).contains(Map.getSquareFromXY(1,1)));
-        assertTrue(Map.getSquaresWithSameX(Map.getSquareFromXY(1,2)).contains(Map.getSquareFromXY(1,3)));
-        assertFalse(Map.getSquaresWithSameX(Map.getSquareFromXY(1,2)).contains(Map.getSquareFromXY(2,3)));
+        assertTrue(Map.getSquaresWithSameRow(Map.getSquare(1,2)).contains(Map.getSquare(1,0)));
+        assertTrue(Map.getSquaresWithSameRow(Map.getSquare(1,2)).contains(Map.getSquare(1,1)));
+        assertTrue(Map.getSquaresWithSameRow(Map.getSquare(1,2)).contains(Map.getSquare(1,3)));
+        assertFalse(Map.getSquaresWithSameRow(Map.getSquare(1,2)).contains(Map.getSquare(2,3)));
     }
 
     @Test
     void getSquaresWithSameY() throws NoSuchSquareException{
         Map map = new Map(1);
-        assertTrue(Map.getSquaresWithSameY(Map.getSquareFromXY(1,1)).contains(Map.getSquareFromXY(0,1)));
-        assertTrue(Map.getSquaresWithSameY(Map.getSquareFromXY(1,1)).contains(Map.getSquareFromXY(2,1)));
-        assertFalse(Map.getSquaresWithSameX(Map.getSquareFromXY(1,1)).contains(Map.getSquareFromXY(0,0)));
+        assertTrue(Map.getSquaresWithSameCol(Map.getSquare(1,1)).contains(Map.getSquare(0,1)));
+        assertTrue(Map.getSquaresWithSameCol(Map.getSquare(1,1)).contains(Map.getSquare(2,1)));
+        assertFalse(Map.getSquaresWithSameRow(Map.getSquare(1,1)).contains(Map.getSquare(0,0)));
     }
 }

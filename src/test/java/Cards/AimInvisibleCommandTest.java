@@ -1,9 +1,6 @@
 package Cards;
 
-import Cards.AimInvisibleCommand;
-import Constants.Color;
 import Map.Map;
-import Map.Square;
 import Player.Character;
 import org.junit.jupiter.api.Test;
 
@@ -23,11 +20,11 @@ class AimInvisibleCommandTest {
 
         Map map = new Map(1);
 
-        Map.getSquareFromXY(0,0).addCharacter(c1);
-        Map.getSquareFromXY(0,1).addCharacter(c2);
-        Map.getSquareFromXY(1,2).addCharacter(c);
-        Map.getSquareFromXY(2,2).addCharacter(c3);
-        Map.getSquareFromXY(1,3).addCharacter(c4);
+        Map.getSquare(0,0).addCharacter(c1);
+        Map.getSquare(0,1).addCharacter(c2);
+        Map.getSquare(1,2).addCharacter(c);
+        Map.getSquare(2,2).addCharacter(c3);
+        Map.getSquare(1,3).addCharacter(c4);
 
 
         ArrayList<Character> e = new ArrayList<Character>();
@@ -39,6 +36,6 @@ class AimInvisibleCommandTest {
         e1.add(e);
 
         AimInvisibleCommand aim = new AimInvisibleCommand();
-        assertEquals(aim.execute(Map.getSquareFromXY(0,0)), e1);
+        assertEquals(aim.execute(Map.getSquare(0,0)), e1);
     }
 }

@@ -25,12 +25,12 @@ public class AimThroughWallsCommand implements Command {
 
         //now I have to create an array of array with 4 different lists.
         for (Character t : e) {
-            if (square.getxValue() == t.getPosition().getxValue()) {
-                if (square.getyValue() > t.getPosition().getyValue()) { //if this is true then we are considering the SOUTH LIST
+            if (square.getRow() == t.getPosition().getRow()) {
+                if (square.getCol() > t.getPosition().getCol()) { //if this is true then we are considering the SOUTH LIST
                     eS.add(t);
-                } else if (square.getyValue() < t.getPosition().getyValue()) {//if this is true then we are considering the NORTH LIST
+                } else if (square.getCol() < t.getPosition().getCol()) {//if this is true then we are considering the NORTH LIST
                     eN.add(t);
-                } else if(square.getyValue() == t.getPosition().getyValue()){
+                } else if(square.getCol() == t.getPosition().getCol()){
                     eN.add(t);
                     eS.add(t);
                     eW.add(t);
@@ -38,11 +38,11 @@ public class AimThroughWallsCommand implements Command {
                 }
 
             }
-            else if(square.getyValue() == t.getPosition().getyValue()){
-                 if(square.getxValue() < t.getPosition().getxValue()) { //if this is true then we are considering the EAST LIST
+            else if(square.getCol() == t.getPosition().getCol()){
+                 if(square.getRow() < t.getPosition().getRow()) { //if this is true then we are considering the EAST LIST
                      eE.add(t);
                  }
-                 else if(square.getxValue() > t.getPosition().getxValue()){ //if this is true then we are considering the WEST LIST
+                 else if(square.getRow() > t.getPosition().getRow()){ //if this is true then we are considering the WEST LIST
                      eW.add(t);
                   }
             }

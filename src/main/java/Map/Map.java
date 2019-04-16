@@ -196,7 +196,8 @@ public class Map {
     }
 
     /**
-     * Returns the spawn point of the specified color.
+     * Returns the spawn point of the specified color. It assumes
+     * there's at most one spawn point for every color.
      * @param color the color of the desired spawn point
      * @return the spawn point of the desired color
      */
@@ -210,16 +211,16 @@ public class Map {
     }
 
     /**
-     * Returns a square, given its coordinates.
-     * @param x x coordinate of the square
-     * @param y y coordinate of the square
-     * @return  the square at the specified coordinates
+     * Returns a square, given its row and column.
+     * @param row row of the square
+     * @param col column of the square
+     * @return  the square at the given row and column
      * @throws NoSuchSquareException if there's no square with the given coordinates
      */
-    public static SquareAbstract getSquareFromXY(int x, int y) throws NoSuchSquareException {
+    public static SquareAbstract getSquare(int row, int col) throws NoSuchSquareException {
 
         try {
-            return squares.get(x).get(y);
+            return squares.get(row).get(col);
         }
         catch (IndexOutOfBoundsException e){
             throw new NoSuchSquareException();
@@ -228,17 +229,17 @@ public class Map {
     }
 
     /**
-     * Returns a list of the squares that have the same x coordinate of the given square.
+     * Returns a list of the squares that have the same row of the given square.
      * Given square is not included in the list.
-     * @param square squares in the returned list will have the same x of this square
-     * @return a list of the squares that have the same x coordinate of the given square
+     * @param square squares in the returned list will have the same row of this square
+     * @return a list of the squares that have the same row of the given square
      */
-    public static List<SquareAbstract> getSquaresWithSameX(SquareAbstract square){
+    public static List<SquareAbstract> getSquaresWithSameRow(SquareAbstract square){
         List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                  if(squares.get(i).get(j) != null)
-                    if(squares.get(i).get(j).getxValue() == square.getxValue() && squares.get(i).get(j) != square)
+                    if(squares.get(i).get(j).getRow() == square.getRow() && squares.get(i).get(j) != square)
                             squareList.add(squares.get(i).get(j));
 
             }
@@ -247,17 +248,17 @@ public class Map {
     }
 
     /**
-     * Returns a list of the squares that have the same y coordinate of the given square.
+     * Returns a list of the squares that have the same column of the given square.
      * Given square is not included in the list.
-     * @param square squares in the returned list will have the same y of this square
-     * @return a list of the squares that have the same y coordinate of the given square
+     * @param square squares in the returned list will have the same column of this square
+     * @return a list of the squares that have the same column of the given square
      */
-    public static List<SquareAbstract> getSquaresWithSameY(SquareAbstract square){              //passed square won't be in the returned list
+    public static List<SquareAbstract> getSquaresWithSameCol(SquareAbstract square){              //passed square won't be in the returned list
         List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                 if(squares.get(i).get(j) != null)
-                    if(squares.get(i).get(j).getyValue() == square.getyValue() && squares.get(i).get(j) != square)
+                    if(squares.get(i).get(j).getCol() == square.getCol() && squares.get(i).get(j) != square)
                         squareList.add(squares.get(i).get(j));
 
             }
