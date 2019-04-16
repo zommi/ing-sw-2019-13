@@ -179,13 +179,13 @@ public abstract class SquareAbstract {
      */
     public List<Character> getCharactersThroughWalls(){
         List<Character> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> xSquares = Map.getSquaresWithSameRow(this);
-        List<SquareAbstract> ySquares = Map.getSquaresWithSameCol(this);
-        for(SquareAbstract tempSquare : xSquares){
+        List<SquareAbstract> rowSquares = Map.getSquaresWithSameRow(this);
+        List<SquareAbstract> colSquares = Map.getSquaresWithSameCol(this);
+        for(SquareAbstract tempSquare : rowSquares){
             tempCharactersList.addAll(tempSquare.getCharacters());
 
         }
-        for(SquareAbstract tempSquare : ySquares){
+        for(SquareAbstract tempSquare : colSquares){
             tempCharactersList.addAll(tempSquare.getCharacters());
         }
         tempCharactersList.addAll(this.getCharacters());
