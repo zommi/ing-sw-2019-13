@@ -21,11 +21,12 @@ public class AimInvisibleCommand implements Command {
         //now I have to make the intersection between them
 
 
-        for (Character t : e) {
+        for (Character t : (ArrayList<Character>)e.clone()) {
             if(e1.contains(t)) {
                 e.remove(t);
             }
         }
+
 
         ArrayList<ArrayList<Character>> result = new ArrayList<ArrayList<Character>>();
         result.add(e);
