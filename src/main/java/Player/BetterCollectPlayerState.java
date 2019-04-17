@@ -4,11 +4,13 @@ package Player;
  * 
  */
 public class BetterCollectPlayerState extends PlayerState {
-
+    private ConcretePlayer player;
     /**
      * Default constructor
      */
-    public BetterCollectPlayerState() {
+    public BetterCollectPlayerState(ConcretePlayer player) {
+        super(player);
+        this.player = player;
     }
 
 }

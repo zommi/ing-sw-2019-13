@@ -11,8 +11,8 @@ import java.util.*;
  */
 public class PlayerHand {
 
-    private ArrayList<CardInterface> weaponHand;
-    private ArrayList<CardInterface> powerupHand;
+    private ArrayList<WeaponCard> weaponHand;
+    private ArrayList<PowerupCard> powerupHand;
     private ConcretePlayer player;
 
     /**
@@ -43,10 +43,10 @@ public class PlayerHand {
      * @return
      * @param choice
      */
-    public void playCard(int choice, char c) throws InvalidMoveException {
+    public void playCard(int choice, char c, int extra) throws InvalidMoveException {
         System.out.println("Playing Card...");
         switch (c){
-            case 'w' : weaponHand.get(choice).play(); //which is a weaponcard
+            case 'w' : weaponHand.get(choice).play(extra); //which is a weaponcard
                 break;
             case 'p' : powerupHand.get(choice).play(); //which is a powerupcard
                 break;

@@ -10,7 +10,7 @@ import Constants.*;
 import java.util.*;
 
 /**
- * 
+ *
  */
 public class ConcretePlayer extends PlayerAbstract {
 
@@ -20,6 +20,8 @@ public class ConcretePlayer extends PlayerAbstract {
     private PlayerBoard board;
     private GameBoard currentGameBoard;
     private UUID id;
+    private PlayerState state;
+    private Action action;
 
     /**
      *Creates a player by giving him a name, a unique id, a hand
@@ -44,21 +46,21 @@ public class ConcretePlayer extends PlayerAbstract {
 
     /**
      * Moves the character to an adjacent square in a direction
-     * @param move char that belongs to ('n','s','w','e')
+     * @param direction direction to follow
      */
-    public void move(char move) {
+    public void move(Directions direction) {
         SquareAbstract currentPos = character.getPosition();
-        switch (move){
-            case 'N':
+        switch (direction){
+            case NORTH:
                 character.move(currentPos.getnSquare());
                 break;
-            case 'S':
+            case SOUTH:
                 character.move(currentPos.getsSquare());
                 break;
-            case 'E':
+            case EAST:
                 character.move(currentPos.geteSquare());
                 break;
-            case 'W':
+            case WEST:
                 character.move(currentPos.getwSquare());
                 break;
             default:
@@ -66,17 +68,14 @@ public class ConcretePlayer extends PlayerAbstract {
             }
     }
 
-    /**
-     * Uses a weapon in the player's hand
-     * @param weaponIndex int between 0 and 2 corresponding to a weaponCard
-     */
-    public void shoot(int weaponIndex) {
-        try {
-            hand.playCard(weaponIndex,'w');
-        } catch (InvalidMoveException e) {
-            e.printStackTrace();
-        }
+    public void doAction(){
+        action.execute();
     }
+
+    public void setAction(Action action){
+        this.action = action;
+    }
+
 
     /**
      * Uses a powerup in the player's hand
@@ -84,31 +83,16 @@ public class ConcretePlayer extends PlayerAbstract {
      */
     public void usePowerup(int powerupIndex) {
         try{
-            hand.playCard(powerupIndex,'w');
+            hand.playCard(powerupIndex,'p');
         }catch(InvalidMoveException e){
             e.printStackTrace();
         }
     }
 
 
-    /**
-     * Action that collects an ammo tile from a square.
-     * @param item ammotile on the square
-     */
-    public void collect(AmmoTile item) {
-        board.addAmmo(item);
-    }
 
     /**
-     * action that collects a weapon on a spawpoint
-     * @param card card on spawnpoint
-     */
-    public void collect(WeaponCard card){
-        hand.addCard(card);
-    }
-
-    /**
-     * Shows to a player his own hand
+     * Shows a player his own hand
      */
     public void showHand(){
         System.out.println(hand.toString());
@@ -153,26 +137,11 @@ public class ConcretePlayer extends PlayerAbstract {
 
 
 /*
-        I added a method in WeaponCard called chooseCharacter, you have to call it before calling play(). You have to pass the square to the method
-        so that he can tell you who you can choose.
+        I added a method in WeaponCard called chooseCharacter, you have to call it before calling play().
+        You have to pass the square to the method so that he can tell you who you can choose.
 
         ArrayList<ArrayList<Character>> possibleTargets;
         possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
         weapon.charge();
 
-
-        String s;
-        //The user will have to choose the character he wants to shoot. He could for example insert an int to indicate the index of the list.
-        System.out.println("Enter the index of the character you want to shoot : ");
-
-        try{
-            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            s = bufferRead.readLine();
-
-            System.out.println("You chose to shoot character number :  " s);
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
 */
