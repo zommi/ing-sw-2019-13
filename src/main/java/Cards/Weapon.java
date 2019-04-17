@@ -8,6 +8,10 @@ import Constants.Color;
 import Items.*;
 
 
+
+
+
+//PAY ATTENTION TO THE POWER GLOVE!!!! IT HAS a SECOND EXTRA EFFECT that IS PART OF THE FIRST ONE WHICH NEEDS TO BE CALLED FROM THE CONTROLLER!!!!!
 public class Weapon {
 
     private Bullet bullet;
@@ -73,6 +77,39 @@ public class Weapon {
                 break;
             case 10:
                 path = "./weapons/WHISPER.txt";
+                break;
+            case 11:
+                path = "./weapons/HELLION.txt";
+                break;
+            case 12:
+                path = "./weapons/FLAMETHROWER.txt";
+                break;
+            case 13:
+                path = "./weapons/ZX-2.txt";
+                break;
+            case 14:
+                path = "./weapons/GRENADELAUNCHER.txt";
+                break;
+            case 15:
+                path = "./weapons/SHOTGUN.txt";
+                break;
+            case 16:
+                path = "./weapons/ROCKETLAUNCHER.txt";
+                break;
+            case 17:
+                path = "./weapons/POWERGLOVE.txt";
+                break;
+            case 18:
+                path = "./weapons/RAILGUN.txt";
+                break;
+            case 19:
+                path = "./weapons/SHOCKWAVE.txt";
+                break;
+            case 20:
+                path = "./weapons/CYBERBLADE.txt";
+                break;
+            case 21:
+                path = "./weapons/SLEDGEHAMMER.txt";
                 break;
 
 
