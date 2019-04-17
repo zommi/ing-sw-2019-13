@@ -22,7 +22,7 @@ class PlayerBoardTest {
 
         player.spawn(Map.getSpawnPoint(Color.BLUE));
 
-        Bullet testBullet = new Bullet(0,0,3,3,false, new ArrayList<AmmoCube>());
+        Bullet testBullet = new Bullet(0,0,3,3,false);
         player.receiveBullet(testBullet,Color.RED);
 
         assertEquals(3, testPlayerBoard.getDamageTaken());

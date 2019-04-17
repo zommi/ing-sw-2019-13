@@ -23,7 +23,7 @@ public class Teleporter implements Powerup {
         int y = reader.nextInt();
         reader.close();
 
-        bullet = new Bullet(x, y, 0, 0, true, null);
+        bullet = new Bullet(x, y, 0, 0, true);
         return bullet;
     }
 

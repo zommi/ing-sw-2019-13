@@ -36,6 +36,8 @@ public class Weapon {
     private ArrayList<AmmoCube> cost2; //cost of the weapon second effect
 
 
+
+
     public Weapon(int numweapon) {
         String path;
         switch (numweapon) {
@@ -81,6 +83,11 @@ public class Weapon {
         }
     }
 
+    /**
+     * Returns the an ArrayList of two bullets, the first one is the one for the first target, the second one is the one for the second target.
+     * @param extra is an int that indicates the extra effect of the weapon the player wants to use. X and Y are the coordinates i want to move the bullet receiver
+     * @return the an ArrayList of two bullets, the first one is the one for the first target, the second one is the one for the second ta
+     */
     public ArrayList<Bullet> shoot(int extra, int x, int y) { //fills the bullet
 
         if(extra == 1) { //extra effect number 1
@@ -98,7 +105,6 @@ public class Weapon {
             this.y = y;
             bullet = new Bullet(this.x, this.y, this.damage, this.marks, this.teleporterflag);
         }
-        //TODO
         ArrayList<Bullet> result = new ArrayList<Bullet>();
         result.add(bullet);
         result.add(bullet2);
@@ -108,7 +114,11 @@ public class Weapon {
 
 
 
-
+    /**
+     * Returns the bullet of the cascade effect
+     * @param path of the file the method has to read from
+     * @return the bullet of the cascade effect
+     */
     public Bullet PrepareBullet2(String path){
         Scanner scanner = null;
         int damage1;
@@ -144,7 +154,10 @@ public class Weapon {
 
 
 
-
+    /**
+     * Initalizes the attributes of the weapon reading from file
+     * @param path of the file the method has to read from
+     */
     public void generateattributesFromFile(String path){
         Scanner scanner = null;
         List<String> readInput = null;
@@ -263,6 +276,8 @@ public class Weapon {
         }
     }
 
+
+
     public Command getCommand(){
         return this.command;
     }
@@ -271,6 +286,19 @@ public class Weapon {
     public Bullet charge() {
         // TODO
         return null;
+    }
+
+
+    public ArrayList<AmmoCube> getCost() {
+        return cost;
+    }
+
+    public ArrayList<AmmoCube> getCost1() {
+        return cost1;
+    }
+
+    public ArrayList<AmmoCube> getCost2() {
+        return cost2;
     }
 
 }

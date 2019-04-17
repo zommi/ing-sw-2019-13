@@ -17,7 +17,7 @@ public class TagbackGrenade implements Powerup {
     public Bullet usePowerup() {
         // TODO implement here
 
-        bullet = new Bullet(0,0,0,1,false, null);
+        bullet = new Bullet(0,0,0,1,false);
         //It gives one mark to the visible character that shot me.
         //It does not move the character.
         return bullet;
