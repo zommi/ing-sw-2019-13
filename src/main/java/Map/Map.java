@@ -190,7 +190,7 @@ public class Map {
      * Returns a list of the spawn points.
      * @return a list of the spawn points
      */
-    public List<SpawnPoint> getSpawnPoints(){
+    public static List<SpawnPoint> getSpawnPoints(){
         ArrayList<SpawnPoint> returnedList = (ArrayList<SpawnPoint>) spawnPoints;
         return (ArrayList<SpawnPoint>) returnedList.clone();
     }

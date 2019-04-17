@@ -34,6 +34,12 @@ class MapTest {
 
     @Test
     void getSpawnPoints() {
+        Map map = new Map(1);
+        ArrayList<SpawnPoint> sp = (ArrayList<SpawnPoint>) Map.getSpawnPoints();
+        /*for(SpawnPoint s : sp){
+            System.out.println(s.getColor());
+        }*/
+        assertTrue(Map.getSpawnPoint(Color.RED).getColor() == sp.get(1).getColor());
     }
 
     @Test
