@@ -13,6 +13,7 @@ public class ShootAction implements Action{
     private Color playerColor;
     private List<Directions> move;
     private PlayerAbstract player;
+    private int extra;
 
     public ShootAction(ActionInfo info){
         this.player = info.getPlayer();
@@ -20,6 +21,7 @@ public class ShootAction implements Action{
         this.weapon = info.getWeapon();
         this.targets = info.getTargets();
         this.playerColor = info.getPlayerColor();
+        this.extra = info.getExtra();
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ShootAction implements Action{
             player.move(dir);
         }
         for(PlayerAbstract target : targets){
-            target.receiveBullet(weapon.play(),playerColor);
+            target.receiveBullet(weapon.play(this.extra),playerColor);
         }
 
     }

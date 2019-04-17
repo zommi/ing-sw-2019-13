@@ -15,6 +15,7 @@ public class ActionInfo {
     private List<PlayerAbstract> targets;
     private Color playerColor;
     private PlayerAbstract player;
+    private int extra;
 
     public ActionInfo(){
         this.player = null;
@@ -32,12 +33,13 @@ public class ActionInfo {
     }
 
     public  ActionInfo(PlayerAbstract player, List<PlayerAbstract> targets,
-                       WeaponCard weapon, List<Directions> moves, Color playerColor){
+                       WeaponCard weapon, List<Directions> moves, int extra, Color playerColor){
         this.player = player;
         this.weapon = weapon;
         this.moves = moves;
         this.targets = targets;
         this.playerColor = playerColor;
+        this.extra = extra;
     }
 
     public PlayerAbstract getPlayer(){ return this.player;}
@@ -56,5 +58,9 @@ public class ActionInfo {
 
     public Color getPlayerColor() {
         return playerColor;
+    }
+
+    public int getExtra() {
+        return this.extra;
     }
 }

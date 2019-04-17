@@ -1,6 +1,10 @@
 package Player;
 
 import java.util.*;
+
+import Cards.Bullet;
+import Constants.Color;
+import Constants.*;
 import Map.*;
 
 /**
@@ -36,29 +40,29 @@ public abstract class PlayerAbstract {
 
     /**
      *Moves the character linked to the player by one square at a time
-     * @param move char that belongs to ('n','s','w','e')
+     * @param direction direction to follow
      */
-    public void move(char move) {
+    public void move(Directions direction) {
     }
 
-    /**
-     *
-     * @return
-     */
     public void shoot() {
     }
 
-    /**
-     * @return
-     */
     public void collect() {
     }
 
-    /**
-     * @return
-     */
+    public abstract Character getCharacter();
+
     public PlayerState getPlayerState() {
         return null;
     }
+
+    public abstract void receiveBullet(Bullet b, Color color);
+
+    public abstract void doAction();
+
+    public abstract void setAction(Action action);
+
+    public abstract
 
 }

@@ -11,8 +11,16 @@ public class Turn {
         return currentPlayer;
     }
 
-    public void playFirstAction(ActionInfo info, Action firstAction){
-        currentPlayer.setAction(firstAction);
+    public void playAction(Action action){
+        currentPlayer.setAction(action);
         currentPlayer.doAction();
+    }
+
+    public void playPowerup(){
+        currentPlayer.
+    }
+
+    public void playTurn(){
+
     }
 }
