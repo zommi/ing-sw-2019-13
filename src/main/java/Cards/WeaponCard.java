@@ -54,7 +54,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     }
 
 
-    public Bullet play(int extra, int x, int y) {
+    public ArrayList<Bullet> play(int extra, int x, int y) {
         return weapon.shoot(extra, x, y);
         //it calls SHOOT on weapon
     }
