@@ -1,7 +1,7 @@
 package GameBoard;
 
 import Constants.Constants;
-import Map.Map;
+import Map.*;
 
 /**
  * 
@@ -22,8 +22,8 @@ public class GameBoard {
         this.powerupDeck = new PowerupDeck();
     }
 
-    public static GameBoard istance(int mapChoice, int skullChoice){
-        if(istance != null) istance = new GameBoard(mapChoice, skullChoice);
+    public static GameBoard instance(int mapChoice, int skullChoice){
+        if(istance == null) istance = new GameBoard(mapChoice, skullChoice);
         return istance;
     }
 
@@ -34,6 +34,10 @@ public class GameBoard {
     public void setup() {
         weaponDeck.shuffle();
         powerupDeck.shuffle();
+    }
+
+    public Map getMap(){
+        return this.gameMap;
     }
 
 }

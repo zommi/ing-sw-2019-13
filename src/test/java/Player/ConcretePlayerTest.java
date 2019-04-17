@@ -15,7 +15,7 @@ class ConcretePlayerTest {
 
     @Test
     public void testCreator(){
-        GameBoard testGb = GameBoard.istance(1,8);
+        GameBoard testGb = GameBoard.instance(1,8);
         PlayerAbstract player1 = new ConcretePlayer("Pippo", testGb, Figure.DESTRUCTOR);
         PlayerAbstract player2 = new ConcretePlayer("Pluto", testGb, Figure.BANSHEE);
 

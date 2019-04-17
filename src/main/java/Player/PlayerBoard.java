@@ -114,7 +114,7 @@ public class PlayerBoard{
     public void addDamage(int damageInBullet, Color color) {
         int marksActivated = getMarksOfAColor(color);
         removeMarksOfAColor(color);
-        for(int i = damageTaken; i < damageTaken+marksActivated;i++){
+        for(int i = damageTaken; i < damageTaken+marksActivated+damageInBullet;i++){
             setDamage(i,color);
         }
         damageTaken += damageInBullet + marksActivated;
@@ -129,12 +129,12 @@ public class PlayerBoard{
         }
     }
 
-    private void removeMarksOfAColor(Color color) {
+    public void removeMarksOfAColor(Color color) {
         //get rid of all token of a color
         marks.removeAll(Collections.singleton(color));
     }
 
-    private int getMarksOfAColor(Color color) {
+    public int getMarksOfAColor(Color color) {
         int counter = 0;
         for(Color c : marks){
             if(c == color){counter++;}
@@ -146,7 +146,7 @@ public class PlayerBoard{
     public void addMarks(int marks, Color color)
             throws InvalidMoveException {
         for(int i = 0; i < marks; i++) {
-            if (this.marks.size() <= 3) {
+            if (this.marks.size() < 3) {
                 this.marks.add(color);
             } else {
                 throw new InvalidMoveException();
