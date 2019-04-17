@@ -1,11 +1,11 @@
 package Player;
 
-import Constants.Direction;
+import Constants.*;
 
 import java.util.List;
 
 public class MoveAction {
-    private List<Direction> moves;
+    private List<Directions> moves;
     private PlayerAbstract player;
 
     public MoveAction(ActionInfo info){
@@ -19,7 +19,7 @@ public class MoveAction {
     }
 
     private void move() {
-        for(Direction dir : moves){
+        for(Directions dir : moves){
             player.move(dir);
         }
     }

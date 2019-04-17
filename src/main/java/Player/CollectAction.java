@@ -1,11 +1,11 @@
 package Player;
 
-import Constants.Direction;
+import Constants.*;
 
 import java.util.List;
 
 public class CollectAction implements Action{
-    private List<Direction> moves;
+    private List<Directions> moves;
     private PlayerAbstract player;
 
     public CollectAction(ActionInfo info){
@@ -20,7 +20,7 @@ public class CollectAction implements Action{
     }
 
     public void collect(){
-        for(Direction dir : moves){
+        for(Directions dir : moves){
             player.move(dir);
         }
         //player.add(player.getCharacter().getPosition().getItem());

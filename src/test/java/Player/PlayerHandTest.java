@@ -15,7 +15,7 @@ class PlayerHandTest {
         PlayerHand ph = new PlayerHand(p);
 
           assertThrows(InvalidMoveException.class, () -> {
-              ph.playCard(2,'q');
+              ph.playCard(2,'q', 0);
         });
     }
     @Test

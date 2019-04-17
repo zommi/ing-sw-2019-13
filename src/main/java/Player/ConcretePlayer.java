@@ -81,9 +81,9 @@ public class ConcretePlayer extends PlayerAbstract {
      * Uses a powerup in the player's hand
      * @param powerupIndex int between 0 and 2 corresponding to a powerupCard
      */
-    public void usePowerup(int powerupIndex) {
+    public void usePowerup(int powerupIndex, int extra) {
         try{
-            hand.playCard(powerupIndex,'p');
+            hand.playCard(powerupIndex,'p', extra);
         }catch(InvalidMoveException e){
             e.printStackTrace();
         }
@@ -133,6 +133,10 @@ public class ConcretePlayer extends PlayerAbstract {
         character.spawn(sp);
     }
 
+
+    public UUID getId(){
+        return this.id;
+    }
 }
 
 

@@ -46,8 +46,10 @@ public class PlayerHand {
     public void playCard(int choice, char c, int extra) throws InvalidMoveException {
         System.out.println("Playing Card...");
         switch (c){
+            /*
             case 'w' : weaponHand.get(choice).play(extra); //which is a weaponcard
                 break;
+            */
             case 'p' : powerupHand.get(choice).play(); //which is a powerupcard
                 break;
             default: throw new InvalidMoveException();

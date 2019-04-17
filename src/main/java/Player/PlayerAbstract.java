@@ -63,6 +63,8 @@ public abstract class PlayerAbstract {
 
     public abstract void setAction(Action action);
 
-    public abstract
+    public abstract void usePowerup(int powerupIndex, int extra);
+
+    public abstract UUID getId();
 
 }

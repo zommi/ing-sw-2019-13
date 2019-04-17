@@ -33,9 +33,10 @@ public class ShootAction implements Action{
         for(Directions dir : move){
             player.move(dir);
         }
+        /*
         for(PlayerAbstract target : targets){
             target.receiveBullet(weapon.play(this.extra),playerColor);
         }
-
+         */
     }
 }
