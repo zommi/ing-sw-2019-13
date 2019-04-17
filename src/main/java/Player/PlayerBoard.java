@@ -63,6 +63,15 @@ public class PlayerBoard{
         return damageTaken;
     }
 
+
+    public Color getTokenColor(int index){
+        return damage[index];
+    }
+
+    public List<Color> getMarks(){
+        return this.marks;
+    }
+
     /**
      * @return
      */

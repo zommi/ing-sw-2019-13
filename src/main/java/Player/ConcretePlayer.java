@@ -43,6 +43,8 @@ public class ConcretePlayer extends PlayerAbstract {
         return character;
     }
 
+    public PlayerBoard getBoard(){return board;}
+
 
     /**
      * Moves the character to an adjacent square in a direction
@@ -119,7 +121,7 @@ public class ConcretePlayer extends PlayerAbstract {
             System.out.println("Max number of marks reached");
         }
         try {
-            character.move(Map.getSquare(b.getX(), b.getY()));
+            character.move(Map.getSquare(b.getY(), b.getX()));
         }catch (NoSuchSquareException e){
             e.printStackTrace();
         }

@@ -67,4 +67,6 @@ public abstract class PlayerAbstract {
 
     public abstract UUID getId();
 
+    public abstract PlayerBoard getBoard();
+
 }

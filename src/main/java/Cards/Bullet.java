@@ -16,13 +16,13 @@ public class Bullet {
     private boolean teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
     private ArrayList<AmmoCube> cost;
 
-    public Bullet(int x, int y, int damage, int marks, boolean teleporterflag, ArrayList<AmmoCube> cost) {
+    public Bullet(int x, int y, int damage, int marks, boolean teleporterflag/*, ArrayList<AmmoCube> cost*/) {
         this.x = x;
         this.y = y;
         this.damage = damage;
         this.marks = marks;
         this.teleporterflag = teleporterflag;
-        this.cost = cost;
+        //this.cost = cost;
     }
 
 
@@ -71,9 +71,9 @@ public class Bullet {
      * Returns the ArrayList of Ammocubes representing the cost
      * @return the ArrayList of Ammocubes representing the cost
      */
-    public ArrayList<AmmoCube> getCost(){
+   /* public ArrayList<AmmoCube> getCost(){
         return (ArrayList<AmmoCube>) this.cost.clone();
-    }
+    */
 
 
 }
