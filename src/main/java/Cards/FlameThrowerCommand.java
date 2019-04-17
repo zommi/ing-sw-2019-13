@@ -18,6 +18,11 @@ public class FlameThrowerCommand {
         this.direction = c;
     }
 
+    /**
+     * Returns the characters that the player shooting can see 1 move away from him and possibly 1 more move away in the same direction.
+     * @param square where the player is
+     * @return an arraylist of arralist of the characters that the player shooting can see 1 move away from him and possibly 1 more move away in the same direction.
+     */
     public ArrayList<ArrayList<Character>> execute(SquareAbstract square) {
 
         ArrayList<SquareAbstract> eN = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.NORTH);
@@ -53,10 +58,8 @@ public class FlameThrowerCommand {
             return (ArrayList<ArrayList<Character>>)cS.clone();
         else if(this.direction.getAbbreviation() == "e")
             return (ArrayList<ArrayList<Character>>)cE.clone();
-        else                                                            //if(this.direction == 'w')
+        else
             return (ArrayList<ArrayList<Character>>)cW.clone();
-
-        //now the user has to say to me which direction he wants. Otherwise I don't know what to return.
 
     }
 

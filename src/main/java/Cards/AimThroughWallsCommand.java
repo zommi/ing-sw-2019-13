@@ -13,6 +13,11 @@ public class AimThroughWallsCommand implements Command {
     public AimThroughWallsCommand() {
     }
 
+    /**
+     * Returns the characters that the player shooting can see through walls depending on the direction
+     * @param square where the player is
+     * @return an arraylist of arralist of the characters that the player shooting can see through walls depending on the direction
+     */
     public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
         ArrayList<Character> e = (ArrayList)square.getCharactersThroughWalls();
 

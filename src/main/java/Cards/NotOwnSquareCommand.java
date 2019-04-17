@@ -10,6 +10,11 @@ public class NotOwnSquareCommand implements Command {
     public NotOwnSquareCommand() {
     }
 
+    /**
+     * Returns the characters that are not in the same square of the player shooting
+     * @param square where the player is
+     * @return an arraylist of arralist of the characters that are not in the same square of the player shooting
+     */
     public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
         //The not own are all the characters without the ones in my own square.
         //getTakenCharacters da Character

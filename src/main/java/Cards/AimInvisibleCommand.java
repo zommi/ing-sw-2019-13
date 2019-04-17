@@ -12,6 +12,12 @@ public class AimInvisibleCommand implements Command {
     public AimInvisibleCommand() {
     }
 
+
+    /**
+     * Returns the invisible characters from the position of the player shooting
+     * @param square where the player is
+     * @return  an arraylist of arralist of invisible characters from the position of the player shooting
+     */
     public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
         ArrayList<Character> e = (ArrayList<Character>)Character.getTakenCharacters();
 

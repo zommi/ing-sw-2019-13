@@ -26,27 +26,51 @@ public class Bullet {
     }
 
 
+    /**
+     * Returns the value of damage
+     * @return the value of damage
+     */
     public int getDamage() {
         return this.damage;
     }
 
 
+    /**
+     * Returns the value of X
+     * @return the value of X
+     */
     public int getX(){
         return this.x;
     }
 
+    /**
+     * Returns the value of Y
+     * @return the value of Y
+     */
     public int getY(){
         return this.y;
     }
 
+    /**
+     * Returns the value of teleporterflag
+     * @return the value of teleporterflag
+     */
     public boolean getTeleporterFlag(){
         return this.teleporterflag;
     }
 
+    /**
+     * Returns the value of marks
+     * @return the value of marks
+     */
     public int getMarks() {
         return this.marks;
     }
 
+    /**
+     * Returns the ArrayList of Ammocubes representing the cost
+     * @return the ArrayList of Ammocubes representing the cost
+     */
     public ArrayList<AmmoCube> getCost(){
         return (ArrayList<AmmoCube>) this.cost.clone();
     }
