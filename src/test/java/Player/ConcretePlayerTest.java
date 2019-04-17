@@ -6,7 +6,7 @@ import GameBoard.GameBoard;
 import Map.Map;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,10 +22,15 @@ class ConcretePlayerTest {
 
         assertNotEquals(player1.getId(),player2.getId());
 
+        List<Character> list1 = new ArrayList<Character>();
+        list1.add(player1.getCharacter());
+        List<Character> list2 = new ArrayList<Character>();
+        list2.add(player2.getCharacter());
+
         player1.spawn(Map.getSpawnPoint(Color.BLUE));
         player2.spawn(Map.getSpawnPoint(Color.YELLOW));
-        assertEquals(Map.getSpawnPoint(Color.BLUE), Collections.singleton(player1));
-        assertEquals(Map.getSpawnPoint(Color.YELLOW), Collections.singleton(player2));
+        assertEquals(Map.getSpawnPoint(Color.BLUE).getCharacters(), list1);
+        assertEquals(Map.getSpawnPoint(Color.YELLOW).getCharacters(), list2);
     }
 
 }

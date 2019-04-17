@@ -15,12 +15,14 @@ class CharacterTest {
 
     @Test
     public void testGetValidFigures(){
+        Character.initialize();
         ArrayList<Figure>  test1= new ArrayList<Figure>();
         test1.add(Figure.DESTRUCTOR);
         test1.add(Figure.BANSHEE);
         test1.add(Figure.DOZER);
         test1.add(Figure.VIOLET);
         test1.add(Figure.SPROG);
+
         assertEquals(Character.getValidFigures(),test1);
 
         ArrayList<Figure>  test2= new ArrayList<Figure>();

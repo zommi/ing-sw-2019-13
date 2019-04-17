@@ -25,6 +25,10 @@ public class Character {
         setTaken(f);
     }
 
+    public static void initialize(){
+        for(int i = 0; i < Constants.NUM_FIGURES; i++) figureChosen[i]=false;
+    }
+
     public static void setTaken(Figure f){
         figureChosen[f.getId()] = true;
     }
