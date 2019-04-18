@@ -68,7 +68,7 @@ class PlayerBoardTest {
 
         //test that before death the player's value is 8 points
         assertEquals(8,testPlayerBoard.getPointValue());
-        
+
         Bullet testBullet1 = new Bullet(0,0,12,2,false);
         player.receiveBullet(testBullet1,Color.RED);
 
@@ -80,6 +80,7 @@ class PlayerBoardTest {
         assertEquals(Color.RED,gbtest.getTrack().getColorAtIndex(7));
         //test that after the first death its value decreases
         assertEquals(6,testPlayerBoard.getPointValue());
+
     }
 
 }

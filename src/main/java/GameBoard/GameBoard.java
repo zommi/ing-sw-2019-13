@@ -18,7 +18,7 @@ public class GameBoard {
     private GameBoard(int mapChoice, int skullChoice) {
         this.gameMap = new Map(mapChoice);
         this.track = new KillshotTrack(skullChoice);
-        this.weaponDeck = new WeaponDeck(Constants.NUMBER_OF_WEAPONS);
+        this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
     }
 
