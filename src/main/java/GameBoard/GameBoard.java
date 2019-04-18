@@ -12,7 +12,7 @@ public class GameBoard {
     private KillshotTrack track;
     private WeaponDeck weaponDeck;
     private PowerupDeck powerupDeck;
-    public static GameBoard istance;
+    public static GameBoard instance;
 
 
     private GameBoard(int mapChoice, int skullChoice) {
@@ -23,10 +23,13 @@ public class GameBoard {
     }
 
     public static GameBoard instance(int mapChoice, int skullChoice){
-        if(istance == null) istance = new GameBoard(mapChoice, skullChoice);
-        return istance;
+        if(instance == null) instance = new GameBoard(mapChoice, skullChoice);
+        return instance;
     }
 
+    public KillshotTrack getTrack() {
+        return this.track;
+    }
 
     /**
      * @return

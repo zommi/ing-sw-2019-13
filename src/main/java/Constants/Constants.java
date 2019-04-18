@@ -17,4 +17,7 @@ public class Constants {
 
     public static final int FIRST_ACTION = 0;
     public static final int SECOND_ACTION = 1;
+
+
+    public static final int DEATH_THRESHOLD = 10;
 }

@@ -45,6 +45,8 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public PlayerBoard getBoard(){return board;}
 
+    public GameBoard getCurrentGameBoard(){return this.currentGameBoard;}
+
 
     /**
      * Moves the character to an adjacent square in a direction

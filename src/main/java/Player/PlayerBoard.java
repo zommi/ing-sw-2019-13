@@ -1,6 +1,7 @@
 package Player;
 
 import Cards.AmmoTile;
+import GameBoard.GameBoard;
 import Map.*;
 import Constants.*;
 import Exceptions.*;
@@ -32,6 +33,7 @@ public class PlayerBoard{
     private int validBlueAmmo;
 
     private int points;
+
 
     /**
      * Default constructor
@@ -98,10 +100,12 @@ public class PlayerBoard{
      * @return
      */
     //TODO add easter egg when someone dies 7 times in the same game and make him win.
-    public void addSkull() {
-        if(damageTaken > 10){
+    public void addSkull(Color colorOfAttacker) {
+        if(damageTaken > Constants.DEATH_THRESHOLD){
+            int token2add = damageTaken >= Constants.MAX_HP ? 2 : 1;
             numberOfDeaths++;
             currentPointValueCursor++;
+            player.getCurrentGameBoard().getTrack().removeSkull(token2add,colorOfAttacker);
         } else{
             System.err.println("PLAYER STILL ALIVE");
         }
@@ -118,10 +122,10 @@ public class PlayerBoard{
             setDamage(i,color);
         }
         damageTaken += damageInBullet + marksActivated;
-        if(damageTaken > 10){
+        if(damageTaken > Constants.DEATH_THRESHOLD){
             //add skull on player board, remove skull from game board, decrease value of player,
             //if damage == 12 place a mark on killer
-            addSkull();
+            addSkull(color);
             damageTaken = 0;
             for(int i = 0; i < Constants.MAX_HP; i++){
                 this.damage[i] = Color.UNDEFINED;
@@ -146,7 +150,7 @@ public class PlayerBoard{
     public void addMarks(int marks, Color color)
             throws InvalidMoveException {
         for(int i = 0; i < marks; i++) {
-            if (this.marks.size() < 3) {
+            if (this.marks.size() < Constants.MAX_MARKS) {
                 this.marks.add(color);
             } else {
                 throw new InvalidMoveException();
