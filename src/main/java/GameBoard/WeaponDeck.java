@@ -29,13 +29,12 @@ public class WeaponDeck {
         return size;
     }
 
-    public void draw()
-    {
+    public void draw() {
         this.size = this.size - 1;
     }
 
     public void shuffle() {
-        // TODO implement here
+        Collections.shuffle(deck);
     }
 
 }
