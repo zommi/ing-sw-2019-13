@@ -30,6 +30,11 @@ class MapTest {
 
     @Test
     void getRooms() {
+        new Map(1);
+        List<Room> roomList = Map.getRooms();
+        assertTrue(roomList.get(Color.RED.ordinal()).getColor() == Color.RED);
+        assertTrue(roomList.get(Color.PURPLE.ordinal()).getColor() == Color.PURPLE);
+        assertTrue(roomList.get(Color.WHITE.ordinal()).getColor() == Color.WHITE);
     }
 
     @Test
