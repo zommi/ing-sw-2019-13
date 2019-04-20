@@ -21,11 +21,11 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     /**
      * Initialize the card cost
      */
-    public WeaponCard(List<AmmoCube> cardcost, String namecard, Weapon weap, WeaponDeck weapdeck) {
-        this.cost = cardcost;
-        this.name = namecard;
-        this.weapon = weap;
-        this.weaponDeck = weapdeck;
+    public WeaponCard(int indexWeapon, WeaponDeck weaponDeck) {
+        this.weapon = new Weapon(indexWeapon);
+        this.cost = this.weapon.getCost();
+        this.name = this.weapon.getName();
+        this.weaponDeck = weaponDeck;
         this.ready = true;
     }
 

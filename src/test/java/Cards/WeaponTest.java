@@ -12,7 +12,7 @@ class WeaponTest {
 
     @Test
     public void readCostFromFileTest(){
-        Weapon testWeapon = new Weapon(20); //chose Cyberblade at random
+        Weapon testWeapon = new Weapon(19); //chose Cyberblade at random
 
         List<AmmoCube> testList = new ArrayList<AmmoCube>();
         testList.add(new AmmoCube(Color.RED));

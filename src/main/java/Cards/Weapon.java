@@ -40,76 +40,76 @@ public class Weapon {
     private boolean teleporterflag2;
     private ArrayList<AmmoCube> cost2; //cost of the weapon second effect
 
-
+    private String name;
 
 
     public Weapon(int numweapon) {
         String path;
         switch (numweapon) {
 
-            case 1:
+            case 0:
                 path = "./weapons/LOCKERIFLE.txt";
                 break;
-            case 2:
+            case 1:
                 path = "./weapons/ELECTROSCYTE.txt";
                 break;
-            case 3:
+            case 2:
                 path = "./weapons/MACHINEGUN.txt";
                 break;
 
                 //TODO complete the implementation of all the weapons
-            case 4:
+            case 3:
                 path = "./weapons/TRACTORBEAM.txt";
                 break;
-            case 5:
-                path = "./weapons/T.H.O.R.txt";
+            case 4:
+                path = "./weapons/T.H.O.R..txt";
                 break;
-            case 6:
+            case 5:
                 path = "./weapons/VORTEXCANNON.txt";
                 break;
-            case 7:
+            case 6:
                 path = "./weapons/FURNACE.txt";
                 break;
-            case 8:
+            case 7:
                 path = "./weapons/PLASMAGUN.txt";
                 break;
-            case 9:
+            case 8:
                 path = "./weapons/HEATSEEKER.txt";
                 break;
-            case 10:
+            case 9:
                 path = "./weapons/WHISPER.txt";
                 break;
-            case 11:
+            case 10:
                 path = "./weapons/HELLION.txt";
                 break;
-            case 12:
+            case 11:
                 path = "./weapons/FLAMETHROWER.txt";
                 break;
-            case 13:
+            case 12:
                 path = "./weapons/ZX-2.txt";
                 break;
-            case 14:
+            case 13:
                 path = "./weapons/GRENADELAUNCHER.txt";
                 break;
-            case 15:
+            case 14:
                 path = "./weapons/SHOTGUN.txt";
                 break;
-            case 16:
+            case 15:
                 path = "./weapons/ROCKETLAUNCHER.txt";
                 break;
-            case 17:
+            case 16:
                 path = "./weapons/POWERGLOVE.txt";
                 break;
-            case 18:
+            case 17:
                 path = "./weapons/RAILGUN.txt";
                 break;
-            case 19:
+            case 18:
                 path = "./weapons/SHOCKWAVE.txt";
                 break;
-            case 20:
+            case 19:
                 path = "./weapons/CYBERBLADE.txt";
                 break;
-            case 21:
+            case 20:
                 path = "./weapons/SLEDGEHAMMER.txt";
                 break;
 
@@ -118,7 +118,14 @@ public class Weapon {
                 path = "./.txt";
 
         }
+
+        this.name = getNameFromFile(path);
         generateAttributesFromFile(path);  //by calling this method we initialize the attributes of the weapon
+    }
+
+    private String getNameFromFile(String path) {
+        File file = new File(path);
+        return file.getName().substring(0,file.getName().lastIndexOf('.'));
     }
 
     /**
@@ -196,20 +203,20 @@ public class Weapon {
      * Initalizes the attributes of the weapon reading from file
      * @param path of the file the method has to read from
      */
-    public void generateAttributesFromFile(String path){
+    public void generateAttributesFromFile(String path) {
         Scanner scanner = null;
         List<String> readInput = null;
         readInput = new ArrayList<>();
         try {
             scanner = new Scanner(new File(path));
-        } catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally{
-            while (scanner.hasNextLine()) {
-                readInput.add(scanner.nextLine());
-            }
-            scanner.close();
         }
+        while (scanner.hasNextLine()) {
+            readInput.add(scanner.nextLine());
+        }
+        scanner.close();
+
 
 
         this.damage = Integer.parseInt(readInput.get(0));
@@ -221,23 +228,22 @@ public class Weapon {
         if(Integer.parseInt(readInput.get(6))== 01)
             bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
-        if(6 < readInput.size()) { //it means that the arraylist has more than 6 elements.
+        if(7 < readInput.size()) { //it means that the arraylist has more than 6 elements.
             this.damage1 = Integer.parseInt(readInput.get(7));
             this.marks1 = Integer.parseInt(readInput.get(8));
             this.teleporterflag1 = Boolean.parseBoolean(readInput.get(9));
 
-            this.cost1 = readCost(readInput,Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
+            this.cost1 = readCost(readInput, Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
+
+
+            if (Integer.parseInt(readInput.get(13)) == 02)
+                bullet2 = PrepareBullet2("./weapons/EXTRA2HELLION.txt");
+
+            if (Integer.parseInt(readInput.get(13)) == 03)
+                bullet2 = PrepareBullet2("./weapons/EXTRA2FLAMETHROWER.txt");
         }
 
-
-        if(Integer.parseInt(readInput.get(13))== 02)
-            bullet2 = PrepareBullet2("./weapons/EXTRA2HELLION.txt");
-
-        if(Integer.parseInt(readInput.get(13))== 03)
-            bullet2 = PrepareBullet2("./weapons/EXTRA2FLAMETHROWER.txt");
-
-
-        if(12 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
+        if(14< readInput.size()) {  //it means that the arraylist has more than 12 elements.
             this.damage2 = Integer.parseInt(readInput.get(14));
             this.marks2 = Integer.parseInt(readInput.get(15));
             this.teleporterflag2 = Boolean.parseBoolean(readInput.get(16));
@@ -280,4 +286,7 @@ public class Weapon {
         return cost2;
     }
 
+    public String getName() {
+        return this.name;
+    }
 }

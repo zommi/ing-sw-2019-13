@@ -19,7 +19,7 @@ public class WeaponDeck {
     private List<WeaponCard> initializeDeck() {
         List<WeaponCard> result = new ArrayList<WeaponCard>();
         for(int i = 0; i < Constants.NUMBER_OF_WEAPONS; i++){
-
+            result.add(new WeaponCard(i,this));
         }
         return result;
     }
@@ -37,4 +37,12 @@ public class WeaponDeck {
         Collections.shuffle(deck);
     }
 
+    @Override
+    public String toString() {
+        String stringToReturn = "";
+        for(WeaponCard card : deck){
+            stringToReturn = stringToReturn + card.getName() + "-";
+        }
+        return stringToReturn;
+    }
 }
