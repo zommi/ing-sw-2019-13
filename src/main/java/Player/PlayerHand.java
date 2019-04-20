@@ -62,12 +62,19 @@ public class PlayerHand {
     }
 
 
-    public void addCard(WeaponCard card){
-        weaponHand.add(card);
+    public void addCard(WeaponCard cardToAdd){
+        weaponHand.add(cardToAdd);
         //TODO add swap on gameboard if size == 3
         //note that on spawnpoints there is a list of the weapons currently available
         //i just need to add the weapon the player decides to discard
+    }
 
+    public void addCard(WeaponCard cardToAdd, WeaponCard cardToLeave){
+        this.weaponHand.add(cardToAdd);
+        this.weaponHand.remove(cardToLeave);
+        //TODO add swap on gameboard if size == 3
+        //note that on spawnpoints there is a list of the weapons currently available
+        //i just need to add the weapon the player decides to discard
     }
 
 }

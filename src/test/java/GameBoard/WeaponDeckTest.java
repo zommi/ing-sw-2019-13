@@ -21,10 +21,18 @@ class WeaponDeckTest {
         WeaponDeck testDeck = new WeaponDeck();
         Map testMap = new Map(1);
 
+        System.out.println(testDeck);
+
         testDeck.shuffle();
+
+        System.out.println(testDeck);
+
         String firstCard = testDeck.getTop();
 
         testDeck.draw(Map.getSpawnPoint(Color.BLUE));
         assertEquals(Map.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard);
+
+        System.out.println(testDeck);
+
     }
 }

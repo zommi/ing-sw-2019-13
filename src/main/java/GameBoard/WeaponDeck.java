@@ -42,7 +42,7 @@ public class WeaponDeck {
     public String toString() {
         String stringToReturn = "";
         for(WeaponCard card : deck){
-            stringToReturn = stringToReturn + card.getName() + " -";
+            stringToReturn = stringToReturn + card.getName() + " - ";
         }
         return stringToReturn;
     }
