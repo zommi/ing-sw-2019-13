@@ -17,6 +17,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     private Weapon weapon;
     private WeaponDeck weaponDeck;
     private boolean ready;
+    private int weaponIndex;
 
     /**
      * Initialize the card cost
@@ -27,6 +28,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
         this.name = this.weapon.getName();
         this.weaponDeck = weaponDeck;
         this.ready = true;
+        this.weaponIndex = indexWeapon;
     }
 
 
@@ -75,5 +77,9 @@ public class WeaponCard implements CollectableInterface, CardInterface {
 
     public void collect() {
 
+    }
+
+    public WeaponCard clone(){
+        return new WeaponCard(this.weaponIndex, this.weaponDeck);
     }
 }
