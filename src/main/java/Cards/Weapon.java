@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import Constants.Color;
+import Constants.Constants;
 import Items.*;
 
 
@@ -116,8 +117,8 @@ public class Weapon {
             default:    //this should never happen
                 path = "./.txt";
 
-            generateattributesFromFile(path);  //by calling this method we initialize the attributes of the weapon
         }
+        generateAttributesFromFile(path);  //by calling this method we initialize the attributes of the weapon
     }
 
     /**
@@ -164,16 +165,16 @@ public class Weapon {
 
         Bullet secondbullet;
         List<String> readInput = null;
+        readInput = new ArrayList<>();
+
         try {
             scanner = new Scanner(new File(path));
-            readInput = new ArrayList<>();
-
-            while (scanner.hasNextLine()) {
-                readInput.add(scanner.nextLine());
-            }
         } catch(FileNotFoundException e){
             //TODO handle exception
         } finally{
+            while (scanner.hasNextLine()) {
+                readInput.add(scanner.nextLine());
+            }
             scanner.close();
         }
 
@@ -195,19 +196,18 @@ public class Weapon {
      * Initalizes the attributes of the weapon reading from file
      * @param path of the file the method has to read from
      */
-    public void generateattributesFromFile(String path){
+    public void generateAttributesFromFile(String path){
         Scanner scanner = null;
         List<String> readInput = null;
+        readInput = new ArrayList<>();
         try {
             scanner = new Scanner(new File(path));
-            readInput = new ArrayList<>();
-
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+        } finally{
             while (scanner.hasNextLine()) {
                 readInput.add(scanner.nextLine());
             }
-        } catch(FileNotFoundException e){
-            //TODO handle exception
-        } finally{
             scanner.close();
         }
 
@@ -216,104 +216,46 @@ public class Weapon {
         this.marks = Integer.parseInt(readInput.get(1));
         this.teleporterflag = Boolean.parseBoolean(readInput.get(2));
 
-        if(Integer.parseInt(readInput.get(3)) != 0) { //it means that it costs some red ammocubes
-            cost = new ArrayList<AmmoCube>();
-            for (int i = 0; i < Integer.parseInt(readInput.get(3)); i++) {
-                AmmoCube am = new AmmoCube(Color.RED);
-                cost.add(am);
-            }
-        }
-        if(Integer.parseInt(readInput.get(4)) != 0){ //It means that it costs some blue ammocubes
-            if(cost == null)
-                cost = new ArrayList<AmmoCube>();
-            for(int i = 0; i < Integer.parseInt(readInput.get(4)); i++) {
-                AmmoCube am = new AmmoCube(Color.BLUE);
-                cost.add(am);
-            }
-        }
-        if(Integer.parseInt(readInput.get(5))!= 0) { //it means that it costs some yellow ammocubes
-            if(cost == null)
-                cost = new ArrayList<AmmoCube>();
-            for (int i = 0; i < Integer.parseInt(readInput.get(5)); i++) {
-                AmmoCube am = new AmmoCube(Color.YELLOW);
-                cost.add(am);
-            }
-        }
+        this.cost = readCost(readInput,Constants.FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
         if(Integer.parseInt(readInput.get(6))== 01)
             bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
         if(6 < readInput.size()) { //it means that the arraylist has more than 6 elements.
-            this.damage1 = Integer.parseInt(readInput.get(6));
-            this.marks1 = Integer.parseInt(readInput.get(7));
-            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(8));
+            this.damage1 = Integer.parseInt(readInput.get(7));
+            this.marks1 = Integer.parseInt(readInput.get(8));
+            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(9));
 
-            if (Integer.parseInt(readInput.get(9)) != 0) { //it means that it costs some red ammocubes
-                cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(9)); i++) {
-                    AmmoCube am = new AmmoCube(Color.RED);
-                    cost.add(am);
-                }
-            }
-            if (Integer.parseInt(readInput.get(10)) != 0) { //It means that it costs some blue ammocubes
-                if (cost == null)
-                    cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(10)); i++) {
-                    AmmoCube am = new AmmoCube(Color.BLUE);
-                    cost.add(am);
-                }
-            }
-            if (Integer.parseInt(readInput.get(11)) != 0) { //it means that it costs some yellow ammocubes
-                if (cost == null)
-                    cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(11)); i++) {
-                    AmmoCube am = new AmmoCube(Color.YELLOW);
-                    cost.add(am);
-                }
-            }
+            this.cost1 = readCost(readInput,Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
         }
 
 
-        if(Integer.parseInt(readInput.get(12))== 02)
+        if(Integer.parseInt(readInput.get(13))== 02)
             bullet2 = PrepareBullet2("./weapons/EXTRA2HELLION.txt");
 
-        if(Integer.parseInt(readInput.get(12))== 03)
+        if(Integer.parseInt(readInput.get(13))== 03)
             bullet2 = PrepareBullet2("./weapons/EXTRA2FLAMETHROWER.txt");
 
 
         if(12 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
-            this.damage2 = Integer.parseInt(readInput.get(12));
-            this.marks2 = Integer.parseInt(readInput.get(13));
-            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(14));
+            this.damage2 = Integer.parseInt(readInput.get(14));
+            this.marks2 = Integer.parseInt(readInput.get(15));
+            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(16));
 
-            if (Integer.parseInt(readInput.get(15)) != 0) { //it means that it costs some red ammocubes
-                cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(15)); i++) {
-                    AmmoCube am = new AmmoCube(Color.RED);
-                    cost.add(am);
-                }
-            }
-            if (Integer.parseInt(readInput.get(16)) != 0) { //It means that it costs some blue ammocubes
-                if (cost == null)
-                    cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(16)); i++) {
-                    AmmoCube am = new AmmoCube(Color.BLUE);
-                    cost.add(am);
-                }
-            }
-            if (Integer.parseInt(readInput.get(17)) != 0) { //it means that it costs some yellow ammocubes
-                if (cost == null)
-                    cost = new ArrayList<AmmoCube>();
-                for (int i = 0; i < Integer.parseInt(readInput.get(17)); i++) {
-                    AmmoCube am = new AmmoCube(Color.YELLOW);
-                    cost.add(am);
-                }
-            }
-
+            this.cost2 = readCost(readInput,Constants.THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
         }
     }
 
 
+    public ArrayList<AmmoCube> readCost(List<String> inputFromfile, int startIndex){
+        ArrayList<AmmoCube> costToReturn = new ArrayList<AmmoCube>();
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < Integer.parseInt(inputFromfile.get(startIndex + i)); j++) {
+                costToReturn.add(new AmmoCube(Color.fromIndex(i)));
+            }
+        }
+        return costToReturn;
+    }
 
     public Command getCommand(){
         return this.command;

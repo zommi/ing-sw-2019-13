@@ -20,4 +20,8 @@ public class Constants {
 
 
     public static final int DEATH_THRESHOLD = 10;
+
+    public static final int FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 3;
+    public static final int SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 10;
+    public static final int THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 17;
 }

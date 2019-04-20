@@ -35,4 +35,8 @@ public class AmmoCube extends Ownable {
         return this.color;
     }
 
+    @Override
+    public String toString() {
+        return color.toString();
+    }
 }
