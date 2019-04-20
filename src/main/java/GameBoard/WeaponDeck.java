@@ -2,22 +2,22 @@ package GameBoard;
 
 import Cards.WeaponCard;
 import Constants.Constants;
-
+import Map.*;
 import java.util.*;
 
 
 public class WeaponDeck {
 
     private int size;
-    private List<WeaponCard> deck;
+    private LinkedList<WeaponCard> deck;
 
     public WeaponDeck() {
         this.size = Constants.NUMBER_OF_WEAPONS;
         this.deck = initializeDeck();
     }
 
-    private List<WeaponCard> initializeDeck() {
-        List<WeaponCard> result = new ArrayList<WeaponCard>();
+    private LinkedList<WeaponCard> initializeDeck() {
+        LinkedList<WeaponCard> result = new LinkedList<WeaponCard>();
         for(int i = 0; i < Constants.NUMBER_OF_WEAPONS; i++){
             result.add(new WeaponCard(i,this));
         }
@@ -29,8 +29,9 @@ public class WeaponDeck {
         return size;
     }
 
-    public void draw() {
+    public void draw(SpawnPoint spawn) {
         this.size = this.size - 1;
+        spawn.addWeaponCard(this.deck.pop());
     }
 
     public void shuffle() {
@@ -41,8 +42,14 @@ public class WeaponDeck {
     public String toString() {
         String stringToReturn = "";
         for(WeaponCard card : deck){
-            stringToReturn = stringToReturn + card.getName() + "-";
+            stringToReturn = stringToReturn + card.getName() + " -";
         }
         return stringToReturn;
     }
+
+
+    public String getTop(){
+        return this.deck.get(0).getName();
+    }
+
 }

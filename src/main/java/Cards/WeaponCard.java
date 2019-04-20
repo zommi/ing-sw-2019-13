@@ -63,11 +63,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
 
 
     public void draw() {
-        if(weaponDeck.getSize() > 0)
-            weaponDeck.draw();
-        else
-            //The GUI will show that there are no more card to draw from the deck
-        return;
+        //Draw card from spawnpoint.
     }
 
 
