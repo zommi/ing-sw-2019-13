@@ -31,7 +31,7 @@ public class WeaponDeck {
 
     public void draw(SpawnPoint spawn) {
         this.size = this.size - 1;
-        spawn.addWeaponCard(this.deck.pop());
+        spawn.addItem(this.deck.pop());
     }
 
     public void shuffle() {

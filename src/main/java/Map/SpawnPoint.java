@@ -1,5 +1,6 @@
 package Map;
 
+import Cards.CollectableInterface;
 import Cards.WeaponCard;
 import Constants.Color;
 import Player.Character;
@@ -34,11 +35,13 @@ public class SpawnPoint extends SquareAbstract {
         return (ArrayList<WeaponCard>) weaponCards.clone();
     }
 
-    public void addWeaponCard(WeaponCard weaponCard){
-        weaponCards.add(weaponCard);
+    public void addItem(CollectableInterface itemToAdd){
+        weaponCards.add((WeaponCard)itemToAdd);
     }
 
-    public void removeWeaponCard(WeaponCard weaponCard){
-        weaponCards.remove(weaponCard);
+    public void removeItem(CollectableInterface itemToRemove){
+        weaponCards.remove((WeaponCard)itemToRemove);
     }
+
+
 }

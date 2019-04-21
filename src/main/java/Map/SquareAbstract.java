@@ -1,5 +1,7 @@
 package Map;
 
+import Cards.CollectableInterface;
+import Cards.WeaponCard;
 import Constants.Color;
 import Constants.Directions;
 import Player.Character;
@@ -7,7 +9,7 @@ import Player.Character;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SquareAbstract {
+public abstract class  SquareAbstract {
 
     private List<Character> charactersList;
 
@@ -288,4 +290,7 @@ public abstract class SquareAbstract {
         return squaresList;
     }
 
+    public abstract void removeItem(CollectableInterface itemToAdd);
+
+    public abstract void addItem(CollectableInterface itemToLeave);
 }

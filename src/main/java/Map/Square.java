@@ -1,6 +1,7 @@
 package Map;
 
 import Cards.AmmoTile;
+import Cards.CollectableInterface;
 import Constants.Color;
 import Player.Character;
 
@@ -28,11 +29,13 @@ public class Square extends SquareAbstract {
         return ammoTile;
     }
 
-    public void setAmmoTile(AmmoTile ammoTile) {
-        this.ammoTile = ammoTile;
+    public void addItem(CollectableInterface itemToAdd) {
+        this.ammoTile = (AmmoTile)itemToAdd;
     }
 
-    public void removeAmmoTile(){
+    public void removeItem(CollectableInterface itemToRemove){
         ammoTile = null;
     }
+
+
 }
