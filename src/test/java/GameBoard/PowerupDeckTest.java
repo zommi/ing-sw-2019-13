@@ -3,6 +3,7 @@ package GameBoard;
 import Cards.PowerupCard;
 import Constants.Color;
 import Exceptions.InvalidMoveException;
+import Player.PlayerHand;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -39,32 +40,46 @@ class PowerupDeckTest {
     @Test
     public void testRestore(){
         PowerupDeck testDeck = new PowerupDeck();
+        List<PowerupCard> testHand = new ArrayList<>();
 
-        for(int i = 0; i < 15 ; i++) testDeck.draw(); //random number of draws
+        for(int i = 0; i<15;i++)testDeck.draw();
 
         List<PowerupCard> copyList = new ArrayList<>();
         copyList.addAll(testDeck.getDeck());
 
         assertTrue(copyList.containsAll(testDeck.getDeck()));
-        for(PowerupCard card : testDeck.getDeck()) card.discard();
+        int numberOfCardsInDeck = testDeck.getDeck().size();
+        for(int i = 0; i < numberOfCardsInDeck ; i++) {
+            testHand.add(testDeck.draw());
+        }
+        for(PowerupCard card : testHand)card.discard();
         assertTrue(copyList.containsAll(testDeck.getDiscardedCards()));
 
+        assertTrue(testDeck.getDeck().isEmpty());
         testDeck.restore();
+
         assertTrue(copyList.containsAll(testDeck.getDeck()));
     }
 
     @Test
     public void testRestoreAfterDraw(){
         PowerupDeck testDeck = new PowerupDeck();
+        List<PowerupCard> testHand = new ArrayList<>();
 
-        for(int i = 0; i < 15 ; i++) testDeck.draw(); //random number of draws
+        for(int i = 0; i<15;i++)testDeck.draw();
 
         List<PowerupCard> copyList = new ArrayList<>();
         copyList.addAll(testDeck.getDeck());
 
         assertTrue(copyList.containsAll(testDeck.getDeck()));
-        for(PowerupCard card : testDeck.getDeck()) card.discard();
+        int numberOfCardsInDeck = testDeck.getDeck().size();
+        for(int i = 0; i < numberOfCardsInDeck ; i++) {
+            testHand.add(testDeck.draw());
+        }
+        for(PowerupCard card : testHand)card.discard();
         assertTrue(copyList.containsAll(testDeck.getDiscardedCards()));
+
+        assertTrue(testDeck.getDeck().isEmpty());
 
         PowerupCard drawnCard = testDeck.draw();
         copyList.remove(drawnCard);

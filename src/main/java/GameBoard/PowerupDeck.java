@@ -48,10 +48,7 @@ public class PowerupDeck {
 
     public void restore(){
         if(deck.isEmpty()) {
-            for (PowerupCard card : discardedCards) {
-                this.deck.add(card);
-                this.discardedCards.remove(card);
-            }
+            this.deck.addAll(this.discardedCards);
             shuffle();
         }
     }
