@@ -43,4 +43,11 @@ public class GameBoard {
         return this.gameMap;
     }
 
+    public WeaponDeck getWeaponDeck() {
+        return weaponDeck;
+    }
+
+    public PowerupDeck getPowerupDeck() {
+        return powerupDeck;
+    }
 }

@@ -12,7 +12,7 @@ public class PowerupDeck {
 
     private LinkedList<PowerupCard> deck;
     public List<PowerupCard> discardedCards;
-    
+
     public PowerupDeck() {
         this.discardedCards = new ArrayList<PowerupCard>();
         initializeDeck();
