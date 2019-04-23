@@ -29,4 +29,8 @@ public class Newton implements Powerup {
         return bullet;
     }
 
+    @Override
+    public String getName() {
+        return "Newton";
+    }
 }

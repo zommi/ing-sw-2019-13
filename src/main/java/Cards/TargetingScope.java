@@ -35,4 +35,8 @@ public class TargetingScope implements Powerup {
         return bullet;
     }
 
+    @Override
+    public String getName() {
+        return "Targeting scope";
+    }
 }
