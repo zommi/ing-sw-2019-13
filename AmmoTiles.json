@@ -1,0 +1,86 @@
+[
+  {
+    "redCubes" : "2",
+    "blueCubes" : "0",
+    "yellowCubes" : "0",
+    "powerup" : true,
+    "numberOfCards" : "2"
+  },
+  {
+    "redCubes" : "0",
+    "blueCubes" : "2",
+    "yellowCubes" : "0",
+    "powerup" : true,
+    "numberOfCards" : "2"
+  },
+  {
+    "redCubes" : "0",
+    "blueCubes" : "0",
+    "yellowCubes" : "2",
+    "powerup" : true,
+    "numberOfCards" : "2"
+  },
+  {
+    "redCubes" : "0",
+    "blueCubes" : "1",
+    "yellowCubes" : "1",
+    "powerup" : true,
+    "numberOfCards" : "4"
+  },
+  {
+    "redCubes" : "1",
+    "blueCubes" : "0",
+    "yellowCubes" : "1",
+    "powerup" : true,
+    "numberOfCards" : "4"
+  },
+  {
+    "redCubes" : "1",
+    "blueCubes" : "1",
+    "yellowCubes" : "0",
+    "powerup" : true,
+    "numberOfCards" : "4"
+  },
+  {
+    "redCubes" : "1",
+    "blueCubes" : "0",
+    "yellowCubes" : "2",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  },
+  {
+    "redCubes" : "2",
+    "blueCubes" : "0",
+    "yellowCubes" : "1",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  },
+  {
+    "redCubes" : "1",
+    "blueCubes" : "2",
+    "yellowCubes" : "0",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  },
+  {
+    "redCubes" : "2",
+    "blueCubes" : "1",
+    "yellowCubes" : "0",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  },
+  {
+    "redCubes" : "0",
+    "blueCubes" : "2",
+    "yellowCubes" : "1",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  },
+  {
+    "redCubes" : "0",
+    "blueCubes" : "1",
+    "yellowCubes" : "2",
+    "powerup" : false,
+    "numberOfCards" : "3"
+  }
+]

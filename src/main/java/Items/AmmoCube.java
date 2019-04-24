@@ -1,18 +1,19 @@
 package Items;
 
-import Constants.Color;
-import Cards.Ownable;
+import Constants.*;
+import Cards.*;
 
 /**
  * 
  */
-public class AmmoCube extends Ownable {
+public class AmmoCube extends Ownable implements AmmoTileItem {
 
-    private Color color;  //Have a look at the costants class.
+    private Color color;
     private boolean valid;
 
     public AmmoCube(Color c) {
         this.color = c;
+        this.valid = false;
     }
 
 
@@ -20,10 +21,7 @@ public class AmmoCube extends Ownable {
      * Reverses the value of valid.
      */
     public void toggleValid() {
-        if(this.valid == true)
-            this.valid = false;
-        else
-            this.valid = true;
+        this.valid = !this.valid;
     }
 
 
@@ -38,5 +36,19 @@ public class AmmoCube extends Ownable {
     @Override
     public String toString() {
         return color.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof AmmoCube)) {
+            return false;
+        }
+
+        AmmoCube ammoCubeObject = (AmmoCube) obj;
+        return this.color == ammoCubeObject.getColor() && this.valid == ammoCubeObject.isValid();
     }
 }

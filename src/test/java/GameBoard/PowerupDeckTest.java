@@ -16,7 +16,7 @@ class PowerupDeckTest {
     @Test
     public void initializeTest(){
         PowerupDeck testDeck = new PowerupDeck();
-        //System.out.println(testDeck);
+        System.out.println(testDeck);
 
 
         long redCardsCounter = testDeck.getDeck().stream()
@@ -55,7 +55,7 @@ class PowerupDeckTest {
         for(PowerupCard card : testHand)card.discard();
         assertTrue(copyList.containsAll(testDeck.getDiscardedCards()));
 
-        assertTrue(testDeck.getDeck().isEmpty());
+        assertTrue(testDeck.isEmpty());
         testDeck.restore();
 
         assertTrue(copyList.containsAll(testDeck.getDeck()));
@@ -79,7 +79,7 @@ class PowerupDeckTest {
         for(PowerupCard card : testHand)card.discard();
         assertTrue(copyList.containsAll(testDeck.getDiscardedCards()));
 
-        assertTrue(testDeck.getDeck().isEmpty());
+        assertTrue(testDeck.isEmpty());
 
         PowerupCard drawnCard = testDeck.draw();
         copyList.remove(drawnCard);

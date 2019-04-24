@@ -8,28 +8,44 @@ import Items.*;
  */
 public class AmmoTile implements CollectableInterface {
 
-    /**
-     * Default constructor
-     */
-    public AmmoTile() {
+    private List<AmmoCube> content;
+    private boolean hasPowerup;
+
+    public AmmoTile(List<AmmoCube> content, boolean hasWeapon) {
+        this.content = content;
+        this.hasPowerup = hasWeapon;
     }
 
-    /**
-     * @return
-     */
-    public List<ItemInterface> getContent() {
-        // TODO implement here
-        return null;
+    public List<AmmoCube> getContent() {
+        return content;
     }
 
-    /**
-     * 
-     */
-    public void collect() {
-        // TODO implement here
+    public boolean hasWeapon(){
+        return hasPowerup;
     }
 
-    public void display() {
-        //TODO
+    @Override
+    public String toString() {
+        String stringToReturn = "";
+        for(AmmoCube cube : content) stringToReturn+= cube.toString() + '\n';
+        if(hasPowerup) stringToReturn += "has powerup\n";
+        return stringToReturn;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof AmmoTile)) {
+            return false;
+        }
+
+        AmmoTile ammoTileObject = (AmmoTile) obj;
+
+        if(this.getContent().size() != ammoTileObject.getContent().size()
+            || this.hasPowerup != ammoTileObject.hasPowerup) return false;
+        return this.content.containsAll(ammoTileObject.getContent());
     }
 }

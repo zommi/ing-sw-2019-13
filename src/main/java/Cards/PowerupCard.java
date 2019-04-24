@@ -3,9 +3,10 @@ package Cards;
 import Constants.*;
 import Exceptions.InvalidMoveException;
 import GameBoard.*;
+import Items.AmmoTileItem;
 
 
-public class PowerupCard implements CardInterface {
+public class PowerupCard implements CardInterface, AmmoTileItem {
 
     private Color color;
     private Powerup powerup;
