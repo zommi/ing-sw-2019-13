@@ -173,6 +173,19 @@ public abstract class  SquareAbstract {
     }
 
     /**
+     * Returns a list with the squares that are visible from this square.
+     * @return a list with the squares that are visible from this square
+     */
+    public List<SquareAbstract> getVisibleSquares(){
+        List<SquareAbstract> visibleSquares = new ArrayList<>();
+        visibleSquares.addAll(room.getSquares());
+        for(Room tempRoom : this.getVisibleRooms()){
+            visibleSquares.addAll(tempRoom.getSquares());
+        }
+        return visibleSquares;
+    }
+
+    /**
      * Returns a list with the characters that stand on a square that
      * has the same row OR the same column of this square. Thus, a character
      * could be in the same square too.
@@ -195,17 +208,25 @@ public abstract class  SquareAbstract {
 
     }
 
-    /*public List<Character> getUpToTwoMovementsCharacters(){
-        List<Character> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> tempSquareList = new ArrayList<>();
-        tempSquareList.add(this);
+    public List<SquareAbstract> getExactlyTwoMovementsSquares(){
+        List<SquareAbstract> tempSquaresList = new ArrayList<>();
+        tempSquaresList.addAll(this.getAdjacentSquares());
         for(SquareAbstract square : this.getAdjacentSquares()){
-            tempCharactersList.addAll(square.getOneMovementCharacters());
+            tempSquaresList.addAll(square.getAdjacentSquares());
         }
-        tempCharactersList.removeAll(tempSquareList);
-        return tempCharactersList;
+        while(tempSquaresList.contains(this)){
+            tempSquaresList.remove(this);
+        }
+        return tempSquaresList;
+    }
 
-    }*/
+    public List<Character> getExactlyTwoMovementsCharacters() {
+        List<Character> tempCharactersList = new ArrayList<>();
+        for(SquareAbstract square : getExactlyTwoMovementsSquares()){
+            tempCharactersList.addAll(square.getCharacters());
+        }
+        return tempCharactersList;
+    }
 
     /**
      * Returns a list with all the characters that stand on the linked adjacent squares.
