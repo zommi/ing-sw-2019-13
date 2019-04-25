@@ -6,4 +6,5 @@ public interface Powerup {
 
     public Bullet usePowerup();
 
+    public String getName();
 }

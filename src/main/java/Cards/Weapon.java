@@ -7,9 +7,7 @@ import java.util.*;
 import Constants.Color;
 import Constants.Constants;
 import Items.*;
-
-
-
+import Player.Character;
 
 
 //PAY ATTENTION TO THE POWER GLOVE!!!! IT HAS a SECOND EXTRA EFFECT that IS PART OF THE FIRST ONE WHICH NEEDS TO BE CALLED FROM THE CONTROLLER!!!!!
@@ -19,6 +17,7 @@ public class Weapon {
     private Bullet bullet2;
 
     private Command command;
+
     private int x;  //I need it if I have to use the teleporter.
     private int y;  //I need it if I have to use the teleporter.
     private int damage;
@@ -26,12 +25,16 @@ public class Weapon {
     private boolean teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
     private ArrayList<AmmoCube> cost; //cost of the weapon
 
+    private Command command1;
+
     private int x1;
     private int y1;
     private int damage1;
     private int marks1;
     private boolean teleporterflag1;
     private ArrayList<AmmoCube> cost1; //cost of the weapon first effect
+
+    private Command command2;
 
     private int x2;
     private int y2;
@@ -56,8 +59,6 @@ public class Weapon {
             case 2:
                 path = "./weapons/MACHINEGUN.txt";
                 break;
-
-                //TODO complete the implementation of all the weapons
             case 3:
                 path = "./weapons/TRACTORBEAM.txt";
                 break;
@@ -196,6 +197,49 @@ public class Weapon {
 
 
 
+    // n indicates the command I am referring to
+    /**
+     * Returns the Command depending on the int read on the file
+     * @param input is the List of lines from the file
+     * @param index is the index from where the method starts to read on the List
+     * @return the Command depending on the int read on the file
+     */
+    public Command readCommand(List<String> input, int index){
+        int read = Integer.parseInt(input.get(index));
+        Command command;
+
+        if(read == 0)
+            command = new AimInvisibleCommand();
+        else if(read == 1)
+            command = new AimOwnSquareCommand();
+        else if(read == 2)
+            command = new AimSeenCommand();
+        else if(read == 3)
+            command = new AimThroughWallsCommand();
+        else if(read == 4)
+            command = new AimTwoMovementsCommand();
+        else if(read == 5)
+            command = new ExactlyOneMovementCommand();
+        else if(read == 6)
+            command = new FlameThrowerCommand();
+        else if(read == 7)
+            command = new NotOwnSquareCommand();
+        else if(read == 8)
+            command = new RoomCanSeeCommand();
+        else if(read == 9)
+            command = new PullWhereCanSeeCommand();
+        else if(read == 10)
+            command = new ZeroOneTwoMovementsCommand();
+        else if(read == 11)
+            command = new VortexCannonCommand();
+        else if(read == 12)
+            command = new SeeOneMovementCommand();
+        else if(read == 13)
+            command = new SeeNotOwnSquareCommand();
+        else //it means no visibility
+            command = null;
+        return command;
+    }
 
 
 
@@ -218,39 +262,43 @@ public class Weapon {
         scanner.close();
 
 
-
-        this.damage = Integer.parseInt(readInput.get(0));
-        this.marks = Integer.parseInt(readInput.get(1));
-        this.teleporterflag = Boolean.parseBoolean(readInput.get(2));
+        this.command = readCommand(readInput,0);
+        this.damage = Integer.parseInt(readInput.get(1));
+        this.marks = Integer.parseInt(readInput.get(2));
+        this.teleporterflag = Boolean.parseBoolean(readInput.get(3));
 
         this.cost = readCost(readInput,Constants.FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
-        if(Integer.parseInt(readInput.get(6))== 01)
+        if(Integer.parseInt(readInput.get(7))== 01)
             bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
         if(7 < readInput.size()) { //it means that the arraylist has more than 6 elements.
-            this.damage1 = Integer.parseInt(readInput.get(7));
-            this.marks1 = Integer.parseInt(readInput.get(8));
-            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(9));
+            this.command1 = readCommand(readInput, 8);
+            this.damage1 = Integer.parseInt(readInput.get(9));
+            this.marks1 = Integer.parseInt(readInput.get(10));
+            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(11));
 
             this.cost1 = readCost(readInput, Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
 
-            if (Integer.parseInt(readInput.get(13)) == 02)
+            if (Integer.parseInt(readInput.get(15)) == 02)
                 bullet2 = PrepareBullet2("./weapons/EXTRA2HELLION.txt");
 
-            if (Integer.parseInt(readInput.get(13)) == 03)
+            if (Integer.parseInt(readInput.get(15)) == 03)
                 bullet2 = PrepareBullet2("./weapons/EXTRA2FLAMETHROWER.txt");
         }
 
-        if(14< readInput.size()) {  //it means that the arraylist has more than 12 elements.
-            this.damage2 = Integer.parseInt(readInput.get(14));
-            this.marks2 = Integer.parseInt(readInput.get(15));
-            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(16));
 
-            this.cost2 = readCost(readInput,Constants.THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
+        if (16 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
+            this.command2 = readCommand(readInput, 16);
+            this.damage2 = Integer.parseInt(readInput.get(17));
+            this.marks2 = Integer.parseInt(readInput.get(18));
+            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(19));
+
+            this.cost2 = readCost(readInput, Constants.THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
         }
     }
+
 
 
     public ArrayList<AmmoCube> readCost(List<String> inputFromfile, int startIndex){

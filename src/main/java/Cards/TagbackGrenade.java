@@ -23,4 +23,8 @@ public class TagbackGrenade implements Powerup {
         return bullet;
     }
 
+    @Override
+    public String getName() {
+        return "Tagback Grenade";
+    }
 }

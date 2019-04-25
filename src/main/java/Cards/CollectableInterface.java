@@ -5,6 +5,4 @@ import Items.*;
 
 public interface CollectableInterface extends ItemInterface {
 
-    public void collect();
-
 }

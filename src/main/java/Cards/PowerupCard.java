@@ -1,15 +1,16 @@
 package Cards;
 
 import Constants.*;
+import Exceptions.InvalidMoveException;
 import GameBoard.*;
+import Items.AmmoTileItem;
 
 
-public class PowerupCard implements CardInterface {
+public class PowerupCard implements CardInterface, AmmoTileItem {
 
     private Color color;
     private Powerup powerup;
     private PowerupDeck powerupDeck;
-    String name;
 
 
     public PowerupCard(Color color, Powerup powerup, PowerupDeck powerupDeck) {
@@ -34,14 +35,12 @@ public class PowerupCard implements CardInterface {
 
 
     public void draw() {
-        if(powerupDeck.isEmpty()) //If it's empty, the deck need to be recharged.
-            powerupDeck.restore();
         powerupDeck.draw();
     }
 
-
-
-
+    public Color getColor() {
+        return color;
+    }
 
     public void getEffect() {
         // TODO implement here
@@ -50,7 +49,7 @@ public class PowerupCard implements CardInterface {
 
 
     public String getName() {
-        return name;
+        return powerup.getName();
     }
 
 

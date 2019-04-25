@@ -6,7 +6,7 @@ import Player.Character;
 import java.util.ArrayList;
 
 
-public class FlameThrowerCommand {
+public class FlameThrowerCommand implements Command{
 
     private Constants.Directions direction;
 

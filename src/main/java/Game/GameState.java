@@ -1,33 +1,13 @@
 package Game;
 
-import java.util.*;
+public enum GameState {
+    START_MENU,
 
-/**
- * 
- */
-public class GameState {
+    SETUP,
 
-    /**
-     * Default constructor
-     */
-    public GameState() {
-    }
+    NORMAL_TURN,
 
+    FINAL_FRENZY,
 
-    /**
-     * @return
-     */
-    public void nextState() {
-        // TODO implement here
-        return;
-    }
-
-    /**
-     * @return
-     */
-    public void pauseGame() {
-        // TODO implement here
-        return;
-    }
-
+    END_GAME
 }

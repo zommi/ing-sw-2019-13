@@ -31,16 +31,20 @@ public class GameBoard {
         return this.track;
     }
 
-    /**
-     * @return
-     */
+    //set up ammotiles in squares and weapons in spawnpoints
     public void setup() {
-        weaponDeck.shuffle();
-        powerupDeck.shuffle();
+
     }
 
     public Map getMap(){
         return this.gameMap;
     }
 
+    public WeaponDeck getWeaponDeck() {
+        return weaponDeck;
+    }
+
+    public PowerupDeck getPowerupDeck() {
+        return powerupDeck;
+    }
 }

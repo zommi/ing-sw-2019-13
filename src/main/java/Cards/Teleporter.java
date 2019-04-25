@@ -27,4 +27,8 @@ public class Teleporter implements Powerup {
         return bullet;
     }
 
+    @Override
+    public String getName() {
+        return "Teleporter";
+    }
 }

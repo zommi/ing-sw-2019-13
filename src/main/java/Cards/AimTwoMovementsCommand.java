@@ -1,5 +1,6 @@
 package Cards;
 
+import Map.Square;
 import Map.SquareAbstract;
 import Player.Character;
 
@@ -18,8 +19,17 @@ public class AimTwoMovementsCommand implements Command {
      */
     public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
         ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
-        e.add((ArrayList<Character>)square.getUpToOneMovementCharacters());
 
+        ArrayList<Character> e1 = (ArrayList<Character>)square.getExactlyTwoMovementsCharacters();
+
+        ArrayList<Character> e2 = (ArrayList<Character>) square.getVisibleCharacters();
+
+        for (Character t : (ArrayList<Character>)e1.clone()) {
+            if(! e2.contains(t))
+                e1.remove(t);
+        }
+
+        e.add(e1);
         return e;
     }
 
