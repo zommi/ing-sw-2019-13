@@ -255,6 +255,13 @@ public abstract class  SquareAbstract {
         return tempCharactersList;
     }
 
+    public List<Character> getAtLeastOneMovementCharacters(){
+        List<Character> tempCharactersList = new ArrayList<>();
+        tempCharactersList.addAll(Character.getTakenCharacters());
+        tempCharactersList.removeAll(this.getCharacters());
+        return tempCharactersList;
+    }
+
     /**
      * Returns two squares that are linked in the given direction to this square.
      * The returned list may only contain the adjacent square, or may be empty,
