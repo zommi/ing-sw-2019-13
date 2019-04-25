@@ -208,17 +208,29 @@ public abstract class  SquareAbstract {
 
     }
 
+    /**
+     * Returns a list with squares that are exactly two moves
+     * away from the square on which the method is called.
+     * @return a list with squares that are exactly two moves
+     *         away from the square on which the method is called.
+     */
+
     public List<SquareAbstract> getExactlyTwoMovementsSquares(){
         List<SquareAbstract> tempSquaresList = new ArrayList<>();
-        tempSquaresList.addAll(this.getAdjacentSquares());
         for(SquareAbstract square : this.getAdjacentSquares()){
-            tempSquaresList.addAll(square.getAdjacentSquares());
-        }
-        while(tempSquaresList.contains(this)){
-            tempSquaresList.remove(this);
+            for(SquareAbstract square2 : square.getAdjacentSquares())
+                if(!tempSquaresList.contains(square2) && !square2.equals(this))
+                    tempSquaresList.add(square2);
         }
         return tempSquaresList;
     }
+
+    /**
+     * Returns a list with characters that are at least two moves
+     * away from the square on which the method is called.
+     * @return a list with characters that are at least two moves
+     *         away from the square on which the method is called
+     */
 
     public List<Character> getExactlyTwoMovementsCharacters() {
         List<Character> tempCharactersList = new ArrayList<>();
@@ -254,6 +266,13 @@ public abstract class  SquareAbstract {
         tempCharactersList.addAll(this.getCharacters());
         return tempCharactersList;
     }
+
+    /**
+     * Returns a list with characters that are at least one move away from
+     * the square on which the method is called.
+     * @return a list with characters that are at least one move away from
+     *         the square on which the method is called
+     */
 
     public List<Character> getAtLeastOneMovementCharacters(){
         List<Character> tempCharactersList = new ArrayList<>();

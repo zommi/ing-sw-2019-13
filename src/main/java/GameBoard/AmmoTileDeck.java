@@ -1,12 +1,8 @@
 package GameBoard;
 
 import Cards.AmmoTile;
-<<<<<<< HEAD
-import Constants.Color;
-=======
 
 import Constants.*;
->>>>>>> c704307d2681e35896c019ac1e16d491594ba19e
 import Exceptions.ReadJsonErrorException;
 import Items.AmmoCube;
 import Items.AmmoTileType;
@@ -14,14 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-=======
 import java.util.*;
->>>>>>> c704307d2681e35896c019ac1e16d491594ba19e
 
 public class AmmoTileDeck {
 
