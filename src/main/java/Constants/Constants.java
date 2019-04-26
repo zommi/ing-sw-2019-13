@@ -9,9 +9,11 @@ public class Constants {
     public static final int MAX_AMMO_CUBES_PER_COLOR = 3;
     public static final int MAX_NUMBER_OF_DEATHS = 6;
     public static final int[] POINT_VALUE = {8,6,4,2,1,1};
+    public static final int[] INITIAL_AMMO = {1,1,1};
 
     public static final int NUMBER_OF_WEAPONS = 21;
     public static final int NUMBER_OF_POWERUP_CARDS = 24;
+    public static final int NUMBER_OF_WEAPON_PER_SPAWN_POINT = 3;
 
     public static final int NO_POWERUP = -10;
 
@@ -48,4 +50,5 @@ public class Constants {
 
     public static final String PATH_TO_MAP_22 = PATH_TO_RESOURCES_FOLDER +
             File.separatorChar + "maps" + File.separatorChar + "map22.txt";
+    public static final int NUMBER_OF_AMMOTILE = 36;
 }

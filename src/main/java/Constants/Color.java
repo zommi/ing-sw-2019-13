@@ -38,4 +38,8 @@ public enum Color {
     public String toString() {
         return abbreviation;
     }
+
+    public int getIndex() {
+        return index;
+    }
 }
