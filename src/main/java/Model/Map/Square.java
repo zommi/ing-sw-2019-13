@@ -12,7 +12,6 @@ public class Square extends SquareAbstract {
     private AmmoTile ammoTile;                          //TODO optional?
     private ArrayList<Character> charactersList;
     private Room room;
-    private Color color;
     private int xValue;
     private int yValue;
     // the following are just for visible squares
@@ -39,6 +38,11 @@ public class Square extends SquareAbstract {
 
     @Override
     public String toString() {
-        return "Square, Room: " + this.color + ", AmmoTile: \n" + this.ammoTile;
+        return "Square, Room: " + getColor() + ", AmmoTile: \n" + this.ammoTile;
+    }
+
+    @Override
+    public Color getColor() {
+        return super.getColor();
     }
 }

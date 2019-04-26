@@ -15,7 +15,6 @@ public class SpawnPoint extends SquareAbstract {
     private ArrayList<WeaponCard> weaponCards;
     private ArrayList<Character> charactersList;
     private Room room;
-    private Color color;
     private int xValue;
     private int yValue;
     // the following are just for visible squares
@@ -45,10 +44,15 @@ public class SpawnPoint extends SquareAbstract {
 
     @Override
     public String toString() {
-        String stringToReturn = "Spawnpoint, Room: " + this.color + " Weapons: ";
+        String stringToReturn = "Spawnpoint, Room: " + getColor() + " Weapons: ";
         for(WeaponCard card : this.weaponCards){
             stringToReturn += card + " - ";
         }
         return stringToReturn;
+    }
+
+    @Override
+    public Color getColor() {
+        return super.getColor();
     }
 }
