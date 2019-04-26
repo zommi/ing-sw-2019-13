@@ -13,15 +13,14 @@ public class WeaponDeck {
 
     public WeaponDeck() {
         this.size = Constants.NUMBER_OF_WEAPONS;
-        this.deck = initializeDeck();
+        initializeDeck();
     }
 
-    private LinkedList<WeaponCard> initializeDeck() {
-        LinkedList<WeaponCard> result = new LinkedList<WeaponCard>();
+    private void initializeDeck() {
+        this.deck = new LinkedList<WeaponCard>();
         for(int i = 0; i < Constants.NUMBER_OF_WEAPONS; i++){
-            result.add(new WeaponCard(i,this));
+            this.deck.add(new WeaponCard(i,this));
         }
-        return result;
     }
 
 

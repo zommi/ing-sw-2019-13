@@ -272,7 +272,7 @@ public class Weapon {
         if(Integer.parseInt(readInput.get(7))== 01)
             bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
-        if(7 < readInput.size()) { //it means that the arraylist has more than 6 elements.
+        if(8 < readInput.size()) { //it means that the arraylist has more than 6 elements.
             this.command1 = readCommand(readInput, 8);
             this.damage1 = Integer.parseInt(readInput.get(9));
             this.marks1 = Integer.parseInt(readInput.get(10));
