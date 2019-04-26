@@ -3,10 +3,14 @@ package GameBoard;
 import Cards.*;
 import Constants.Constants;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import Constants.*;
 import Exceptions.InvalidMoveException;
+import Exceptions.ReadJsonErrorException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -18,23 +22,50 @@ public class PowerupDeck {
 
     public PowerupDeck() {
         this.discardedCards = new ArrayList<>();
-        initializeDeck();
+        try {
+            initializeDeck();
+        }catch (ReadJsonErrorException e){
+            e.printStackTrace();
+        }
     }
 
 
     //There are 24 powerup cards, so 4powerups*3colors*2cardsForType=24
-    public void initializeDeck(){
-        int colorIndex = 0;
-        int numberOfCardsPerType = Constants.NUMBER_OF_POWERUP_CARDS / 4;
+    public void initializeDeck() throws ReadJsonErrorException {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File(Constants.PATH_TO_POWERUP_JSON);
+
+        Powerup[] arrayOfPowerups = new Powerup[0];
+
+        try {
+            arrayOfPowerups = mapper.readValue(file, Powerup[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(arrayOfPowerups.length == 0) throw new ReadJsonErrorException();
+
         this.deck = new LinkedList<>();
-        for(int i = 0; i < numberOfCardsPerType; i++){
-            if(i%2 == 0 && i != 0)colorIndex++;
-            this.deck.add(new PowerupCard(Color.fromIndex(colorIndex),new TargetingScope(),this));
-            this.deck.add(new PowerupCard(Color.fromIndex(colorIndex),new Newton(),this));
-            this.deck.add(new PowerupCard(Color.fromIndex(colorIndex),new Teleporter(),this));
-            this.deck.add(new PowerupCard(Color.fromIndex(colorIndex),new TagbackGrenade(),this));
+        for(int i = 0; i < arrayOfPowerups.length; i++){
+            for(int j = 0; j < arrayOfPowerups[i].getNumberOfCards(); j++){
+                this.deck.push(new PowerupCard(
+                        arrayOfPowerups[i].getValue(),
+                        getPoweupFromIndex(arrayOfPowerups[i].getIndex()),
+                        this
+                ));
+            }
         }
         shuffle();
+    }
+
+    private Powerup getPoweupFromIndex(int index) {
+        switch (index){
+            case 0: return new TargetingScope();
+            case 1: return new Newton();
+            case 2: return new Teleporter();
+            case 3: return new TagbackGrenade();
+            default: return null;
+        }
     }
 
 

@@ -3,10 +3,9 @@ package Game;
 import Exceptions.*;
 import GameBoard.*;
 import Player.*;
+import Map.*;
 
 import java.util.*;
-import GameBoard.*;
-import Player.PlayerBoard;
 
 /**
  * 
@@ -15,7 +14,7 @@ public class Game {
 
     private GameState currentState;
 
-    private Map currentMap;
+    private GameMap currentGameMap;
 
     private List<PlayerAbstract> activePlayers;
 
@@ -32,6 +31,7 @@ public class Game {
     public Game(int mapChoice, int skullChoice) {
         this.currentState = GameState.START_MENU;
         this.currentGameBoard = GameBoard.instance(mapChoice,skullChoice);
+        this.currentGameMap = currentGameBoard.getMap();
         this.activePlayers = new ArrayList<PlayerAbstract>();
         this.weaponDeck = currentGameBoard.getWeaponDeck();
         this.powerupDeck = currentGameBoard.getPowerupDeck();
@@ -108,8 +108,8 @@ public class Game {
         return activePlayers;
     }
 
-    public Map getCurrentMap() {
-        return currentMap;
+    public GameMap getCurrentGameMap() {
+        return currentGameMap;
     }
 
     public PowerupDeck getPowerupDeck() {

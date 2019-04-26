@@ -19,7 +19,7 @@ class WeaponDeckTest {
     @Test
     public void drawTest(){
         WeaponDeck testDeck = new WeaponDeck();
-        Map testMap = new Map(1);
+        GameMap testGameMap = new GameMap(1);
 
         System.out.println(testDeck);
 
@@ -29,8 +29,8 @@ class WeaponDeckTest {
 
         String firstCard = testDeck.getTop();
 
-        testDeck.draw(Map.getSpawnPoint(Color.BLUE));
-        assertEquals(Map.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard);
+        testDeck.draw(GameMap.getSpawnPoint(Color.BLUE));
+        assertEquals(GameMap.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard);
 
         System.out.println(testDeck);
 

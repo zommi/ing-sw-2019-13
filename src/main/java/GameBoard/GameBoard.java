@@ -1,6 +1,5 @@
 package GameBoard;
 
-import Constants.Constants;
 import Map.*;
 
 /**
@@ -8,7 +7,7 @@ import Map.*;
  */
 public class GameBoard {
 
-    private Map gameMap;
+    private GameMap gameMap;
     private KillshotTrack track;
     private WeaponDeck weaponDeck;
     private PowerupDeck powerupDeck;
@@ -16,7 +15,7 @@ public class GameBoard {
 
 
     private GameBoard(int mapChoice, int skullChoice) {
-        this.gameMap = new Map(mapChoice);
+        this.gameMap = new GameMap(mapChoice);
         this.track = new KillshotTrack(skullChoice);
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
@@ -36,7 +35,7 @@ public class GameBoard {
 
     }
 
-    public Map getMap(){
+    public GameMap getMap(){
         return this.gameMap;
     }
 

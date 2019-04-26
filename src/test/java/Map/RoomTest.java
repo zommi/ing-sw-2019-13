@@ -10,9 +10,9 @@ class RoomTest {
 
     @Test
     void getSquares() throws NoSuchSquareException {
-        new Map(1);
-        assertTrue(Map.getRoom(Color.BLUE).getSquares().contains(Map.getSquare(0,1)));
-        assertFalse(Map.getRoom(Color.BLUE).getSquares().contains(Map.getSquare(1,1)));
-        assertTrue(Map.getRoom(Color.WHITE).getSquares().contains(Map.getSquare(2,1)));
+        new GameMap(1);
+        assertTrue(GameMap.getRoom(Color.BLUE).getSquares().contains(GameMap.getSquare(0,1)));
+        assertFalse(GameMap.getRoom(Color.BLUE).getSquares().contains(GameMap.getSquare(1,1)));
+        assertTrue(GameMap.getRoom(Color.WHITE).getSquares().contains(GameMap.getSquare(2,1)));
     }
 }

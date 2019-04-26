@@ -3,12 +3,8 @@ package Player;
 import Cards.Bullet;
 import Constants.Color;
 import GameBoard.GameBoard;
-import Items.AmmoCube;
-import Map.Map;
+import Map.GameMap;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +16,7 @@ class PlayerBoardTest {
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
-        player.spawn(Map.getSpawnPoint(Color.BLUE));
+        player.spawn(GameMap.getSpawnPoint(Color.BLUE));
 
         Bullet testBullet1 = new Bullet(0,0,3,3,false);
         player.receiveBullet(testBullet1,Color.RED);
@@ -64,7 +60,7 @@ class PlayerBoardTest {
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
-        player.spawn(Map.getSpawnPoint(Color.BLUE));
+        player.spawn(GameMap.getSpawnPoint(Color.BLUE));
 
         //test that before death the player's value is 8 points
         assertEquals(8,testPlayerBoard.getPointValue());

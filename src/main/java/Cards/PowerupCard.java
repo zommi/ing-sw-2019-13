@@ -28,7 +28,12 @@ public class PowerupCard implements CardInterface, AmmoTileItem {
 
 
     public Bullet play() {
-        return powerup.usePowerup();
+        try {
+            return powerup.usePowerup();
+        }catch (InvalidMoveException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

@@ -7,7 +7,7 @@ import Constants.*;
 import java.util.*;
 
 
-public class TargetingScope implements Powerup {
+public class TargetingScope extends Powerup {
 
 
     private Bullet bullet;

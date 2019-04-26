@@ -1,6 +1,7 @@
 package Map;
 
 import Constants.Color;
+import Constants.Constants;
 import Exceptions.NoSuchSquareException;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Map {
+public class GameMap {
 
     private static List<SpawnPoint> spawnPoints;
     private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
@@ -22,24 +23,24 @@ public class Map {
      *               It could go from 1 to 4.
      */
 
-    public Map(int mapNum) {
+    public GameMap(int mapNum) {
         String path;
         switch(mapNum) {
 
             case 1:
-                path = "./maps/map11.txt";
+                path = Constants.PATH_TO_MAP_11;
                 break;
             case 2:
-                path = "./maps/map12.txt";
+                path = Constants.PATH_TO_MAP_12;
                 break;
             case 3:
-                path = "./maps/map21.txt";
+                path = Constants.PATH_TO_MAP_21;
                 break;
             case 4:
-                path = "./maps/map22.txt";
+                path = Constants.PATH_TO_MAP_22;
                 break;
             default:    //this should never happen
-                path = "./maps/map11.txt";
+                path = Constants.PATH_TO_MAP_11;
         }
 
         generateRooms();

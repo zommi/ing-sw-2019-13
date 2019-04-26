@@ -1,5 +1,7 @@
 package Constants;
 
+import java.io.File;
+
 public class Constants {
     public static final int MAX_HP = 12;
     public static final int MAX_MARKS = 3;
@@ -26,4 +28,24 @@ public class Constants {
     public static final int FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 4;
     public static final int SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 12;
     public static final int THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE = 20;
+
+    public static final String PATH_TO_RESOURCES_FOLDER = "." + File.separatorChar + "Resources";
+
+    public static final String PATH_TO_AMMOTILE_JSON =  PATH_TO_RESOURCES_FOLDER +
+                                                            File.separatorChar +  "AmmoTiles.json";
+
+    public static final String PATH_TO_POWERUP_JSON =  PATH_TO_RESOURCES_FOLDER +
+                                                            File.separatorChar + "PowerUps.json";
+
+    public static final String PATH_TO_MAP_11 = PATH_TO_RESOURCES_FOLDER +
+        File.separatorChar + "maps" + File.separatorChar + "map11.txt";
+
+    public static final String PATH_TO_MAP_12 = PATH_TO_RESOURCES_FOLDER +
+            File.separatorChar + "maps" + File.separatorChar + "map12.txt";
+
+    public static final String PATH_TO_MAP_21 = PATH_TO_RESOURCES_FOLDER +
+            File.separatorChar + "maps" + File.separatorChar + "map21.txt";
+
+    public static final String PATH_TO_MAP_22 = PATH_TO_RESOURCES_FOLDER +
+            File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 }

@@ -2,10 +2,9 @@ package Player;
 
 import Constants.Color;
 import Constants.Directions;
-import Game.Game;
 import GameBoard.GameBoard;
-import Map.Map;
 import Map.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -29,13 +28,13 @@ class ConcretePlayerTest {
         List<Character> list2 = new ArrayList<Character>();
         list2.add(player2.getCharacter());
 
-        player1.spawn(Map.getSpawnPoint(Color.BLUE));
-        player2.spawn(Map.getSpawnPoint(Color.YELLOW));
-        assertEquals(Map.getSpawnPoint(Color.BLUE).getCharacters(), list1);
-        assertEquals(Map.getSpawnPoint(Color.YELLOW).getCharacters(), list2);
+        player1.spawn(GameMap.getSpawnPoint(Color.BLUE));
+        player2.spawn(GameMap.getSpawnPoint(Color.YELLOW));
+        assertEquals(GameMap.getSpawnPoint(Color.BLUE).getCharacters(), list1);
+        assertEquals(GameMap.getSpawnPoint(Color.YELLOW).getCharacters(), list2);
 
-        Map.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
-        Map.getSpawnPoint(Color.YELLOW).removeCharacter(player2.getCharacter());
+        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
+        GameMap.getSpawnPoint(Color.YELLOW).removeCharacter(player2.getCharacter());
 
     }
 
@@ -44,14 +43,14 @@ class ConcretePlayerTest {
         GameBoard testGb = GameBoard.instance(1,8);
         PlayerAbstract player1 = new ConcretePlayer("Pippo", testGb, Figure.DESTRUCTOR);
 
-        player1.spawn(Map.getSpawnPoint(Color.BLUE));
-        SquareAbstract currentSquare = Map.getSpawnPoint(Color.BLUE);
+        player1.spawn(GameMap.getSpawnPoint(Color.BLUE));
+        SquareAbstract currentSquare = GameMap.getSpawnPoint(Color.BLUE);
 
         ArrayList<Character> testList1 = new ArrayList<Character>();
         testList1.add(player1.getCharacter());
 
-        assertEquals(Map.getSpawnPoint(Color.BLUE).getCharacters(),testList1);
-        assertEquals(Map.getSpawnPoint(Color.BLUE),player1.getCharacter().getPosition());
+        assertEquals(GameMap.getSpawnPoint(Color.BLUE).getCharacters(),testList1);
+        assertEquals(GameMap.getSpawnPoint(Color.BLUE),player1.getCharacter().getPosition());
 
         player1.move(Directions.SOUTH);
         currentSquare = currentSquare.getsSquare();
@@ -77,7 +76,7 @@ class ConcretePlayerTest {
         assertEquals(currentSquare.getCharacters(),testList1);
         assertEquals(currentSquare,player1.getCharacter().getPosition());
 
-        Map.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
+        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
     }
 
 }

@@ -41,13 +41,13 @@ class CharacterTest {
 
     @Test
     public void testMove() throws NoSuchSquareException {
-       Map map = new Map(1);
+       GameMap gameMap = new GameMap(1);
 
        /*SquareAbstract square1 = new Square(3,3, 'w');
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');*/
 
-       SquareAbstract square1 = Map.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
-       SquareAbstract spawnPoint1 = Map.getSpawnPoint(Color.RED);
+       SquareAbstract square1 = GameMap.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
+       SquareAbstract spawnPoint1 = GameMap.getSpawnPoint(Color.RED);
 
 
        Character character = new Character(Figure.BANSHEE);

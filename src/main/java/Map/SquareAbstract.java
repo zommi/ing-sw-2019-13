@@ -1,7 +1,6 @@
 package Map;
 
 import Cards.CollectableInterface;
-import Cards.WeaponCard;
 import Constants.Color;
 import Constants.Directions;
 import Player.Character;
@@ -194,8 +193,8 @@ public abstract class  SquareAbstract {
      */
     public List<Character> getCharactersThroughWalls(){
         List<Character> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> rowSquares = Map.getSquaresWithSameRow(this);
-        List<SquareAbstract> colSquares = Map.getSquaresWithSameCol(this);
+        List<SquareAbstract> rowSquares = GameMap.getSquaresWithSameRow(this);
+        List<SquareAbstract> colSquares = GameMap.getSquaresWithSameCol(this);
         for(SquareAbstract tempSquare : rowSquares){
             tempCharactersList.addAll(tempSquare.getCharacters());
 

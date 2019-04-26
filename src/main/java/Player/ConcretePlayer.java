@@ -1,7 +1,6 @@
 package Player;
 
 import Cards.*;
-import Map.Map;
 import Map.*;
 import Exceptions.*;
 import GameBoard.*;
@@ -123,7 +122,7 @@ public class ConcretePlayer extends PlayerAbstract {
             System.out.println("Max number of marks reached");
         }
         try {
-            character.move(Map.getSquare(b.getY(), b.getX()));
+            character.move(GameMap.getSquare(b.getY(), b.getX()));
         }catch (NoSuchSquareException e){
             e.printStackTrace();
         }

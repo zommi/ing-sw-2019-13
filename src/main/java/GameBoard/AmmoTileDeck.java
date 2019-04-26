@@ -26,8 +26,7 @@ public class AmmoTileDeck {
 
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        String pathToFile = "." + File.separatorChar +  "AmmoTiles.json";
-        File file = new File(pathToFile);
+        File file = new File(Constants.PATH_TO_AMMOTILE_JSON);
 
         AmmoTileType[] arrayOfTiles = new AmmoTileType[0];
 

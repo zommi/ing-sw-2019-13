@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * 
  */
-public class Teleporter implements Powerup {
+public class Teleporter extends Powerup {
 
     private Bullet bullet;
 
