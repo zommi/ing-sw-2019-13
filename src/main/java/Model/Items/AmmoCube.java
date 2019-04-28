@@ -18,7 +18,6 @@ public class AmmoCube extends Ownable implements AmmoTileItem {
     /**
      * Reverses the value of valid.
      */
-
     public Color getColor() {
         return this.color;
     }

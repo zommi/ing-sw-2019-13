@@ -2,16 +2,35 @@ package Model.Items;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * object used to store the data read from a file JSON
+ */
 public class AmmoTileType {
+
+    /**
+     * number of red cubes in a tile
+     */
     private int redCubes;
 
+    /**
+     * number of blue cubes in a tile
+     */
     private int blueCubes;
 
+    /**
+     * number of yellow cubes in a tile
+     */
     private int yellowCubes;
 
+    /**
+     * flag signaling if an ammo tile has a powerup card attached
+     */
     @JsonProperty(value="powerup")
     private boolean powerup;
 
+    /**
+     * number of tiles of the same type
+     */
     private int numberOfCards;
 
     AmmoTileType(){

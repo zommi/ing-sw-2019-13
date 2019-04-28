@@ -12,10 +12,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Class used to manage ammotiles
+ */
 public class AmmoTileDeck {
+
 
     LinkedList<AmmoTile> deck = new LinkedList<>();
 
+    /**
+     * Default constructor using initializeDeck to create the list of tiles
+     */
     AmmoTileDeck(){
         try {
             initializeDeck();
@@ -24,6 +31,11 @@ public class AmmoTileDeck {
         }
     }
 
+    /**
+     * Function that reads a JSON file containing all the data
+     * about ammotiles and creates all the objects required
+     * @throws ReadJsonErrorException if ther is a problem in the reading phase
+     */
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(Constants.PATH_TO_AMMOTILE_JSON);
@@ -47,10 +59,20 @@ public class AmmoTileDeck {
         shuffle();
     }
 
+    /**
+     * Pops the first element of the queue containg the ammotiles
+     * @return Returns the AmmoTile popped.
+     */
     public AmmoTile draw(){
         return this.deck.pop();
     }
 
+    /**
+     * Auxiliary function called in the initialization phase that creates a
+     * list containg all the cubes in a AmmoTile
+     * @param type AmmoTileType read from the JSON file
+     * @return The list created
+     */
     public List<AmmoCube> createListFromType(AmmoTileType type){
         List<AmmoCube> listToReturn = new ArrayList<>();
 
@@ -60,10 +82,17 @@ public class AmmoTileDeck {
         return listToReturn;
     }
 
+    /**
+     *
+     * @return the reference to the deck.
+     */
     public LinkedList<AmmoTile> getDeck() {
         return deck;
     }
 
+    /**
+     * Shuffles the deck
+     */
     public void shuffle(){
         Collections.shuffle(this.deck);
     }

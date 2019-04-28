@@ -56,7 +56,9 @@ class PowerupDeckTest {
         assertTrue(testDeck.isEmpty());
         testDeck.restore();
 
+        assertTrue(testDeck.getDiscardedCards().isEmpty());
         assertTrue(copyList.containsAll(testDeck.getDeck()));
+
     }
 
     @Test
