@@ -38,5 +38,21 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
+        bullet = new Bullet(0, 0, 1, 0, false);
+        weap = new Weapon(1);
+        assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
+        assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
+        assertEquals(weap.shoot(0,0,0).get(0).getDamage(), bullet.getDamage());
+        assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
+        assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
+
+        bullet = new Bullet(0, 0, 2, 0, false);
+        assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
+        assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
+        assertEquals(weap.shoot(1,0,0).get(0).getDamage(), bullet.getDamage());
+        assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
+        assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
+
+
     }
 }
