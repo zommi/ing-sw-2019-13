@@ -27,4 +27,16 @@ class WeaponTest {
         assertEquals(testList2.get(0).getColor(),testWeapon.getCost2().get(0).getColor());
     }
 
+    @Test
+    public void testshoot(){
+        Bullet bullet = new Bullet(0, 0, 2, 1, false);
+
+        Weapon weap = new Weapon(0);
+        assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
+        assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
+        assertEquals(weap.shoot(0,0,0).get(0).getDamage(), bullet.getDamage());
+        assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
+        assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
+
+    }
 }
