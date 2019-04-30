@@ -264,7 +264,7 @@ public class Weapon {
         this.command = readCommand(readInput,0);
         this.damage = Integer.parseInt(readInput.get(1));
         this.marks = Integer.parseInt(readInput.get(2));
-        this.teleporterflag = Boolean.parseBoolean(readInput.get(3));
+        this.teleporterflag = !readInput.get(3).equals("0");
 
         this.cost = readCost(readInput,Constants.FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
@@ -275,7 +275,7 @@ public class Weapon {
             this.command1 = readCommand(readInput, 8);
             this.damage1 = Integer.parseInt(readInput.get(9));
             this.marks1 = Integer.parseInt(readInput.get(10));
-            this.teleporterflag1 = Boolean.parseBoolean(readInput.get(11));
+            this.teleporterflag1 = !readInput.get(11).equals("0");
 
             this.cost1 = readCost(readInput, Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
@@ -292,7 +292,7 @@ public class Weapon {
             this.command2 = readCommand(readInput, 16);
             this.damage2 = Integer.parseInt(readInput.get(17));
             this.marks2 = Integer.parseInt(readInput.get(18));
-            this.teleporterflag2 = Boolean.parseBoolean(readInput.get(19));
+            this.teleporterflag2 = !readInput.get(19).equals("0");
 
             this.cost2 = readCost(readInput, Constants.THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
         }
