@@ -15,6 +15,7 @@ public class GameMap {
     private static List<SpawnPoint> spawnPoints;
     private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
     private static List<Room> rooms;
+    private static List<Color> roomsToBuild;
 
     /**
      * Generates the whole map, including the graph that links
@@ -43,13 +44,14 @@ public class GameMap {
                 path = Constants.PATH_TO_MAP_11;
         }
 
-        generateRooms();
 
         //the following line populates the double ArrayList of SquareAbstract (squares)
         List<String> readList = generateSquareStructureFromFile(path);
 
         //now we're gonna link all the squares (to build a graph) inside the generated square structure
         linkSquares(readList);
+
+        generateRooms();
 
         populateRooms();
     }
@@ -69,7 +71,11 @@ public class GameMap {
      * @return the room with the specified color
      */
     public static Room getRoom(Color col){
-        return rooms.get(col.ordinal());
+        for(Room room: rooms){
+            if(room.getColor() == col)
+                return room;
+        }
+        return null;                                //TODO add exception
     }
 
     /**
@@ -78,9 +84,8 @@ public class GameMap {
      */
     public static void generateRooms(){             //TODO it's public just for testing
         rooms = new ArrayList<>();
-        for(Color color : Color.values())
-            if (color != Color.UNDEFINED)
-                rooms.add(new Room(color));
+        for(Color color : roomsToBuild)
+            rooms.add(new Room(color));
     }
 
     /**
@@ -92,8 +97,8 @@ public class GameMap {
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
                 if(squares.get(i).get(j) != null) {
-                    rooms.get(squares.get(i).get(j).getColor().ordinal()).addSquare(squares.get(i).get(j));
-                    squares.get(i).get(j).setRoom(rooms.get(squares.get(i).get(j).getColor().ordinal()));
+                    getRoom(squares.get(i).get(j).getColor()).addSquare(squares.get(i).get(j));
+                    squares.get(i).get(j).setRoom(getRoom(squares.get(i).get(j).getColor()));
 
                 }
             }
@@ -123,6 +128,7 @@ public class GameMap {
             scanner.close();
         }
 
+        roomsToBuild = new ArrayList<>();
         squares = new ArrayList<>();
         spawnPoints = new ArrayList<>();
         for(String s : readInput){
@@ -143,9 +149,13 @@ public class GameMap {
                     SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, Color.fromString(s));
                     squares.get(row/2).add(tempSquare);
                     spawnPoints.add(tempSquare);
+                    if(!roomsToBuild.contains(Color.fromString(s)))
+                        roomsToBuild.add(Color.fromString(s));
                 }
                 else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
                     squares.get(row/2).add(new Square(row/2, col/2, Color.fromString(s)));
+                    if(!roomsToBuild.contains(Color.fromString(s)))
+                        roomsToBuild.add(Color.fromString(s));
                 }
                 else if(c==' ' && row%2==0 && col%2==0){
                     squares.get(row/2).add(null);

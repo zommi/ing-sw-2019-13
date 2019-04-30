@@ -32,18 +32,17 @@ class GameMapTest {
     void getRooms() {
         new GameMap(1);
         List<Room> roomList = GameMap.getRooms();
-        assertTrue(roomList.get(Color.RED.ordinal()).getColor() == Color.RED);
-        assertTrue(roomList.get(Color.PURPLE.ordinal()).getColor() == Color.PURPLE);
-        assertTrue(roomList.get(Color.WHITE.ordinal()).getColor() == Color.WHITE);
+        assertTrue(roomList.get(0).getColor() == Color.BLUE);
+        assertTrue(roomList.get(1).getColor() == Color.RED);
+        assertTrue(roomList.get(2).getColor() == Color.YELLOW);
+        assertTrue(roomList.get(3).getColor() == Color.WHITE);
+
     }
 
     @Test
     void getSpawnPoints() {
         GameMap gameMap = new GameMap(1);
         ArrayList<SpawnPoint> sp = (ArrayList<SpawnPoint>) GameMap.getSpawnPoints();
-        /*for(SpawnPoint s : sp){
-            System.out.println(s.getColor());
-        }*/
         assertTrue(GameMap.getSpawnPoint(Color.RED).getColor() == sp.get(1).getColor());
     }
 
