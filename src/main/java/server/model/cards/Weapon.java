@@ -21,7 +21,8 @@ public class Weapon {
     private int y;  //I need it if I have to use the teleporter.
     private int damage;
     private int marks;
-    private boolean teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
+    private char teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
+    private char teleportertarget;
     private ArrayList<AmmoCube> cost; //cost of the weapon
 
     private Command command1;
@@ -30,7 +31,9 @@ public class Weapon {
     private int y1;
     private int damage1;
     private int marks1;
-    private boolean teleporterflag1;
+    private char teleporterflag1;
+    private char teleportertarget1;
+
     private ArrayList<AmmoCube> cost1; //cost of the weapon first effect
 
     private Command command2;
@@ -39,7 +42,9 @@ public class Weapon {
     private int y2;
     private int damage2;
     private int marks2;
-    private boolean teleporterflag2;
+    private char teleporterflag2;
+    private char teleportertarget2;
+
     private ArrayList<AmmoCube> cost2; //cost of the weapon second effect
 
     private String name;
@@ -138,17 +143,17 @@ public class Weapon {
         if(extra == 1) { //extra effect number 1
             this.x1 = x;
             this.y1 = y;
-            bullet = new Bullet(this.x1, this.y1, this.damage1, this.marks1, this.teleporterflag1);
+            bullet = new Bullet(this.x1, this.y1, this.damage1, this.marks1, this.teleportertarget1);
         }
         else if(extra == 2){ //extra effect number 2
             this.x2 = x;
             this.y2 = y;
-            bullet = new Bullet(this.x2, this.y2, this.damage2, this.marks2, this.teleporterflag2);
+            bullet = new Bullet(this.x2, this.y2, this.damage2, this.marks2, this.teleportertarget2);
         }
         else if(extra == 0){
             this.x = x;
             this.y = y;
-            bullet = new Bullet(this.x, this.y, this.damage, this.marks, this.teleporterflag);
+            bullet = new Bullet(this.x, this.y, this.damage, this.marks, this.teleportertarget);
         }
         ArrayList<Bullet> result = new ArrayList<Bullet>();
         result.add(bullet);
@@ -168,7 +173,8 @@ public class Weapon {
         Scanner scanner = null;
         int damage1;
         int marks1;
-        boolean teleporterflag1;
+        char teleporterflag1;
+        char teleportertarget1;
 
         Bullet secondbullet;
         List<String> readInput = null;
@@ -188,9 +194,10 @@ public class Weapon {
 
         damage1 = Integer.parseInt(readInput.get(0));
         marks1 = Integer.parseInt(readInput.get(1));
-        teleporterflag1 = Boolean.parseBoolean(readInput.get(2));
+        teleporterflag1 = readInput.get(2).charAt(0);
+        teleportertarget1 = readInput.get(3).charAt(0);
 
-        secondbullet = new Bullet(0, 0, damage1, marks1, teleporterflag1);
+        secondbullet = new Bullet(0, 0, damage1, marks1, teleportertarget1);
         return(secondbullet);
     }
 
@@ -264,35 +271,41 @@ public class Weapon {
         this.command = readCommand(readInput,0);
         this.damage = Integer.parseInt(readInput.get(1));
         this.marks = Integer.parseInt(readInput.get(2));
-        this.teleporterflag = !readInput.get(3).equals("0");
+        this.teleporterflag = readInput.get(3).charAt(0);
+        this.teleportertarget = readInput.get(4).charAt(0);
+
 
         this.cost = readCost(readInput,Constants.FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
-        if(Integer.parseInt(readInput.get(7))== 01)
+        if(Integer.parseInt(readInput.get(8))== 01)
             bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
-        if(8 < readInput.size()) { //it means that the arraylist has more than 6 elements.
-            this.command1 = readCommand(readInput, 8);
-            this.damage1 = Integer.parseInt(readInput.get(9));
-            this.marks1 = Integer.parseInt(readInput.get(10));
-            this.teleporterflag1 = !readInput.get(11).equals("0");
+        if(9 < readInput.size()) { //it means that the arraylist has more than 6 elements.
+            this.command1 = readCommand(readInput, 9);
+            this.damage1 = Integer.parseInt(readInput.get(10));
+            this.marks1 = Integer.parseInt(readInput.get(11));
+            this.teleporterflag1 = readInput.get(12).charAt(0);
+            this.teleportertarget1 = readInput.get(13).charAt(0);
+
 
             this.cost1 = readCost(readInput, Constants.SECOND_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
 
-            if (Integer.parseInt(readInput.get(15)) == 02)
+            if (Integer.parseInt(readInput.get(17)) == 02)
                 bullet2 = PrepareBullet2("./weapons/EXTRA2HELLION.txt");
 
-            if (Integer.parseInt(readInput.get(15)) == 03)
+            if (Integer.parseInt(readInput.get(17)) == 03)
                 bullet2 = PrepareBullet2("./weapons/EXTRA2FLAMETHROWER.txt");
         }
 
 
-        if (16 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
-            this.command2 = readCommand(readInput, 16);
-            this.damage2 = Integer.parseInt(readInput.get(17));
-            this.marks2 = Integer.parseInt(readInput.get(18));
-            this.teleporterflag2 = !readInput.get(19).equals("0");
+        if (19 < readInput.size()) {  //it means that the arraylist has more than 12 elements.
+            this.command2 = readCommand(readInput, 18);
+            this.damage2 = Integer.parseInt(readInput.get(19));
+            this.marks2 = Integer.parseInt(readInput.get(20));
+            this.teleporterflag2 = readInput.get(21).charAt(0);
+            this.teleportertarget2 = readInput.get(22).charAt(0);
+
 
             this.cost2 = readCost(readInput, Constants.THIRD_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
         }

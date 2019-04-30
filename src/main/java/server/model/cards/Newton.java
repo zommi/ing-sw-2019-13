@@ -24,7 +24,7 @@ public class Newton extends Powerup {
 
         //x and y however needs to be at a maximum of 2 square away HOW CAN I DO IT?
 
-        bullet = new Bullet(x, y, 0, 0, false);
+        bullet = new Bullet(x, y, 0, 0, 'z');
 
         return bullet;
     }

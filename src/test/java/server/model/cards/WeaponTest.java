@@ -29,7 +29,7 @@ class WeaponTest {
 
     @Test
     public void testshoot(){
-        Bullet bullet = new Bullet(0, 0, 2, 1, false);
+        Bullet bullet = new Bullet(0, 0, 2, 1, 'z');
 
         Weapon weap = new Weapon(0);
         assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
@@ -38,7 +38,7 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         weap = new Weapon(1);
         assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
@@ -46,14 +46,14 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 2, 0, false);
+        bullet = new Bullet(0, 0, 2, 0, 'z');
         assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
         assertEquals(weap.shoot(1,0,0).get(0).getDamage(), bullet.getDamage());
         assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         weap = new Weapon(2);
         assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
@@ -61,7 +61,7 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         weap = new Weapon(2);
         assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
@@ -69,7 +69,7 @@ class WeaponTest {
         assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         weap = new Weapon(2);
         assertEquals(weap.shoot(2,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(2,0,0).get(0).getY(), bullet.getY());
@@ -77,7 +77,7 @@ class WeaponTest {
         assertEquals(weap.shoot(2,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(2,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'a');
         weap = new Weapon(3);
         assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
@@ -85,7 +85,7 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 3, 0, false);
+        bullet = new Bullet(0, 0, 3, 0, 'b');
         weap = new Weapon(3);
         assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
@@ -93,7 +93,7 @@ class WeaponTest {
         assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 2, 0, false);
+        bullet = new Bullet(0, 0, 2, 0, 'z');
         weap = new Weapon(4);
         assertEquals(weap.shoot(0,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(0,0,0).get(0).getY(), bullet.getY());
@@ -101,7 +101,7 @@ class WeaponTest {
         assertEquals(weap.shoot(0,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(0,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         weap = new Weapon(4);
         assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
@@ -109,7 +109,7 @@ class WeaponTest {
         assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
 
-        bullet = new Bullet(0, 0, 2, 0, false);
+        /*bullet = new Bullet(0, 0, 2, 0, false);
         weap = new Weapon(4);
         assertEquals(weap.shoot(2,0,0).get(0).getX(), bullet.getX());
         assertEquals(weap.shoot(2,0,0).get(0).getY(), bullet.getY());
@@ -204,6 +204,15 @@ class WeaponTest {
         assertEquals(weap.shoot(1,0,0).get(0).getDamage(), bullet.getDamage());
         assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
         assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());
+
+        bullet = new Bullet(0, 0, 1, 2, false);
+        weap = new Weapon(10);
+        assertEquals(weap.shoot(1,0,0).get(0).getX(), bullet.getX());
+        assertEquals(weap.shoot(1,0,0).get(0).getY(), bullet.getY());
+        assertEquals(weap.shoot(1,0,0).get(0).getDamage(), bullet.getDamage());
+        assertEquals(weap.shoot(1,0,0).get(0).getMarks(), bullet.getMarks());
+        assertEquals(weap.shoot(1,0,0).get(0).getTeleporterFlag(), bullet.getTeleporterFlag());*/
+
 
 
 

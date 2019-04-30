@@ -23,7 +23,7 @@ public class Teleporter extends Powerup {
         int y = reader.nextInt();
         reader.close();
 
-        bullet = new Bullet(x, y, 0, 0, true);
+        bullet = new Bullet(x, y, 0, 0, 'z');
         return bullet;
     }
 

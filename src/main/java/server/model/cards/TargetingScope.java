@@ -21,7 +21,7 @@ public class TargetingScope extends Powerup {
         AmmoCube e = new AmmoCube(Color.UNDEFINED); //It is colour undefined.
         cubecost.add(e);
 
-        bullet = new Bullet(0, 0, 1, 0, false);
+        bullet = new Bullet(0, 0, 1, 0, 'z');
         //It does not give more marks.
         //It does not move the character.
         //As a consequence it does not have a push orientation.
