@@ -3491,7 +3491,7 @@ jQuery.extend( {
 					return jQuery.Deferred( function( newDefer ) {
 						jQuery.each( tuples, function( i, tuple ) {
 
-							// Map tuples (progress, done, fail) to arguments (done, fail, progress)
+							// map tuples (progress, done, fail) to arguments (done, fail, progress)
 							var fn = isFunction( fns[ tuple[ 4 ] ] ) && fns[ tuple[ 4 ] ];
 
 							// deferred.progress(function() { bind to newDefer or newDefer.notify })
@@ -10332,10 +10332,10 @@ if ( typeof define === "function" && define.amd ) {
 
 var
 
-	// Map over jQuery in case of overwrite
+	// map over jQuery in case of overwrite
 	_jQuery = window.jQuery,
 
-	// Map over the $ in case of overwrite
+	// map over the $ in case of overwrite
 	_$ = window.$;
 
 jQuery.noConflict = function( deep ) {
