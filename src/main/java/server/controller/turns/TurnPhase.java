@@ -1,4 +1,4 @@
-package server.model.Controller.Turns;
+package server.controller.turns;
 
 public enum TurnPhase {
 

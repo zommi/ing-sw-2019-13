@@ -1,4 +1,4 @@
-package server.model.Controller.Turns;
+package server.controller.turns;
 
 import server.model.Controller.PlayerAction.Action;
 import exceptions.InvalidMoveException;

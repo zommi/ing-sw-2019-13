@@ -1,6 +1,6 @@
-package server.model.Controller;
+package server.controller;
 
-import server.model.Controller.Turns.TurnHandler;
+import server.controller.turns.TurnHandler;
 import server.model.game.Game;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
