@@ -1,4 +1,4 @@
-package server.model.Controller;
+package server.controller;
 
 public interface MyObserver {
 
