@@ -24,7 +24,7 @@ class PlayerBoardTest {
 
         player.spawn(GameMap.getSpawnPoint(Color.BLUE));
 
-        Bullet testBullet1 = new Bullet(0,0,3,3,false);
+        Bullet testBullet1 = new Bullet(0,0,3,3,'z');
         player.receiveBullet(testBullet1,Color.RED);
 
         assertEquals(3, testPlayerBoard.getDamageTaken());
@@ -36,7 +36,7 @@ class PlayerBoardTest {
             assertEquals(Color.RED,c);
         }
 
-        Bullet testBullet2 = new Bullet(0,0,1,1,false);
+        Bullet testBullet2 = new Bullet(0,0,1,1,'z');
         player.receiveBullet(testBullet2,Color.RED);
 
         assertEquals(7, testPlayerBoard.getDamageTaken());
@@ -48,7 +48,7 @@ class PlayerBoardTest {
             assertEquals(Color.RED,c);
         }
 
-        Bullet testBullet3 = new Bullet(0,0,1,3,false);
+        Bullet testBullet3 = new Bullet(0,0,1,3,'z');
         player.receiveBullet(testBullet3,Color.BLUE);
 
         assertEquals(8, testPlayerBoard.getDamageTaken());
@@ -71,7 +71,7 @@ class PlayerBoardTest {
         //test that before death the player's value is 8 points
         assertEquals(8,testPlayerBoard.getPointValue());
 
-        Bullet testBullet1 = new Bullet(0,0,12,2,false);
+        Bullet testBullet1 = new Bullet(0,0,12,2,'z');
         player.receiveBullet(testBullet1,Color.RED);
 
         assertEquals(1,testPlayerBoard.getNumberOfDeaths());

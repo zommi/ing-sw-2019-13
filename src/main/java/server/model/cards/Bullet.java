@@ -13,10 +13,10 @@ public class Bullet {
     private int y;  //I need it if I have to use the teleporter.
     private int damage;
     private int marks;
-    private boolean teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
+    private char teleporterflag; //If this is true I can use the move() method in character with the new coordinates.
     private ArrayList<AmmoCube> cost;
 
-    public Bullet(int x, int y, int damage, int marks, boolean teleporterflag/*, ArrayList<AmmoCube> cost*/) {
+    public Bullet(int x, int y, int damage, int marks, char teleporterflag/*, ArrayList<AmmoCube> cost*/) {
         this.x = x;
         this.y = y;
         this.damage = damage;
@@ -55,7 +55,7 @@ public class Bullet {
      * Returns the value of teleporterflag
      * @return the value of teleporterflag
      */
-    public boolean getTeleporterFlag(){
+    public char getTeleporterFlag(){
         return this.teleporterflag;
     }
 
