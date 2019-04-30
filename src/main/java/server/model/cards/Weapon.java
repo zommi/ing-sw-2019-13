@@ -194,8 +194,7 @@ public class Weapon {
 
         damage1 = Integer.parseInt(readInput.get(0));
         marks1 = Integer.parseInt(readInput.get(1));
-        teleporterflag1 = readInput.get(2).charAt(0);
-        teleportertarget1 = readInput.get(3).charAt(0);
+        teleportertarget1 = readInput.get(2).charAt(0);
 
         secondbullet = new Bullet(0, 0, damage1, marks1, teleportertarget1);
         return(secondbullet);
