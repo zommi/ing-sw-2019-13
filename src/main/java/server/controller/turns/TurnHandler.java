@@ -1,7 +1,7 @@
 package server.controller.turns;
 
-import server.model.Controller.PlayerAction.Action;
 import exceptions.InvalidMoveException;
+import server.controller.playeraction.Action;
 import server.model.cards.Weapon;
 import server.model.player.PlayerAbstract;
 
@@ -23,11 +23,6 @@ public class TurnHandler {
         return currentPlayer;
     }
 
-    public void playAction(Action action){
-        currentPlayer.setAction(action);
-        currentPlayer.doAction();
-    }
-
     public void playPowerup(int index){
         currentPlayer.usePowerup(index);
     }
@@ -46,7 +41,6 @@ public class TurnHandler {
             this.action = action;
         }
     }
-
 
     public void doAction(){
         if(currentPhase == TurnPhase.FIRST_ACTION

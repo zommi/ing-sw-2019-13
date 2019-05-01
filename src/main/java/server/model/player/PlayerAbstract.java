@@ -2,7 +2,6 @@ package server.model.player;
 
 import java.util.*;
 
-import server.model.Controller.PlayerAction.Action;
 import server.model.cards.Bullet;
 import constants.Color;
 import constants.*;
@@ -62,14 +61,11 @@ public abstract class PlayerAbstract {
 
     public abstract void receiveBullet(Bullet b, Color color);
 
-    public abstract void doAction();
-
-    public abstract void setAction(Action action);
-
     public abstract void usePowerup(int powerupIndex);
 
     public abstract UUID getId();
 
     public abstract PlayerBoard getBoard();
 
+    public abstract Color getColor();
 }

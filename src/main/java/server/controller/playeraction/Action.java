@@ -1,4 +1,4 @@
-package server.model.Controller.PlayerAction;
+package server.controller.playeraction;
 
 public interface Action {
 

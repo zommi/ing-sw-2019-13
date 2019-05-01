@@ -7,7 +7,8 @@ public enum Color {
     GREEN("g",3),
     WHITE("w",4),
     PURPLE("p",5),
-    UNDEFINED("u",6);
+    GREY("g",6),
+    UNDEFINED("u",7);
 
     private int index;
     private String abbreviation;
