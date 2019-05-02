@@ -1,17 +1,21 @@
 package server.model.player;
 
+import constants.Color;
+
 public enum Figure {
-    DESTRUCTOR(0),
-    BANSHEE(1),
-    DOZER(2),
-    VIOLET(3),
-    SPROG(4);
+    DESTRUCTOR(0, Color.YELLOW),
+    BANSHEE(1, Color.BLUE),
+    DOZER(2, Color.GREY),
+    VIOLET(3, Color.PURPLE),
+    SPROG(4, Color.GREEN);
 
     private int id;
     private Character owner;
+    private Color color;
 
-    Figure(int id){
+    Figure(int id, Color color){
         this.id = id;
+        this.color = color;
         this.owner = null;
     }
 
@@ -48,5 +52,9 @@ public enum Figure {
             case 4 : return "Sprog";
             default: return "";
         }
+    }
+
+    public Color getColor(){
+        return this.color;
     }
 }

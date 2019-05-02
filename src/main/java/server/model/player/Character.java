@@ -1,5 +1,6 @@
 package server.model.player;
 
+import constants.Color;
 import constants.Constants;
 import server.model.map.SquareAbstract;
 
@@ -93,5 +94,9 @@ public class Character {
         } else{
             System.out.println("Invalid move");
         }
+    }
+
+    public Color getColor(){
+        return this.figure.getColor();
     }
 }

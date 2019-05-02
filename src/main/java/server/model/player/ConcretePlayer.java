@@ -1,6 +1,5 @@
 package server.model.player;
 
-import server.model.Controller.PlayerAction.Action;
 import server.model.cards.*;
 import server.model.map.*;
 import exceptions.*;
@@ -21,7 +20,6 @@ public class ConcretePlayer extends PlayerAbstract {
     private GameBoard currentGameBoard;
     private UUID id;
     private PlayerState state;
-    private Action action;
 
     /**
      *Creates a player by giving him a name, a unique id, a hand
@@ -70,14 +68,6 @@ public class ConcretePlayer extends PlayerAbstract {
             default:
                 break;
             }
-    }
-
-    public void doAction(){
-        action.execute();
-    }
-
-    public void setAction(Action action){
-        this.action = action;
     }
 
 
@@ -138,6 +128,10 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public UUID getId(){
         return this.id;
+    }
+
+    public Color getColor(){
+        return this.character.getColor();
     }
 }
 

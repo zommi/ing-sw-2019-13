@@ -1,6 +1,7 @@
 package server.controller.turns;
 
-import server.model.Controller.PlayerAction.Action;
+
+import server.controller.playeraction.Action;
 
 public class TurnInfo {
     private Action[] actions;
