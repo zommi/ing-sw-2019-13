@@ -51,8 +51,13 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     public void discard() { }
 
 
-    public ArrayList<ArrayList<Character>> chooseCharacter(SquareAbstract square){
-        return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
+    public ArrayList<ArrayList<Character>> chooseCharacter(SquareAbstract square, int extra){
+        if(extra == 0)
+            return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
+        else if(extra == 1)
+            return(weapon.getCommand1().execute(square));
+        else //if(extra == 2)
+            return(weapon.getCommand2().execute(square));
     }
 
 

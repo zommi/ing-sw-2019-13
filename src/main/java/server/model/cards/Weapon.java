@@ -13,6 +13,7 @@ import server.model.items.*;
 public class Weapon {
 
     private Bullet bullet;
+    private Bullet bullet1;
     private Bullet bullet2;
 
     private Command command;
@@ -157,7 +158,10 @@ public class Weapon {
         }
         ArrayList<Bullet> result = new ArrayList<Bullet>();
         result.add(bullet);
-        result.add(bullet2);
+        if(extra == 0)
+            result.add(bullet1);
+        else if(extra == 1)
+            result.add(bullet2);
         return result;
     }
 
@@ -173,7 +177,6 @@ public class Weapon {
         Scanner scanner = null;
         int damage1;
         int marks1;
-        char teleporterflag1;
         char teleportertarget1;
 
         Bullet secondbullet;
@@ -277,7 +280,7 @@ public class Weapon {
         this.cost = readCost(readInput,Constants.FIRST_EFFECT_WEAPON_COST_INDEX_FROM_FILE);
 
         if(Integer.parseInt(readInput.get(8))== 01)
-            bullet2 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
+            bullet1 = PrepareBullet2("./weapons/EXTRA1HELLION.txt");
 
         if(9 < readInput.size()) { //it means that the arraylist has more than 6 elements.
             this.command1 = readCommand(readInput, 9);
@@ -324,6 +327,12 @@ public class Weapon {
 
     public Command getCommand(){
         return this.command;
+    }
+    public Command getCommand1(){
+        return this.command1;
+    }
+    public Command getCommand2(){
+        return this.command2;
     }
 
 
