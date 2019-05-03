@@ -4,7 +4,8 @@ import server.controller.playeraction.ShootInfo;
 
 public class Whisper implements WeaponRulesInterface{
 
-    public void validate(ShootInfo pack){
+    public boolean validate(ShootInfo pack){
+        return true;
 
     }
 
