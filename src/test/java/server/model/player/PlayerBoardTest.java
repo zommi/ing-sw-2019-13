@@ -18,7 +18,7 @@ class PlayerBoardTest {
 
     @Test
     public void bulletTest(){
-        GameBoard gbtest = GameBoard.instance(1,8);
+        GameBoard gbtest = new GameBoard(1,8);
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
@@ -62,7 +62,7 @@ class PlayerBoardTest {
 
     @Test
     public void deathTest(){
-        GameBoard gbtest = GameBoard.instance(1,8);
+        GameBoard gbtest = new GameBoard(1,8);
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
@@ -88,7 +88,7 @@ class PlayerBoardTest {
 
     @Test
     public void drawAmmoTileTest(){
-        GameBoard testGameBoard = GameBoard.instance(2,8);
+        GameBoard testGameBoard = new GameBoard(2,8);
         ConcretePlayer testPlayer = new ConcretePlayer("Pippo", testGameBoard,Figure.DOZER);
 
         PlayerBoard testPlayerBoard = testPlayer.getBoard();

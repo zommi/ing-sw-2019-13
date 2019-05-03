@@ -26,7 +26,7 @@ public class WeaponDeck {
     private void initializeDeck() {
         this.deck = new LinkedList<WeaponCard>();
         for(int i = 0; i < Constants.NUMBER_OF_WEAPONS; i++){
-            this.deck.add(new WeaponCard(i,this));
+            this.deck.add(new WeaponCard(i));
         }
         shuffle();
     }

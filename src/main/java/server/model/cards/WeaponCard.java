@@ -15,18 +15,16 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     private List<AmmoCube> cost;
     private String name;
     private Weapon weapon;
-    private WeaponDeck weaponDeck;
     private boolean ready;
     private int weaponIndex;
 
     /**
      * Initialize the card cost
      */
-    public WeaponCard(int indexWeapon, WeaponDeck weaponDeck) {
+    public WeaponCard(int indexWeapon) {
         this.weapon = new Weapon(indexWeapon);
         this.cost = this.weapon.getCost();
         this.name = this.weapon.getName();
-        this.weaponDeck = weaponDeck;
         this.ready = true;
         this.weaponIndex = indexWeapon;
     }
@@ -85,7 +83,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     }
 
     public WeaponCard clone(){
-        return new WeaponCard(this.weaponIndex, this.weaponDeck);
+        return new WeaponCard(this.weaponIndex);
     }
 
     @Override

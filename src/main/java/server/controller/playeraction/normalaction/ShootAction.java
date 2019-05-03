@@ -28,14 +28,15 @@ public class ShootAction implements Action {
     }
 
     @Override
-    public void execute() {
-        this.shoot();
+    public boolean execute() {
+        return this.shoot();
     }
 
-    public void shoot(){
+    public boolean shoot(){
         List<Bullet> listOfBullets = weapon.play(extra,xAfterPush,yAfterPush);
         for(int i = 0; i < targets.size(); i++){
             targets.get(i).receiveBullet(listOfBullets.get(i),player.getColor());
         }
+        return false;
     }
 }

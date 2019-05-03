@@ -72,4 +72,6 @@ public abstract class PlayerAbstract {
     public abstract PlayerState currentState();
 
     public abstract void drawPowerup();
+
+    public abstract void setState(PlayerState state);
 }

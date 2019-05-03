@@ -1,6 +1,8 @@
 package server.model.gameboard;
 
 import constants.Constants;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import server.model.map.*;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +15,7 @@ class GameBoardTest {
 
     @Test
     public void setupTest(){
-        GameBoard testGB = GameBoard.instance(4,8);
+        GameBoard testGB = new GameBoard(4,8);
 
         List<SquareAbstract> testList = new ArrayList<>();
 

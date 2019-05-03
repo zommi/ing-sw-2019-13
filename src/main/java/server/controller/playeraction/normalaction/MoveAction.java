@@ -23,8 +23,8 @@ public class MoveAction {
     }
 
 
-    public void execute(){
-        this.move();
+    public boolean execute(){
+        return this.move();
     }
 
     private boolean move() {

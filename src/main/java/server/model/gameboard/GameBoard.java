@@ -47,7 +47,7 @@ public class GameBoard {
      * @param mapChoice index of the map chosen by the players in the setup phase
      * @param skullChoice number of skulls
      */
-    private GameBoard(int mapChoice, int skullChoice) {
+    public GameBoard(int mapChoice, int skullChoice) {
         this.gameMap = new GameMap(mapChoice);
         this.track = new KillshotTrack(skullChoice);
         this.weaponDeck = new WeaponDeck();
@@ -80,17 +80,6 @@ public class GameBoard {
         }
     }
 
-    /**
-     * Method that returns the instance of the gameboard if it exists, else it creates a new
-     * instance
-     * @param mapChoice int containing the index of the map chosen
-     * @param skullChoice int containing the number of skulls of the game
-     * @return the instance of gameboard
-     */
-    public static GameBoard instance(int mapChoice, int skullChoice){
-        if(instance == null) instance = new GameBoard(mapChoice, skullChoice);
-        return instance;
-    }
 
     public KillshotTrack getTrack() {
         return this.track;

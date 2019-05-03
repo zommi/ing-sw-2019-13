@@ -155,6 +155,10 @@ public class ConcretePlayer extends PlayerAbstract {
         }
     }
 
+
+    public void setState(PlayerState state){
+        this.state = state;
+    }
 }
 
 
