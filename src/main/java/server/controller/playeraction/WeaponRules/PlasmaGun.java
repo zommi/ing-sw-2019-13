@@ -1,4 +1,14 @@
 package server.controller.playeraction.WeaponRules;
 
-public class PlasmaGun {
+import server.controller.playeraction.ShootInfo;
+
+public class PlasmaGun implements WeaponRulesInterface{
+
+    public void validate(ShootInfo pack){
+
+    }
+
+    public void actuate(ShootInfo pack){
+
+    }
 }

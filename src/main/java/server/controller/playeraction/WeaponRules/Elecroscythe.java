@@ -1,4 +1,14 @@
 package server.controller.playeraction.WeaponRules;
 
-public class Elecroscythe {
+import server.controller.playeraction.ShootInfo;
+
+public class Elecroscythe implements WeaponRulesInterface{
+
+    public void validate(ShootInfo pack){
+
+    }
+
+    public void actuate(ShootInfo pack){
+
+    }
 }

@@ -1,4 +1,4 @@
 package server.controller.playeraction.WeaponRules;
 
-public class CyberBlade {
+public class CyberBlade{
 }
