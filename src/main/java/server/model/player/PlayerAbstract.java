@@ -42,14 +42,14 @@ public abstract class PlayerAbstract {
      *Moves the character linked to the player by one square at a time
      * @param direction direction to follow
      */
-    public void move(Directions direction) {
-    }
+    public abstract void move(Directions direction);
 
     public void shoot() {
     }
 
-    public void collect() {
-    }
+    public abstract void collect(Square square);
+
+    public abstract void collect(SpawnPoint spawnPoint, int choice);
 
     public abstract Character getCharacter();
 
@@ -68,4 +68,8 @@ public abstract class PlayerAbstract {
     public abstract PlayerBoard getBoard();
 
     public abstract Color getColor();
+
+    public abstract PlayerState currentState();
+
+    public abstract void drawPowerup();
 }

@@ -20,7 +20,7 @@ public class AmmoTile implements CollectableInterface {
         return content;
     }
 
-    public boolean hasWeapon(){
+    public boolean hasPowerup(){
         return hasPowerup;
     }
 

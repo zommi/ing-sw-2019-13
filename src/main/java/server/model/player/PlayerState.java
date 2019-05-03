@@ -3,26 +3,15 @@ package server.model.player;
 /**
  *
  */
-public abstract class PlayerState {
+public enum PlayerState {
+    NORMAL,
 
-    private ConcretePlayer player;
+    BETTER_COLLECT,
 
-    public PlayerState(ConcretePlayer player) {
-        this.player = player;
-    }
+    BETTER_SHOOT,
+
+    DEAD,
 
 
-    public ConcretePlayer getPlayer() {
-        return this.player;
-    }
-
-    public void nextState() {
-    }
-
-    public void shoot() {
-    }
-
-    public void collect() {
-    }
-
+    PlayerState() {}
 }

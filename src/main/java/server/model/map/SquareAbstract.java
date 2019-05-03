@@ -339,4 +339,6 @@ public abstract class  SquareAbstract {
     public abstract void removeItem(CollectableInterface itemToAdd);
 
     public abstract void addItem(CollectableInterface itemToLeave);
+
+    public abstract boolean isEmpty();
 }

@@ -50,5 +50,14 @@ public class Constants {
 
     public static final String PATH_TO_MAP_22 = PATH_TO_RESOURCES_FOLDER +
             File.separatorChar + "maps" + File.separatorChar + "map22.txt";
+
     public static final int NUMBER_OF_AMMOTILE = 36;
+
+    public static final int MAX_NUMBER_OF_ADRENALINE_MOVEMENTS = 2;
+
+    public static final int MAX_NUMBER_OF_NORMAL_MOVEMENTS = 1;
+
+    public static final int MAX_NUMBER_OF_CARDS = 3;
+
+    public static final int NO_CHOICE = -99999;
 }

@@ -55,4 +55,9 @@ public class SpawnPoint extends SquareAbstract {
     public Color getColor() {
         return super.getColor();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return weaponCards.size() == 0;
+    }
 }

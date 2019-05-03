@@ -101,7 +101,7 @@ class PlayerBoardTest {
         AmmoTile testAmmoTile = new AmmoTile(testList, false);
 
 
-        testPlayerBoard.addAmmo(testAmmoTile);
+        testPlayerBoard.processAmmoTile(testAmmoTile);
 
         assertEquals(3,testPlayerBoard.getRedAmmo());
         assertEquals(2,testPlayerBoard.getBlueAmmo());

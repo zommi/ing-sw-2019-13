@@ -34,6 +34,7 @@ public class ConcretePlayer extends PlayerAbstract {
         this.hand = new PlayerHand(this);
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;
+        this.state = PlayerState.NORMAL;
         id = UUID.randomUUID();
     }
 
@@ -79,6 +80,14 @@ public class ConcretePlayer extends PlayerAbstract {
         hand.playPowerup(powerupIndex);
     }
 
+
+    public void collect(Square square){
+        this.board.processAmmoTile(square.getAmmoTile());
+    }
+
+    public void collect(SpawnPoint spawnPoint, int choice){
+        if(!this.hand.weaponFull()) this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
+    }
 
 
     /**
@@ -133,6 +142,19 @@ public class ConcretePlayer extends PlayerAbstract {
     public Color getColor(){
         return this.character.getColor();
     }
+
+    @Override
+    public PlayerState currentState() {
+        return state;
+    }
+
+    @Override
+    public void drawPowerup() {
+        if(!this.hand.powerupsFull()) {
+            this.hand.addCard(currentGameBoard.getPowerupDeck().draw());
+        }
+    }
+
 }
 
 

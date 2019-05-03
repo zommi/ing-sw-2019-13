@@ -1,5 +1,6 @@
 package server.model.player;
 
+import constants.Constants;
 import server.model.cards.*;
 
 
@@ -64,4 +65,11 @@ public class PlayerHand {
         this.player.getCharacter().getPosition().removeItem(cardToAdd);
     }
 
+    public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
+
+    public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
+
+    public void addCard(PowerupCard draw) {
+        if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)this.powerupHand.add(draw);
+    }
 }

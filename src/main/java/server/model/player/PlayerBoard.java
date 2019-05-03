@@ -133,16 +133,20 @@ public class PlayerBoard{
         }
     }
 
-    public void addAmmo(AmmoTile ammoToAdd) {
-        for(AmmoCube cube : ammoToAdd.getContent()){
-            if(this.ammo[cube.getColor().getIndex()] < 3)this.ammo[cube.getColor().getIndex()]++;
-        }
-    }
 
     public void useAmmo(List<AmmoCube> cost) throws InvalidMoveException{
         for(AmmoCube cube : cost){
             if(this.ammo[cube.getColor().getIndex()] > 0)this.ammo[cube.getColor().getIndex()]--;
             else throw new InvalidMoveException();
+        }
+    }
+
+    public void processAmmoTile(AmmoTile ammoTile) {
+        for(AmmoCube cube : ammoTile.getContent()){
+            if(this.ammo[cube.getColor().getIndex()] < 3)this.ammo[cube.getColor().getIndex()]++;
+        }
+        if(ammoTile.hasPowerup()){
+            this.player.drawPowerup();
         }
     }
 }

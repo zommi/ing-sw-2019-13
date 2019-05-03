@@ -2,6 +2,7 @@ package server.controller.turns;
 
 import exceptions.InvalidMoveException;
 import server.controller.playeraction.Action;
+import server.controller.playeraction.normalaction.CollectAction;
 import server.model.cards.Weapon;
 import server.model.player.PlayerAbstract;
 
@@ -45,6 +46,7 @@ public class TurnHandler {
     public void doAction(){
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION) {
+            //if returns false then disconnects the player
             this.action.execute();
             nextPhase();
         }

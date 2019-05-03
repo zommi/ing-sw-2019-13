@@ -45,4 +45,9 @@ public class Square extends SquareAbstract {
     public Color getColor() {
         return super.getColor();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return ammoTile == null;
+    }
 }
