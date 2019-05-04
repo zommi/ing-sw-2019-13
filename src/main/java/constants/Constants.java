@@ -60,4 +60,8 @@ public class Constants {
     public static final int MAX_NUMBER_OF_CARDS = 3;
 
     public static final int NO_CHOICE = -99999;
+
+    public static final int TARGETS_OF_EFFECT_ZERO = 0;
+    public static final int TARGETS_OF_EFFECT_ONE = 1;
+    public static final int TARGETS_OF_EFFECT_TWO = 2;
 }

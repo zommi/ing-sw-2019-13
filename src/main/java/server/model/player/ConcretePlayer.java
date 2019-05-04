@@ -1,6 +1,7 @@
 package server.model.player;
 
 import server.model.cards.*;
+import server.model.items.AmmoCube;
 import server.model.map.*;
 import exceptions.*;
 import server.model.gameboard.*;
@@ -14,7 +15,7 @@ import java.util.*;
 public class ConcretePlayer extends PlayerAbstract {
 
     private String name;
-    private Character character;
+    private GameCharacter gameCharacter;
     private PlayerHand hand;
     private PlayerBoard board;
     private GameBoard currentGameBoard;
@@ -26,11 +27,11 @@ public class ConcretePlayer extends PlayerAbstract {
      * containing its cards and a playerboard containing his info.
      * @param name name chosen by a player
      * @param gameBoard each player moves in the context of the same gameBoard
-     * @param figure each player moves on the gameboard thanks to its character and figure
+     * @param figure each player moves on the gameboard thanks to its gameCharacter and figure
      */
     public ConcretePlayer(String name, GameBoard gameBoard, Figure figure) {
         this.name = name;
-        this.character = new Character(chooseFigure(figure));
+        this.gameCharacter = new GameCharacter(chooseFigure(figure));
         this.hand = new PlayerHand(this);
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;
@@ -38,8 +39,8 @@ public class ConcretePlayer extends PlayerAbstract {
         id = UUID.randomUUID();
     }
 
-    public Character getCharacter(){
-        return character;
+    public GameCharacter getGameCharacter(){
+        return gameCharacter;
     }
 
     public PlayerBoard getBoard(){return board;}
@@ -48,23 +49,23 @@ public class ConcretePlayer extends PlayerAbstract {
 
 
     /**
-     * Moves the character to an adjacent square in a direction
+     * Moves the gameCharacter to an adjacent square in a direction
      * @param direction direction to follow
      */
     public void move(Directions direction) {
-        SquareAbstract currentPos = character.getPosition();
+        SquareAbstract currentPos = gameCharacter.getPosition();
         switch (direction){
             case NORTH:
-                character.move(currentPos.getnSquare());
+                gameCharacter.move(currentPos.getnSquare());
                 break;
             case SOUTH:
-                character.move(currentPos.getsSquare());
+                gameCharacter.move(currentPos.getsSquare());
                 break;
             case EAST:
-                character.move(currentPos.geteSquare());
+                gameCharacter.move(currentPos.geteSquare());
                 break;
             case WEST:
-                character.move(currentPos.getwSquare());
+                gameCharacter.move(currentPos.getwSquare());
                 break;
             default:
                 break;
@@ -104,7 +105,7 @@ public class ConcretePlayer extends PlayerAbstract {
         return null;
     }
 
-    public SquareAbstract getPosition(){ return this.character.getPosition();}
+    public SquareAbstract getPosition(){ return this.gameCharacter.getPosition();}
 
 
     /**
@@ -120,18 +121,18 @@ public class ConcretePlayer extends PlayerAbstract {
             System.out.println("Max number of marks reached");
         }
         try {
-            character.move(GameMap.getSquare(b.getY(), b.getX()));
+            gameCharacter.move(GameMap.getSquare(b.getY(), b.getX()));
         }catch (NoSuchSquareException e){
             e.printStackTrace();
         }
     }
 
     /**
-     * Places a character in a Spawnpoint
-     * @param sp SpawnPoint in which the player wants to place its character
+     * Places a gameCharacter in a Spawnpoint
+     * @param sp SpawnPoint in which the player wants to place its gameCharacter
      */
     public void spawn(SquareAbstract sp){
-        character.spawn(sp);
+        gameCharacter.spawn(sp);
     }
 
 
@@ -140,7 +141,7 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public Color getColor(){
-        return this.character.getColor();
+        return this.gameCharacter.getColor();
     }
 
     @Override
@@ -159,6 +160,11 @@ public class ConcretePlayer extends PlayerAbstract {
     public void setState(PlayerState state){
         this.state = state;
     }
+
+    @Override
+    public boolean canPay(ArrayList<AmmoCube> cost) {
+        return this.board.canPay(cost);
+    }
 }
 
 
@@ -166,7 +172,7 @@ public class ConcretePlayer extends PlayerAbstract {
         I added a method in WeaponCard called chooseCharacter, you have to call it before calling play().
         You have to pass the square to the method so that he can tell you who you can choose.
 
-        ArrayList<ArrayList<Character>> possibleTargets;
+        ArrayList<ArrayList<GameCharacter>> possibleTargets;
         possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
         weapon.charge();
 

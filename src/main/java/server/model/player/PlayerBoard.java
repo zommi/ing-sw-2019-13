@@ -22,11 +22,13 @@ public class PlayerBoard{
     private int numberOfDeaths;
 
     //0 red, 1 blue, 2 yellow
-    private int[] ammo;
+    private int[] ammo = {1,1,1};
 
     private int points;
 
-
+    private static final int RED_CUBES_INDEX = Color.RED.getIndex();
+    private static final int BLUE_CUBES_INDEX = Color.BLUE.getIndex();
+    private static final int YELLOW_CUBES_INDEX = Color.YELLOW.getIndex();
     /**
      * Default constructor
      */
@@ -38,7 +40,6 @@ public class PlayerBoard{
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
-        this.ammo = Constants.INITIAL_AMMO;
     }
 
     private void setDamage(int i, Color color) {
@@ -63,15 +64,15 @@ public class PlayerBoard{
     }
 
     public int getRedAmmo() {
-        return ammo[Color.RED.getIndex()];
+        return ammo[RED_CUBES_INDEX];
     }
 
     public int getBlueAmmo() {
-        return ammo[Color.BLUE.getIndex()];
+        return ammo[BLUE_CUBES_INDEX];
     }
 
     public int getYellowAmmo() {
-        return ammo[Color.YELLOW.getIndex()];
+        return ammo[YELLOW_CUBES_INDEX];
     }
 
     //TODO add easter egg when someone dies 7 times in the same game and make him win.
@@ -148,5 +149,17 @@ public class PlayerBoard{
         if(ammoTile.hasPowerup()){
             this.player.drawPowerup();
         }
+    }
+
+    public boolean canPay(List<AmmoCube> cost) {
+        int[] counter = new int[3];
+
+        for(AmmoCube cube : cost){
+            counter[cube.getColor().getIndex()]++;
+            if(counter[cube.getColor().getIndex()] > ammo[cube.getColor().getIndex()]){
+                return false;
+            }
+        }
+        return true;
     }
 }

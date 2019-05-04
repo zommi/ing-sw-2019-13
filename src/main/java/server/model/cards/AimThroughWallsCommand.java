@@ -1,7 +1,7 @@
 package server.model.cards;
 
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -18,18 +18,18 @@ public class AimThroughWallsCommand implements Command {
      * @param square where the player is
      * @return an arraylist of arralist of the characters that the player shooting can see through walls depending on the direction
      */
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
-        ArrayList<Character> e = (ArrayList)square.getCharactersThroughWalls();
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square){
+        ArrayList<GameCharacter> e = (ArrayList)square.getCharactersThroughWalls();
 
-        ArrayList<ArrayList<Character>> result = new ArrayList<ArrayList<Character>>(); //this will be the return for my player
+        ArrayList<ArrayList<GameCharacter>> result = new ArrayList<ArrayList<GameCharacter>>(); //this will be the return for my player
 
-        ArrayList<Character> eN = new ArrayList<Character>(); //NORTH
-        ArrayList<Character> eS = new ArrayList<Character>(); //SOUTH
-        ArrayList<Character> eW = new ArrayList<Character>(); //WEST
-        ArrayList<Character> eE = new ArrayList<Character>(); //EAST
+        ArrayList<GameCharacter> eN = new ArrayList<GameCharacter>(); //NORTH
+        ArrayList<GameCharacter> eS = new ArrayList<GameCharacter>(); //SOUTH
+        ArrayList<GameCharacter> eW = new ArrayList<GameCharacter>(); //WEST
+        ArrayList<GameCharacter> eE = new ArrayList<GameCharacter>(); //EAST
 
         //now I have to create an array of array with 4 different lists.
-        for (Character t : e) {
+        for (GameCharacter t : e) {
             if (square.getRow() == t.getPosition().getRow()) {
                 if (square.getCol() > t.getPosition().getCol()) { //if this is true then we are considering the SOUTH LIST
                     eS.add(t);

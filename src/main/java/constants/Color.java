@@ -43,4 +43,5 @@ public enum Color {
     public int getIndex() {
         return index;
     }
+
 }

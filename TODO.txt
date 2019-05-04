@@ -12,7 +12,7 @@ Bisogna realizzare anche i mazzi [MAZZO, MAZZOPOWERUP, MAZZOWEAPON).
 
 
 2/04/19
-Bisogna aggiungere le sottoclassi di character. 
+Bisogna aggiungere le sottoclassi di gameCharacter.
 
 DUBBI:	
 1.	Pacchetto da sparare: BUONA IDEA.

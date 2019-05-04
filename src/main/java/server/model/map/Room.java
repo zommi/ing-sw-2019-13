@@ -1,7 +1,7 @@
 package server.model.map;
 
 import constants.Color;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ import java.util.*;
 public class Room {
 
     private Color color;
-    private List<Character> charactersList;
+    private List<GameCharacter> charactersList;
     private List<SquareAbstract> squareList;
 
     /**
@@ -27,18 +27,18 @@ public class Room {
         return color;
     }
 
-    public List<Character> getCharacters(){
-        ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
-        return (ArrayList<Character>)  returnedList.clone();
+    public List<GameCharacter> getCharacters(){
+        ArrayList<GameCharacter> returnedList = (ArrayList<GameCharacter>) charactersList;
+        return (ArrayList<GameCharacter>)  returnedList.clone();
     }
 
-    void addCharacter(Character character){
-        if(!charactersList.contains((character)))
-            charactersList.add(character);
+    void addCharacter(GameCharacter gameCharacter){
+        if(!charactersList.contains((gameCharacter)))
+            charactersList.add(gameCharacter);
     }
 
-    void removeCharacter(Character character){
-        charactersList.remove(character);
+    void removeCharacter(GameCharacter gameCharacter){
+        charactersList.remove(gameCharacter);
     }
 
     void addSquare(SquareAbstract square){
@@ -51,4 +51,17 @@ public class Room {
         return (ArrayList<SquareAbstract>) returnedList.clone();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof Room)) {
+            return false;
+        }
+
+        Room room = (Room) obj;
+        return this.color.equals(room.getColor());
+    }
 }

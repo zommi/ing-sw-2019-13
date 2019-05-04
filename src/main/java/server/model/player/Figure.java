@@ -10,7 +10,7 @@ public enum Figure {
     SPROG(4, Color.GREEN);
 
     private int id;
-    private Character owner;
+    private GameCharacter owner;
     private Color color;
 
     Figure(int id, Color color){
@@ -19,11 +19,11 @@ public enum Figure {
         this.owner = null;
     }
 
-    public void setOwner(Character c){
+    public void setOwner(GameCharacter c){
         this.owner = c;
     }
 
-    public Character getOwner(){
+    public GameCharacter getOwner(){
         return owner;
     }
 

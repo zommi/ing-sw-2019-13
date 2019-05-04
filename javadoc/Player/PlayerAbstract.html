@@ -162,7 +162,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code><a href="Figure.html" title="enum in Player">Figure</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#chooseFigure(Player.Figure)">chooseFigure</a></span>&#8203;(<a href="Figure.html" title="enum in Player">Figure</a>&nbsp;selection)</code></th>
 <td class="colLast">
-<div class="block">Binds a character to the figure the player wants
+<div class="block">Binds a gameCharacter to the figure the player wants
  and sets its status to Taken</div>
 </td>
 </tr>
@@ -180,7 +180,7 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#move(char)">move</a></span>&#8203;(char&nbsp;move)</code></th>
 <td class="colLast">
-<div class="block">Moves the character linked to the player by one square at a time</div>
+<div class="block">Moves the gameCharacter linked to the player by one square at a time</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -193,7 +193,7 @@ extends java.lang.Object</pre>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#spawn(Map.SquareAbstract)">spawn</a></span>&#8203;(<a href="../Map/SquareAbstract.html" title="class in Map">SquareAbstract</a>&nbsp;sp)</code></th>
 <td class="colLast">
 <div class="block">Once the player has 11 or more tokens on his PlayerBoard he loses a life
- and his character needs to be respawned.</div>
+ and his gameCharacter needs to be respawned.</div>
 </td>
 </tr>
 </table>
@@ -227,7 +227,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>chooseFigure</h4>
 <pre class="methodSignature">public&nbsp;<a href="Figure.html" title="enum in Player">Figure</a>&nbsp;chooseFigure&#8203;(<a href="Figure.html" title="enum in Player">Figure</a>&nbsp;selection)</pre>
-<div class="block">Binds a character to the figure the player wants
+<div class="block">Binds a gameCharacter to the figure the player wants
  and sets its status to Taken</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -245,10 +245,10 @@ extends java.lang.Object</pre>
 <h4>spawn</h4>
 <pre class="methodSignature">public abstract&nbsp;void&nbsp;spawn&#8203;(<a href="../Map/SquareAbstract.html" title="class in Map">SquareAbstract</a>&nbsp;sp)</pre>
 <div class="block">Once the player has 11 or more tokens on his PlayerBoard he loses a life
- and his character needs to be respawned.</div>
+ and his gameCharacter needs to be respawned.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>sp</code> - SpawnPoint in which the player wants to place its character</dd>
+<dd><code>sp</code> - SpawnPoint in which the player wants to place its gameCharacter</dd>
 </dl>
 </li>
 </ul>
@@ -259,7 +259,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>move</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;move&#8203;(char&nbsp;move)</pre>
-<div class="block">Moves the character linked to the player by one square at a time</div>
+<div class="block">Moves the gameCharacter linked to the player by one square at a time</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>move</code> - char that belongs to ('n','s','w','e')</dd>

@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import server.model.map.*;
 import constants.*;
 
-class CharacterTest {
+class GameCharacterTest {
 
 
     @Test
     public void testGetValidFigures(){
-        Character.initialize();
+        GameCharacter.initialize();
         ArrayList<Figure>  test1= new ArrayList<Figure>();
         test1.add(Figure.DESTRUCTOR);
         test1.add(Figure.BANSHEE);
@@ -23,7 +23,7 @@ class CharacterTest {
         test1.add(Figure.VIOLET);
         test1.add(Figure.SPROG);
 
-        assertEquals(Character.getValidFigures(),test1);
+        assertEquals(GameCharacter.getValidFigures(),test1);
 
         ArrayList<Figure>  test2= new ArrayList<Figure>();
         test2.add(Figure.BANSHEE);
@@ -31,11 +31,11 @@ class CharacterTest {
         test2.add(Figure.VIOLET);
         test2.add(Figure.SPROG);
 
-        Character testChar = new Character(Figure.DESTRUCTOR);
-        ArrayList<Character> testList = new ArrayList<Character>();
+        GameCharacter testChar = new GameCharacter(Figure.DESTRUCTOR);
+        ArrayList<GameCharacter> testList = new ArrayList<GameCharacter>();
         testList.add(testChar);
-        assertEquals(Character.getValidFigures(),test2);
-        assertEquals(Character.getTakenCharacters(),testList);
+        assertEquals(GameCharacter.getValidFigures(),test2);
+        assertEquals(GameCharacter.getTakenCharacters(),testList);
 
     }
 
@@ -50,16 +50,16 @@ class CharacterTest {
        SquareAbstract spawnPoint1 = GameMap.getSpawnPoint(Color.RED);
 
 
-       Character character = new Character(Figure.BANSHEE);
+       GameCharacter gameCharacter = new GameCharacter(Figure.BANSHEE);
 
-       ArrayList<Character> tester = new ArrayList<>();
-       tester.add(character);
-       character.spawn(square1);
-       assertEquals(character.getPosition(),square1);
+       ArrayList<GameCharacter> tester = new ArrayList<>();
+       tester.add(gameCharacter);
+       gameCharacter.spawn(square1);
+       assertEquals(gameCharacter.getPosition(),square1);
        assertEquals(square1.getCharacters(), tester);
        assertEquals(spawnPoint1.getCharacters(), Collections.EMPTY_LIST);
-       character.move(spawnPoint1);
-       assertEquals(character.getPosition(),spawnPoint1);
+       gameCharacter.move(spawnPoint1);
+       assertEquals(gameCharacter.getPosition(),spawnPoint1);
        assertEquals(spawnPoint1.getCharacters(), tester);
        assertEquals(square1.getCharacters(), Collections.EMPTY_LIST);
     }

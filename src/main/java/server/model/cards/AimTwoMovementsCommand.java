@@ -1,7 +1,7 @@
 package server.model.cards;
 
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -16,14 +16,14 @@ public class AimTwoMovementsCommand implements Command {
      * @param square where the player is
      * @return an arraylist of arralist of the characters that the player shooting can see 2 movements away from him
      */
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
-        ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square){
+        ArrayList<ArrayList<GameCharacter>> e = new ArrayList<ArrayList<GameCharacter>>();
 
-        ArrayList<Character> e1 = (ArrayList<Character>)square.getExactlyTwoMovementsCharacters();
+        ArrayList<GameCharacter> e1 = (ArrayList<GameCharacter>)square.getExactlyTwoMovementsCharacters();
 
-        ArrayList<Character> e2 = (ArrayList<Character>) square.getVisibleCharacters();
+        ArrayList<GameCharacter> e2 = (ArrayList<GameCharacter>) square.getVisibleCharacters();
 
-        for (Character t : (ArrayList<Character>)e1.clone()) {
+        for (GameCharacter t : (ArrayList<GameCharacter>)e1.clone()) {
             if(! e2.contains(t))
                 e1.remove(t);
         }

@@ -61,8 +61,8 @@ public class PlayerHand {
         //TODO add swap on gameboard if size == 3
         //note that on spawnpoints there is a list of the weapons currently available
         //i just need to add the weapon the player decides to discard
-        this.player.getCharacter().getPosition().addItem(cardToLeave);
-        this.player.getCharacter().getPosition().removeItem(cardToAdd);
+        this.player.getGameCharacter().getPosition().addItem(cardToLeave);
+        this.player.getGameCharacter().getPosition().removeItem(cardToAdd);
     }
 
     public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_NUMBER_OF_CARDS;}

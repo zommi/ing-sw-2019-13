@@ -3,6 +3,7 @@ package server.controller.playeraction.normalaction;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.MoveInfo;
 import server.controller.playeraction.ShootInfo;
+import server.controller.playeraction.WeaponRules.WeaponRulesInterface;
 import server.model.cards.*;
 import constants.Color;
 import constants.Directions;
@@ -11,20 +12,14 @@ import server.model.player.PlayerAbstract;
 import java.util.List;
 
 public class ShootAction implements Action {
-    private WeaponCard weapon;
-    private List<PlayerAbstract> targets;
-    private PlayerAbstract player;
-    private int extra;
-    private int xAfterPush;
-    private int yAfterPush;
 
-    public ShootAction(ShootInfo info){
-        this.player = info.getPlayer();
-        this.weapon = info.getWeapon();
-        this.targets = info.getTargets();
-        this.extra = info.getExtra();
-        this.xAfterPush = info.getxAfterPush();
-        this.yAfterPush = info.getyAfterPush();
+    private ShootInfo shootInfo;
+
+    private WeaponRulesInterface weaponRule;
+
+    public ShootAction(ShootInfo shootInfo, WeaponRulesInterface weaponRule){
+        this.shootInfo = shootInfo;
+        this.weaponRule = weaponRule;
     }
 
     @Override
@@ -33,10 +28,11 @@ public class ShootAction implements Action {
     }
 
     public boolean shoot(){
-        List<Bullet> listOfBullets = weapon.play(extra,xAfterPush,yAfterPush);
-        for(int i = 0; i < targets.size(); i++){
-            targets.get(i).receiveBullet(listOfBullets.get(i),player.getColor());
+        if(this.weaponRule.validate(shootInfo)){
+            this.weaponRule.actuate(shootInfo);
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

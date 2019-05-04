@@ -88,8 +88,8 @@ class PlayerBoardTest {
 
     @Test
     public void drawAmmoTileTest(){
-        GameBoard testGameBoard = new GameBoard(2,8);
-        ConcretePlayer testPlayer = new ConcretePlayer("Pippo", testGameBoard,Figure.DOZER);
+        GameBoard testGameBoard = new GameBoard(4,8);
+        ConcretePlayer testPlayer = new ConcretePlayer("Carlo", testGameBoard,Figure.BANSHEE);
 
         PlayerBoard testPlayerBoard = testPlayer.getBoard();
 

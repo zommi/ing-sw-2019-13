@@ -23,18 +23,18 @@ class ConcretePlayerTest {
 
         assertNotEquals(player1.getId(),player2.getId());
 
-        List<Character> list1 = new ArrayList<Character>();
-        list1.add(player1.getCharacter());
-        List<Character> list2 = new ArrayList<Character>();
-        list2.add(player2.getCharacter());
+        List<GameCharacter> list1 = new ArrayList<GameCharacter>();
+        list1.add(player1.getGameCharacter());
+        List<GameCharacter> list2 = new ArrayList<GameCharacter>();
+        list2.add(player2.getGameCharacter());
 
         player1.spawn(GameMap.getSpawnPoint(Color.BLUE));
         player2.spawn(GameMap.getSpawnPoint(Color.YELLOW));
         assertEquals(GameMap.getSpawnPoint(Color.BLUE).getCharacters(), list1);
         assertEquals(GameMap.getSpawnPoint(Color.YELLOW).getCharacters(), list2);
 
-        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
-        GameMap.getSpawnPoint(Color.YELLOW).removeCharacter(player2.getCharacter());
+        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getGameCharacter());
+        GameMap.getSpawnPoint(Color.YELLOW).removeCharacter(player2.getGameCharacter());
 
     }
 
@@ -46,37 +46,37 @@ class ConcretePlayerTest {
         player1.spawn(GameMap.getSpawnPoint(Color.BLUE));
         SquareAbstract currentSquare = GameMap.getSpawnPoint(Color.BLUE);
 
-        ArrayList<Character> testList1 = new ArrayList<Character>();
-        testList1.add(player1.getCharacter());
+        ArrayList<GameCharacter> testList1 = new ArrayList<GameCharacter>();
+        testList1.add(player1.getGameCharacter());
 
         assertEquals(GameMap.getSpawnPoint(Color.BLUE).getCharacters(),testList1);
-        assertEquals(GameMap.getSpawnPoint(Color.BLUE),player1.getCharacter().getPosition());
+        assertEquals(GameMap.getSpawnPoint(Color.BLUE),player1.getGameCharacter().getPosition());
 
         player1.move(Directions.SOUTH);
         currentSquare = currentSquare.getsSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getCharacter().getPosition());
+        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
         player1.move(Directions.WEST);
         currentSquare = currentSquare.getwSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getCharacter().getPosition());
+        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
         player1.move(Directions.EAST);
         currentSquare = currentSquare.geteSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getCharacter().getPosition());
+        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
         player1.move(Directions.NORTH);
         currentSquare = currentSquare.getnSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getCharacter().getPosition());
+        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
-        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getCharacter());
+        GameMap.getSpawnPoint(Color.BLUE).removeCharacter(player1.getGameCharacter());
     }
 
 }

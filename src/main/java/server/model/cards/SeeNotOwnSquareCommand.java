@@ -1,7 +1,7 @@
 package server.model.cards;
 
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -12,16 +12,16 @@ public class SeeNotOwnSquareCommand implements Command{
     }
 
 
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
-        ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square){
+        ArrayList<ArrayList<GameCharacter>> e = new ArrayList<ArrayList<GameCharacter>>();
 
-        ArrayList<Character> e1 = (ArrayList<Character>) square.getVisibleCharacters();
+        ArrayList<GameCharacter> e1 = (ArrayList<GameCharacter>) square.getVisibleCharacters();
 
-        ArrayList<Character> e2 = (ArrayList<Character>)square.getCharacters();  //here I have the characters in my square
+        ArrayList<GameCharacter> e2 = (ArrayList<GameCharacter>)square.getCharacters();  //here I have the characters in my square
         //now I have to merge them
 
 
-        for (Character t : (ArrayList<Character>) e1.clone()) {
+        for (GameCharacter t : (ArrayList<GameCharacter>) e1.clone()) {
             if(e2.contains(t)) {
                 e1.remove(t);
             }

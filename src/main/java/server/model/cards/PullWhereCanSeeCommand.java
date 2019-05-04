@@ -2,7 +2,7 @@ package server.model.cards;
 
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -15,17 +15,17 @@ public class PullWhereCanSeeCommand implements Command {
      * @param square where the player is
      * @return  an arraylist of arralist of the characters that, if moved of 0,1,2 movements, end up being in a square that the player can see.
      */
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square){
         int ok = 0;
-        ArrayList<ArrayList<Character>> e = new ArrayList<ArrayList<Character>>();
-        ArrayList<Character> e1 = new ArrayList<Character>();
+        ArrayList<ArrayList<GameCharacter>> e = new ArrayList<ArrayList<GameCharacter>>();
+        ArrayList<GameCharacter> e1 = new ArrayList<GameCharacter>();
 
 
         ArrayList<SquareAbstract> zeromove = new ArrayList<SquareAbstract>();
         ArrayList<SquareAbstract> onemove;
         ArrayList<SquareAbstract> twomove;
 
-        ArrayList<Character> taken = (ArrayList<Character>) Character.getTakenCharacters();
+        ArrayList<GameCharacter> taken = (ArrayList<GameCharacter>) GameCharacter.getTakenCharacters();
         ArrayList<SquareAbstract> visible = (ArrayList<SquareAbstract>) square.getVisibleSquares();
 
         for(int i = 0; i < taken.size(); i++)

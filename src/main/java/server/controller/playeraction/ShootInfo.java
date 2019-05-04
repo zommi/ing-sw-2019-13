@@ -6,6 +6,8 @@ import server.model.cards.Weapon;
 import server.model.cards.WeaponCard;
 import server.model.map.Room;
 import server.model.map.Square;
+import server.model.map.SquareAbstract;
+import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
 import server.model.cards.*;
 
@@ -16,23 +18,24 @@ public class ShootInfo {
 
     private PlayerAbstract player;
     private Weapon weapon;
-    private List<ArrayList<Character>> targets;
+    private List<ArrayList<GameCharacter>> targets;
     private List<Integer> extra;
-    private List<Square> yourSquares;
-    private List<Square> targetSquares;
-    private List<Square> chosenSquares;
-    private List<Room> chosenRooms;
+    private List<SquareAbstract> yourSquares;
+    private List<SquareAbstract> targetSquares;
+    private SquareAbstract chosenSquare;
+    private Room chosenRoom;
 
-    public  ShootInfo(PlayerAbstract player, Weapon weapon, List<ArrayList<Character>> targets,
-                     List<Integer> extra, List<Square> yourSquares, List<Square> targetSquares, List<Square> chosenSquares, List<Room> chosenRooms) {
+    public  ShootInfo(PlayerAbstract player, Weapon weapon, List<ArrayList<GameCharacter>> targets,
+                     List<Integer> extra, List<SquareAbstract> yourSquares,
+                      List<SquareAbstract> targetSquares, Square chosenSquare, Room chosenRoom) {
         this.player = player;
         this.weapon = weapon;
         this.targets = targets;
         this.extra = extra;
         this.yourSquares = yourSquares;
         this.targetSquares = targetSquares;
-        this.chosenSquares = chosenSquares;
-        this.chosenRooms = chosenRooms;
+        this.chosenSquare = chosenSquare;
+        this.chosenRoom = chosenRoom;
     }
 
     public PlayerAbstract getPlayer() {
@@ -43,7 +46,7 @@ public class ShootInfo {
         return weapon;
     }
 
-    public List<ArrayList<Character>> getTargets() {
+    public List<ArrayList<GameCharacter>> getTargets() {
         return targets;
     }
 
@@ -51,19 +54,19 @@ public class ShootInfo {
         return extra;
     }
 
-    public List<Square> getChosenSquares() {
-        return chosenSquares;
+    public SquareAbstract getChosenSquare() {
+        return chosenSquare;
     }
 
-    public List<Square> getTargetSquares() {
+    public List<SquareAbstract> getTargetSquares() {
         return targetSquares;
     }
 
-    public List<Square> getYourSquares() {
+    public List<SquareAbstract> getYourSquares() {
         return yourSquares;
     }
 
-    public List<Room> getChosenRooms() {
-        return chosenRooms;
+    public Room getChosenRoom() {
+        return chosenRoom;
     }
 }

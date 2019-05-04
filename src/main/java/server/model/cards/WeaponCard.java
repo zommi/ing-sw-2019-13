@@ -1,9 +1,8 @@
 package server.model.cards;
 
-import server.model.gameboard.WeaponDeck;
 import server.model.items.*;
 import server.model.map.*;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.*;
 
@@ -49,7 +48,7 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     public void discard() { }
 
 
-    public ArrayList<ArrayList<Character>> chooseCharacter(SquareAbstract square, int extra){
+    public ArrayList<ArrayList<GameCharacter>> chooseCharacter(SquareAbstract square, int extra){
         if(extra == 0)
             return(weapon.getCommand().execute(square));    //this method returns the list of the possible targets
         else if(extra == 1)

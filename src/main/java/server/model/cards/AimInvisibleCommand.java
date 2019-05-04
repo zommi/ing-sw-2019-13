@@ -1,7 +1,7 @@
 package server.model.cards;
 
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -17,23 +17,23 @@ public class AimInvisibleCommand implements Command {
      * @param square where the player is
      * @return  an arraylist of arralist of invisible characters from the position of the player shooting
      */
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square){
-        ArrayList<Character> e = (ArrayList<Character>)Character.getTakenCharacters();
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square){
+        ArrayList<GameCharacter> e = (ArrayList<GameCharacter>) GameCharacter.getTakenCharacters();
 
-        ArrayList<Character> e1 = (ArrayList)square.getVisibleCharacters();  //here I have the characters that I can see
+        ArrayList<GameCharacter> e1 = (ArrayList)square.getVisibleCharacters();  //here I have the characters that I can see
 
 
         //now I have to make the intersection between them
 
 
-        for (Character t : (ArrayList<Character>)e.clone()) {
+        for (GameCharacter t : (ArrayList<GameCharacter>)e.clone()) {
             if(e1.contains(t)) {
                 e.remove(t);
             }
         }
 
 
-        ArrayList<ArrayList<Character>> result = new ArrayList<ArrayList<Character>>();
+        ArrayList<ArrayList<GameCharacter>> result = new ArrayList<ArrayList<GameCharacter>>();
         result.add(e);
 
         return result;

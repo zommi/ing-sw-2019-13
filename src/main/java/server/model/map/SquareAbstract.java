@@ -3,14 +3,14 @@ package server.model.map;
 import server.model.cards.CollectableInterface;
 import constants.Color;
 import constants.Directions;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class  SquareAbstract {
 
-    private List<Character> charactersList;
+    private List<GameCharacter> charactersList;
 
     private Color color;
     private int row;
@@ -129,30 +129,30 @@ public abstract class  SquareAbstract {
     }
 
     /**
-     * Adds the given character to the list of the characters that physically stay on this square.
-     * @param character the character that needs to be added to this square
+     * Adds the given gameCharacter to the list of the characters that physically stay on this square.
+     * @param gameCharacter the gameCharacter that needs to be added to this square
      */
-    public void addCharacter(Character character){
-        charactersList.add(character);
-        room.addCharacter(character);
+    public void addCharacter(GameCharacter gameCharacter){
+        charactersList.add(gameCharacter);
+        room.addCharacter(gameCharacter);
     }
 
     /**
-     * Removes a character from the list of the characters that physically stay on this square.
-     * @param character the character that needs to be removed from this square
+     * Removes a gameCharacter from the list of the characters that physically stay on this square.
+     * @param gameCharacter the gameCharacter that needs to be removed from this square
      */
-    public void removeCharacter(Character character){
-        charactersList.remove(character);
-        room.removeCharacter(character);
+    public void removeCharacter(GameCharacter gameCharacter){
+        charactersList.remove(gameCharacter);
+        room.removeCharacter(gameCharacter);
     }
 
     /**
      * Returns a list of the characters that physically stay on this square.
      * @return a list of the characters that physically stay on this square
      */
-    public List<Character> getCharacters() {
-        ArrayList<Character> returnedList = (ArrayList<Character>) charactersList;
-        return (ArrayList<Character>)  returnedList.clone();
+    public List<GameCharacter> getCharacters() {
+        ArrayList<GameCharacter> returnedList = (ArrayList<GameCharacter>) charactersList;
+        return (ArrayList<GameCharacter>)  returnedList.clone();
     }
 
     /**
@@ -161,13 +161,13 @@ public abstract class  SquareAbstract {
      * the same room, or in the room of an adjacent square.
      * @return a list with the characters that are visible from this square
      */
-    public List<Character> getVisibleCharacters(){
-        List<Character> visibleCharacters = new ArrayList<>();
-        visibleCharacters.addAll(room.getCharacters());
+    public List<GameCharacter> getVisibleCharacters(){
+        List<GameCharacter> visibleGameCharacters = new ArrayList<>();
+        visibleGameCharacters.addAll(room.getCharacters());
         for(Room tempRoom : this.getVisibleRooms()){
-            visibleCharacters.addAll(tempRoom.getCharacters());
+            visibleGameCharacters.addAll(tempRoom.getCharacters());
         }
-        return visibleCharacters;
+        return visibleGameCharacters;
 
     }
 
@@ -191,8 +191,8 @@ public abstract class  SquareAbstract {
      * @return a list with the characters that stand on a square that
      *        has the same row OR the same column of this square
      */
-    public List<Character> getCharactersThroughWalls(){
-        List<Character> tempCharactersList = new ArrayList<>();
+    public List<GameCharacter> getCharactersThroughWalls(){
+        List<GameCharacter> tempCharactersList = new ArrayList<>();
         List<SquareAbstract> rowSquares = GameMap.getSquaresWithSameRow(this);
         List<SquareAbstract> colSquares = GameMap.getSquaresWithSameCol(this);
         for(SquareAbstract tempSquare : rowSquares){
@@ -231,8 +231,8 @@ public abstract class  SquareAbstract {
      *         away from the square on which the method is called
      */
 
-    public List<Character> getExactlyTwoMovementsCharacters() {
-        List<Character> tempCharactersList = new ArrayList<>();
+    public List<GameCharacter> getExactlyTwoMovementsCharacters() {
+        List<GameCharacter> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : getExactlyTwoMovementsSquares()){
             tempCharactersList.addAll(square.getCharacters());
         }
@@ -243,8 +243,8 @@ public abstract class  SquareAbstract {
      * Returns a list with all the characters that stand on the linked adjacent squares.
      * @return a list with all the characters that stand on the linked adjacent squares
      */
-    public List<Character> getExactlyOneMovementCharacters(){
-        List<Character> tempCharactersList = new ArrayList<>();
+    public List<GameCharacter> getExactlyOneMovementCharacters(){
+        List<GameCharacter> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
         }
@@ -257,8 +257,8 @@ public abstract class  SquareAbstract {
      * @return a list with all the characters that stand on the linked adjacent squares,
      * plus those that stand on this square
      */
-    public List<Character> getUpToOneMovementCharacters(){
-        List<Character> tempCharactersList = new ArrayList<>();
+    public List<GameCharacter> getUpToOneMovementCharacters(){
+        List<GameCharacter> tempCharactersList = new ArrayList<>();
         for(SquareAbstract square : this.getAdjacentSquares()){
             tempCharactersList.addAll(square.getCharacters());
         }
@@ -273,9 +273,9 @@ public abstract class  SquareAbstract {
      *         the square on which the method is called
      */
 
-    public List<Character> getAtLeastOneMovementCharacters(){
-        List<Character> tempCharactersList = new ArrayList<>();
-        tempCharactersList.addAll(Character.getTakenCharacters());
+    public List<GameCharacter> getAtLeastOneMovementCharacters(){
+        List<GameCharacter> tempCharactersList = new ArrayList<>();
+        tempCharactersList.addAll(GameCharacter.getTakenCharacters());
         tempCharactersList.removeAll(this.getCharacters());
         return tempCharactersList;
     }

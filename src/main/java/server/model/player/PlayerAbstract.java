@@ -5,6 +5,7 @@ import java.util.*;
 import server.model.cards.Bullet;
 import constants.Color;
 import constants.*;
+import server.model.items.AmmoCube;
 import server.model.map.*;
 
 /**
@@ -27,7 +28,7 @@ public abstract class PlayerAbstract {
      */
     public Figure chooseFigure(Figure selection) {
         System.out.println("You chose: " + selection +". Great Choice!");
-        Character.setTaken(selection);
+        GameCharacter.setTaken(selection);
         return selection;
     }
 
@@ -51,7 +52,7 @@ public abstract class PlayerAbstract {
 
     public abstract void collect(SpawnPoint spawnPoint, int choice);
 
-    public abstract Character getCharacter();
+    public abstract GameCharacter getGameCharacter();
 
     public abstract SquareAbstract getPosition();
 
@@ -74,4 +75,6 @@ public abstract class PlayerAbstract {
     public abstract void drawPowerup();
 
     public abstract void setState(PlayerState state);
+
+    public abstract boolean canPay(ArrayList<AmmoCube> cost);
 }

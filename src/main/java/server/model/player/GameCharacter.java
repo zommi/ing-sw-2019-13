@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 
  */
-public class Character {
+public class GameCharacter {
 
 
     private Figure figure;
@@ -20,7 +20,7 @@ public class Character {
     private ConcretePlayer concretePlayer;
 
 
-    public Character(Figure f){
+    public GameCharacter(Figure f){
         this.figure = f;
         f.setOwner(this);
         setTaken(f);
@@ -56,8 +56,8 @@ public class Character {
         return res;
     }
 
-    public static List<Character> getTakenCharacters(){
-        List<Character> res = new ArrayList<Character>();
+    public static List<GameCharacter> getTakenCharacters(){
+        List<GameCharacter> res = new ArrayList<GameCharacter>();
         for(Figure f : Figure.values()){
             if(isTaken(f.getId())){
                 res.add(f.getOwner());

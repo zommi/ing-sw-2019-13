@@ -3,7 +3,7 @@ package server.model.map;
 import server.model.cards.CollectableInterface;
 import server.model.cards.WeaponCard;
 import constants.Color;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.*;
 
@@ -13,7 +13,7 @@ import java.util.*;
 public class SpawnPoint extends SquareAbstract {
 
     private ArrayList<WeaponCard> weaponCards;
-    private ArrayList<Character> charactersList;
+    private ArrayList<GameCharacter> charactersList;
     private Room room;
     private int xValue;
     private int yValue;

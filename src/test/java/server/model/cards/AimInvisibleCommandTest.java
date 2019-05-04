@@ -1,7 +1,7 @@
 package server.model.cards;
 
 import server.model.map.GameMap;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ class AimInvisibleCommandTest {
     @Test
     void execute ()  throws exceptions.NoSuchSquareException{ //execute returns an arraylist of arraylist of non visible char
 
-        Character c = new Character(server.model.player.Figure.DESTRUCTOR);
-        Character c1 = new Character(server.model.player.Figure.BANSHEE);
-        Character c2 = new Character(server.model.player.Figure.DOZER);
-        Character c3 = new Character(server.model.player.Figure.VIOLET);
-        Character c4 = new Character(server.model.player.Figure.SPROG);
+        GameCharacter c = new GameCharacter(server.model.player.Figure.DESTRUCTOR);
+        GameCharacter c1 = new GameCharacter(server.model.player.Figure.BANSHEE);
+        GameCharacter c2 = new GameCharacter(server.model.player.Figure.DOZER);
+        GameCharacter c3 = new GameCharacter(server.model.player.Figure.VIOLET);
+        GameCharacter c4 = new GameCharacter(server.model.player.Figure.SPROG);
 
         GameMap gameMap = new GameMap(1);
 
@@ -27,12 +27,12 @@ class AimInvisibleCommandTest {
         GameMap.getSquare(1,3).addCharacter(c4);
 
 
-        ArrayList<Character> e = new ArrayList<Character>();
-        e.add(new Character(server.model.player.Figure.DESTRUCTOR));
-        e.add(new Character(server.model.player.Figure.VIOLET));
-        e.add(new Character(server.model.player.Figure.SPROG));
+        ArrayList<GameCharacter> e = new ArrayList<GameCharacter>();
+        e.add(new GameCharacter(server.model.player.Figure.DESTRUCTOR));
+        e.add(new GameCharacter(server.model.player.Figure.VIOLET));
+        e.add(new GameCharacter(server.model.player.Figure.SPROG));
 
-        ArrayList<ArrayList<Character>> e1 = new ArrayList<ArrayList<Character>>();
+        ArrayList<ArrayList<GameCharacter>> e1 = new ArrayList<ArrayList<GameCharacter>>();
         e1.add(e);
 
         AimInvisibleCommand aim = new AimInvisibleCommand();

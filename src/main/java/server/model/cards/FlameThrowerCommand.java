@@ -1,7 +1,7 @@
 package server.model.cards;
 import constants.Directions;
 import server.model.map.SquareAbstract;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
 
@@ -23,43 +23,43 @@ public class FlameThrowerCommand implements Command{
      * @param square where the player is
      * @return an arraylist of arralist of the characters that the player shooting can see 1 move away from him and possibly 1 more move away in the same direction.
      */
-    public ArrayList<ArrayList<Character>> execute(SquareAbstract square) {
+    public ArrayList<ArrayList<GameCharacter>> execute(SquareAbstract square) {
 
         ArrayList<SquareAbstract> eN = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.NORTH);
         ArrayList<SquareAbstract> eS = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.SOUTH);
         ArrayList<SquareAbstract> eW = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.WEST);
         ArrayList<SquareAbstract> eE = (ArrayList<SquareAbstract>)square.getTwoSquaresInTheSameDirection(Directions.EAST);
 
-        ArrayList<ArrayList<Character>> cN = new ArrayList<ArrayList<Character>>();
-        ArrayList<ArrayList<Character>> cS = new ArrayList<ArrayList<Character>>();
-        ArrayList<ArrayList<Character>> cW = new ArrayList<ArrayList<Character>>();
-        ArrayList<ArrayList<Character>> cE = new ArrayList<ArrayList<Character>>();
+        ArrayList<ArrayList<GameCharacter>> cN = new ArrayList<ArrayList<GameCharacter>>();
+        ArrayList<ArrayList<GameCharacter>> cS = new ArrayList<ArrayList<GameCharacter>>();
+        ArrayList<ArrayList<GameCharacter>> cW = new ArrayList<ArrayList<GameCharacter>>();
+        ArrayList<ArrayList<GameCharacter>> cE = new ArrayList<ArrayList<GameCharacter>>();
 
 
         for (SquareAbstract t : eN) {
-            cN.add((ArrayList<Character>)t.getCharacters());
+            cN.add((ArrayList<GameCharacter>)t.getCharacters());
         }
 
         for (SquareAbstract t : eS) {
-            cS.add((ArrayList<Character>)t.getCharacters());
+            cS.add((ArrayList<GameCharacter>)t.getCharacters());
         }
 
         for (SquareAbstract t : eW) {
-            cW.add((ArrayList<Character>)t.getCharacters());
+            cW.add((ArrayList<GameCharacter>)t.getCharacters());
         }
 
         for (SquareAbstract t : eE) {
-            cE.add((ArrayList<Character>)t.getCharacters());
+            cE.add((ArrayList<GameCharacter>)t.getCharacters());
         }
 
         if(this.direction.getAbbreviation() == "n")
-            return (ArrayList<ArrayList<Character>>)cN.clone();
+            return (ArrayList<ArrayList<GameCharacter>>)cN.clone();
         else if(this.direction.getAbbreviation() == "s")
-            return (ArrayList<ArrayList<Character>>)cS.clone();
+            return (ArrayList<ArrayList<GameCharacter>>)cS.clone();
         else if(this.direction.getAbbreviation() == "e")
-            return (ArrayList<ArrayList<Character>>)cE.clone();
+            return (ArrayList<ArrayList<GameCharacter>>)cE.clone();
         else
-            return (ArrayList<ArrayList<Character>>)cW.clone();
+            return (ArrayList<ArrayList<GameCharacter>>)cW.clone();
 
     }
 

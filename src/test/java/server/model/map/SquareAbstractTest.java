@@ -3,7 +3,7 @@ package server.model.map;
 import constants.Color;
 import constants.Directions;
 import exceptions.NoSuchSquareException;
-import server.model.player.Character;
+import server.model.player.GameCharacter;
 import server.model.player.Figure;
 import org.junit.jupiter.api.Test;
 
@@ -27,9 +27,9 @@ class SquareAbstractTest {
     @Test
     void getVisibleCharacters() throws NoSuchSquareException {
         GameMap gameMap = new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(0,0).addCharacter(char1);
         GameMap.getSquare(1,2).addCharacter(char2);
         GameMap.getSquare(2,1).addCharacter(char3);
@@ -42,9 +42,9 @@ class SquareAbstractTest {
     @Test
     void getCharactersThroughWalls() throws  NoSuchSquareException{
         GameMap gameMap = new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(0,1).addCharacter(char1);
         GameMap.getSquare(1,1).addCharacter(char2);
         GameMap.getSquare(2,1).addCharacter(char3);
@@ -58,9 +58,9 @@ class SquareAbstractTest {
     @Test
     void getExactlyOneMovementCharacters() throws NoSuchSquareException{
         GameMap gameMap = new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(1,0).addCharacter(char1);
         GameMap.getSquare(0,1).addCharacter(char2);
         GameMap.getSquare(1,3).addCharacter(char3);
@@ -77,9 +77,9 @@ class SquareAbstractTest {
     @Test
     void getUpToOneMovementCharacters() throws NoSuchSquareException{
         GameMap gameMap = new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(1,0).addCharacter(char1);
         GameMap.getSquare(0,1).addCharacter(char2);
         GameMap.getSquare(1,3).addCharacter(char3);
@@ -144,9 +144,9 @@ class SquareAbstractTest {
     @Test
     void getExactlyTwoMovementsCharacters() throws NoSuchSquareException{
         new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(1,0).addCharacter(char1);
         GameMap.getSquare(0,1).addCharacter(char2);
         GameMap.getSquare(0,1).addCharacter(char3);
@@ -160,9 +160,9 @@ class SquareAbstractTest {
     @Test
     void getAtLeastOneMovementCharacters() throws NoSuchSquareException{
         new GameMap(1);
-        Character char1 = new Character(Figure.DESTRUCTOR);
-        Character char2 = new Character(Figure.BANSHEE);
-        Character char3 = new Character(Figure.DOZER);
+        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
+        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
+        GameCharacter char3 = new GameCharacter(Figure.DOZER);
         GameMap.getSquare(1,2).addCharacter(char1);
         GameMap.getSquare(0,2).addCharacter(char2);
         GameMap.getSquare(2,2).addCharacter(char3);

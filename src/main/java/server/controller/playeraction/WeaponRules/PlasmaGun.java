@@ -12,4 +12,9 @@ public class PlasmaGun implements WeaponRulesInterface{
     public void actuate(ShootInfo pack){
 
     }
+
+    @Override
+    public void unpack(ShootInfo pack) {
+
+    }
 }
