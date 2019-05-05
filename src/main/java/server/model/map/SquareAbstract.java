@@ -341,4 +341,11 @@ public abstract class  SquareAbstract {
     public abstract void addItem(CollectableInterface itemToLeave);
 
     public abstract boolean isEmpty();
+
+    public List<GameCharacter> getExactlyThreeMovementsCharacters(){
+        return null;
+    }
+    public List<GameCharacter> getAtLeastTwoMovementCharacters() {
+        return null;
+    }
 }
