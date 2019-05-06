@@ -342,7 +342,7 @@ public abstract class  SquareAbstract {
 
     public abstract boolean isEmpty();
 
-    public List<GameCharacter> getExactlyThreeMovementsCharacters(){
+    public List<SquareAbstract> getUpToTwoMovementsSquares(){
         return null;
     }
     public List<GameCharacter> getAtLeastTwoMovementCharacters() {
