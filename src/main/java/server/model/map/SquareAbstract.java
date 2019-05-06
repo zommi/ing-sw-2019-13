@@ -348,4 +348,23 @@ public abstract class  SquareAbstract {
     public List<GameCharacter> getAtLeastTwoMovementCharacters() {
         return null;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof SquareAbstract)) {
+            return false;
+        }
+
+        SquareAbstract squareAbstractObject = (SquareAbstract) obj;
+
+        return this.row == squareAbstractObject.getRow()
+                && this.col == squareAbstractObject.getCol()
+                && this.color == squareAbstractObject.getColor();
+
+    }
 }
