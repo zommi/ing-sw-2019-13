@@ -4,10 +4,11 @@ import server.controller.playeraction.ShootInfo;
 
 public class Elecroscythe implements WeaponRulesInterface{
 
+    private int effectsnumber;
+    private int extraPosition0;
+
     @Override
     public boolean validate(ShootInfo pack){
-
-        int effectsnumber = pack.getExtra().size();
 
         if(effectsnumber == 0)
             return false;
@@ -15,10 +16,8 @@ public class Elecroscythe implements WeaponRulesInterface{
         if (effectsnumber > 1)
             return false;
 
-        if(effectsnumber == 1){
-            if((pack.getExtra().get(0) != 0) && (pack.getExtra().get(0) != 1))
-                return false;
-        }
+        if((effectsnumber == 1)&&((extraPosition0 != 0) && (extraPosition0 != 1)))
+            return false;
         return true; //then all the targets are visible
     }
 
@@ -29,6 +28,7 @@ public class Elecroscythe implements WeaponRulesInterface{
     }
     @Override
     public void unpack(ShootInfo pack){
-
+        this.effectsnumber = pack.getExtra().size();
+        this.extraPosition0 = pack.getExtra().get(0);
     }
 }

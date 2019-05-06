@@ -1,28 +1,37 @@
 package server.controller.playeraction.WeaponRules;
 
 import server.controller.playeraction.ShootInfo;
+import server.model.map.SquareAbstract;
+import server.model.player.GameCharacter;
+
+import java.util.List;
 
 public class PlasmaGun implements WeaponRulesInterface{
 
+    private int effectsnumber;
+    private int extra0;
+    private int extra1;
+    private List<GameCharacter> target0;
+    private List<GameCharacter> target1;
+    private List<GameCharacter> playerPositionVisibleCharacters;
+    private List<SquareAbstract> playerPositionOneMovement;
+    private List<SquareAbstract> playerPositionTwoMovement;
+
+
     @Override
     public boolean validate(ShootInfo pack){
-        int effectsnumber = pack.getExtra().size();
 
-        if(effectsnumber == 0)
-            return false;
-        if(effectsnumber > 3)
+        if((effectsnumber == 0)||(effectsnumber > 3))
             return false;
 
-        if((effectsnumber == 3)||(effectsnumber == 2))
-        {
-            if(pack.getExtra().get(0) == 2)
+        if((effectsnumber == 3)||(effectsnumber == 2)){
+            if(extra0 == 2)
                 return false;
-            if(pack.getExtra().get(1) == 2 && (pack.getExtra().get(0) == 1))
+            if((extra1 == 2) && (extra0 == 1))
                 return false;
         }
-        if(effectsnumber == 1){
-            if(pack.getExtra().get(0) == 2)
-                return false;
+        if((effectsnumber == 1)&&(extra0 == 2)){
+            return false;
         }
 
 
@@ -30,20 +39,20 @@ public class PlasmaGun implements WeaponRulesInterface{
             if(pack.getExtra().get(i).equals(0)){
                 if(pack.getTargets().get(i).size() != 1)
                     return false; //only one target
-                if(!pack.getPlayer().getPosition().getVisibleCharacters().contains(pack.getTargets().get(i).get(0)))
+                if(!playerPositionVisibleCharacters.contains(pack.getTargets().get(i).get(0)))
                     return false;
             }
 
             if(pack.getExtra().get(i).equals(1)){
-                if(!pack.getPlayer().getPosition().getExactlyOneMovementCharacters().contains(pack.getYourSquares().get(0)) &&
-                        (!pack.getPlayer().getPosition().getExactlyTwoMovementsSquares().contains(pack.getYourSquares().get(0))))
+                if(!playerPositionOneMovement.contains(pack.getYourSquares().get(0)) &&
+                        (!playerPositionTwoMovement.contains(pack.getYourSquares().get(0))))
                     return false;
             }
 
             if(pack.getExtra().get(i).equals(2)){
-                if(pack.getTargets().get(1).size() != 1) //it will be the number 1 for sure: the second extra does not prepare any list of targets
+                if(target1.size() != 1) //it will be the number 1 for sure: the second extra does not prepare any list of targets
                     return false; //only one target
-                if(!pack.getTargets().get(0).get(0).equals(pack.getTargets().get(1).get(0)))
+                if(!target0.get(0).equals(target1.get(0)))
                     return false;
             }
         }
@@ -57,6 +66,13 @@ public class PlasmaGun implements WeaponRulesInterface{
 
     @Override
     public void unpack(ShootInfo pack) {
-
+        this.effectsnumber = pack.getExtra().size();
+        this.extra0 = pack.getExtra().get(0);
+        this.extra1 = pack.getExtra().get(1);
+        this.playerPositionVisibleCharacters = pack.getPlayer().getPosition().getVisibleCharacters();
+        this.playerPositionOneMovement = pack.getPlayer().getPosition().getAdjacentSquares();
+        this.playerPositionTwoMovement = pack.getPlayer().getPosition().getExactlyTwoMovementsSquares();
+        this.target0 = pack.getTargets().get(0);
+        this.target1 = pack.getTargets().get(1);
     }
 }
