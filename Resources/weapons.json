@@ -1,0 +1,639 @@
+[
+  {
+    "name": "Lock Rifle",
+    "type": "EXTRA",
+    "buyCost": {
+      "blue" : 1
+    },
+    "reloadCost": {
+      "blue" : 2
+    },
+    "macroEffects": [
+      {
+        "mandatory" : true,
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "mandatory" : true,
+            "damage" : 2,
+            "marks" : 1,
+            "maxTargetPlayerSize" : 1,
+            "policies" : [
+              {
+                "type" : "visible",
+                "attackerFlag" : true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "red" : 1
+        },
+        "microEffects" : [
+          {
+            "marks" : 1,
+            "maxTargetPlayerSize" : 1,
+            "policies" : [
+              {
+                "type" :"visible",
+                "flagAttacker" : true
+              },
+              {
+                "type" : "different",
+                "playerFlag" : true,
+                "effectFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Machine Gun",
+    "type": "EXTRA",
+    "buyCost": { 
+      "red" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "blue" : 1
+    },
+    "macroEffects": [
+      {
+        "mandatory" : true,
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "mandatory" : true,
+            "maxTargetPlayerSize" : 2,
+            "policies" : [
+              {
+                "type" : "visible",
+                "flagAttacker" : true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "yellow" : 1
+        },
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "damage" : 1,
+            "mandatory" : true,
+            "maxTargetPlayerSize" : 1,
+            "policies" : [
+              {
+                "type" : "inList",
+                "playerFlag" : true,
+                "effectFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 0
+              },
+              {
+                "type" : "different",
+                "playerFlag" : true,
+                "effectFlag" : true,
+                "macroEffectIndex" : 2,
+                "microEffectIndex" : 0
+              }
+            ]
+          }
+        ] 
+      },
+      {
+        "cost" : {
+          "blue" : 1
+        },
+        "atLeastOneActiveFlag" : true,
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "maxTargetPlayerSize" : 1,
+            "damage" : 1,
+            "policies" : [
+              {
+                "type" : "inList",
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 0
+              },
+              {
+                "type" : "different",
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0
+              }
+            ]
+          },
+          {
+            "playerInputFlag" : true,
+            "maxTargetPlayerSize" : 1,
+            "damage" : 1,
+            "policies" : [
+              {
+                "type" : "visible",
+                "attackerFlag" : true,
+              },
+              {
+                "type" : "different",
+                "playerFlag" : true,
+                "effectFlag" : true,
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "THOR",
+    "type": "EXTRA",
+    "buyCost": {
+      "red" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "blue" : 1
+    },
+    "macroEffects": [
+      {
+        "mandatory" : true,
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "maxTargetPlayerSize" : 1,
+            "damage" : 2,
+            "policies" : [
+              {
+                "type" : "visible",
+                "attackerFlag" : true,
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "blue" : 1
+        },
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "mandatory" : true,
+            "maxTargetPlayerSize" : 1,
+            "damage" : 1,
+            "policies" : [
+              {
+                "type" : "visible" ,
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 0,
+              },
+              {
+                "type" : "different",
+                "attackerFlag" : true,
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "blue" : 1
+        },
+        "conditional" : true,
+        "macroEffectIndex" : 1,
+        "microEffectIndex" : 0,
+        "microEffects" : [
+          {
+            "playerInputFlag" : true,
+            "mandatory" :true,
+            "maxTargetPlayerSize" : 1,
+            "damage" : 2,
+            "policies" : [
+              {
+                "type" : "visible",
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0
+              },
+              {
+                "type" : "notInList",
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "microEffectIndex" : 0,
+                "macroEffectIndex" : 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Plasma Gun",
+    "type": "EXTRA",
+    "buyCost": {
+      "yellow" : 1
+    },
+    "reloadCost": {
+      "blue" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": [
+      {
+        "mandatory"  : true,
+        "microEffects" : [
+          {
+            "squareInputFlag" : true,
+            "moveFlag" : true,
+            "limited" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "type" : "distanceSmaller",
+                "distance" : 3,
+                "attackerFlag" : true,
+              },
+              {
+                "type" : "specificPlayer",
+                "attackerFlag" : true,
+              }
+            ]
+          },
+          {
+            "playerInputFlag" : true,
+            "mandatory" : true,
+            "maxTargetPlayerSize" : 1,
+            "policies" : [
+              {
+                "type" : "visible",
+                "attackerFlag" : true,
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "blue" : 1
+        },
+        "microEffects" : [
+          {
+            "squareInputFlag" : true,
+            "moveFlag" : true,
+            "limited" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "type" : "distanceSmaller",
+                "distance" : 3,
+                "attackerFlag" : true,
+              },
+              {
+                "type" : "specificPlayer",
+                "attackerFlag" : true,
+              }
+            ]
+          },
+          {
+            "mandatory" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "type" : "specificPlayer",
+                "effectFlag" : true,
+                "playerFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "microEffects" : [
+          {
+            "squareInputFlag" : true,
+            "moveFlag" : true,
+            "limited" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "type" : "distanceSmaller",
+                "distance" : 3,
+                "attackerFlag" : true,
+              },
+              {
+                "type" : "specificPlayer",
+                "attackerFlag" : true,
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Whisper",
+    "type": "ONEMODE",
+    "buyCost": {
+      "blue" : 1,
+      "yellow" : 1
+    },
+    "reloadCost": {
+      "blue" : 2,
+      "yellow" : 1
+    },
+    "macroEffects": [
+    {
+      "mandatory" : true,
+      "microEffects" : [
+        {
+          "mandatory" : true,
+          "playerInputFlag" : true,
+          "maxTargetPlayerSize" : 1,
+          "policies" : [
+            {
+              "type" : "distanceGreater",
+              "distance" : 1,
+              "attackerFlag" : true,
+            },
+            {
+              "type" : "visible",
+              "attackerFlag" : true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  },
+  {
+    "name": "Electroscyte",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
+      "blue" : 1
+    },
+    "macroEffects": [
+      { 
+        "microEffects" : [
+          {
+            "damage" : 1,
+            "mandatory" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "type" : "distanceEqual",
+                "distance" : 0,
+                "attackerFlag" : true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "red" : 1,
+          "blue" : 1
+        },
+        "microEffects" : {
+          "damage" : 2,
+          "mandatory" : true,
+          "generatePlayerFlag" : true,
+          "policies" : [
+            {
+              "type" : "distanceEqual",
+              "distance" : 0,
+              "attackerFlag" : true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Tractor beam",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
+      "blue" : 1
+    },
+    "macroEffects": [
+      {
+        "microEffects" : [
+          {
+            "mandatory" : true,
+            "damage" : 1,
+            "moveFlag" : true,
+            "playerInputFlag" : true,
+            "squareInputFlag" : true,
+            "policies" : [
+              {
+                "type" : "visible",
+                "attackerFlag" : true
+              },
+              {
+                "type" : "distanceSmaller",
+                "distance" : 3,
+                "effectFlag" : true,
+                "squareFlag" : true,
+                "macroEffectIndex" : 0,
+                "microEffectIndex" : 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "red" : 1,
+          "yellow" : 1
+        },
+        "microEffects" : [
+          {
+            "damage" : 3,
+            "moveFlag" : true,
+            "playerInputFlag" : true,
+            "generatePlayerFlag" :true,
+            "policies" : [
+              {
+                "type" : "distanceEqual",
+                "distance" : 0,
+                "attackerFlag" : 0
+              },
+              {
+                "type" : "distanceSmaller",
+                "distance" : 3,
+                "attackerFlag" : true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Vortex Cannon",
+    "type": "EXTRA",
+    "buyCost": {
+      "blue" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "blue" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Furnace",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "blue" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "blue" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Heatseaker",
+    "type": "ONEMODE",
+    "buyCost": {
+      "red" : 1,
+      "yellow" : 1
+    },
+    "reloadCost": {
+      "red" : 2,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Hellion",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "yellow" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Flamethrower",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
+      "red" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Grenade Launcher",
+    "type": "EXTRA",
+    "buyCost": {},
+    "reloadCost": {
+      "red" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Rocket Launcher",
+    "type": "EXTRA",
+    "buyCost": {
+      "red" : 1
+    },
+    "reloadCost": {
+      "red" : 2
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Railgun",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "blue" : 1,
+      "yellow" :1
+    },
+    "reloadCost": {
+      "blue" : 1,
+      "yellow" : 2
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Cyberblade",
+    "type": "EXTRA",
+    "buyCost": {
+      "red" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Zx-2",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "red" : 1
+    },
+    "reloadCost": {
+      "red" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Shotgun",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "yellow" : 1
+    },
+    "reloadCost": {
+      "yellow" : 2
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Power Glove",
+    "type": "ALTERNATIVE",
+    "buyCost": {
+      "blue" : 1
+    },
+    "reloadCost": {
+      "blue" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Sledgehammer",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
+      "yellow" : 1
+    },
+    "macroEffects": []
+  }
+]
