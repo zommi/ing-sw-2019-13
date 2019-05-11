@@ -13,14 +13,14 @@
         "mandatory" : true,
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "mandatory" : true,
             "damage" : 2,
             "marks" : 1,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "attackerFlag" : true
               }
             ]
@@ -37,13 +37,15 @@
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
-                "type" :"visible",
-                "flagAttacker" : true
+                "policyName" :"visible",
+                "policyType" : "player",
+                "attackerFlag" : true
               },
               {
-                "type" : "different",
-                "playerFlag" : true,
+                "policyName" : "different",
+                "policyType" : "player",
                 "effectFlag" : true,
+                "effectList" : "player",
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0
               }
@@ -56,7 +58,7 @@
   {
     "name": "Machine Gun",
     "type": "EXTRA",
-    "buyCost": { 
+    "buyCost": {
       "red" : 1
     },
     "reloadCost": {
@@ -68,13 +70,13 @@
         "mandatory" : true,
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "mandatory" : true,
             "maxTargetPlayerSize" : 2,
             "policies" : [
               {
-                "type" : "visible",
-                "flagAttacker" : true
+                "policyName" : "visible",
+                "policyType" : "player",
+                "attackerFlag" : true
               }
             ]
           }
@@ -86,28 +88,29 @@
         },
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "damage" : 1,
             "mandatory" : true,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
-                "type" : "inList",
-                "playerFlag" : true,
+                "policyName" : "inList",
+                "policyType" : "player",
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               },
               {
-                "type" : "different",
-                "playerFlag" : true,
+                "policyName" : "different",
+                "policyType" : "player",
                 "effectFlag" : true,
                 "macroEffectIndex" : 2,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               }
             ]
           }
-        ] 
+        ]
       },
       {
         "cost" : {
@@ -116,41 +119,43 @@
         "atLeastOneActiveFlag" : true,
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
             "policies" : [
               {
-                "type" : "inList",
+                "policyName" : "inList",
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "macroEffectIndex" : 0,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               },
               {
-                "type" : "different",
+                "policyName" : "different",
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "macroEffectIndex" : 1,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               }
             ]
           },
           {
-            "playerInputFlag" : true,
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "attackerFlag" : true,
               },
               {
-                "type" : "different",
-                "playerFlag" : true,
+                "policyName" : "different",
+                "policyType" : "player",
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               }
             ]
           }
@@ -173,12 +178,12 @@
         "mandatory" : true,
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "maxTargetPlayerSize" : 1,
             "damage" : 2,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
@@ -191,20 +196,21 @@
         },
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "mandatory" : true,
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
             "policies" : [
               {
-                "type" : "visible" ,
+                "policyName" : "visible" ,
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
+                "effectList" : "player",
               },
               {
-                "type" : "different",
+                "policyName" : "different",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
@@ -220,24 +226,30 @@
         "microEffectIndex" : 0,
         "microEffects" : [
           {
-            "playerInputFlag" : true,
             "mandatory" :true,
             "maxTargetPlayerSize" : 1,
             "damage" : 2,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "macroEffectIndex" : 1,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "player",
               },
               {
-                "type" : "notInList",
+                "policyName" : "different",
+                "policyType" : "player",
+                "attackerFlag" : true
+              },
+              {
+                "policyName" : "different",
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "microEffectIndex" : 0,
-                "macroEffectIndex" : 0
+                "macroEffectIndex" : 0,
+                "effectList" : "player",
               }
             ]
           }
@@ -260,29 +272,30 @@
         "mandatory"  : true,
         "microEffects" : [
           {
-            "squareInputFlag" : true,
             "moveFlag" : true,
             "limited" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "type" : "distanceSmaller",
+                "policyName" : "distanceSmaller",
+                "policyType" : "square",
                 "distance" : 3,
                 "attackerFlag" : true,
               },
               {
-                "type" : "specificPlayer",
+                "policyName" : "specificPlayer",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
           },
           {
-            "playerInputFlag" : true,
             "mandatory" : true,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
@@ -295,18 +308,19 @@
         },
         "microEffects" : [
           {
-            "squareInputFlag" : true,
             "moveFlag" : true,
             "limited" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "type" : "distanceSmaller",
+                "policyName" : "distanceSmaller",
+                "policyType" : "square",
                 "distance" : 3,
                 "attackerFlag" : true,
               },
               {
-                "type" : "specificPlayer",
+                "policyName" : "specificPlayer",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
@@ -316,11 +330,12 @@
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "type" : "specificPlayer",
+                "policyName" : "specificPlayer",
+                "policyType" : "player",
                 "effectFlag" : true,
-                "playerFlag" : true,
                 "macroEffectIndex" : 0,
-                "microEffectIndex" : 1
+                "microEffectIndex" : 1,
+                "effectList" : "player",
               }
             ]
           }
@@ -329,18 +344,19 @@
       {
         "microEffects" : [
           {
-            "squareInputFlag" : true,
             "moveFlag" : true,
             "limited" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "type" : "distanceSmaller",
+                "policyName" : "distanceSmaller",
+                "policyType" : "square",
                 "distance" : 3,
                 "attackerFlag" : true,
               },
               {
-                "type" : "specificPlayer",
+                "policyName" : "specificPlayer",
+                "policyType" : "player",
                 "attackerFlag" : true,
               }
             ]
@@ -366,16 +382,17 @@
       "microEffects" : [
         {
           "mandatory" : true,
-          "playerInputFlag" : true,
           "maxTargetPlayerSize" : 1,
           "policies" : [
             {
-              "type" : "distanceGreater",
+              "policyName" : "distanceGreater",
+              "policyType" : "player",
               "distance" : 1,
               "attackerFlag" : true,
             },
             {
-              "type" : "visible",
+              "policyName" : "visible",
+              "policyType" : "player",
               "attackerFlag" : true
             }
           ]
@@ -392,7 +409,7 @@
       "blue" : 1
     },
     "macroEffects": [
-      { 
+      {
         "microEffects" : [
           {
             "damage" : 1,
@@ -400,7 +417,8 @@
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "type" : "distanceEqual",
+                "policyName" : "distanceEqual",
+                "policyType" : "player",
                 "distance" : 0,
                 "attackerFlag" : true
               }
@@ -419,7 +437,8 @@
           "generatePlayerFlag" : true,
           "policies" : [
             {
-              "type" : "distanceEqual",
+              "policyName" : "distanceEqual",
+              "policyType" : "player",
               "distance" : 0,
               "attackerFlag" : true
             }
@@ -442,20 +461,20 @@
             "mandatory" : true,
             "damage" : 1,
             "moveFlag" : true,
-            "playerInputFlag" : true,
-            "squareInputFlag" : true,
             "policies" : [
               {
-                "type" : "visible",
+                "policyName" : "visible",
+                "policyType" : "player",
                 "attackerFlag" : true
               },
               {
-                "type" : "distanceSmaller",
+                "policyName" : "distanceSmaller",
+                "policyType" : "player",
                 "distance" : 3,
                 "effectFlag" : true,
-                "squareFlag" : true,
                 "macroEffectIndex" : 0,
-                "microEffectIndex" : 0
+                "microEffectIndex" : 0,
+                "effectList" : "square",
               }
             ]
           }
@@ -470,16 +489,17 @@
           {
             "damage" : 3,
             "moveFlag" : true,
-            "playerInputFlag" : true,
             "generatePlayerFlag" :true,
             "policies" : [
               {
-                "type" : "distanceEqual",
+                "policyName" : "distanceEqual",
+                "policyType" : "square",
                 "distance" : 0,
-                "attackerFlag" : 0
+                "attackerFlag" : true
               },
               {
-                "type" : "distanceSmaller",
+                "policyName" : "distanceSmaller",
+                "policyType" : "player",
                 "distance" : 3,
                 "attackerFlag" : true
               }
