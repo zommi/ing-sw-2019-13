@@ -37,16 +37,11 @@ public class TurnHandler {
         } throw new InvalidMoveException();
     }
     */
-    public void setAction(Action action){
-        if(currentPhase == TurnPhase.FIRST_ACTION
-            || currentPhase == TurnPhase.SECOND_ACTION){
-            this.action = action;
-        }
-    }
 
-    public void doAction(){
+    public void setAndDoAction(Action action){
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION) {
+            this.action = action;
             //if returns false then disconnects the player
             this.action.execute();
             nextPhase();
@@ -56,6 +51,12 @@ public class TurnHandler {
     public void startTurn(PlayerAbstract player){
         this.currentPlayer = player;
         this.currentPhase = TurnPhase.FIRST_ACTION;
+    }
+
+    public void pass(){
+        if(currentPhase == TurnPhase.END_TURN){
+
+        }
     }
 
     public void nextPhase(){

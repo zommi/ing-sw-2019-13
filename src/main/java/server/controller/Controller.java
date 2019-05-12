@@ -1,5 +1,6 @@
 package server.controller;
 
+import exceptions.WrongGameStateException;
 import server.controller.turns.TurnHandler;
 import server.model.game.Game;
 import server.model.map.GameMap;
@@ -26,6 +27,9 @@ public class Controller implements MyObserver {
         this.activePlayer = null;
     }
 
+    public void nextPlayer() throws WrongGameStateException {
+        this.currentGame.nextPlayer();
+    }
 
 
     public void update(){}

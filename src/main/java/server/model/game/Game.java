@@ -35,7 +35,7 @@ public class Game {
         this.currentState = GameState.START_MENU;
         this.currentGameBoard = new GameBoard(mapChoice,skullChoice);
         this.currentGameMap = currentGameBoard.getMap();
-        this.activePlayers = new ArrayList<PlayerAbstract>();
+        this.activePlayers = new ArrayList<>();
         this.weaponDeck = currentGameBoard.getWeaponDeck();
         this.powerupDeck = currentGameBoard.getPowerupDeck();
         this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
