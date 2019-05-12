@@ -1651,15 +1651,6 @@
     ]
   },
   {
-    "name": "Shockwave",
-    "type": "ALTERNATIVE",
-    "buyCost": {},
-    "reloadCost": {
-      "yellow" : 1
-    },
-    "macroEffects": []
-  },
-  {
     "name": "Sledgehammer",
     "type": "ALTERNATIVE",
     "buyCost": {},
