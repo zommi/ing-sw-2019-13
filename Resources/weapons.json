@@ -179,6 +179,7 @@
         "mandatory" : true,
         "microEffects" : [
           {
+            "mandatory" : true,
             "maxTargetPlayerSize" : 1,
             "damage" : 2,
             "policies" : [

@@ -1,10 +1,11 @@
 package server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import exceptions.NoSuchEffectException;
 
 import java.util.List;
 
-public class Effect {
+public class MacroEffect {
 
     @JsonProperty
     private boolean mandatory;
@@ -27,6 +28,10 @@ public class Effect {
     @JsonProperty
     private boolean atLeastOneActiveFlag;
 
-
+    public MicroEffect getMicroEffect(int micro) throws NoSuchEffectException {
+        if(micro < microEffects.size())
+            return microEffects.get(micro);
+        else throw new NoSuchEffectException();
+    }
 
 }

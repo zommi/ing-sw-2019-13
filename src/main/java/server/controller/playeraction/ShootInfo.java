@@ -16,59 +16,31 @@ import java.util.List;
 
 public class ShootInfo {
 
-    private PlayerAbstract player;
+    private PlayerAbstract attacker;
     private Weapon weapon;
-    private List<ArrayList<GameCharacter>> targets;
-    private List<Integer> extra;
-    private List<SquareAbstract> yourSquares;
-    private List<SquareAbstract> targetSquares;
-    private SquareAbstract chosenSquare;
-    private Room chosenRoom;
+    private List<MacroInfo> activatedMacros;
 
 
 
-    public  ShootInfo(PlayerAbstract player, Weapon weapon, List<ArrayList<GameCharacter>> targets,
-                     List<Integer> extra, List<SquareAbstract> yourSquares,
-                      List<SquareAbstract> targetSquares, Square chosenSquare, Room chosenRoom) {
-        this.player = player;
-        this.weapon = weapon;
-        this.targets = targets;
-        this.extra = extra;
-        this.yourSquares = yourSquares;
-        this.targetSquares = targetSquares;
-        this.chosenSquare = chosenSquare;
-        this.chosenRoom = chosenRoom;
-    }
 
-    public PlayerAbstract getPlayer() {
-        return player;
+
+    public PlayerAbstract getAttacker() {
+        return attacker;
     }
 
     public Weapon getWeapon() {
         return weapon;
     }
 
-    public List<ArrayList<GameCharacter>> getTargets() {
-        return targets;
+    public List<MacroInfo> getActivatedMacros() {
+        return activatedMacros;
     }
 
-    public List<Integer> getExtra() {
-        return extra;
+    public MacroInfo getActivatedMacro(int macro){
+        return activatedMacros.get(macro);
     }
 
-    public SquareAbstract getChosenSquare() {
-        return chosenSquare;
-    }
-
-    public List<SquareAbstract> getTargetSquares() {
-        return targetSquares;
-    }
-
-    public List<SquareAbstract> getYourSquares() {
-        return yourSquares;
-    }
-
-    public Room getChosenRoom() {
-        return chosenRoom;
+    public MicroInfo getActivatedMicro(int macro, int micro){
+        return getActivatedMacro(macro).getActivatedMicro(micro);
     }
 }
