@@ -99,7 +99,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -107,7 +107,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 2,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -129,7 +129,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -137,7 +137,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           },
@@ -148,7 +148,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "different",
@@ -156,7 +156,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -185,7 +185,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -207,12 +207,12 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -237,7 +237,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -250,7 +250,7 @@
                 "effectFlag" : true,
                 "microEffectIndex" : 0,
                 "macroEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -281,12 +281,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -297,7 +297,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -317,12 +317,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -336,7 +336,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 1,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -353,12 +353,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -391,7 +391,7 @@
               "policyName" : "distanceGreater",
               "policyType" : "player",
               "distance" : 1,
-              "attackerFlag" : true,
+              "attackerFlag" : true
             },
             {
               "policyName" : "visible",
@@ -651,7 +651,7 @@
                 "policyName" : "distanceEqual",
                 "policyType" : "noMoveSquare",
                 "distance" : 2,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "distanceEqual",
@@ -692,7 +692,7 @@
                 "policyName" : "invisible",
                 "policyType" : "player",
                 "distance" : 1,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -722,12 +722,12 @@
                 "policyName" : "distanceGreater",
                 "policyType" : "player",
                 "distance" : 0,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -763,12 +763,12 @@
                 "policyName" : "distanceGreater",
                 "policyType" : "player",
                 "distance" : 0,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -962,7 +962,7 @@
                 "effectFlag" : true,
                 "effectList" : "player",
                 "macroEffectIndex" : 0,
-                "microEffectIndex" : 0,
+                "microEffectIndex" : 0
               }
             ]
           }
@@ -1621,7 +1621,7 @@
               },
               {
                 "policyName" : "differentSquares",
-                "policyType" : "player",
+                "policyType" : "player"
               }
             ]
           }
