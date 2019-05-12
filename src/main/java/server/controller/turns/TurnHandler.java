@@ -28,6 +28,7 @@ public class TurnHandler {
         currentPlayer.usePowerup(index);
     }
 
+    /* TODO
     public void reloadWeapon(List<Weapon> weaponsToReload) throws InvalidMoveException{
         if(this.currentPhase == TurnPhase.END_TURN) {
             for (Weapon w : weaponsToReload) {
@@ -35,7 +36,7 @@ public class TurnHandler {
             }
         } throw new InvalidMoveException();
     }
-
+    */
     public void setAction(Action action){
         if(currentPhase == TurnPhase.FIRST_ACTION
             || currentPhase == TurnPhase.SECOND_ACTION){

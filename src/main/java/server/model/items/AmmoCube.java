@@ -1,5 +1,6 @@
 package server.model.items;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import constants.*;
 import server.model.cards.*;
 

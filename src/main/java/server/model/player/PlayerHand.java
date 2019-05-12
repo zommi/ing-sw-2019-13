@@ -34,9 +34,11 @@ public class PlayerHand {
     }
 
 
+    /*
     public void playWeapon(int choice, int extra, int x, int y){
         weaponHand.get(choice).play(extra, x, y);
     }
+    */
 
     public void playPowerup(int choice){
         powerupHand.get(choice).play();

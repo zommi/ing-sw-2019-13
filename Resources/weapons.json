@@ -98,7 +98,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -106,7 +106,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 2,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -128,7 +128,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -136,7 +136,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           },
@@ -147,7 +147,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "different",
@@ -155,7 +155,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -184,7 +184,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -206,12 +206,12 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -236,7 +236,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               },
               {
                 "policyName" : "different",
@@ -249,7 +249,7 @@
                 "effectFlag" : true,
                 "microEffectIndex" : 0,
                 "macroEffectIndex" : 0,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -280,12 +280,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -296,7 +296,7 @@
               {
                 "policyName" : "visible",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -316,12 +316,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           },
@@ -335,7 +335,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 1,
-                "effectList" : "player",
+                "effectList" : "player"
               }
             ]
           }
@@ -352,12 +352,12 @@
                 "policyName" : "distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
-                "attackerFlag" : true,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
-                "attackerFlag" : true,
+                "attackerFlag" : true
               }
             ]
           }
@@ -388,7 +388,7 @@
               "policyName" : "distanceGreater",
               "policyType" : "player",
               "distance" : 1,
-              "attackerFlag" : true,
+              "attackerFlag" : true
             },
             {
               "policyName" : "visible",
@@ -431,19 +431,21 @@
           "red" : 1,
           "blue" : 1
         },
-        "microEffects" : {
-          "damage" : 2,
-          "mandatory" : true,
-          "generatePlayerFlag" : true,
-          "policies" : [
-            {
-              "policyName" : "distanceEqual",
-              "policyType" : "player",
-              "distance" : 0,
-              "attackerFlag" : true
-            }
-          ]
-        }
+        "microEffects" : [
+          {
+            "damage": 2,
+            "mandatory": true,
+            "generatePlayerFlag": true,
+            "policies": [
+              {
+                "policyName": "distanceEqual",
+                "policyType": "player",
+                "distance": 0,
+                "attackerFlag": true
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -474,7 +476,7 @@
                 "effectFlag" : true,
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
-                "effectList" : "square",
+                "effectList" : "square"
               }
             ]
           }
@@ -643,6 +645,15 @@
     },
     "reloadCost": {
       "blue" : 1,
+      "yellow" : 1
+    },
+    "macroEffects": []
+  },
+  {
+    "name": "Shockwave",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
       "yellow" : 1
     },
     "macroEffects": []

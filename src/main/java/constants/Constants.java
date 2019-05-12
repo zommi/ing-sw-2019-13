@@ -39,6 +39,9 @@ public class Constants {
     public static final String PATH_TO_POWERUP_JSON =  PATH_TO_RESOURCES_FOLDER +
                                                             File.separatorChar + "PowerUps.json";
 
+    public static final String PATH_TO_WEAPONS_JSON =  PATH_TO_RESOURCES_FOLDER +
+            File.separatorChar + "weapons.json";
+
     public static final String PATH_TO_MAP_11 = PATH_TO_RESOURCES_FOLDER +
         File.separatorChar + "maps" + File.separatorChar + "map11.txt";
 

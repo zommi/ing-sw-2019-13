@@ -1,7 +1,9 @@
 package server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import constants.Color;
 import exceptions.InvalidMoveException;
+import server.model.items.AmmoCube;
 
 public class Powerup {
 
@@ -12,6 +14,7 @@ public class Powerup {
     private Color value;
 
     private int numberOfCards;
+
 
     Powerup(){
         this.index = -1;
