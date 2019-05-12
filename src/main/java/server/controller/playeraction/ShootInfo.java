@@ -25,6 +25,8 @@ public class ShootInfo {
     private SquareAbstract chosenSquare;
     private Room chosenRoom;
 
+
+
     public  ShootInfo(PlayerAbstract player, Weapon weapon, List<ArrayList<GameCharacter>> targets,
                      List<Integer> extra, List<SquareAbstract> yourSquares,
                       List<SquareAbstract> targetSquares, Square chosenSquare, Room chosenRoom) {

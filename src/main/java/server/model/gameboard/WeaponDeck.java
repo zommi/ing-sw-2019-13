@@ -1,8 +1,13 @@
 package server.model.gameboard;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import exceptions.ReadJsonErrorException;
+import server.model.cards.Weapon;
 import server.model.cards.WeaponCard;
 import constants.Constants;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -17,17 +22,36 @@ public class WeaponDeck {
      * defaul constructor
      */
     public WeaponDeck() {
-        initializeDeck();
+        try {
+            initializeDeck();
+        } catch (ReadJsonErrorException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * initializes the deck by creating all the different cards
      */
-    private void initializeDeck() {
-        this.deck = new LinkedList<WeaponCard>();
-        for(int i = 0; i < Constants.NUMBER_OF_WEAPONS; i++){
-            this.deck.add(new WeaponCard(i));
+    private void initializeDeck() throws ReadJsonErrorException {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File(Constants.PATH_TO_WEAPONS_JSON);
+
+        Weapon[] arrayOfWeapons = new Weapon[0];
+
+        try{
+            arrayOfWeapons = mapper.readValue(file, Weapon[].class);
+        } catch (IOException e){
+            e.printStackTrace();
         }
+
+        if(arrayOfWeapons.length == 0) throw new ReadJsonErrorException();
+
+        this.deck = new LinkedList<>();
+
+        for(int i = 0; i < arrayOfWeapons.length; i++){
+            this.deck.push(new WeaponCard(arrayOfWeapons[i]));
+        }
+
         shuffle();
     }
 

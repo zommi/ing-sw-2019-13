@@ -434,19 +434,21 @@
           "red" : 1,
           "blue" : 1
         },
-        "microEffects" : {
-          "damage" : 2,
-          "mandatory" : true,
-          "generatePlayerFlag" : true,
-          "policies" : [
-            {
-              "policyName" : "distanceEqual",
-              "policyType" : "player",
-              "distance" : 0,
-              "attackerFlag" : true
-            }
-          ]
-        }
+        "microEffects" : [
+          {
+            "damage": 2,
+            "mandatory": true,
+            "generatePlayerFlag": true,
+            "policies": [
+              {
+                "policyName": "distanceEqual",
+                "policyType": "player",
+                "distance": 0,
+                "attackerFlag": true
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1647,6 +1649,15 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Shockwave",
+    "type": "ALTERNATIVE",
+    "buyCost": {},
+    "reloadCost": {
+      "yellow" : 1
+    },
+    "macroEffects": []
   },
   {
     "name": "Sledgehammer",

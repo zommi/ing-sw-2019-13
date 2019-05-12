@@ -1,4 +1,4 @@
-package server.controller.playeraction.WeaponRules;
+package server.controller.playeraction;
 
 import server.controller.playeraction.ShootInfo;
 
