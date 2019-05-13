@@ -1,12 +1,16 @@
 package server.model.player;
 
-import java.util.*;
-
-import server.model.cards.Bullet;
 import constants.Color;
-import constants.*;
+import constants.Directions;
+import server.model.cards.Bullet;
+import server.model.cards.Cost;
 import server.model.items.AmmoCube;
-import server.model.map.*;
+import server.model.map.SpawnPoint;
+import server.model.map.Square;
+import server.model.map.SquareAbstract;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -77,4 +81,6 @@ public abstract class PlayerAbstract {
     public abstract void setState(PlayerState state);
 
     public abstract boolean canPay(ArrayList<AmmoCube> cost);
+
+    public abstract boolean canPay(Cost cost);
 }

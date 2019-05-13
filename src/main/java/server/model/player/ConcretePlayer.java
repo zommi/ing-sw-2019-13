@@ -165,6 +165,11 @@ public class ConcretePlayer extends PlayerAbstract {
     public boolean canPay(ArrayList<AmmoCube> cost) {
         return this.board.canPay(cost);
     }
+
+    @Override
+    public boolean canPay(Cost cost) {      //TODO
+        return false;
+    }
 }
 
 

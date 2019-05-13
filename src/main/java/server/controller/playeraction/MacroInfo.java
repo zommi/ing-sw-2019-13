@@ -1,5 +1,7 @@
 package server.controller.playeraction;
 
+import exceptions.NoSuchEffectException;
+
 import java.util.List;
 
 public class MacroInfo {
@@ -14,7 +16,11 @@ public class MacroInfo {
         return activatedMicros;
     }
 
-    public MicroInfo getActivatedMicro(int micro){
-        return activatedMicros.get(micro);
+    public MicroInfo getActivatedMicro(int micro) throws NoSuchEffectException{
+        for(MicroInfo microInfo : activatedMicros){
+            if(microInfo.getMicroNumber() == micro)
+                return microInfo;
+        }
+        throw new NoSuchEffectException();
     }
 }

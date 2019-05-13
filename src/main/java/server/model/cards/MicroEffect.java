@@ -48,4 +48,48 @@ public class MicroEffect {
     @JsonProperty
     private boolean moveFlag;
 
+    public boolean isConditional() {
+        return conditional;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public boolean isLimited() {
+        return limited;
+    }
+
+    public int getMacroEffectIndex() {
+        return macroEffectIndex;
+    }
+
+    public int getMicroEffectIndex() {
+        return microEffectIndex;
+    }
+
+    public boolean isGeneratePlayerFlag() {
+        return generatePlayerFlag;
+    }
+
+    public boolean isGenerateSquareFlag() {
+        return generateSquareFlag;
+    }
+
+    public boolean isMoveFlag() {
+        return moveFlag;
+    }
+
+    public int getMaxTargetPlayerSize() {
+        return maxTargetPlayerSize;
+    }
+
+    public int getMaxNmSquareSize() {
+        return maxNmSquareSize;
+    }
+
+    public int getMaxTargetRoomSize() {
+        return maxTargetRoomSize;
+    }
 }
+
