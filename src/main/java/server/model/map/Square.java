@@ -1,27 +1,15 @@
 package server.model.map;
 
+import constants.Color;
 import server.model.cards.AmmoTile;
 import server.model.cards.CollectableInterface;
-import constants.Color;
-import server.model.player.GameCharacter;
-
-import java.util.*;
 
 public class Square extends SquareAbstract {
 
     private AmmoTile ammoTile;                          //TODO optional?
-    private ArrayList<GameCharacter> charactersList;
-    private Room room;
-    private int xValue;
-    private int yValue;
-    // the following are just for visible squares
-    private SquareAbstract nSquare;
-    private SquareAbstract wSquare;
-    private SquareAbstract eSquare;
-    private SquareAbstract sSquare;
 
-    public Square(int x, int y, Color color) {
-        super(x,y,color);
+    public Square(int x, int y, Color color, GameMap gameMap) {
+        super(x, y, color, gameMap);
     }
 
     public AmmoTile getAmmoTile() {
@@ -39,11 +27,6 @@ public class Square extends SquareAbstract {
     @Override
     public String toString() {
         return "Square, Room: " + getColor() + ", AmmoTile: \n" + this.ammoTile;
-    }
-
-    @Override
-    public Color getColor() {
-        return super.getColor();
     }
 
     @Override

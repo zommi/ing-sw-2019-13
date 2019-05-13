@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class GameMap {
 
-    private static List<SpawnPoint> spawnPoints;
-    private static ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
-    private static List<Room> rooms;
-    private static List<Color> roomsToBuild;
+    private List<SpawnPoint> spawnPoints;
+    private ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
+    private List<Room> rooms;
+    private List<Color> roomsToBuild;
 
     /**
      * Generates the whole map, including the graph that links
@@ -60,7 +60,7 @@ public class GameMap {
      * Returns a list of the rooms, one for each color.
      * @return a list of the rooms.
      */
-    public static List<Room> getRooms(){
+    public List<Room> getRooms(){
         ArrayList<Room> returnedList = (ArrayList<Room>) rooms;
         return (ArrayList<Room>) returnedList.clone();
     }
@@ -70,7 +70,7 @@ public class GameMap {
      * @param col color of the desired room
      * @return the room with the specified color
      */
-    public static Room getRoom(Color col){
+    public Room getRoom(Color col){
         for(Room room: rooms){
             if(room.getColor() == col)
                 return room;
@@ -82,7 +82,7 @@ public class GameMap {
      * Creates a list with a room for each color. It's just a
      * list of empty rooms.
      */
-    public static void generateRooms(){             //TODO it's public just for testing
+    public void generateRooms(){             //TODO it's public just for testing
         rooms = new ArrayList<>();
         for(Color color : roomsToBuild)
             rooms.add(new Room(color));
@@ -92,7 +92,7 @@ public class GameMap {
      * Assign every square to his room, accordingly to the square's
      * color, as specified in the text file in which the map is described.
      */
-    private static void populateRooms(){
+    private void populateRooms(){
 
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
@@ -112,7 +112,7 @@ public class GameMap {
      * @param path the path of the map file
      * @return a list with a string for every line of the text file
      */
-    private static List<String> generateSquareStructureFromFile(String path) {
+    private List<String> generateSquareStructureFromFile(String path) {
         Scanner scanner = null;
         List<String> readInput = null;
         try {
@@ -146,14 +146,14 @@ public class GameMap {
                 s = String.valueOf(c).toLowerCase();
 
                 if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
-                    SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, Color.fromString(s));
+                    SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, Color.fromString(s), this);
                     squares.get(row/2).add(tempSquare);
                     spawnPoints.add(tempSquare);
                     if(!roomsToBuild.contains(Color.fromString(s)))
                         roomsToBuild.add(Color.fromString(s));
                 }
                 else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
-                    squares.get(row/2).add(new Square(row/2, col/2, Color.fromString(s)));
+                    squares.get(row/2).add(new Square(row/2, col/2, Color.fromString(s), this));
                     if(!roomsToBuild.contains(Color.fromString(s)))
                         roomsToBuild.add(Color.fromString(s));
                 }
@@ -175,7 +175,7 @@ public class GameMap {
      * or not.
      * @param list the file that has already been converted into a list of strings
      */
-    private static void linkSquares(List<String> list){
+    private void linkSquares(List<String> list){
         int row, col;
         char c;
         row = 0;
@@ -201,7 +201,7 @@ public class GameMap {
      * Returns a list of the spawn points.
      * @return a list of the spawn points
      */
-    public static List<SpawnPoint> getSpawnPoints(){
+    public List<SpawnPoint> getSpawnPoints(){
         ArrayList<SpawnPoint> returnedList = (ArrayList<SpawnPoint>) spawnPoints;
         return (ArrayList<SpawnPoint>) returnedList.clone();
     }
@@ -212,7 +212,7 @@ public class GameMap {
      * @param color the color of the desired spawn point
      * @return the spawn point of the desired color
      */
-    public static SpawnPoint getSpawnPoint(Color color){
+    public SpawnPoint getSpawnPoint(Color color){
         for(SpawnPoint sp : spawnPoints){
             if(sp.getColor() == color)
                 return sp;
@@ -228,7 +228,7 @@ public class GameMap {
      * @return  the square at the given row and column
      * @throws NoSuchSquareException if there's no square with the given coordinates
      */
-    public static SquareAbstract getSquare(int row, int col) throws NoSuchSquareException {
+    public SquareAbstract getSquare(int row, int col) throws NoSuchSquareException {
 
         try {
             return squares.get(row).get(col);
@@ -245,7 +245,7 @@ public class GameMap {
      * @param square squares in the returned list will have the same row of this square
      * @return a list of the squares that have the same row of the given square
      */
-    public static List<SquareAbstract> getSquaresWithSameRow(SquareAbstract square){
+    public List<SquareAbstract> getSquaresWithSameRow(SquareAbstract square){
         List<SquareAbstract> squareList = new ArrayList<>();                                //TODO this method could be non static in SquareAbstract, invoking a static one here
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){
@@ -264,7 +264,7 @@ public class GameMap {
      * @param square squares in the returned list will have the same column of this square
      * @return a list of the squares that have the same column of the given square
      */
-    public static List<SquareAbstract> getSquaresWithSameCol(SquareAbstract square){              //passed square won't be in the returned list
+    public List<SquareAbstract> getSquaresWithSameCol(SquareAbstract square){              //passed square won't be in the returned list
         List<SquareAbstract> squareList = new ArrayList<>();
         for(int i = 0; i<squares.size(); i++){
             for(int j = 0; j<squares.get(i).size(); j++){

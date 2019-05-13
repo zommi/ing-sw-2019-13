@@ -30,10 +30,10 @@ class WeaponDeckTest {
 
         WeaponCard firstCard = testDeck.getTop();
 
-        GameMap.getSpawnPoint(Color.BLUE).addItem(testDeck.draw());
-        assertEquals(GameMap.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard.getName());
+        testGameMap.getSpawnPoint(Color.BLUE).addItem(testDeck.draw());
+        assertEquals(testGameMap.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard.getName());
 
-        GameMap.getSpawnPoint(Color.BLUE).removeItem(firstCard);
+        testGameMap.getSpawnPoint(Color.BLUE).removeItem(firstCard);
 
         System.out.println(testDeck);
 

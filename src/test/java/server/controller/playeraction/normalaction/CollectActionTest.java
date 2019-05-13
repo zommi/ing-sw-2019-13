@@ -1,14 +1,11 @@
 package server.controller.playeraction.normalaction;
 
 import constants.Color;
-import constants.Constants;
 import constants.Directions;
 import org.junit.jupiter.api.Test;
 import server.controller.playeraction.CollectInfo;
 import server.controller.playeraction.MoveInfo;
-import server.model.game.Game;
 import server.model.gameboard.GameBoard;
-import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -18,7 +15,8 @@ import server.model.player.PlayerState;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CollectActionTest {
 
@@ -30,7 +28,7 @@ class CollectActionTest {
         testGB.setupGameBoard();
 
         PlayerAbstract testPlayer = new ConcretePlayer("pippo", testGB, Figure.SPROG);
-        testPlayer.spawn(GameMap.getSpawnPoint(Color.BLUE));
+        testPlayer.spawn(testGB.getMap().getSpawnPoint(Color.BLUE));
 
         List<Directions> emptyList = new ArrayList<>();
 

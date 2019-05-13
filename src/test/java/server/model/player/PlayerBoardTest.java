@@ -1,18 +1,18 @@
 package server.model.player;
 
+import constants.Color;
 import exceptions.InvalidMoveException;
+import org.junit.jupiter.api.Test;
 import server.model.cards.AmmoTile;
 import server.model.cards.Bullet;
-import constants.Color;
 import server.model.gameboard.GameBoard;
 import server.model.items.AmmoCube;
-import server.model.map.GameMap;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PlayerBoardTest {
 
@@ -22,7 +22,7 @@ class PlayerBoardTest {
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
-        player.spawn(GameMap.getSpawnPoint(Color.BLUE));
+        player.spawn(gbtest.getMap().getSpawnPoint(Color.BLUE));
 
         Bullet testBullet1 = new Bullet(0,0,3,3,'z');
         player.receiveBullet(testBullet1,Color.RED);
@@ -66,7 +66,7 @@ class PlayerBoardTest {
         ConcretePlayer player = new ConcretePlayer("Pippo",gbtest,Figure.SPROG);
         PlayerBoard testPlayerBoard = player.getBoard();
 
-        player.spawn(GameMap.getSpawnPoint(Color.BLUE));
+        player.spawn(gbtest.getMap().getSpawnPoint(Color.BLUE));
 
         //test that before death the player's value is 8 points
         assertEquals(8,testPlayerBoard.getPointValue());

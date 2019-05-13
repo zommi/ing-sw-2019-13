@@ -10,19 +10,25 @@ import java.util.List;
 
 public abstract class  SquareAbstract {
 
-    private List<GameCharacter> charactersList;
+    protected List<GameCharacter> charactersList;
 
-    private Color color;
-    private int row;
-    private int col;
+    protected Color color;
+    protected int row;
+    protected int col;
     // the following are just for visible squares
     //make optional??
-    private SquareAbstract nSquare;
-    private SquareAbstract wSquare;
-    private SquareAbstract eSquare;
-    private SquareAbstract sSquare;
+    protected SquareAbstract nSquare;
+    protected SquareAbstract wSquare;
+    protected SquareAbstract eSquare;
+    protected SquareAbstract sSquare;
 
-    private Room room;
+    protected Room room;
+
+    protected GameMap gameMap;
+
+    public GameMap getGameMap(){
+        return gameMap;
+    }
 
     /**
      * Returns the room to which this square belongs.
@@ -54,11 +60,13 @@ public abstract class  SquareAbstract {
      * @param col column of the square
      * @param color color of the square
      */
-    protected SquareAbstract(int row, int col, Color color) {
+    protected SquareAbstract(int row, int col, Color color, GameMap gameMap) {
         this.row = row;
         this.col = col;
 
         this.color = color;
+
+        this.gameMap = gameMap;
 
         //new character list
         this.charactersList= new ArrayList<>();
@@ -193,8 +201,8 @@ public abstract class  SquareAbstract {
      */
     public List<GameCharacter> getCharactersThroughWalls(){
         List<GameCharacter> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> rowSquares = GameMap.getSquaresWithSameRow(this);
-        List<SquareAbstract> colSquares = GameMap.getSquaresWithSameCol(this);
+        List<SquareAbstract> rowSquares = gameMap.getSquaresWithSameRow(this);
+        List<SquareAbstract> colSquares = gameMap.getSquaresWithSameCol(this);
         for(SquareAbstract tempSquare : rowSquares){
             tempCharactersList.addAll(tempSquare.getCharacters());
 

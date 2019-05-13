@@ -61,9 +61,9 @@ public class GameBoard {
      */
     public void setupGameBoard(){
         List<SquareAbstract> listOfSquares = new ArrayList<>();
-        List<SpawnPoint> listOfSpawnPoints = GameMap.getSpawnPoints();
+        List<SpawnPoint> listOfSpawnPoints = gameMap.getSpawnPoints();
 
-        for(Room room : GameMap.getRooms()){
+        for(Room room : gameMap.getRooms()){
             listOfSquares.addAll(room.getSquares());
         }
 

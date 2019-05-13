@@ -1,15 +1,17 @@
 package server.model.gameboard;
 
 import constants.Constants;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
-import server.model.map.*;
 import org.junit.jupiter.api.Test;
+import server.model.map.Room;
+import server.model.map.SpawnPoint;
+import server.model.map.Square;
+import server.model.map.SquareAbstract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameBoardTest {
 
@@ -19,13 +21,13 @@ class GameBoardTest {
 
         List<SquareAbstract> testList = new ArrayList<>();
 
-        for(Room room : GameMap.getRooms()){
+        for(Room room : testGB.getMap().getRooms()){
             testList.addAll(room.getSquares());
         }
 
         testGB.setupGameBoard();
 
-        for(SpawnPoint sp : GameMap.getSpawnPoints()){
+        for(SpawnPoint sp : testGB.getMap().getSpawnPoints()){
             assertEquals(Constants.NUMBER_OF_WEAPON_PER_SPAWN_POINT, sp.getWeaponCards().size());
         }
 
@@ -34,8 +36,8 @@ class GameBoardTest {
             if(square instanceof Square)assertTrue(((Square) square).getAmmoTile() != null);
         }
 
-        int expectedNumberOfWeaponCardsAfterSetup = Constants.NUMBER_OF_WEAPONS - GameMap.getSpawnPoints().size()*3;
-        int expectedNumberOfAmmoTilesAfterSetup = Constants.NUMBER_OF_AMMOTILE - testList.size() + GameMap.getSpawnPoints().size();
+        int expectedNumberOfWeaponCardsAfterSetup = Constants.NUMBER_OF_WEAPONS - testGB.getMap().getSpawnPoints().size()*3;
+        int expectedNumberOfAmmoTilesAfterSetup = Constants.NUMBER_OF_AMMOTILE - testList.size() + testGB.getMap().getSpawnPoints().size();
 
         assertEquals(expectedNumberOfAmmoTilesAfterSetup, testGB.getAmmoTileDeck().getDeck().size());
         assertEquals(expectedNumberOfWeaponCardsAfterSetup, testGB

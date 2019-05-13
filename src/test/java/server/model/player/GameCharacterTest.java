@@ -1,14 +1,15 @@
 package server.model.player;
 
+import constants.Color;
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
+import server.model.map.GameMap;
+import server.model.map.SquareAbstract;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
-import server.model.map.*;
-import constants.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GameCharacterTest {
 
@@ -46,8 +47,8 @@ class GameCharacterTest {
        /*SquareAbstract square1 = new Square(3,3, 'w');
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');*/
 
-       SquareAbstract square1 = GameMap.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
-       SquareAbstract spawnPoint1 = GameMap.getSpawnPoint(Color.RED);
+       SquareAbstract square1 = gameMap.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
+       SquareAbstract spawnPoint1 = gameMap.getSpawnPoint(Color.RED);
 
 
        GameCharacter gameCharacter = new GameCharacter(Figure.BANSHEE);

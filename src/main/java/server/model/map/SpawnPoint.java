@@ -1,11 +1,11 @@
 package server.model.map;
 
+import constants.Color;
 import server.model.cards.CollectableInterface;
 import server.model.cards.WeaponCard;
-import constants.Color;
-import server.model.player.GameCharacter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,18 +13,9 @@ import java.util.*;
 public class SpawnPoint extends SquareAbstract {
 
     private ArrayList<WeaponCard> weaponCards;
-    private ArrayList<GameCharacter> charactersList;
-    private Room room;
-    private int xValue;
-    private int yValue;
-    // the following are just for visible squares
-    private SquareAbstract nSquare;
-    private SquareAbstract wSquare;
-    private SquareAbstract eSquare;
-    private SquareAbstract sSquare;
 
-    protected SpawnPoint(int x, int y, Color color) {
-        super(x,y,color);
+    protected SpawnPoint(int x, int y, Color color, GameMap gameMap) {
+        super(x,y,color,gameMap);
 
         weaponCards = new ArrayList<>();
     }
@@ -52,12 +43,7 @@ public class SpawnPoint extends SquareAbstract {
     }
 
     @Override
-    public Color getColor() {
-        return super.getColor();
-    }
-
-    @Override
     public boolean isEmpty() {
-        return weaponCards.size() == 0;
+        return weaponCards.isEmpty();
     }
 }
