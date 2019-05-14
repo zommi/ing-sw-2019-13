@@ -20,7 +20,9 @@ public class WeaponCard implements CollectableInterface, CardInterface {
         this.ready = true;
     }
 
-
+    public Weapon getWeapon() {
+        return weapon;
+    }
 
     public void setReady(boolean ready) {
         this.ready = ready;

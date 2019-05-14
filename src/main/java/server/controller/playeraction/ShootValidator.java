@@ -1,16 +1,13 @@
 package server.controller.playeraction;
 
 import exceptions.NoSuchEffectException;
-import server.model.cards.Cost;
-import server.model.cards.MacroEffect;
-import server.model.cards.MicroEffect;
-import server.model.cards.WeaponType;
+import server.model.cards.*;
 
 public class ShootValidator {
 
     public boolean validate(ShootInfo shootInfo){
         //checks if macros order is correct and there are no duplicates
-        if(shootInfo.getActivatedMacros().size() == 0)
+        if(shootInfo.getActivatedMacros().isEmpty())
             return false;
         for(int i = 0; i<shootInfo.getActivatedMacros().size() - 1; i++){
             if(shootInfo.getActivatedMacros().get(i).getMacroNumber() >= shootInfo.getActivatedMacros().get(i+1).getMacroNumber())
@@ -64,7 +61,7 @@ public class ShootValidator {
             }
 
             //checks if micros order is correct and there are no duplicates
-            if(macroInfo.getActivatedMicros().size() == 0)
+            if(macroInfo.getActivatedMicros().isEmpty())
                 return false;
             for(int i = 0; i < macroInfo.getActivatedMicros().size() - 1; i++){
                 if(macroInfo.getActivatedMicros().get(i).getMicroNumber() >= macroInfo.getActivatedMicros().get(i+1).getMicroNumber())
@@ -95,7 +92,7 @@ public class ShootValidator {
                 //checks if micro is limited
                 if(weaponMicro.isLimited() && limitedActivated)
                     return false;
-                else
+                else if(weaponMicro.isLimited())
                     limitedActivated = true;
 
                 //checks if micro is conditional
@@ -110,6 +107,12 @@ public class ShootValidator {
                 //checks if input is ok
                 if(!shootInfo.areDimensionsOk(microInfo, weaponMicro))
                     return false;
+
+                //checks every micro policy
+                for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
+                    if(!weaponPolicy.isVerified(shootInfo, microInfo))
+                        return false;
+                }
             }
         }
 

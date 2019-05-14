@@ -14,7 +14,11 @@ public class ShootInfo {
     private List<MacroInfo> activatedMacros;
 
 
-
+    public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros){
+        this.attacker = attacker;
+        this.weapon = weapon;
+        this.activatedMacros = activatedMacros;
+    }
 
 
     public PlayerAbstract getAttacker() {
@@ -43,15 +47,15 @@ public class ShootInfo {
     public boolean areDimensionsOk(MicroInfo microInfo, MicroEffect microEffect){
         //checks if playerList is ok
         if(microEffect.isGeneratePlayerFlag()) {
-            if (microInfo.getPlayersList().size() != 0)
+            if (!microInfo.getPlayersList().isEmpty())
                 return false;
         }
         else{
             if(microEffect.getMaxTargetPlayerSize() == 0)
-                if(microInfo.getPlayersList().size() != 0)
+                if(!microInfo.getPlayersList().isEmpty())
                     return false;
             else{
-                    if(!(microInfo.getPlayersList().size() > 0 &&
+                    if(!(!microInfo.getPlayersList().isEmpty() &&
                             microInfo.getPlayersList().size() <= microEffect.getMaxTargetPlayerSize()))
                         return false;
                 }
@@ -59,26 +63,28 @@ public class ShootInfo {
         }
 
         //checks if square is ok
-        if(!microEffect.isMoveFlag() || microEffect.isGenerateSquareFlag() && microInfo.getSquare() != null ||
-                microEffect.isMoveFlag() && !microEffect.isGenerateSquareFlag() && microInfo.getSquare() == null)
+        if(((!microEffect.isMoveFlag() || microEffect.isGenerateSquareFlag()) && microInfo.getSquare() != null) ||
+                (microEffect.isMoveFlag() && !microEffect.isGenerateSquareFlag() && microInfo.getSquare() == null))
             return false;
 
         //check if noMoveSquares are ok
         if(microEffect.getMaxNmSquareSize() == 0)
-            if(microInfo.getNoMoveSquaresList().size() != 0)
+            if(!microInfo.getNoMoveSquaresList().isEmpty())
                 return false;
         else{
-            if(!(microInfo.getNoMoveSquaresList().size() > 0 &&
+            //se bisognava inserire square
+                //
+            if(!(!microInfo.getNoMoveSquaresList().isEmpty() &&
                     microInfo.getNoMoveSquaresList().size() <= microEffect.getMaxNmSquareSize()))
                 return false;
         }
 
         //check if rooms are ok
         if(microEffect.getMaxTargetRoomSize() == 0)
-            if(microInfo.getRoomsList().size() != 0)
+            if(!microInfo.getRoomsList().isEmpty())
                 return false;
             else{
-                if(!(microInfo.getRoomsList().size() > 0 &&
+                if(!(!microInfo.getRoomsList().isEmpty() &&
                         microInfo.getRoomsList().size() <= microEffect.getMaxTargetRoomSize()))
                     return false;
             }

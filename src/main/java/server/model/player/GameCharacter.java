@@ -67,7 +67,7 @@ public class GameCharacter {
     }
 
 
-    private void setPosition(SquareAbstract position){
+    public void setPosition(SquareAbstract position){
         this.position = position;
     }
     /**
