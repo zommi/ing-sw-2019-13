@@ -7,8 +7,11 @@ import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
+import java.util.Map;
 
 public class Controller implements MyObserver {
+
+    //TODO map che collega player a giocatore
 
     private Game currentGame;
 
@@ -20,7 +23,8 @@ public class Controller implements MyObserver {
 
     private TurnHandler turnHandler;
 
-    Controller(int mapChoice, int initialSkulls){
+
+    public Controller(int mapChoice, int initialSkulls){
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.currentPlayers = this.currentGame.getActivePlayers();

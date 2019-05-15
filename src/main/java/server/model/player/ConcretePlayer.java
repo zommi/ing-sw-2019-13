@@ -39,6 +39,11 @@ public class ConcretePlayer extends PlayerAbstract {
         id = UUID.randomUUID();
     }
 
+    public ConcretePlayer(String name) {
+        this.name = name;
+        id = UUID.randomUUID();
+    }
+
     public GameCharacter getGameCharacter(){
         return gameCharacter;
     }
@@ -169,6 +174,10 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public boolean canPay(Cost cost) {      //TODO
         return false;
+    }
+
+    public String getName() {
+        return name;
     }
 }
 

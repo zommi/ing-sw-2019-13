@@ -83,4 +83,6 @@ public abstract class PlayerAbstract {
     public abstract boolean canPay(ArrayList<AmmoCube> cost);
 
     public abstract boolean canPay(Cost cost);
+
+    public abstract String getName();
 }
