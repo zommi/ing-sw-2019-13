@@ -173,7 +173,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public boolean canPay(Cost cost) {      //TODO
-        return false;
+        return true;
     }
 
     public String getName() {

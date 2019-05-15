@@ -91,5 +91,9 @@ public class MicroEffect {
     public int getMaxTargetRoomSize() {
         return maxTargetRoomSize;
     }
+
+    public List<WeaponPolicy> getPolicies() {
+        return policies;
+    }
 }
 

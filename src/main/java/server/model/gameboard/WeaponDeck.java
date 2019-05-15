@@ -92,4 +92,13 @@ public class WeaponDeck {
         return this.deck.get(0);
     }
 
+    public Weapon getWeapon(String weaponName){
+        for(WeaponCard weaponCard : deck){
+            if(weaponCard.getWeapon().getName().equals(weaponName))
+                return weaponCard.getWeapon();
+
+        }
+        return null;
+    }
+
 }

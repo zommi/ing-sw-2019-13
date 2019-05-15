@@ -1367,6 +1367,9 @@
     },
     "macroEffects": [
       {
+        "cost" : {
+
+        },
         "microEffects" : [
           {
             "mandatory" : true,

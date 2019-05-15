@@ -8,6 +8,11 @@ public class MacroInfo {
     private int macroNumber;
     private List<MicroInfo> activatedMicros;
 
+    public MacroInfo(int macroNumber, List<MicroInfo> activatedMicros){
+        this.macroNumber = macroNumber;
+        this.activatedMicros = activatedMicros;
+    }
+
     public int getMacroNumber() {
         return macroNumber;
     }

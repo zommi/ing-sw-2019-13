@@ -13,6 +13,14 @@ public class MicroInfo {
     private List<Room> roomsList;
     private List<SquareAbstract> noMoveSquaresList;
 
+    public MicroInfo(int microNumber, List<PlayerAbstract> playersList, SquareAbstract square, List<Room> roomsList, List<SquareAbstract> noMoveSquaresList) {
+        this.microNumber = microNumber;
+        this.playersList = playersList;
+        this.square = square;
+        this.roomsList = roomsList;
+        this.noMoveSquaresList = noMoveSquaresList;
+    }
+
     public int getMicroNumber() {
         return microNumber;
     }
