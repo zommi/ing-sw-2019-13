@@ -1,5 +1,6 @@
 package client.gui;
 
+import client.GameModel;
 import constants.Constants;
 import constants.Directions;
 import exceptions.NoSuchSquareException;
@@ -54,7 +55,7 @@ public class MainGuiController {
     @FXML
     private ScrollPane chat;
 
-    private GameBoard testGame = new GameBoard(4,5);
+    private GameModel model;
 
     boolean iteration = true;
 
@@ -85,7 +86,7 @@ public class MainGuiController {
     }
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
-        GameMap map = testGame.getMap();
+        GameMap map = model.getMap();
         int col = 0;
         int row = 0;
         int side = 175;
@@ -195,7 +196,7 @@ public class MainGuiController {
             weapon.setOnMousePressed(e -> {
                 if(weaponHandSize < 3){
                     drawWeapon(e,weapon);
-                    String cardToDraw = testGame.getWeaponDeck().draw().getPath();
+                    String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
                     spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
                     spawnPoint.restore(cardToDraw,weapon.getIndex());
                     alert.close();

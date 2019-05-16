@@ -2,6 +2,7 @@ package client;
 
 import server.ServerAnswer.ServerAnswer;
 import server.model.gameboard.GameBoard;
+import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import server.model.player.PlayerHand;
@@ -12,7 +13,7 @@ public class GameModel extends Observable { // so that the GUI can be an observe
 
 
     private GameBoard gameBoard;
-    private Map map;
+    private GameMap map;
     private PlayerBoard playerBoard;
     private PlayerHand playerHand;
     private int clientID;
@@ -54,8 +55,8 @@ public class GameModel extends Observable { // so that the GUI can be an observe
             notifyObservers("GameBoard");
         }
 
-        if (answer instanceof Map) {
-            map = (Map) answer;
+        if (answer instanceof GameMap) {
+            map = (GameMap) answer;
             setChanged();
             notifyObservers("Map");
         }
@@ -85,7 +86,7 @@ public class GameModel extends Observable { // so that the GUI can be an observe
         return listOfClients;
     }*/
 
-    public Map getMap(){
+    public GameMap getMap(){
         return this.map;
     }
 
