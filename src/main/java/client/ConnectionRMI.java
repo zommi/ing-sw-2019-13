@@ -1,45 +1,52 @@
 package client;
 
-import server.GameProxy;
 import server.GameProxyInterface;
 import server.ServerAnswer.ServerAnswer;
 import server.controller.playeraction.Action;
-import server.model.gameboard.GameBoard;
-import server.model.map.GameMap;
-import server.model.player.ConcretePlayer;
-import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
+import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.RemoteObject;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Map;
 
 public class ConnectionRMI extends Connection implements Serializable, ReceiverInterface, Remote {
 
     private GameProxyInterface gameProxy;
+    private String name = "rmiconnection";
     private int mapChoice;
     private boolean playerNameSet = false;
     private boolean mapSet = false;
-    private GameModel gameModel;
+    private  transient GameModel gameModel;
     private GameProxyInterface game;
     private int clientID;
     private static final String SERVER_ADDRESS  = "localhost";
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private static final int REGISTRATION_PORT = 1099;
+
+
     public ConnectionRMI(int clientID){
         this.clientID = clientID;
         this.gameModel = new GameModel(clientID);
     }
 
     @Override
+    public int getClientID() {
+        return clientID;
+    }
+
+    @Override
     public void send(Action action){
-        boolean serverAnswer = game.makeAction(this.clientID, action);
+        try{
+            boolean serverAnswer = game.makeAction(this.clientID, action);
+        }
+        catch(RemoteException re){
+            System.out.println("Could not make the action");
+        }
     }
 
     @Override
@@ -57,20 +64,32 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
     @Override
     public void configure() throws RemoteException, NotBoundException {
-        this.game = initializeRMI();
+        try{
+            this.game = initializeRMI();
+        }
+        catch (AlreadyBoundException e)
+        {
+            System.out.println("Exception while binding");
+        }
     }
 
     @Override
-    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException {
+    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException {
         System.out.println("Connecting to the Remote Object... ");
 
         System.out.println("Connecting to the registry... ");
         Registry registry = LocateRegistry.getRegistry(SERVER_ADDRESS,REGISTRATION_PORT);
-
         gameProxy = (GameProxyInterface) registry.lookup(REGISTRATION_ROOM_NAME);
 
         System.out.println("Registering... ");
-        gameProxy.register((ReceiverInterface) UnicastRemoteObject.exportObject(this, 0));
+
+        /*Registry registryClient = LocateRegistry.createRegistry(1000);
+        registryClient.bind(this.name, this);
+        System.out.println("I am exporting the remote object...");
+        (ReceiverInterface) UnicastRemoteObject.exportObject(this, 1000)*/
+
+        gameProxy.setClientRMI(this);
+        gameProxy.register(this);
 
         System.out.println("Your ClientID is " + this.clientID);
 
@@ -79,13 +98,20 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     @Override
-    public void add(PlayerAbstract player, int map){
-        gameModel.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
+    public void add(String playerName, int map){
+        //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
 
         System.out.println("Trying to send your name to the server...");
 
         while (playerNameSet == false) {
-            playerNameSet = gameProxy.sendPlayerName(player.getName());
+            try{
+                playerNameSet = gameProxy.sendPlayer(playerName);
+                playerNameSet = true;
+            }
+            catch(RemoteException re){
+                System.out.println("Could not send the player");
+                re.printStackTrace();
+            }
         }
 
         System.out.println("The server received your name...");
@@ -93,7 +119,13 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         if(clientID == 0){
             System.out.println("Sending your chosen map to the server...");
             while(mapSet == false){
-                mapSet = gameProxy.sendMap(map);
+                try{
+                    mapSet = gameProxy.sendMap(map);
+                    mapSet = true;
+                }
+                catch(RemoteException re){
+                    System.out.println("Could not send the map");
+                }
             }
             System.out.println("The server received your choice of the map...");
         }

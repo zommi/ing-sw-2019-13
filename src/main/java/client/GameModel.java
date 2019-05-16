@@ -15,24 +15,36 @@ public class GameModel extends Observable { // so that the GUI can be an observe
     private Map map;
     private PlayerBoard playerBoard;
     private PlayerHand playerHand;
-    private int lastClientID = -1;
-    private int ClientID;
+    private int clientID;
+    public static int lastClientID = -1;
 
-    private Map<PlayerAbstract, Integer> playerToClient;
 
-    public GameModel(int ClientID){
-        this.playerToClient = new HashMap<>();
-        this.ClientID = ClientID;
+    public static List<Integer> listOfClients = new ArrayList<Integer>();
+
+
+    public GameModel(int clientID){ //THERE IS A NEW gamemodel for every client!
+        listOfClients.add(clientID);
+        this.clientID = clientID;
     }
 
 
-    public void addClient(PlayerAbstract player, Integer clientID){
+    public static List<Integer> getListOfClients(){
+        return listOfClients;
+    }
+
+    public static int getNextClientID(){
+        lastClientID = lastClientID + 1;
+        return lastClientID;
+    }
+
+    /*public void addClient(PlayerAbstract player, Integer clientID){
         this.playerToClient.put(player, clientID);
-        lastClientID = clientID;
-    }
+        this.clientID = clientID;
+    }*/
+
 
     public Integer getClientID(){
-        return ClientID;
+        return clientID;
     }
 
     public void saveAnswer(ServerAnswer answer) { //the GameModel will save the answer of the Server updating the model elements needed and notifying the observers
@@ -65,18 +77,13 @@ public class GameModel extends Observable { // so that the GUI can be an observe
         return this.gameBoard;
     }
 
-    public List<Integer> getListOfClients() {
-        List<Integer> listOfClients = new ArrayList<Integer>();
+    /*public List<Integer> getListOfClients() {
 
         for(Map.Entry<PlayerAbstract, Integer> entry: playerToClient.entrySet()) {
             listOfClients.add(entry.getValue());
         }
         return listOfClients;
-    }
-
-    public int getLastClientID() {
-        return lastClientID;
-    }
+    }*/
 
     public Map getMap(){
         return this.map;

@@ -9,13 +9,14 @@ import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
 /**
  *
  */
-public abstract class PlayerAbstract {
+public abstract class PlayerAbstract implements Serializable {
 
     /**
      * @return

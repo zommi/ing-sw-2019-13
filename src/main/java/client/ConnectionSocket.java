@@ -5,6 +5,8 @@ import server.controller.playeraction.Action;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Map;
 
@@ -18,28 +20,27 @@ public class ConnectionSocket extends Connection {
         this.gameModel = new GameModel(clientID);
     }
 
-    @Override
-    public void configure() throws RemoteException{
+    public int getClientID(){
+        return this.clientID;
+    }
+
+    public void configure() throws RemoteException, NotBoundException{
 
     }
 
-    @Override
     public void send(Action action){
 
     }
 
-    @Override
+    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException{
+        return null;
+    }
+
     public GameModel getGameModel(){
         return null;
     }
 
-    @Override
-    public GameProxyInterface initializeRMI() throws RemoteException{
-        return null;
-    }
-
-    @Override
-    public void add(PlayerAbstract player, int map){
+    public void add(String playerName, int map){
 
     }
 }

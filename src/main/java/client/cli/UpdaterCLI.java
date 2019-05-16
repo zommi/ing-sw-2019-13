@@ -79,8 +79,9 @@ public class UpdaterCLI extends Updater implements Runnable{
         } while (!hasChosen);
         System.out.println("Method set: " +methodChosen);
 
-        int lastClientID = gameModel.getLastClientID();
-        lastClientID = lastClientID + 1;
+
+        int lastClientID = GameModel.getNextClientID(); //because it is static
+
         if (methodChosen.equals("1")) {
             connection = new ConnectionRMI(lastClientID);
             System.out.println("RMI connection was set up");
@@ -95,17 +96,18 @@ public class UpdaterCLI extends Updater implements Runnable{
         }
         catch (RemoteException e) {
             System.out.println("Remote Exception caught");
-            }
+            e.printStackTrace();
+        }
 
 
 
-        if((gameModel.getListOfClients().size() == 1) && (gameModel.getListOfClients().get(0).equals("0"))) { //only if it is the first client!
+        if((gameModel.getListOfClients().size() >= 1) && (gameModel.getListOfClients().get(0).equals(0))) { //only if it is the first client!
             do {
                 System.out.println(">Choose the map you want to use:");
-                System.out.println("Piccola");
-                System.out.println("Media");
-                System.out.println("Grande");
-                System.out.println("Gigante");
+                System.out.println("Piccola (1)");
+                System.out.println("Media (2)");
+                System.out.println("Grande (3)");
+                System.out.println("Gigante (4)");
                 read = myObj.nextLine();
                 if (read.equals("1")) {
                     mapName = "map11.txt";
@@ -131,7 +133,6 @@ public class UpdaterCLI extends Updater implements Runnable{
         }
 
 
-        PlayerAbstract player = new ConcretePlayer(playerName);
         int mapNumber;
         if (mapName.equals("map11.txt")) {
             mapNumber = 1;
@@ -142,7 +143,7 @@ public class UpdaterCLI extends Updater implements Runnable{
         }
         else //(mapName.equals("map22.txt"))
             mapNumber = 4;
-        connection.add(player, mapNumber);
+        connection.add(playerName, mapNumber);
     }
 
 

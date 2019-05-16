@@ -13,6 +13,8 @@ public class Controller implements MyObserver {
 
     //TODO map che collega player a giocatore
 
+    private Map<PlayerAbstract, Integer> playerToClient;
+
     private Game currentGame;
 
     private GameMap currentMap;
@@ -33,6 +35,10 @@ public class Controller implements MyObserver {
 
     public void nextPlayer() throws WrongGameStateException {
         this.currentGame.nextPlayer();
+    }
+
+    public void addClientInMap(PlayerAbstract player, int clientID){
+        this.playerToClient.put(player, clientID);
     }
 
 
