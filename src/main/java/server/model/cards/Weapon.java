@@ -22,6 +22,9 @@ public class Weapon {
     @JsonProperty
     private List<MacroEffect> macroEffects;
 
+    @JsonProperty
+    private String path;
+
     public Cost getBuyCost() {
         return buyCost;
     }
@@ -36,6 +39,10 @@ public class Weapon {
 
     public List<MacroEffect> getMacroEffects() {
         return macroEffects;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public WeaponType getType() {

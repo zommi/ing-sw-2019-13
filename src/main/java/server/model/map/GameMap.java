@@ -277,6 +277,7 @@ public class GameMap {
         return squareList;
     }
 
-
-
+    public ArrayList<ArrayList<SquareAbstract>> getSquares() {
+        return squares;
+    }
 }

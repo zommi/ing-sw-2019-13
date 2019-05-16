@@ -375,4 +375,8 @@ public abstract class  SquareAbstract {
                 && this.color == squareAbstractObject.getColor();
 
     }
+
+    public boolean isSpawnPoint(){
+        return this instanceof SpawnPoint;
+    }
 }
