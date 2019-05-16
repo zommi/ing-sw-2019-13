@@ -59,4 +59,8 @@ public class WeaponCard implements CollectableInterface, CardInterface {
     public String toString() {
         return this.name;
     }
+
+    public String getPath(){
+        return weapon.getPath();
+    }
 }

@@ -2,6 +2,7 @@
   {
     "name": "Lock Rifle",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Lock_rifle.png",
     "buyCost": {
       "blue" : 1
     },
@@ -59,6 +60,7 @@
   {
     "name": "Machine Gun",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Machine_gun.png",
     "buyCost": {
       "red" : 1
     },
@@ -167,6 +169,7 @@
   {
     "name": "THOR",
     "type": "EXTRA",
+    "path" : "Grafica/cards/THOR.png",
     "buyCost": {
       "red" : 1
     },
@@ -262,6 +265,7 @@
   {
     "name": "Plasma Gun",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Plasma_gun.png",
     "buyCost": {
       "yellow" : 1
     },
@@ -370,6 +374,7 @@
   {
     "name": "Whisper",
     "type": "ONEMODE",
+    "path" : "Grafica/cards/Whisper.png",
     "buyCost": {
       "blue" : 1,
       "yellow" : 1
@@ -379,35 +384,36 @@
       "yellow" : 1
     },
     "macroEffects": [
-    {
-      "mandatory" : true,
-      "microEffects" : [
-        {
-          "damage" : 3,
-          "marks" : 1,
-          "mandatory" : true,
-          "maxTargetPlayerSize" : 1,
-          "policies" : [
-            {
-              "policyName" : "distanceGreater",
-              "policyType" : "player",
-              "distance" : 1,
-              "attackerFlag" : true
-            },
-            {
-              "policyName" : "visible",
-              "policyType" : "player",
-              "attackerFlag" : true
-            }
-          ]
-        }
-      ]
-    }
-  ]
+      {
+        "mandatory" : true,
+        "microEffects" : [
+          {
+            "damage" : 3,
+            "marks" : 1,
+            "mandatory" : true,
+            "maxTargetPlayerSize" : 1,
+            "policies" : [
+              {
+                "policyName" : "distanceGreater",
+                "policyType" : "player",
+                "distance" : 1,
+                "attackerFlag" : true
+              },
+              {
+                "policyName" : "visible",
+                "policyType" : "player",
+                "attackerFlag" : true
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    "name": "Electroscyte",
+    "name": "Electroscythe",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Electroscythe.png",
     "buyCost": {},
     "reloadCost": {
       "blue" : 1
@@ -456,6 +462,7 @@
   {
     "name": "Tractor beam",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Tractor_beam.png",
     "buyCost": {},
     "reloadCost": {
       "blue" : 1
@@ -518,6 +525,7 @@
   {
     "name": "Vortex Cannon",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Vortex_Cannon.png",
     "buyCost": {
       "blue" : 1
     },
@@ -603,6 +611,7 @@
   {
     "name": "Furnace",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Furnace.png",
     "buyCost": {
       "blue" : 1
     },
@@ -674,6 +683,7 @@
   {
     "name": "Heatseaker",
     "type": "ONEMODE",
+    "path" : "Grafica/cards/Heatseeker.png",
     "buyCost": {
       "red" : 1,
       "yellow" : 1
@@ -706,6 +716,7 @@
   {
     "name": "Hellion",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Hellion.png",
     "buyCost": {
       "yellow" : 1
     },
@@ -798,6 +809,7 @@
   {
     "name": "Flamethrower",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Flamethrower.png",
     "buyCost": {},
     "reloadCost": {
       "red" : 1
@@ -925,6 +937,7 @@
   {
     "name": "Grenade Launcher",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Grenade_launcher.png",
     "buyCost": {},
     "reloadCost": {
       "red" : 1
@@ -1029,6 +1042,7 @@
   {
     "name": "Rocket Launcher",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Rocket_launcher.png",
     "buyCost": {
       "red" : 1
     },
@@ -1195,6 +1209,7 @@
   {
     "name": "Railgun",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Railgun.png",
     "buyCost": {
       "blue" : 1,
       "yellow" :1
@@ -1240,6 +1255,7 @@
   {
     "name": "Cyberblade",
     "type": "EXTRA",
+    "path" : "Grafica/cards/Cyberblade.png",
     "buyCost": {
       "red" : 1
     },
@@ -1358,6 +1374,7 @@
   {
     "name": "Zx-2",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Zx-2.png",
     "buyCost": {
       "red" : 1
     },
@@ -1407,6 +1424,7 @@
   {
     "name": "Shotgun",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Shotgun.png",
     "buyCost": {
       "yellow" : 1
     },
@@ -1473,6 +1491,7 @@
   {
     "name": "Power Glove",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Power_glove.png",
     "buyCost": {
       "blue" : 1
     },
@@ -1607,6 +1626,7 @@
   {
     "name": "Shockwave",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Shockwave.png",
     "buyCost": {},
     "reloadCost": {
       "yellow" : 1
@@ -1657,6 +1677,7 @@
   {
     "name": "Sledgehammer",
     "type": "ALTERNATIVE",
+    "path" : "Grafica/cards/Sledgehammer.png",
     "buyCost": {},
     "reloadCost": {
       "yellow" : 1
