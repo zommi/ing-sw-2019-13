@@ -37,7 +37,11 @@ public class GuiSpawnPoint extends GuiTile {
     public void setCardsOnSpawnPoint(SpawnPoint sp) {
         List<WeaponCard> cards = sp.getWeaponCards();
         for(int i = 0; i < 3; i++){
-            cardsOnSpawnPoint.add(cards.get(i).getName());
+            cardsOnSpawnPoint.add(cards.get(i).getPath());
         }
+    }
+
+    public void restore(String card, int index){
+        this.cardsOnSpawnPoint.add(index,card);
     }
 }

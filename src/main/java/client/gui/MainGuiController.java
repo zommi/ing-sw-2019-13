@@ -54,6 +54,8 @@ public class MainGuiController {
     @FXML
     private ScrollPane chat;
 
+    private GameBoard testGame = new GameBoard(4,5);
+
     boolean iteration = true;
 
     private int weaponHandSize = 0;
@@ -61,8 +63,6 @@ public class MainGuiController {
     private GuiMain guiMain;
 
     private int side = 175;
-
-    private GameBoard testGame = new GameBoard(4,5);
 
     public void setGuiMain(GuiMain guiMain){
         this.guiMain = guiMain;
@@ -77,6 +77,7 @@ public class MainGuiController {
         cardToAdd.setFitWidth(weaponHand.getWidth()/3);
         cardToAdd.setFitHeight(weaponHand.getHeight());
 
+        cardToAdd.setOnMousePressed(null);
         this.weaponHand.add(cardToAdd,weaponHandSize,0);
         weaponHandSize++;
 
@@ -189,10 +190,16 @@ public class MainGuiController {
 
         GridPane cards = new GridPane();
         for(int i = 0; i < 3; i ++){
-            GuiWeaponCard weapon = new GuiWeaponCard(getClass().getResource(spawnPoint.getCardsOnSpawnPoint().get(i)).toExternalForm(),i);
+            GuiWeaponCard weapon = new GuiWeaponCard(
+                    getClass().getResource(spawnPoint.getCardsOnSpawnPoint().get(i)).toExternalForm(),i);
             weapon.setOnMousePressed(e -> {
-                drawWeapon(e,weapon);
-                alert.close();
+                if(weaponHandSize < 3){
+                    drawWeapon(e,weapon);
+                    String cardToDraw = testGame.getWeaponDeck().draw().getPath();
+                    spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
+                    spawnPoint.restore(cardToDraw,weapon.getIndex());
+                    alert.close();
+                }
             });
             cards.add(weapon,i,0);
         }
