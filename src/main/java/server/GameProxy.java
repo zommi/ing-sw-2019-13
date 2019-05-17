@@ -75,9 +75,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         System.out.println("Map choice received");
         this.numMap = numMap;
         controller = new Controller(numMap, 8);
-        serverRMI.setController(controller);
-        serverRMI.addMapClient();
         System.out.println("Controller created");
+        serverRMI.setController(controller);
+        System.out.println("Controller set for serverRMI");
+        serverRMI.addMapClient();
+        System.out.println("Added the map of the client and of the player");
         return true;
     }
 
