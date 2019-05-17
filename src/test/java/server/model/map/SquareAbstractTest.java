@@ -178,9 +178,12 @@ class SquareAbstractTest {
         GameMap map = new GameMap(1);
         SquareAbstract square1 = map.getSquare(0,0);
         SquareAbstract square2 = map.getSquare(0,1);
+        SquareAbstract square3 = map.getSquare(2,3);
 
-        //assertEquals(0,square1.distance(square1));
-        //assertEquals(1,square1.distance(square2));
+        assertEquals(0,square1.distance(square1));
+        assertEquals(1,square1.distance(square2));
+        assertEquals(5,square1.distance(square3));
+
     }
 
 }
