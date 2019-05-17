@@ -6,7 +6,9 @@ import constants.Directions;
 import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public abstract class  SquareAbstract {
 
@@ -374,6 +376,36 @@ public abstract class  SquareAbstract {
                 && this.col == squareAbstractObject.getCol()
                 && this.color == squareAbstractObject.getColor();
 
+    }
+
+    public int distance(SquareAbstract destination){
+        LinkedList<SquareAbstract> queue = new LinkedList<>();
+        List<SquareAbstract> alreadyAdded = new ArrayList<>();
+        SquareAbstract currentTarget = null;
+        SquareAbstract currentSquare;
+        queue.push(this);
+        alreadyAdded.add(this);
+        int distance = 1;
+        while(!queue.isEmpty()){
+            currentSquare = queue.pop();
+            if(currentSquare == null) {
+                distance++;
+            } else {
+                for (Directions dir : Directions.values()) {
+                    currentTarget = currentSquare.getNearFromDir(dir);
+                    if(currentTarget != null && !alreadyAdded.contains(currentTarget)){
+                        if(currentTarget == destination){
+                            break;
+                        }else{
+                            alreadyAdded.add(currentTarget);
+                            queue.push(currentTarget);
+                        }
+                    }
+                }
+                if(queue.getFirst() == null)queue.push(null);
+            }
+        }
+        return distance;
     }
 
     public boolean isSpawnPoint(){
