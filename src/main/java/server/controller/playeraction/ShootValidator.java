@@ -119,15 +119,26 @@ public class ShootValidator {
                     }
                 }
 
-                //checks if input is ok
+                //checks if input dimensions are ok
                 if(!shootInfo.areDimensionsOk(microInfo, weaponMicro))
                     return false;
 
-                //checks every micro policy
-                for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
-                    if(!weaponPolicy.isVerified(shootInfo, microInfo))
+                //checks if attacker is inside player list
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    if(playerAbstract.equals(shootInfo.getAttacker()))
                         return false;
                 }
+
+                //checks every micro policy
+                for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
+                    if(!(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player")) &&
+                            !(weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")) &&
+                            !weaponPolicy.isVerified(shootInfo, microInfo))
+                        return false;
+                }
+
+                //place generate here?
+
 
                 //fakes micro actuation if weapon is special
                 if(shootInfo.getWeapon().isSpecial()){
