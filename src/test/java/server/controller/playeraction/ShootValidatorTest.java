@@ -37,6 +37,6 @@ class ShootValidatorTest {
 
         ShootValidator shootValidator = new ShootValidator();
 
-        //assertTrue(shootValidator.validate(shootInfo));
+        assertTrue(shootValidator.validate(shootInfo));
     }
 }

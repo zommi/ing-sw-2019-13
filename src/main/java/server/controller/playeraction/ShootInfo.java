@@ -51,9 +51,10 @@ public class ShootInfo {
                 return false;
         }
         else{
-            if(microEffect.getMaxTargetPlayerSize() == 0)
-                if(!microInfo.getPlayersList().isEmpty())
+            if(microEffect.getMaxTargetPlayerSize() == 0) {
+                if (!microInfo.getPlayersList().isEmpty())
                     return false;
+            }
             else{
                     if(microInfo.getPlayersList().isEmpty() ||
                             microInfo.getPlayersList().size() > microEffect.getMaxTargetPlayerSize())
@@ -68,9 +69,10 @@ public class ShootInfo {
             return false;
 
         //check if noMoveSquares are ok
-        if(microEffect.getMaxNmSquareSize() == 0)
-            if(!microInfo.getNoMoveSquaresList().isEmpty())
+        if(microEffect.getMaxNmSquareSize() == 0) {
+            if (!microInfo.getNoMoveSquaresList().isEmpty())
                 return false;
+        }
         else{
             //se bisognava inserire square
                 //
@@ -80,15 +82,20 @@ public class ShootInfo {
         }
 
         //check if rooms are ok
-        if(microEffect.getMaxTargetRoomSize() == 0)
-            if(!microInfo.getRoomsList().isEmpty())
+        if(microEffect.getMaxTargetRoomSize() == 0) {
+            if (!microInfo.getRoomsList().isEmpty())
                 return false;
-            else{
-                if(microInfo.getRoomsList().isEmpty() ||
-                        microInfo.getRoomsList().size() > microEffect.getMaxTargetRoomSize())
-                    return false;
-            }
+        }
+        else{
+            if(microInfo.getRoomsList().isEmpty() ||
+                    microInfo.getRoomsList().size() > microEffect.getMaxTargetRoomSize())
+                return false;
+        }
 
         return true;
+    }
+
+    public void actuate(){
+        //for every macro and micro ACTUATE (SUL MICRO)
     }
 }
