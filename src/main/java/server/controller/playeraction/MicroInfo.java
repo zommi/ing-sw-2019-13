@@ -45,4 +45,8 @@ public class MicroInfo {
         return playersList.get(0);
     }
 
+    public void actuate(){
+
+    }
+
 }

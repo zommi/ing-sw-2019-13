@@ -51,12 +51,13 @@ public class ShootInfo {
                 return false;
         }
         else{
-            if(microEffect.getMaxTargetPlayerSize() == 0)
-                if(!microInfo.getPlayersList().isEmpty())
+            if(microEffect.getMaxTargetPlayerSize() == 0) {
+                if (!microInfo.getPlayersList().isEmpty())
                     return false;
+            }
             else{
-                    if(!(!microInfo.getPlayersList().isEmpty() &&
-                            microInfo.getPlayersList().size() <= microEffect.getMaxTargetPlayerSize()))
+                    if(microInfo.getPlayersList().isEmpty() ||
+                            microInfo.getPlayersList().size() > microEffect.getMaxTargetPlayerSize())
                         return false;
                 }
 
@@ -68,27 +69,33 @@ public class ShootInfo {
             return false;
 
         //check if noMoveSquares are ok
-        if(microEffect.getMaxNmSquareSize() == 0)
-            if(!microInfo.getNoMoveSquaresList().isEmpty())
+        if(microEffect.getMaxNmSquareSize() == 0) {
+            if (!microInfo.getNoMoveSquaresList().isEmpty())
                 return false;
+        }
         else{
             //se bisognava inserire square
                 //
-            if(!(!microInfo.getNoMoveSquaresList().isEmpty() &&
-                    microInfo.getNoMoveSquaresList().size() <= microEffect.getMaxNmSquareSize()))
+            if(microInfo.getNoMoveSquaresList().isEmpty() ||
+                    microInfo.getNoMoveSquaresList().size() > microEffect.getMaxNmSquareSize())
                 return false;
         }
 
         //check if rooms are ok
-        if(microEffect.getMaxTargetRoomSize() == 0)
-            if(!microInfo.getRoomsList().isEmpty())
+        if(microEffect.getMaxTargetRoomSize() == 0) {
+            if (!microInfo.getRoomsList().isEmpty())
                 return false;
-            else{
-                if(!(!microInfo.getRoomsList().isEmpty() &&
-                        microInfo.getRoomsList().size() <= microEffect.getMaxTargetRoomSize()))
-                    return false;
-            }
+        }
+        else{
+            if(microInfo.getRoomsList().isEmpty() ||
+                    microInfo.getRoomsList().size() > microEffect.getMaxTargetRoomSize())
+                return false;
+        }
 
         return true;
+    }
+
+    public void actuate(){
+        //for every macro and micro ACTUATE (SUL MICRO)
     }
 }

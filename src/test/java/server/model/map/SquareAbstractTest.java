@@ -3,6 +3,7 @@ package server.model.map;
 import constants.Color;
 import constants.Directions;
 import exceptions.NoSuchSquareException;
+import server.model.gameboard.GameBoard;
 import server.model.player.GameCharacter;
 import server.model.player.Figure;
 import org.junit.jupiter.api.Test;
@@ -172,5 +173,17 @@ class SquareAbstractTest {
 
     }
 
+    @Test
+    void testDistance() throws NoSuchSquareException{
+        GameMap map = new GameMap(1);
+        SquareAbstract square1 = map.getSquare(0,0);
+        SquareAbstract square2 = map.getSquare(0,1);
+        SquareAbstract square3 = map.getSquare(2,3);
+
+        assertEquals(0,square1.distance(square1));
+        assertEquals(1,square1.distance(square2));
+        assertEquals(5,square1.distance(square3));
+
+    }
 
 }

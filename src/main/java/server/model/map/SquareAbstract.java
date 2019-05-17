@@ -6,7 +6,9 @@ import constants.Directions;
 import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public abstract class  SquareAbstract {
 
@@ -374,6 +376,39 @@ public abstract class  SquareAbstract {
                 && this.col == squareAbstractObject.getCol()
                 && this.color == squareAbstractObject.getColor();
 
+    }
+
+    public int distance(SquareAbstract destination){
+        if(this.equals(destination))return 0;
+        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED,gameMap);
+        LinkedList<SquareAbstract> queue = new LinkedList<>();
+        List<SquareAbstract> alreadyAdded = new ArrayList<>();
+        SquareAbstract currentTarget;
+        SquareAbstract currentSquare;
+        queue.add(this);
+        queue.add(impossibleSquare);
+        alreadyAdded.add(this);
+        int distance = 1;
+        while(!queue.isEmpty()){
+            currentSquare = queue.poll();
+            if(currentSquare.equals(impossibleSquare)) {
+                distance++;
+            } else {
+                for (Directions dir : Directions.values()) {
+                    currentTarget = currentSquare.getNearFromDir(dir);
+                    if(currentTarget != null && !alreadyAdded.contains(currentTarget)){
+                        if(currentTarget.equals(destination)){
+                            return distance;
+                        }else{
+                            alreadyAdded.add(currentTarget);
+                            queue.add(currentTarget);
+                        }
+                    }
+                }
+                if(queue.getFirst().equals(impossibleSquare))queue.add(impossibleSquare);
+            }
+        }
+        return -1;
     }
 
     public boolean isSpawnPoint(){
