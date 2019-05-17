@@ -55,8 +55,8 @@ public class ShootInfo {
                 if(!microInfo.getPlayersList().isEmpty())
                     return false;
             else{
-                    if(!(!microInfo.getPlayersList().isEmpty() &&
-                            microInfo.getPlayersList().size() <= microEffect.getMaxTargetPlayerSize()))
+                    if(microInfo.getPlayersList().isEmpty() ||
+                            microInfo.getPlayersList().size() > microEffect.getMaxTargetPlayerSize())
                         return false;
                 }
 
@@ -74,8 +74,8 @@ public class ShootInfo {
         else{
             //se bisognava inserire square
                 //
-            if(!(!microInfo.getNoMoveSquaresList().isEmpty() &&
-                    microInfo.getNoMoveSquaresList().size() <= microEffect.getMaxNmSquareSize()))
+            if(microInfo.getNoMoveSquaresList().isEmpty() ||
+                    microInfo.getNoMoveSquaresList().size() > microEffect.getMaxNmSquareSize())
                 return false;
         }
 
@@ -84,8 +84,8 @@ public class ShootInfo {
             if(!microInfo.getRoomsList().isEmpty())
                 return false;
             else{
-                if(!(!microInfo.getRoomsList().isEmpty() &&
-                        microInfo.getRoomsList().size() <= microEffect.getMaxTargetRoomSize()))
+                if(microInfo.getRoomsList().isEmpty() ||
+                        microInfo.getRoomsList().size() > microEffect.getMaxTargetRoomSize())
                     return false;
             }
 
