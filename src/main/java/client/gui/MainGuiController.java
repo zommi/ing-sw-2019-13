@@ -61,12 +61,12 @@ public class MainGuiController {
 
     private int weaponHandSize = 0;
 
-    private GuiMain guiMain;
+    private UpdaterGUI gui;
 
     private int side = 175;
 
-    public void setGuiMain(GuiMain guiMain){
-        this.guiMain = guiMain;
+    public void setGuiMain(UpdaterGUI guiMain){
+        this.gui = guiMain;
     }
 
     @FXML
@@ -89,7 +89,6 @@ public class MainGuiController {
         GameMap map = model.getMap();
         int col = 0;
         int row = 0;
-        int side = 175;
         int doorSize = side / 3;
         GuiDoorway doorway;
 

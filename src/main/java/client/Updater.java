@@ -6,9 +6,8 @@ import java.rmi.RemoteException;
 import java.util.Observable;
 import java.util.Observer;
 
-public abstract class Updater implements Observer {
+public interface Updater extends Observer {
 
-    private GameModel gameModel;
 
     public abstract void update(Observable gameModel, Object object);
 

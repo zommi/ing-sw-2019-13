@@ -17,7 +17,7 @@ import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UpdaterCLI extends Updater implements Runnable{
+public class UpdaterCLI  implements Updater,Runnable{
 
 
     private Connection connection;
