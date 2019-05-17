@@ -6,14 +6,13 @@ import server.model.game.Game;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Controller implements MyObserver {
 
-    //TODO map che collega player a giocatore
-
-    private Map<PlayerAbstract, Integer> playerToClient;
+    private Map<PlayerAbstract, Integer> playerToClient = new HashMap<>();
 
     private Game currentGame;
 

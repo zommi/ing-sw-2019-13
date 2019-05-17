@@ -17,7 +17,7 @@ public class GameModel extends Observable { // so that the GUI can be an observe
     private PlayerBoard playerBoard;
     private PlayerHand playerHand;
     private int clientID;
-    public static int lastClientID = -1;
+    private static int lastClientID = -1;
 
 
     public static List<Integer> listOfClients = new ArrayList<Integer>();
