@@ -53,7 +53,7 @@ public class GameBoard {
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
-        setupGameBoard();
+        //setupGameBoard();
     }
 
     /**

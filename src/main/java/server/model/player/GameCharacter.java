@@ -69,6 +69,7 @@ public class GameCharacter {
 
     public void setPosition(SquareAbstract position){
         this.position = position;
+        position.addCharacter(this);
     }
     /**
      *
@@ -76,7 +77,7 @@ public class GameCharacter {
      */
     public void move(SquareAbstract sq) {
         getPosition().removeCharacter(this);
-        setPosition(sq);
+        this.position = sq;
         sq.addCharacter(this);
     }
 
@@ -90,7 +91,7 @@ public class GameCharacter {
     public void spawn(SquareAbstract sp) {
         if(position == null){
             sp.addCharacter(this);
-            setPosition(sp);
+            this.position = sp;
         } else{
             System.out.println("Invalid move");
         }
