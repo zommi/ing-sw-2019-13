@@ -2,6 +2,7 @@ package server.controller.playeraction;
 
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
+import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -26,7 +27,7 @@ class ShootValidatorTest {
 
         List<PlayerAbstract> playerList = new ArrayList<>();
         playerList.add(player2);
-        MicroInfo microInfo = new MicroInfo(0, playerList, null, Collections.emptyList(), Collections.emptyList());
+        MicroInfo microInfo = new MicroInfo(0, 0, playerList, null, Collections.emptyList(), Collections.emptyList());
         List<MicroInfo> activatedMicros = new ArrayList<>();
         activatedMicros.add(microInfo);
         MacroInfo macroInfo = new MacroInfo(0,activatedMicros);
@@ -37,6 +38,6 @@ class ShootValidatorTest {
 
         ShootValidator shootValidator = new ShootValidator();
 
-        assertTrue(shootValidator.validate(shootInfo));
+        assertTrue(shootValidator.validate(shootInfo, testGb));
     }
 }
