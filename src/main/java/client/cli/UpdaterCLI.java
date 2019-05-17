@@ -48,7 +48,6 @@ public class UpdaterCLI extends Updater implements Runnable{
         }
     }
 
-
     @Override
     public void set() throws NotBoundException, RemoteException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
