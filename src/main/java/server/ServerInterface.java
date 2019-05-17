@@ -9,5 +9,5 @@ public interface ServerInterface{
 
     public void run();
 
-    public void addClient(ReceiverInterface client);
+    public int addClient(ReceiverInterface client);
 }

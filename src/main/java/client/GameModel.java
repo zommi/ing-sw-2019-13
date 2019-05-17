@@ -17,24 +17,24 @@ public class GameModel extends Observable { // so that the GUI can be an observe
     private PlayerBoard playerBoard;
     private PlayerHand playerHand;
     private int clientID;
-    private static int lastClientID = -1;
+    private static int lastClientID = 0;
 
 
-    public static List<Integer> listOfClients = new ArrayList<Integer>();
 
+    public GameModel(){ //THERE IS A NEW gamemodel for every client!
+        //listOfClients.add(clientID);
+    }
 
-    public GameModel(int clientID){ //THERE IS A NEW gamemodel for every client!
-        listOfClients.add(clientID);
+    public void setClientID(int clientID){
         this.clientID = clientID;
     }
 
 
-    public static List<Integer> getListOfClients(){
+    /*public static List<Integer> getListOfClients(){
         return listOfClients;
-    }
+    }*/
 
     public static int getNextClientID(){
-        lastClientID = lastClientID + 1;
         return lastClientID;
     }
 

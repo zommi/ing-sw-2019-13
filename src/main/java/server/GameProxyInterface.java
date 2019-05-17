@@ -10,7 +10,12 @@ import java.rmi.RemoteException;
 
 public interface GameProxyInterface extends Remote {
 
+
+    public String getMap() throws RemoteException;
+
     public boolean makeAction(int clientID, Action action) throws RemoteException;
+
+    public int getClientID() throws RemoteException;
 
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException;
 

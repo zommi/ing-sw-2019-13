@@ -18,7 +18,8 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
     private GameProxyInterface gameProxy;
     private String name = "rmiconnection";
-    private int mapChoice;
+    private String mapChoice;
+
     private boolean playerNameSet = false;
     private boolean mapSet = false;
     private  transient GameModel gameModel;
@@ -29,9 +30,17 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     private static final int REGISTRATION_PORT = 1099;
 
 
+    public String getMap(){
+        return mapChoice;
+    }
+
     public ConnectionRMI(int clientID){
         this.clientID = clientID;
-        this.gameModel = new GameModel(clientID);
+        this.gameModel = new GameModel();
+    }
+
+    public void setClientID(int clientID){
+        this.clientID = clientID;
     }
 
     @Override
@@ -90,6 +99,9 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
         gameProxy.setClientRMI(this);
         gameProxy.register(this);
+        setClientID(gameProxy.getClientID());
+        this.gameModel.setClientID(clientID);
+        this.mapChoice = gameProxy.getMap();
 
         System.out.println("Your ClientID is " + this.clientID);
 
@@ -98,7 +110,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     @Override
-    public void add(String playerName, int map){
+    public void add(String playerName, int mapClient){
         //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
 
         System.out.println("Trying to send your name to the server...");
@@ -120,7 +132,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
             System.out.println("Sending your chosen map to the server...");
             while(mapSet == false){
                 try{
-                    mapSet = gameProxy.sendMap(map);
+                    mapSet = gameProxy.sendMap(mapClient);
                     mapSet = true;
                 }
                 catch(RemoteException re){
@@ -129,6 +141,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
             }
             System.out.println("The server received your choice of the map...");
         }
+
 
         //TODO manca la parte in cui salvo le scelte del client!
 

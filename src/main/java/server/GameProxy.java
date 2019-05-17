@@ -17,15 +17,16 @@ import java.rmi.server.UnicastRemoteObject;
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
     private ReceiverInterface clientRMI;
-    private int numMap;
+    private int numMap = -1;
     private String playerName;
     private Controller controller;
     private ServerRMI serverRMI;
     private PlayerAbstract player;
     private ReceiverInterface client;
+    private int clientIDadded;
 
 
-    public Controller getController() {
+    public Controller getController()  throws RemoteException{
         return controller;
     }
 
@@ -35,7 +36,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, Action action){
+    public boolean makeAction(int clientID, Action action)  throws RemoteException{
         return true;
     }
 
@@ -46,13 +47,18 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException{
         System.out.println("Adding the client to the server...");
-        serverRMI.addClient(client);
+        this.clientIDadded = serverRMI.addClient(client);
 
         /*System.out.println("I am trying to connect to the client");
         Registry registryClient = LocateRegistry.getRegistry("localhost",1000);
 
         client = (ReceiverInterface) registryClient.lookup("rmiconnection");
         System.out.println("I just connected to the client");*/
+    }
+
+    @Override
+    public int getClientID() throws RemoteException{
+        return this.clientIDadded;
     }
 
     @Override
@@ -63,7 +69,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean sendPlayer(String name){
+    public boolean sendPlayer(String name)  throws RemoteException{
         System.out.println("Name received");
         this.playerName = name;
         this.player = new ConcretePlayer(name);
@@ -71,7 +77,21 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean sendMap(int numMap){
+    public String getMap() throws RemoteException{
+        if(this.numMap == 1)
+            return "map11.txt";
+        else if(this.numMap == 2)
+            return "map12.txt";
+        else if(this.numMap == 3)
+            return "map21.txt";
+        else if(this.numMap == 4)
+            return "map22.txt";
+        else
+            return "No one has chosen yet";
+    }
+
+    @Override
+    public boolean sendMap(int numMap)  throws RemoteException{
         System.out.println("Map choice received");
         this.numMap = numMap;
         controller = new Controller(numMap, 8);
@@ -84,7 +104,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public PlayerAbstract getPlayer(){
+    public PlayerAbstract getPlayer() throws RemoteException{
         return player;
     }
 
