@@ -13,11 +13,16 @@ import java.util.Map;
 public class ConnectionSocket extends Connection {
 
     private int clientID;
+    private String mapChoice;
     private GameModel gameModel;
 
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
-        this.gameModel = new GameModel(clientID);
+        this.gameModel = new GameModel();
+    }
+
+    public String getMap(){
+        return this.mapChoice;
     }
 
     public int getClientID(){

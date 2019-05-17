@@ -5,13 +5,10 @@ import client.*;
 import exceptions.CommandIsNotValidException;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.ActionParser;
-import server.model.map.GameMap;
-import server.model.player.ConcretePlayer;
-import server.model.player.PlayerAbstract;
+
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Map;
 import java.util.Scanner;  // Import the Scanner class
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
@@ -79,7 +76,7 @@ public class UpdaterCLI extends Updater implements Runnable{
         System.out.println("Method set: " +methodChosen);
 
 
-        int lastClientID = GameModel.getNextClientID(); //because it is static
+        int lastClientID = GameModel.getNextClientID(); //because it is static. It will always return 0. Then the server will return the true clientID
 
         if (methodChosen.equals("1")) {
             connection = new ConnectionRMI(lastClientID);
@@ -100,7 +97,8 @@ public class UpdaterCLI extends Updater implements Runnable{
 
 
 
-        if((gameModel.getListOfClients().size() >= 1) && (gameModel.getListOfClients().get(0).equals(0))) { //only if it is the first client!
+
+        if(gameModel.getClientID() == 0) { //only if it is the first client!
             do {
                 System.out.println(">Choose the map you want to use:");
                 System.out.println("Piccola (1)");
@@ -128,6 +126,7 @@ public class UpdaterCLI extends Updater implements Runnable{
         }
         else
         {
+            mapName = connection.getMap();
             System.out.println(">Your friend has chosen the map: " +mapName);
         }
 

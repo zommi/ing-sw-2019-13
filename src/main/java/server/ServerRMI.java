@@ -9,6 +9,8 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerRMI implements Runnable, ServerInterface {
 
@@ -16,6 +18,8 @@ public class ServerRMI implements Runnable, ServerInterface {
     private Controller controller;
     private int clientIDadded;
     GameProxyInterface gameProxy = null;
+    public static List<Integer> listOfClients = new ArrayList<Integer>();
+
 
 
     public ServerRMI(Server server) {
@@ -41,14 +45,18 @@ public class ServerRMI implements Runnable, ServerInterface {
     }
 
     @Override
-    public void addClient(ReceiverInterface client){
-        try{
-            this.clientIDadded = client.getClientID();
-            System.out.println("Added the clientID ");
+    public int addClient(ReceiverInterface client){
+        if(listOfClients.size() == 0){
+            listOfClients = new ArrayList<>();
+            listOfClients.add(0);
+            this.clientIDadded = 0;
         }
-        catch(RemoteException re){
-            System.out.println("Could not add the clientID ");
+        else{ //it is not the first element added in the list so it is not the first client.
+            listOfClients.add(clientIDadded +1);
+            this.clientIDadded = clientIDadded + 1;
         }
+        System.out.println("Added the clientID ");
+        return clientIDadded;
     }
 
     public void addMapClient() {

@@ -19,6 +19,8 @@ public abstract class Connection implements Serializable {
 
     public abstract int getClientID();
 
+    public abstract String getMap();
+
     public abstract void configure() throws RemoteException, NotBoundException;
 
     public abstract void send(Action action);
