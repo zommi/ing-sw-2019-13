@@ -48,6 +48,9 @@ public class WeaponPolicy {
         }
     }
 
+    //
+    //public void apply()
+
     public boolean checkVisible(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player")){
             for(PlayerAbstract player : microInfo.getPlayersList()){

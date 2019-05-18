@@ -1588,6 +1588,11 @@
                 "effectList" : "square",
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0
+              },
+              {
+                "policyName" : "specificPlayer",
+                "policyType" : "player",
+                "attackerFlag" : true
               }
             ]
           },
