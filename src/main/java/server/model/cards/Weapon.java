@@ -25,6 +25,9 @@ public class Weapon {
     @JsonProperty
     private String path;
 
+    @JsonProperty
+    private boolean special;
+
     public Cost getBuyCost() {
         return buyCost;
     }
@@ -58,5 +61,9 @@ public class Weapon {
     public MicroEffect getMicroEffect(int macro, int micro) throws NoSuchEffectException{
         return getMacroEffect(macro).getMicroEffect(micro);
 
+    }
+
+    public boolean isSpecial(){
+        return special;
     }
 }

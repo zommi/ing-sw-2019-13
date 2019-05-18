@@ -2,8 +2,10 @@ package server.model.gameboard;
 
 import constants.Constants;
 import server.model.map.*;
+import server.model.player.GameCharacter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,6 +43,8 @@ public class GameBoard {
      */
     public static GameBoard instance;
 
+    private List<GameCharacter> gameCharacterList;
+
 
     /**
      * Constructor called by the instance method
@@ -53,6 +57,7 @@ public class GameBoard {
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
+        this.gameCharacterList = new ArrayList<>();
         //setupGameBoard();
 
     }
@@ -101,5 +106,13 @@ public class GameBoard {
 
     public AmmoTileDeck getAmmoTileDeck() {
         return ammoTileDeck;
+    }
+
+    public List<GameCharacter> getGameCharacterList() {
+        return gameCharacterList;
+    }
+
+    public void addGameCharacter(GameCharacter gameCharacter){
+        this.gameCharacterList.add(gameCharacter);
     }
 }

@@ -18,6 +18,7 @@ public class GameCharacter {
 
     private SquareAbstract position;
     private ConcretePlayer concretePlayer;
+    private SquareAbstract oldPosition;
 
 
     public GameCharacter(Figure f){
@@ -99,5 +100,13 @@ public class GameCharacter {
 
     public Color getColor(){
         return this.figure.getColor();
+    }
+
+    public void setOldPosition(){
+        this.oldPosition = position;
+    }
+
+    public SquareAbstract getOldPosition(){
+        return oldPosition;
     }
 }

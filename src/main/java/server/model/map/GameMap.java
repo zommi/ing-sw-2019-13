@@ -16,6 +16,7 @@ public class GameMap {
     private ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
     private List<Room> rooms;
     private List<Color> roomsToBuild;
+    private boolean valid;
 
     /**
      * Generates the whole map, including the graph that links
@@ -25,6 +26,7 @@ public class GameMap {
      */
 
     public GameMap(int mapNum) {
+        valid = true;
         String path;
         switch(mapNum) {
 
@@ -279,5 +281,13 @@ public class GameMap {
 
     public ArrayList<ArrayList<SquareAbstract>> getSquares() {
         return squares;
+    }
+
+    public boolean isValid(){
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }

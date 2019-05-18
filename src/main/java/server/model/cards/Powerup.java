@@ -38,8 +38,4 @@ public class Powerup {
     public int getIndex() {
         return this.index;
     }
-
-    public Bullet usePowerup() throws InvalidMoveException {
-        throw new InvalidMoveException();
-    }
 }

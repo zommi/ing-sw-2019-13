@@ -19,25 +19,9 @@ public class PowerupCard implements CardInterface, AmmoTileItem {
         this.powerupDeck = powerupDeck;
     }
 
-
     public Color useAsAmmoCube() { //This method returns a color. Then the player will modify his attributes.
         return(color);
     }
-
-
-
-
-    public Bullet play() {
-        try {
-            return powerup.usePowerup();
-        }catch (InvalidMoveException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-
 
     public void draw() {
         powerupDeck.draw();
@@ -51,13 +35,11 @@ public class PowerupCard implements CardInterface, AmmoTileItem {
         // TODO implement here
     }
 
-
+    public void play(){};
 
     public String getName() {
         return powerup.getName();
     }
-
-
 
     public void discard() {
         powerupDeck.discardCard(this); //It will add the card to the discardedcards.

@@ -122,14 +122,12 @@ public class PlayerBoard{
         return counter;
     }
 
-    //add mark on playerboard, if size > 3 then throw exception
+    //add mark on playerboard, if size > 3 then don't add
     public void addMarks(int marks, Color color)
-            throws InvalidMoveException {
+             {
         for(int i = 0; i < marks; i++) {
             if (this.marks.size() < Constants.MAX_MARKS) {
                 this.marks.add(color);
-            } else {
-                throw new InvalidMoveException();
             }
         }
     }
