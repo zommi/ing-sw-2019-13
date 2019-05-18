@@ -1,8 +1,8 @@
 package server;
 
+import client.ActionInfo;
 import client.ReceiverInterface;
 import server.ServerAnswer.ServerAnswer;
-import server.controller.Controller;
 import server.controller.playeraction.Action;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
@@ -10,8 +10,6 @@ import server.model.player.PlayerAbstract;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
@@ -19,10 +17,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private ReceiverInterface clientRMI;
     private int numMap;
     private String playerName;
-    private Controller controller;
     private ServerRMI serverRMI;
     private PlayerAbstract player;
-    private ReceiverInterface client;
     private int clientIDadded;
     private int initialSkulls;
 
@@ -33,7 +29,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, Action action)  throws RemoteException{
+    public boolean makeAction(int clientID, ActionInfo action)  throws RemoteException{
         return true;
     }
 

@@ -3,9 +3,6 @@ package client.cli;
 
 import client.*;
 import exceptions.CommandIsNotValidException;
-import server.controller.playeraction.Action;
-import server.controller.playeraction.ActionParser;
-
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -163,7 +160,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             do{
                 mapName = connection.getMap();
                 initialSkulls = connection.getInitialSkulls();
-            } while(connection.getMap().equals("No one has chosen yet")||(connection.getInitialSkulls() == 0));
+            } while((mapName.equals("No one has chosen yet"))||(initialSkulls == 0));
             System.out.println(">Your friend has chosen the map: " +mapName);
             System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);
         }
@@ -187,7 +184,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     @Override
     public void run(){
         String read;
-        Action action;
+        ActionInfo action;
         ActionParser actionParser = new ActionParser();
         Scanner myObj = new Scanner(System.in);
         try {

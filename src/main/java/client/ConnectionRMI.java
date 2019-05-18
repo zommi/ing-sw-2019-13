@@ -57,8 +57,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         return clientID;
     }
 
-    @Override
-    public void send(Action action){
+    public void send(ActionInfo action){
         try{
             boolean serverAnswer = game.makeAction(this.clientID, action);
         }
@@ -103,7 +102,6 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         }
     }
 
-    @Override
     public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException {
         System.out.println("Connecting to the Remote Object... ");
 

@@ -21,13 +21,11 @@ public abstract class Connection implements Serializable {
 
     public abstract int getClientID();
 
+    public abstract void send(ActionInfo action);
+
     public abstract String getMap();
 
     public abstract void configure() throws RemoteException, NotBoundException;
-
-    public abstract void send(Action action);
-
-    public abstract GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException;
 
     public abstract GameModel getGameModel();
 
