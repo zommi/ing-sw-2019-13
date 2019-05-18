@@ -112,26 +112,6 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public SquareAbstract getPosition(){ return this.gameCharacter.getPosition();}
 
-
-    /**
-     * If a player get shot he is the one who needs to process the damage.
-     * @param b the bullet that contains the informations that need to be changed
-     * @param color the color of the tokens or marks that need to be added
-     */
-    public void receiveBullet(Bullet b, Color color){
-        board.addDamage(b.getDamage(),color);
-        try{
-            board.addMarks(b.getMarks(),color);
-        }catch (InvalidMoveException e){
-            System.out.println("Max number of marks reached");
-        }
-        try {
-            gameCharacter.move(currentGameBoard.getMap().getSquare(b.getY(), b.getX()));
-        }catch (NoSuchSquareException e){
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Places a gameCharacter in a Spawnpoint
      * @param sp SpawnPoint in which the player wants to place its gameCharacter
@@ -179,6 +159,27 @@ public class ConcretePlayer extends PlayerAbstract {
     public String getName() {
         return name;
     }
+
+    @Override
+    public void setOldPosition() {
+        this.gameCharacter.setOldPosition();
+    }
+
+    @Override
+    public SquareAbstract getOldPosition() {
+        return this.gameCharacter.getOldPosition();
+    }
+
+    @Override
+    public void addDamage(int damage, Color color) {
+        this.board.addDamage(damage, color);
+    }
+
+    @Override
+    public void addMarks(int marks, Color color) {
+        this.board.addMarks(marks, color);
+    }
+
 }
 
 

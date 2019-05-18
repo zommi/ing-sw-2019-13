@@ -95,5 +95,13 @@ public class MicroEffect {
     public List<WeaponPolicy> getPolicies() {
         return policies;
     }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
 }
 

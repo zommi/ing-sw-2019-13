@@ -1,8 +1,8 @@
 package server;
 
+import client.ActionInfo;
 import client.ReceiverInterface;
 import server.ServerAnswer.ServerAnswer;
-import server.controller.Controller;
 import server.controller.playeraction.Action;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
@@ -10,25 +10,18 @@ import server.model.player.PlayerAbstract;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
     private ReceiverInterface clientRMI;
-    private int numMap = -1;
+    private int numMap;
     private String playerName;
-    private Controller controller;
     private ServerRMI serverRMI;
     private PlayerAbstract player;
-    private ReceiverInterface client;
     private int clientIDadded;
+    private int initialSkulls;
 
-
-    public Controller getController()  throws RemoteException{
-        return controller;
-    }
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI = serverRMI;
@@ -36,7 +29,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, Action action)  throws RemoteException{
+    public boolean makeAction(int clientID, ActionInfo action)  throws RemoteException{
         return true;
     }
 
@@ -91,12 +84,25 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public boolean sendInitialSkulls(int initialSkulls) throws RemoteException{
+        this.initialSkulls = initialSkulls;
+        serverRMI.getServer().setInitialSkulls(initialSkulls);
+        System.out.println("Initial skulls choice received");
+        return true;
+    }
+
+    @Override
+    public int getInitialSkulls() throws RemoteException{
+        return this.initialSkulls;
+    }
+
+
+    @Override
     public boolean sendMap(int numMap)  throws RemoteException{
         System.out.println("Map choice received");
         this.numMap = numMap;
-        controller = new Controller(numMap, 8);
-        System.out.println("Controller created");
-        serverRMI.setController(controller);
+        serverRMI.getServer().setMap(numMap);
+        serverRMI.setController(serverRMI.getServer().getController());
         System.out.println("Controller set for serverRMI");
         serverRMI.addMapClient();
         System.out.println("Added the map of the client and of the player");

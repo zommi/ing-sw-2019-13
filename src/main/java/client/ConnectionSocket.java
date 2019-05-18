@@ -5,6 +5,7 @@ import server.controller.playeraction.Action;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
+import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -15,6 +16,7 @@ public class ConnectionSocket extends Connection {
     private int clientID;
     private String mapChoice;
     private GameModel gameModel;
+    private int initialSkulls;
 
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
@@ -33,19 +35,24 @@ public class ConnectionSocket extends Connection {
 
     }
 
-    public void send(Action action){
+    public void send(ActionInfo action){
 
     }
 
-    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException{
+    public void initializeSocket(){
+
+    }
+
+        public GameModel getGameModel(){
         return null;
     }
 
-    public GameModel getGameModel(){
-        return null;
-    }
-
-    public void add(String playerName, int map){
+    public void add(String playerName, int map, int initialSkulls){
 
     }
+
+    public int getInitialSkulls(){
+        return this.initialSkulls;
+    }
+
 }

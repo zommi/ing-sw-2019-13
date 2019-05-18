@@ -2,7 +2,6 @@ package server.model.player;
 
 import constants.Color;
 import constants.Directions;
-import server.model.cards.Bullet;
 import server.model.cards.Cost;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
@@ -65,8 +64,6 @@ public abstract class PlayerAbstract implements Serializable {
         return null;
     }
 
-    public abstract void receiveBullet(Bullet b, Color color);
-
     public abstract void usePowerup(int powerupIndex);
 
     public abstract UUID getId();
@@ -86,4 +83,12 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean canPay(Cost cost);
 
     public abstract String getName();
+
+    public abstract void setOldPosition();
+
+    public abstract SquareAbstract getOldPosition();
+
+    public abstract void addDamage(int damage, Color color);
+
+    public abstract void addMarks(int marks, Color color);
 }

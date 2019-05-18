@@ -212,11 +212,6 @@
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 0,
                 "effectList" : "player"
-              },
-              {
-                "policyName" : "different",
-                "policyType" : "player",
-                "attackerFlag" : true
               }
             ]
           }
@@ -242,11 +237,6 @@
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0,
                 "effectList" : "player"
-              },
-              {
-                "policyName" : "different",
-                "policyType" : "player",
-                "attackerFlag" : true
               },
               {
                 "policyName" : "different",

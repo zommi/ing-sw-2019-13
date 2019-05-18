@@ -2,10 +2,25 @@ package server.controller.playeraction;
 
 import exceptions.NoSuchEffectException;
 import server.model.cards.*;
+import server.model.game.Game;
+import server.model.gameboard.GameBoard;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ShootValidator {
 
-    public boolean validate(ShootInfo shootInfo){
+    public boolean validate(ShootInfo shootInfo, GameBoard gameBoard){
+        //saves players' old positions and sets map to not valid if weapon is special
+        if(shootInfo.getWeapon().isSpecial()){
+            gameBoard.getMap().setValid(false);
+            for(GameCharacter gameCharacter : gameBoard.getGameCharacterList()){
+                gameCharacter.setOldPosition();
+            }
+        }
+
         //checks if macros order is correct and there are no duplicates
         if(shootInfo.getActivatedMacros().isEmpty())
             return false;
@@ -104,19 +119,40 @@ public class ShootValidator {
                     }
                 }
 
-                //checks if input is ok
+                //checks if input dimensions are ok
                 if(!shootInfo.areDimensionsOk(microInfo, weaponMicro))
                     return false;
 
+                //checks if attacker is inside player list
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    if(playerAbstract.equals(shootInfo.getAttacker()))
+                        return false;
+                }
+
                 //checks every micro policy
                 for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
-                    if(!weaponPolicy.isVerified(shootInfo, microInfo))
+                    if(!(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player")) &&
+                            !(weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")) &&
+                            !weaponPolicy.isVerified(shootInfo, microInfo))
                         return false;
+                }
+
+                //place generate here?
+
+
+                //fakes micro actuation if weapon is special
+                if(shootInfo.getWeapon().isSpecial()){
+                    microInfo.actuate(shootInfo);
                 }
             }
         }
 
-
+        if(shootInfo.getWeapon().isSpecial()){
+            for(GameCharacter gameCharacter : gameBoard.getGameCharacterList()){
+                gameCharacter.move(gameCharacter.getOldPosition());
+            }
+            gameBoard.getMap().setValid(true);
+        }
 
 
 
