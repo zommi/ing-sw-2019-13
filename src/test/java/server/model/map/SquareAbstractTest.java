@@ -184,6 +184,11 @@ class SquareAbstractTest {
         assertEquals(1,square1.distance(square2));
         assertEquals(5,square1.distance(square3));
 
+        SquareAbstract square4 = map.getSquare(0,1);
+        SquareAbstract square5 = map.getSquare(2,2);
+
+        assertEquals(5, square4.distance(square5));
+
     }
 
 }

@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
@@ -57,10 +56,8 @@
                            <children>
                               <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="Enter name:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ChoiceBox prefHeight="27.0" prefWidth="181.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                              <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label text="Choose map" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <ChoiceBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <ChoiceBox prefHeight="27.0" prefWidth="181.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                              <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                            </children>
                         </GridPane>
                      </children>

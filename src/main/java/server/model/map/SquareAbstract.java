@@ -1,5 +1,6 @@
 package server.model.map;
 
+import com.fasterxml.jackson.databind.ser.std.CollectionSerializer;
 import server.model.cards.CollectableInterface;
 import constants.Color;
 import constants.Directions;
@@ -380,7 +381,12 @@ public abstract class  SquareAbstract {
 
     public int distance(SquareAbstract destination){
         if(this.equals(destination))return 0;
+
+        //square used to divide different groups of squares.
+        //all squares in the same group are at the same distance
         final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED,gameMap);
+
+        //initialization of variables
         LinkedList<SquareAbstract> queue = new LinkedList<>();
         List<SquareAbstract> alreadyAdded = new ArrayList<>();
         SquareAbstract currentTarget;
@@ -389,11 +395,17 @@ public abstract class  SquareAbstract {
         queue.add(impossibleSquare);
         alreadyAdded.add(this);
         int distance = 1;
+
+
         while(!queue.isEmpty()){
             currentSquare = queue.poll();
+
+            //if a group ended, increase distance
             if(currentSquare.equals(impossibleSquare)) {
                 distance++;
             } else {
+
+                //add all the squares near to the queue
                 for (Directions dir : Directions.values()) {
                     currentTarget = currentSquare.getNearFromDir(dir);
                     if(currentTarget != null && !alreadyAdded.contains(currentTarget)){
@@ -405,6 +417,7 @@ public abstract class  SquareAbstract {
                         }
                     }
                 }
+                //if the computation of a group ended add a divider at the end of the queue
                 if(queue.getFirst().equals(impossibleSquare))queue.add(impossibleSquare);
             }
         }
