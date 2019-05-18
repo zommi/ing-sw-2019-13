@@ -65,6 +65,8 @@ public class MainGuiController {
 
     private int side = 175;
 
+    GameBoard gb = new GameBoard(4,6);
+
     public void setGuiMain(UpdaterGUI guiMain){
         this.gui = guiMain;
     }
@@ -86,7 +88,8 @@ public class MainGuiController {
     }
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
-        GameMap map = model.getMap();
+        gb.setupGameBoard();
+        GameMap map = gb.getMap();//model.getMap();
         int col = 0;
         int row = 0;
         int doorSize = side / 3;
@@ -195,7 +198,7 @@ public class MainGuiController {
             weapon.setOnMousePressed(e -> {
                 if(weaponHandSize < 3){
                     drawWeapon(e,weapon);
-                    String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
+                    String cardToDraw = gb.getWeaponDeck().draw().getPath();
                     spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
                     spawnPoint.restore(cardToDraw,weapon.getIndex());
                     alert.close();

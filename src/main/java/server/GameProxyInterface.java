@@ -13,6 +13,10 @@ public interface GameProxyInterface extends Remote {
 
     public String getMap() throws RemoteException;
 
+    public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
+
+    public int getInitialSkulls() throws RemoteException;
+
     public boolean makeAction(int clientID, Action action) throws RemoteException;
 
     public int getClientID() throws RemoteException;

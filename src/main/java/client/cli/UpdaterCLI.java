@@ -51,7 +51,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         String read;
         String playerName;
         String methodChosen;
-        Boolean mapChosen = false;
+        boolean mapChosen = false;
+        int initialSkulls = -1;
+        boolean initialSkullsChosen = false;
 
         String mapName = "No one has chosen yet";
 
@@ -98,7 +100,35 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-        if(gameModel.getClientID() == 0) { //only if it is the first client!
+        if(gameModel.getClientID() == 0) {//only if it is the first client!
+            do{
+                System.out.println(">Choose the number of initial skulls you want to put on the killshot track: ");
+                System.out.println("5 (1)");
+                System.out.println("6 (2)");
+                System.out.println("7 (3)");
+                System.out.println("8 (4)");
+                read = myObj.nextLine();
+                if (read.equals("1")) {
+                    initialSkulls = 5;
+                    initialSkullsChosen = true;
+                } else if (read.equals("2")) {
+                    initialSkulls = 6;
+                    initialSkullsChosen = true;
+                } else if (read.equals("3")) {
+                    initialSkulls = 7;
+                    initialSkullsChosen = true;
+                }
+                else if (read.equals("4")) {
+                    initialSkulls = 8;
+                    initialSkullsChosen = true;
+                }
+                else {
+                    System.out.println(">HEY! You have to choose between the options given!" );
+                    initialSkulls = 0;
+                }
+            } while(!initialSkullsChosen);
+
+            System.out.println(">You have chosen to use: "+initialSkulls+" initial skulls" );
             do {
                 System.out.println(">Choose the map you want to use:");
                 System.out.println("Piccola (1)");
@@ -120,18 +150,26 @@ public class UpdaterCLI  implements Updater,Runnable{
                     mapName = "map22.txt";
                     mapChosen = true;
                 }
+                else{
+                    System.out.println(">HEY! You have to choose between the options given!" );
+                    mapName = "No one has chosen yet";
+                }
             } while (!mapChosen);
             startGame = true;
             System.out.println(">You have chosen the map: " +mapName);
         }
         else
         {
-            mapName = connection.getMap();
+            do{
+                mapName = connection.getMap();
+                initialSkulls = connection.getInitialSkulls();
+            } while(connection.getMap().equals("No one has chosen yet")||(connection.getInitialSkulls() == 0));
             System.out.println(">Your friend has chosen the map: " +mapName);
+            System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);
         }
 
 
-        int mapNumber;
+        int mapNumber = 0;
         if (mapName.equals("map11.txt")) {
             mapNumber = 1;
         } else if (mapName.equals("map12.txt")) {
@@ -139,9 +177,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         } else if (mapName.equals("map21.txt")) {
             mapNumber = 3;
         }
-        else //(mapName.equals("map22.txt"))
+        else if(mapName.equals("map22.txt")){
             mapNumber = 4;
-        connection.add(playerName, mapNumber);
+        }
+        connection.add(playerName, mapNumber, initialSkulls);
     }
 
 

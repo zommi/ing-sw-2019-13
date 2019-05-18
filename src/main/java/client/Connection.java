@@ -17,6 +17,8 @@ public abstract class Connection implements Serializable {
 
     private GameModel gamemodel;
 
+    public abstract int getInitialSkulls();
+
     public abstract int getClientID();
 
     public abstract String getMap();
@@ -29,5 +31,5 @@ public abstract class Connection implements Serializable {
 
     public abstract GameModel getGameModel();
 
-    public abstract void add(String playerName, int map);
+    public abstract void add(String playerName, int map, int initialSkulls) throws RemoteException;
 }

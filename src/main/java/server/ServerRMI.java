@@ -21,6 +21,9 @@ public class ServerRMI implements Runnable, ServerInterface {
     public static List<Integer> listOfClients = new ArrayList<Integer>();
 
 
+    public Server getServer(){
+        return this.server;
+    }
 
     public ServerRMI(Server server) {
         this.server = server;

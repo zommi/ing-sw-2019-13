@@ -19,8 +19,10 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     private GameProxyInterface gameProxy;
     private String name = "rmiconnection";
     private String mapChoice;
+    private int initialSkulls;
 
     private boolean playerNameSet = false;
+    private boolean initialSkullsSet = false;
     private boolean mapSet = false;
     private  transient GameModel gameModel;
     private GameProxyInterface game;
@@ -31,7 +33,14 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     public String getMap(){
-        return mapChoice;
+        try{
+            return gameProxy.getMap();
+        }
+        catch (RemoteException re){
+            System.out.println("Could not take the map from the server");
+            re.printStackTrace();
+        }
+        return "No one has chosen yet";
     }
 
     public ConnectionRMI(int clientID){
@@ -72,6 +81,18 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     @Override
+    public int getInitialSkulls(){
+        try {
+            return gameProxy.getInitialSkulls();
+        }
+        catch (RemoteException re){
+            System.out.println("Could not get the initial skulls from the server");
+            re.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
     public void configure() throws RemoteException, NotBoundException {
         try{
             this.game = initializeRMI();
@@ -101,7 +122,6 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         gameProxy.register(this);
         setClientID(gameProxy.getClientID());
         this.gameModel.setClientID(clientID);
-        this.mapChoice = gameProxy.getMap();
 
         System.out.println("Your ClientID is " + this.clientID);
 
@@ -110,11 +130,24 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     @Override
-    public void add(String playerName, int mapClient){
+    public void add(String playerName, int mapClient, int initialSkulls) throws RemoteException{
         //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
 
-        System.out.println("Trying to send your name to the server...");
+        if(clientID == 0) {
+            System.out.println("Trying to send your choice of initial skulls to the server...");
+            while (initialSkullsSet == false) {
+                try {
+                    initialSkullsSet = gameProxy.sendInitialSkulls(initialSkulls);
+                    initialSkullsSet = true;
+                } catch (RemoteException re) {
+                    System.out.println("Could not send the initial skulls");
+                    re.printStackTrace();
+                }
+            }
+            this.initialSkulls = gameProxy.getInitialSkulls();
+        }
 
+        System.out.println("Trying to send your name to the server...");
         while (playerNameSet == false) {
             try{
                 playerNameSet = gameProxy.sendPlayer(playerName);
@@ -140,6 +173,8 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
                 }
             }
             System.out.println("The server received your choice of the map...");
+            this.mapChoice = gameProxy.getMap();
+
         }
 
 
@@ -147,3 +182,4 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
     }
 }
+

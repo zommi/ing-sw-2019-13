@@ -15,6 +15,7 @@ public class ConnectionSocket extends Connection {
     private int clientID;
     private String mapChoice;
     private GameModel gameModel;
+    private int initialSkulls;
 
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
@@ -45,7 +46,12 @@ public class ConnectionSocket extends Connection {
         return null;
     }
 
-    public void add(String playerName, int map){
+    public void add(String playerName, int map, int initialSkulls){
 
     }
+
+    public int getInitialSkulls(){
+        return this.initialSkulls;
+    }
+
 }
