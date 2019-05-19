@@ -1,10 +1,7 @@
 package client;
 
-import client.cli.UpdaterCLI;
 import server.GameProxyInterface;
-import server.ServerAnswer.ServerAnswer;
-import server.controller.playeraction.Action;
-import server.model.player.PlayerAbstract;
+import view.ServerAnswer;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
@@ -13,7 +10,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 public class ConnectionRMI extends Connection implements Serializable, ReceiverInterface, Remote {
 
@@ -26,7 +22,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     private boolean initialSkullsSet = false;
     private boolean characterNameSet = false;
     private boolean mapSet = false;
-    private  transient GameModel gameModel;
+    private transient GameModel gameModel;
     private GameProxyInterface game;
     private int clientID;
     private static final String SERVER_ADDRESS  = "localhost";
@@ -117,17 +113,16 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
-    public void configure() throws RemoteException, NotBoundException {
+    public void configure() {
         try{
             this.game = initializeRMI();
         }
-        catch (AlreadyBoundException e)
-        {
-            System.out.println("Exception while binding");
+        catch(RemoteException|NotBoundException re){
+            System.out.println("Exception while initializing");
         }
     }
 
-    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException, AlreadyBoundException {
+    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException {
         System.out.println("Connecting to the Remote Object... ");
 
         System.out.println("Connecting to the registry... ");
@@ -215,9 +210,11 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
         }
 
-
         //TODO manca la parte in cui salvo le scelte del client!
+    }
 
+    public void saveAnswer(ServerAnswer answer){
+        this.gameModel.saveAnswer(answer);
     }
 }
 

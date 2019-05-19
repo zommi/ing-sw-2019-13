@@ -1,9 +1,8 @@
 package client;
 
-import server.ServerAnswer.ServerAnswer;
+import view.*;
 import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
-import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import server.model.player.PlayerHand;
 
@@ -49,25 +48,25 @@ public class GameModel extends Observable { // so that the GUI can be an observe
     }
 
     public void saveAnswer(ServerAnswer answer) { //the GameModel will save the answer of the Server updating the model elements needed and notifying the observers
-        if (answer instanceof GameBoard) {
+        if (answer instanceof GameBoardAnswer) {
             gameBoard = (GameBoard) answer;
             setChanged();
             notifyObservers("GameBoard");
         }
 
-        if (answer instanceof GameMap) {
+        if (answer instanceof MapAnswer) {
             map = (GameMap) answer;
             setChanged();
             notifyObservers("Map");
         }
 
-        if (answer instanceof PlayerBoard) {
+        if (answer instanceof PlayerBoardAnswer) {
             playerBoard = (PlayerBoard) answer;
             setChanged();
             notifyObservers("PlayerBoard");
         }
 
-        if (answer instanceof PlayerHand) {
+        if (answer instanceof PlayerHandAnswer) {
             playerHand = (PlayerHand) playerHand;
             setChanged();
             notifyObservers("PlayerHand");

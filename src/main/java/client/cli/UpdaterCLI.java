@@ -3,9 +3,15 @@ package client.cli;
 
 import client.*;
 import exceptions.CommandIsNotValidException;
+import server.model.cards.PowerupCard;
+import server.model.cards.WeaponCard;
+import server.model.player.PlayerBoard;
+import server.model.player.PlayerHand;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;  // Import the Scanner class
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
@@ -87,15 +93,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
-        try{
-            connection.configure();
-        }
-        catch (RemoteException e) {
-            System.out.println("Remote Exception caught");
-            e.printStackTrace();
-        }
-
-
+        connection.configure();
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -196,6 +194,13 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void run(){
         String read;
         ActionInfo action;
+        PlayerHand playerHand;
+        PlayerBoard playerBoard;
+        List<WeaponCard> weapons;
+        List<PowerupCard> powerups;
+        int ammoRED;
+        int ammoBLUE;
+        int ammoYELLOW;
         ActionParser actionParser = new ActionParser();
         Scanner myObj = new Scanner(System.in);
         try {
@@ -205,6 +210,33 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("Exception caught");
         }
         while (alwaysTrue) {
+            playerHand = gameModel.getPlayerHand();
+            playerBoard = gameModel.getPlayerBoard();
+            weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
+            System.out.println(">You have the following weapons: ");
+            if(weapons.size() == 0){
+                System.out.println(">You have no weapons!");
+            }
+
+            for(int i = 0; i < weapons.size(); i++){
+                System.out.println("> " +weapons.get(i).getName());
+            }
+
+            powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
+            System.out.println(">You have the following puwerups: ");
+            for(int i = 0; i < weapons.size(); i++){
+                System.out.println("> " +powerups.get(i).getName());
+            }
+
+            ammoRED = playerBoard.getRedAmmo();
+            System.out.println(">You have %d red ammos:" +ammoRED);
+
+            ammoBLUE = playerBoard.getBlueAmmo();
+            System.out.println(">You have %d blue ammos:" +ammoBLUE );
+
+            ammoYELLOW = playerBoard.getYellowAmmo();
+            System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+
             System.out.println(">Write a command: ");
             read = myObj.nextLine();
             if(read.toUpperCase() == "MOVE"){

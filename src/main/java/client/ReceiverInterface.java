@@ -1,6 +1,6 @@
 package client;
 
-import server.ServerAnswer.ServerAnswer;
+import view.ServerAnswer;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

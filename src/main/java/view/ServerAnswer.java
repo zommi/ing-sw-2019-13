@@ -1,6 +1,4 @@
-package server.ServerAnswer;
-
-import server.model.gameboard.GameBoard;
+package view;
 
 public interface ServerAnswer {
 

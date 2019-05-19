@@ -2,8 +2,7 @@ package server;
 
 import client.ActionInfo;
 import client.ReceiverInterface;
-import server.ServerAnswer.ServerAnswer;
-import server.controller.playeraction.Action;
+import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
@@ -12,6 +11,7 @@ import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
@@ -23,6 +23,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private PlayerAbstract player;
     private int clientIDadded;
     private int initialSkulls;
+    private List<ReceiverInterface> clientRMIadded = new ArrayList<>();
 
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
@@ -38,6 +39,10 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public boolean makeAction(int clientID, ActionInfo action)  throws RemoteException{
         return true;
+    }
+
+    public void addClientRMI(ReceiverInterface receiver){
+        this.clientRMIadded.add(receiver);
     }
 
     @Override
@@ -65,6 +70,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
         this.clientRMI = clientRMI;
+        this.addClientRMI(clientRMI);
         System.out.println("I just connected to the client");
     }
 

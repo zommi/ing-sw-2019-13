@@ -4,6 +4,7 @@ import server.GameProxyInterface;
 import server.controller.playeraction.Action;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
+import view.ServerAnswer;
 
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
@@ -27,6 +28,10 @@ public class ConnectionSocket extends Connection {
 
     }
 
+    public void saveAnswer(ServerAnswer answer){
+
+    }
+
 
     public boolean CharacterChoice(String name){
         return true;
@@ -41,7 +46,7 @@ public class ConnectionSocket extends Connection {
         return this.clientID;
     }
 
-    public void configure() throws RemoteException, NotBoundException{
+    public void configure(){
 
     }
 

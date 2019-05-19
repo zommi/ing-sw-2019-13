@@ -1,4 +1,4 @@
-package server.ServerAnswer;
+package view;
 
 public class GameBoardAnswer implements ServerAnswer {
 }
