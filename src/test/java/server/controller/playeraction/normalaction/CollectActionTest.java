@@ -1,7 +1,7 @@
 package server.controller.playeraction.normalaction;
 
 import constants.Color;
-import constants.Directions;
+import constants.Direction;
 import org.junit.jupiter.api.Test;
 import server.controller.playeraction.CollectInfo;
 import server.controller.playeraction.MoveInfo;
@@ -30,19 +30,19 @@ class CollectActionTest {
         PlayerAbstract testPlayer = new ConcretePlayer("pippo", testGB, Figure.SPROG);
         testPlayer.spawn(testGB.getMap().getSpawnPoint(Color.BLUE));
 
-        List<Directions> emptyList = new ArrayList<>();
+        List<Direction> emptyList = new ArrayList<>();
 
-        List<Directions> correctNormalList = new ArrayList<>();
-        correctNormalList.add(Directions.SOUTH);
+        List<Direction> correctNormalList = new ArrayList<>();
+        correctNormalList.add(Direction.SOUTH);
 
-        List<Directions> correctAdrenalineList = new ArrayList<>();
-        correctAdrenalineList.add(Directions.EAST);
-        correctAdrenalineList.add(Directions.SOUTH);
+        List<Direction> correctAdrenalineList = new ArrayList<>();
+        correctAdrenalineList.add(Direction.EAST);
+        correctAdrenalineList.add(Direction.SOUTH);
 
-        List<Directions> wrongList = new ArrayList<>();
-        wrongList.add(Directions.WEST);
-        wrongList.add(Directions.WEST);
-        wrongList.add(Directions.NORTH);
+        List<Direction> wrongList = new ArrayList<>();
+        wrongList.add(Direction.WEST);
+        wrongList.add(Direction.WEST);
+        wrongList.add(Direction.NORTH);
 
         MoveInfo correctNormalMove = new MoveInfo(testPlayer, correctNormalList);
         CollectInfo noChoice = new CollectInfo();

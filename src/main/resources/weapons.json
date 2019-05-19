@@ -694,7 +694,6 @@
               {
                 "policyName" : "invisible",
                 "policyType" : "player",
-                "distance" : 1,
                 "attackerFlag" : true
               }
             ]
@@ -834,7 +833,7 @@
                 "microEffectIndex" : 0
               },
               {
-                "policyName" : "aligned",
+                "policyName" : "sameDirection",
                 "policyType" : "player",
                 "effectFlag" : true,
                 "effectList" : "player",
@@ -901,7 +900,7 @@
                 "attackerFlag" : true
               },
               {
-                "policyName" : "aligned",
+                "policyName" : "sameDirection",
                 "policyType" : "noMoveSquare",
                 "effectFlag" : true,
                 "effectList" : "noMoveSquare",
@@ -1572,7 +1571,7 @@
             "generatePlayerFlag" : true,
             "policies" : [
               {
-                "policyName" : "aligned",
+                "policyName" : "sameDirection",
                 "policyType" : "square",
                 "effectFlag" : true,
                 "effectList" : "square",
@@ -1588,6 +1587,12 @@
                 "effectList" : "square",
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0
+              },
+              {
+                "policyName" : "distanceEqual",
+                "policyType" : "square",
+                "distance" : 2,
+                "attackerFlag" : true
               },
               {
                 "policyName" : "specificPlayer",

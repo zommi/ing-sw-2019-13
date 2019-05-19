@@ -3,7 +3,6 @@ package server.model.player;
 import server.model.cards.*;
 import server.model.items.AmmoCube;
 import server.model.map.*;
-import exceptions.*;
 import server.model.gameboard.*;
 import constants.*;
 
@@ -57,7 +56,7 @@ public class ConcretePlayer extends PlayerAbstract {
      * Moves the gameCharacter to an adjacent square in a direction
      * @param direction direction to follow
      */
-    public void move(Directions direction) {
+    public void move(Direction direction) {
         SquareAbstract currentPos = gameCharacter.getPosition();
         switch (direction){
             case NORTH:

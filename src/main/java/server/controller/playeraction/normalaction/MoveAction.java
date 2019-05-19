@@ -9,7 +9,7 @@ import server.model.player.PlayerAbstract;
 import java.util.List;
 
 public class MoveAction {
-    private List<Directions> moves;
+    private List<Direction> moves;
     private PlayerAbstract player;
 
     private MoveValidator validator;

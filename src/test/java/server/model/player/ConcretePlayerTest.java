@@ -1,7 +1,7 @@
 package server.model.player;
 
 import constants.Color;
-import constants.Directions;
+import constants.Direction;
 import server.model.gameboard.GameBoard;
 import server.model.map.*;
 
@@ -52,25 +52,25 @@ class ConcretePlayerTest {
         assertEquals(testGb.getMap().getSpawnPoint(Color.BLUE).getCharacters(),testList1);
         assertEquals(testGb.getMap().getSpawnPoint(Color.BLUE),player1.getGameCharacter().getPosition());
 
-        player1.move(Directions.SOUTH);
+        player1.move(Direction.SOUTH);
         currentSquare = currentSquare.getsSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
         assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
-        player1.move(Directions.WEST);
+        player1.move(Direction.WEST);
         currentSquare = currentSquare.getwSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
         assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
-        player1.move(Directions.EAST);
+        player1.move(Direction.EAST);
         currentSquare = currentSquare.geteSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);
         assertEquals(currentSquare,player1.getGameCharacter().getPosition());
 
-        player1.move(Directions.NORTH);
+        player1.move(Direction.NORTH);
         currentSquare = currentSquare.getnSquare();
 
         assertEquals(currentSquare.getCharacters(),testList1);

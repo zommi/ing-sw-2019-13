@@ -1,9 +1,10 @@
 package server.model.map;
 
-import com.fasterxml.jackson.databind.ser.std.CollectionSerializer;
+import exceptions.NoSuchEffectException;
+import exceptions.NotAlignedException;
 import server.model.cards.CollectableInterface;
 import constants.Color;
-import constants.Directions;
+import constants.Direction;
 import server.model.player.GameCharacter;
 
 import java.util.*;
@@ -109,7 +110,7 @@ public abstract class  SquareAbstract {
      * @param dir specifies the relative position of the near square
      * @return the adjacent square in the given direction
      */
-    public SquareAbstract getNearFromDir(Directions dir){
+    public SquareAbstract getNearFromDir(Direction dir){
         switch(dir){
             case NORTH: return getnSquare();
             case SOUTH: return getsSquare();
@@ -295,7 +296,7 @@ public abstract class  SquareAbstract {
      * @param dir direction
      * @return a list of at most two squares that are linked in the given direction to this square
      */
-    public List<SquareAbstract> getTwoSquaresInTheSameDirection(Directions dir){
+    public List<SquareAbstract> getTwoSquaresInTheSameDirection(Direction dir){
         List<SquareAbstract> returnedList = new ArrayList<>();
 
         if(getNearFromDir(dir) != null){
@@ -403,7 +404,7 @@ public abstract class  SquareAbstract {
             } else {
 
                 //add all the squares near to the queue
-                for (Directions dir : Directions.values()) {
+                for (Direction dir : Direction.values()) {
                     currentTarget = currentSquare.getNearFromDir(dir);
                     if(currentTarget != null && !alreadyAdded.contains(currentTarget)){
                         if(currentTarget.equals(destination)){
@@ -451,7 +452,7 @@ public abstract class  SquareAbstract {
             } else {
 
                 //add all the squares near to the queue
-                for (Directions dir : Directions.values()) {
+                for (Direction dir : Direction.values()) {
                     nextSquare = currentSquare.getNearFromDir(dir);
                     if (nextSquare != null && !alreadyAdded.contains(nextSquare)) {
                         if (currentDistance == distance) {
@@ -471,5 +472,44 @@ public abstract class  SquareAbstract {
 
     public boolean isSpawnPoint(){
         return this instanceof SpawnPoint;
+    }
+
+    public Direction getDirection(SquareAbstract squareAbstract) throws NotAlignedException {
+        if(this == squareAbstract)
+            return null;
+        if(this.getRow() == squareAbstract.getRow() && this.getCol()<squareAbstract.getCol())
+            return Direction.EAST;
+        else if(this.getRow() == squareAbstract.getRow() && this.getCol()>squareAbstract.getCol())
+            return Direction.WEST;
+        else if(this.getRow() < squareAbstract.getRow() && this.getCol()==squareAbstract.getCol())
+            return Direction.NORTH;
+        else if(this.getRow() > squareAbstract.getRow() && this.getCol()==squareAbstract.getCol())
+            return Direction.SOUTH;
+        else
+            throw new NotAlignedException();
+    }
+
+    public boolean areSameDirection(List<SquareAbstract> squareAbstractList) {
+       try {
+           if (squareAbstractList.isEmpty())
+               return true;
+           Direction direction = null;
+           for (SquareAbstract squareAbstract : squareAbstractList) {
+               if (this.getDirection(squareAbstract) != null) {
+                   direction = this.getDirection(squareAbstract);
+                   break;
+               }
+           }
+           if (direction == null)
+               return true;
+           //at least one square is not the same as this
+           for (SquareAbstract squareAbstract : squareAbstractList) {
+               if (this.getDirection(squareAbstract) != null && this.getDirection(squareAbstract) != direction)
+                   return false;
+           }
+           return true;
+       }catch(NotAlignedException e){
+           return false;
+       }
     }
 }

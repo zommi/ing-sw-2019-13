@@ -137,14 +137,20 @@ public class ShootValidator {
                             return false;
                     }
 
-                    //place generate here?
+                    //start player/square targets generation
+                    if(weaponMicro.isGeneratePlayerFlag()){
+                        //adds all active players to playerList and then removes those who don't meet
+                        //  policy requirements
+                        for(GameCharacter gameCharacter : gameBoard.getGameCharacterList()){
+                            microInfo.getPlayersList().add(gameCharacter.getConcretePlayer());
+                        }
+                    }
                     for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
                         if(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player") ||
                                 weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")){
-
+                            weaponPolicy.generate(shootInfo, microInfo);
                         }
                     }
-
 
                     //fakes micro actuation if weapon is special
                     if (shootInfo.getWeapon().isSpecial()) {

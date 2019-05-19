@@ -1,10 +1,9 @@
 package server.controller.playeraction;
 
 import constants.Constants;
-import constants.Directions;
+import constants.Direction;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
-import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
@@ -13,8 +12,8 @@ public class CollectActuator {
 
     public CollectActuator(){}
 
-    public void actuate(PlayerAbstract playerPlaying, List<Directions> movements, int choice){
-        for(Directions dir : movements){
+    public void actuate(PlayerAbstract playerPlaying, List<Direction> movements, int choice){
+        for(Direction dir : movements){
             playerPlaying.move(dir);
         }
         if(choice == Constants.NO_CHOICE){

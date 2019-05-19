@@ -1,16 +1,16 @@
 package constants;
 
-public enum Directions {
+public enum Direction {
 
         NORTH("n"), SOUTH("s"), WEST("w"), EAST("e");
 
-        private Directions(String abbreviation) { this.abbreviation = abbreviation; }
+        private Direction(String abbreviation) { this.abbreviation = abbreviation; }
         public String getAbbreviation() { return abbreviation; }
 
         private String abbreviation;
 
-        public static Directions fromString(String s) {
-                for (Directions dir : Directions.values()) {
+        public static Direction fromString(String s) {
+                for (Direction dir : Direction.values()) {
                         if (dir.abbreviation.equalsIgnoreCase(s)) {
                                 return dir;
                         }

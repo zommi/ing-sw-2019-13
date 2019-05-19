@@ -1,38 +1,27 @@
 package client.gui;
 
 import client.GameModel;
-import constants.Constants;
-import constants.Directions;
+import constants.Direction;
 import exceptions.NoSuchSquareException;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
-import constants.Color;
-import server.model.game.Game;
+
 import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
-import server.model.map.Square;
 import server.model.map.SquareAbstract;
 
 public class MainGuiController {
@@ -127,7 +116,7 @@ public class MainGuiController {
                 spawnPoint.setCardsOnSpawnPoint((SpawnPoint) currentSquare);
             }
 
-            for(Directions dir : Directions.values()){
+            for(Direction dir : Direction.values()){
                 SquareAbstract nextSquare = currentSquare.getNearFromDir(dir);
                 if(nextSquare != null) {
                     if(!squaresAlreadyAdded.contains(nextSquare)){

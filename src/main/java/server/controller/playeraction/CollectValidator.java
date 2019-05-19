@@ -1,7 +1,7 @@
 package server.controller.playeraction;
 
 import constants.Constants;
-import constants.Directions;
+import constants.Direction;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
@@ -15,7 +15,7 @@ public class CollectValidator {
     public CollectValidator() {
     }
 
-    public boolean validate(PlayerAbstract playerToValidate, List<Directions> movements, int choice) {
+    public boolean validate(PlayerAbstract playerToValidate, List<Direction> movements, int choice) {
         //checks that the number of steps the player takes is allowed by the rules of the game:
         //max 2 movements if the player has more than 2 damages,
         // max 1 movement if the player has less than 2 damages
@@ -29,7 +29,7 @@ public class CollectValidator {
 
         //checks that all the movements are allowed
         SquareAbstract squareTemp = playerToValidate.getPosition();
-        for (Directions dir : movements) {
+        for (Direction dir : movements) {
             if(squareTemp.getNearFromDir(dir) == null) return false;
             squareTemp = squareTemp.getNearFromDir(dir);
         }

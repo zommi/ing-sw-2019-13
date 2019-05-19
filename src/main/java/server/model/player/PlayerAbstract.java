@@ -1,7 +1,7 @@
 package server.model.player;
 
 import constants.Color;
-import constants.Directions;
+import constants.Direction;
 import server.model.cards.Cost;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
@@ -47,7 +47,7 @@ public abstract class PlayerAbstract implements Serializable {
      *Moves the character linked to the player by one square at a time
      * @param direction direction to follow
      */
-    public abstract void move(Directions direction);
+    public abstract void move(Direction direction);
 
     public void shoot() {
     }

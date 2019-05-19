@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import constants.Directions;
+import constants.Direction;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
@@ -10,11 +10,11 @@ public class MoveValidator {
 
     public MoveValidator(){}
 
-    public boolean validate(PlayerAbstract player, List<Directions> moves){
+    public boolean validate(PlayerAbstract player, List<Direction> moves){
         if(moves.size() > 3) return false;
 
         SquareAbstract squareTemp = player.getPosition();
-        for(Directions dir : moves){
+        for(Direction dir : moves){
             if(squareTemp.getNearFromDir(dir) == null)return false;
             squareTemp.getNearFromDir(dir);
         }

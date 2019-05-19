@@ -11,7 +11,7 @@ public class CollectAction implements Action {
      * list of directions the players specified in the MoveInfo packet
      * (it can be empty if the player doesn't want to move)
      */
-    private List<Directions> moves;
+    private List<Direction> moves;
 
     /**
      * reference to the player that is doing the action

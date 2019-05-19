@@ -1,17 +1,17 @@
 package server.controller.playeraction;
 
-import constants.Directions;
+import constants.Direction;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
 
 public class MoveInfo {
 
-    private List<Directions> moves;
+    private List<Direction> moves;
 
     private PlayerAbstract player;
 
-    public MoveInfo(PlayerAbstract player, List<Directions> moves){
+    public MoveInfo(PlayerAbstract player, List<Direction> moves){
         this.player = player;
         this.moves = moves;
     }
@@ -20,7 +20,7 @@ public class MoveInfo {
         return player;
     }
 
-    public List<Directions> getMoves() {
+    public List<Direction> getMoves() {
         return moves;
     }
 }

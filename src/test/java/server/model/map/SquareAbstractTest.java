@@ -1,9 +1,8 @@
 package server.model.map;
 
 import constants.Color;
-import constants.Directions;
+import constants.Direction;
 import exceptions.NoSuchSquareException;
-import server.model.gameboard.GameBoard;
 import server.model.player.GameCharacter;
 import server.model.player.Figure;
 import org.junit.jupiter.api.Test;
@@ -98,9 +97,9 @@ class SquareAbstractTest {
     @Test
     void getTwoSquaresInTheSameDirection() throws NoSuchSquareException{
         GameMap gameMap = new GameMap(1);
-        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(gameMap.getSquare(1,2)));
-        assertFalse(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Directions.SOUTH).contains(gameMap.getSquare(2,2)));
-        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Directions.WEST).contains(gameMap.getSquare(0,0)));
+        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.SOUTH).contains(gameMap.getSquare(1,2)));
+        assertFalse(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.SOUTH).contains(gameMap.getSquare(2,2)));
+        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.WEST).contains(gameMap.getSquare(0,0)));
     }
 
     @Test

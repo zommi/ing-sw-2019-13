@@ -8,6 +8,7 @@ import server.controller.playeraction.ShootInfo;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
+import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
@@ -48,12 +49,13 @@ public class WeaponPolicy {
     public boolean isVerified(ShootInfo shootInfo, MicroInfo microInfo){
         switch(this.policyName){
             case "visible": return this.checkVisible(shootInfo, microInfo);
+            case "Invisible": return this.checkInvisible(shootInfo, microInfo);
             case "different": return this.checkDifferent(shootInfo, microInfo);
-            case "specificSquare": return this.checkSpecificSquare(shootInfo, microInfo);
             case "inList": return this.checkInList(shootInfo, microInfo);
             case "distanceEqual":
             case "distanceGreater":
             case "distanceSmaller": return this.checkDistance(shootInfo, microInfo);
+            case "differentSquares": return this.checkDifferentSquares(microInfo);
 
             default: return false;
         }
@@ -67,21 +69,29 @@ public class WeaponPolicy {
                 break;
             case "allPlayersInRoom": this.generateAllPlayersInRoom(shootInfo, microInfo);
                 break;
-            case "distanceEqual" : this.generateDistanceEqual(shootInfo, microInfo);
+            case "distanceGreater":
+            case "distanceSmaller":
+            case "distanceEqual" : this.generateDistance(shootInfo, microInfo);
                 break;
             default: //this should never happen
         }
     }
 
-    public void generateSpecificPlayer(ShootInfo shootInfo, MicroInfo microInfo){
+    private void generateSpecificPlayer(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player")){
             if(attackerFlag){
-                microInfo.getPlayersList().add(shootInfo.getAttacker());
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    if(playerAbstract != shootInfo.getAttacker())
+                        microInfo.getPlayersList().remove(playerAbstract);
+                }
             }
             else if(effectFlag && effectList.equals("player")){
                 try {
-                    microInfo.getPlayersList().add(shootInfo
-                            .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer());
+                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                        if(playerAbstract != shootInfo
+                                .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer())
+                            microInfo.getPlayersList().remove(playerAbstract);
+                    }
                 }catch(NoSuchEffectException e){
                     //this should never happen
                 }
@@ -89,7 +99,7 @@ public class WeaponPolicy {
         }
     }
 
-    public void generateSpecificSquare(ShootInfo shootInfo, MicroInfo microInfo){
+    private void generateSpecificSquare(ShootInfo shootInfo, MicroInfo microInfo){
         try {
             if (policyType.equals("square")) {
                 if (effectFlag) {
@@ -106,26 +116,39 @@ public class WeaponPolicy {
         }
     }
 
-    public void generateAllPlayersInRoom(ShootInfo shootInfo, MicroInfo microInfo){
+    private void generateAllPlayersInRoom(ShootInfo shootInfo, MicroInfo microInfo){
         try{
             if(policyType.equals("player") && effectFlag && effectList.equals("room"))
-                for(GameCharacter  gameCharacter : shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
-                        .getFirstRoom().getCharacters()){
-                    microInfo.getPlayersList().add(gameCharacter.getConcretePlayer());
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    if(!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
+                            .getFirstRoom().getCharacters().contains(playerAbstract.getGameCharacter()))
+                        microInfo.getPlayersList().remove(playerAbstract);
                 }
         }catch(NoSuchEffectException e){
             //this should never happen
         }
     }
 
-    public void generateDistanceEqual(ShootInfo shootInfo, MicroInfo microInfo){
+    private void generateDistance(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && attackerFlag){
+            List<PlayerAbstract> backupList = new ArrayList<>(microInfo.getPlayersList());
 
+            for(PlayerAbstract playerAbstract : backupList){
+                microInfo.getPlayersList().clear();
+                microInfo.getPlayersList().add(playerAbstract);
+                if(!this.checkDistance(shootInfo, microInfo))
+                    backupList.remove(playerAbstract);
+
+            }
+            microInfo.getPlayersList().clear();
+            microInfo.getPlayersList().addAll(backupList);
         }
-        else if(policyType.equals("square") && attackerFlag)
+        else if(policyType.equals("square") && attackerFlag && distance==0){
+            microInfo.setSquare(shootInfo.getAttacker().getPosition());
+        }
     }
 
-    public boolean checkDistance(ShootInfo shootInfo, MicroInfo microInfo){
+    private boolean checkDistance(ShootInfo shootInfo, MicroInfo microInfo){
         try{
             List<SquareAbstract> list = new ArrayList<>();
             switch(policyType){
@@ -164,7 +187,7 @@ public class WeaponPolicy {
         }
     }
 
-    public boolean distanceCheckSwitch(List<SquareAbstract> list, SquareAbstract square){
+    private boolean distanceCheckSwitch(List<SquareAbstract> list, SquareAbstract square){
         switch (policyName){
             case "distanceEqual":
                 for(SquareAbstract square1 : list){
@@ -188,11 +211,17 @@ public class WeaponPolicy {
         }
     }
 
-    public boolean checkDistanceSmaller(ShootInfo shootInfo, MicroInfo microInfo){
+    private boolean checkDifferentSquares(MicroInfo microInfo){
+        for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+            for(PlayerAbstract playerAbstract1 : microInfo.getPlayersList()){
+                if(playerAbstract!=playerAbstract1 && playerAbstract.getPosition() == playerAbstract1.getPosition())
+                    return false;
+            }
+        }
         return true;
     }
 
-    public boolean checkVisible(ShootInfo shootInfo, MicroInfo microInfo){
+    private boolean checkVisible(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player")){
             for(PlayerAbstract player : microInfo.getPlayersList()){
                 if(attackerFlag && !shootInfo.getAttacker().getPosition()
@@ -210,9 +239,8 @@ public class WeaponPolicy {
                         else if(!effectList.equals("player") && !effectList.equals("square"))
                             return false;
                     } catch(NoSuchEffectException e){
-                        //if an effect is not present, it's automatically verified
+                        //automatically verified
                     }
-
                 }
             }
             return true;
@@ -223,7 +251,19 @@ public class WeaponPolicy {
         else return false;
     }
 
-    public boolean checkDifferent(ShootInfo shootInfo, MicroInfo microInfo){
+    private boolean checkInvisible(ShootInfo shootInfo, MicroInfo microInfo){
+        if(policyType.equals("player") && attackerFlag){
+            for(PlayerAbstract player : microInfo.getPlayersList()){
+                if(shootInfo.getAttacker().getPosition()
+                        .getVisibleCharacters().contains(player.getGameCharacter()))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkDifferent(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && effectFlag && effectList.equals("player")){
              try {
                  for (PlayerAbstract playerAbstract : microInfo.getPlayersList())
@@ -250,11 +290,7 @@ public class WeaponPolicy {
             return false;
     }
 
-    public boolean checkSpecificSquare(ShootInfo shootInfo, MicroInfo microInfo){
-        return true;
-    }
-
-    public boolean checkInList(ShootInfo shootInfo, MicroInfo microInfo){
+    private boolean checkInList(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && effectFlag && effectList.equals("player")){
             try {
                 for (PlayerAbstract playerAbstract : microInfo.getPlayersList()) {
@@ -266,6 +302,54 @@ public class WeaponPolicy {
                 return true;
             }
             return true;
+        }
+        else return false;
+    }
+
+    private boolean checkSameDirection(ShootInfo shootInfo, MicroInfo microInfo){
+        SquareAbstract squareAbstract;
+        List<SquareAbstract> squareAbstractList = new ArrayList<>();
+        if(attackerFlag){
+            squareAbstract = shootInfo.getAttacker().getPosition();
+            switch(policyType){
+                case "player":
+                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                        squareAbstractList.add(playerAbstract.getPosition());
+                    }
+                    break;
+                case "noMoveSquare":
+                    squareAbstractList.addAll(microInfo.getNoMoveSquaresList());
+                    break;
+                case "square":
+                    squareAbstractList.add(microInfo.getSquare());
+                    break;
+                default: return false;
+            }
+            try {
+                if (effectFlag) {
+                    switch (effectList) {
+                        case "player":
+                            for (PlayerAbstract playerAbstract : shootInfo
+                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getPlayersList()) {
+                                squareAbstractList.add(playerAbstract.getPosition());
+                            }
+                            break;
+                        case "noMoveSquare":
+                            squareAbstractList.addAll(shootInfo
+                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getNoMoveSquaresList());
+                            break;
+                        case "square":
+                            squareAbstractList.add(shootInfo
+                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare());
+                            break;
+                        default:
+                            return false;
+                    }
+                }
+            } catch(NoSuchEffectException e){
+                //no square is added
+            }
+            return squareAbstract.areSameDirection(squareAbstractList);
         }
         else return false;
     }
