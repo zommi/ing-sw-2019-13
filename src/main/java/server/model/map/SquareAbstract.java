@@ -6,10 +6,7 @@ import constants.Color;
 import constants.Directions;
 import server.model.player.GameCharacter;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public abstract class  SquareAbstract {
 
@@ -422,6 +419,54 @@ public abstract class  SquareAbstract {
             }
         }
         return -1;
+    }
+
+    public List<SquareAbstract> getSquaresAtDistance(int distance){
+        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED,gameMap);
+
+        //initialization of variables
+        LinkedList<SquareAbstract> queue = new LinkedList<>();
+        List<SquareAbstract> alreadyAdded = new ArrayList<>();
+        List<SquareAbstract> result = new ArrayList<>();
+        queue.add(this);
+        queue.add(impossibleSquare);
+        alreadyAdded.add(this);
+        int currentDistance = 1;
+        SquareAbstract currentSquare;
+        SquareAbstract nextSquare;
+
+        if(distance == 0){
+            result.add(this);
+            return result;
+        }
+
+
+        while(!queue.isEmpty()){
+            currentSquare = queue.poll();
+
+            //if a group ended, increase distance
+            if(currentSquare.equals(impossibleSquare)) {
+                if(currentDistance == distance) return result;
+                currentDistance++;
+            } else {
+
+                //add all the squares near to the queue
+                for (Directions dir : Directions.values()) {
+                    nextSquare = currentSquare.getNearFromDir(dir);
+                    if (nextSquare != null && !alreadyAdded.contains(nextSquare)) {
+                        if (currentDistance == distance) {
+                            result.add(nextSquare);
+                        } else {
+                            alreadyAdded.add(nextSquare);
+                            queue.add(nextSquare);
+                        }
+                    }
+                }
+                //if the computation of a group ended add a divider at the end of the queue
+                if(queue.getFirst().equals(impossibleSquare))queue.add(impossibleSquare);
+            }
+        }
+        return Collections.emptyList();
     }
 
     public boolean isSpawnPoint(){

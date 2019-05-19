@@ -8,6 +8,9 @@ import server.model.player.GameCharacter;
 import server.model.player.Figure;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SquareAbstractTest {
@@ -191,4 +194,35 @@ class SquareAbstractTest {
 
     }
 
+    @Test
+    void getSquareAtDistanceTest() throws NoSuchSquareException{
+        GameMap map = new GameMap(1);
+        SquareAbstract square1 = map.getSquare(0,0);
+
+        List<SquareAbstract> testList = new ArrayList<>();
+        testList.add(map.getSquare(0,1));
+        testList.add(map.getSquare(1,0));
+
+        assertTrue(testList.containsAll(square1.getSquaresAtDistance(1)));
+
+        testList.clear();
+        testList.add(map.getSquare(0,2));
+        testList.add(map.getSquare(1,1));
+
+        assertTrue(testList.containsAll(square1.getSquaresAtDistance(2)));
+
+        testList.clear();
+        testList.add(map.getSquare(1,2));
+        testList.add(map.getSquare(2,1));
+
+        assertTrue(testList.containsAll(square1.getSquaresAtDistance(3)));
+
+        testList.clear();
+
+        assertTrue(testList.containsAll(square1.getSquaresAtDistance(10)));
+
+        testList.add(square1);
+        assertTrue(testList.containsAll(square1.getSquaresAtDistance(0)));
+
+    }
 }
