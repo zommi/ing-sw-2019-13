@@ -50,6 +50,18 @@ public class MicroInfo {
         return playersList.get(0);
     }
 
+    public Room getFirstRoom(){
+        return roomsList.get(0);
+    }
+
+    public SquareAbstract getFirstNMS(){
+        return noMoveSquaresList.get(0);
+    }
+
+    public void setSquare(SquareAbstract square){
+        this.square = square;
+    }
+
     public void actuate(ShootInfo shootInfo){
         Color color = shootInfo.getAttacker().getColor();
         try {

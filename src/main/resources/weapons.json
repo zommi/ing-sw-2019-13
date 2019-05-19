@@ -1656,6 +1656,7 @@
           {
             "mandatory" : true,
             "damage" : 1,
+            "generatePlayerFlag" : true,
             "policies" : [
               {
                 "policyName" :"distanceEqual",

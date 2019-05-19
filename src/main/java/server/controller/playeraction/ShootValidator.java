@@ -138,6 +138,12 @@ public class ShootValidator {
                     }
 
                     //place generate here?
+                    for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
+                        if(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player") ||
+                                weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")){
+
+                        }
+                    }
 
 
                     //fakes micro actuation if weapon is special
