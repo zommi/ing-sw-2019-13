@@ -40,6 +40,9 @@ public class Controller implements MyObserver {
         this.playerToClient.put(player, clientID);
     }
 
+    public Map<PlayerAbstract, Integer> getPlayerToClient(){
+        return this.playerToClient;
+    }
 
     public void update(){}
 

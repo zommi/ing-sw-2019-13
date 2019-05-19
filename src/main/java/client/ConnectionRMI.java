@@ -1,5 +1,6 @@
 package client;
 
+import client.cli.UpdaterCLI;
 import server.GameProxyInterface;
 import server.ServerAnswer.ServerAnswer;
 import server.controller.playeraction.Action;
@@ -23,6 +24,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
     private boolean playerNameSet = false;
     private boolean initialSkullsSet = false;
+    private boolean characterNameSet = false;
     private boolean mapSet = false;
     private  transient GameModel gameModel;
     private GameProxyInterface game;
@@ -51,6 +53,29 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     public void setClientID(int clientID){
         this.clientID = clientID;
     }
+
+    public GameProxyInterface getGameProxy(){
+        return this.gameProxy;
+    }
+
+    @Override
+    public boolean CharacterChoice(String name) {
+        if ((name.toUpperCase().equals("SPROG") || (name.toUpperCase().equals("DESTRUCTOR")) || (name.toUpperCase().equals("BANSHEE")) || (name.toUpperCase().equals("DOZER")) || (name.toUpperCase().equals("VIOLET")))) {
+            try{
+                if(gameProxy.isCharacterTaken(name)){
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            catch(RemoteException re){
+                System.out.println("Exception caught");
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public int getClientID() {
@@ -124,6 +149,21 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         System.out.println("Your ClientID is " + this.clientID);
 
         return gameProxy;
+    }
+
+    public void addPlayerCharacter(String name){
+        System.out.println("Trying to send the name of your character to the server...");
+        while (characterNameSet == false) {
+            try{
+                characterNameSet = gameProxy.addPlayerCharacter(name);
+                gameProxy.addMapPlayer();
+                characterNameSet = true;
+            }
+            catch(RemoteException re){
+                System.out.println("Could not send the character");
+                re.printStackTrace();
+            }
+        }
     }
 
 

@@ -43,6 +43,14 @@ public class ConcretePlayer extends PlayerAbstract {
         id = UUID.randomUUID();
     }
 
+    public String getCharacterName(){
+        return this.gameCharacter.getFigure().fromFigure();
+    }
+
+    public void setPlayerCharacter(Figure figure){
+        this.gameCharacter = new GameCharacter(chooseFigure(figure));
+    }
+
     public GameCharacter getGameCharacter(){
         return gameCharacter;
     }

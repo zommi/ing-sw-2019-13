@@ -52,7 +52,11 @@ public abstract class PlayerAbstract implements Serializable {
     public void shoot() {
     }
 
+    public abstract void setPlayerCharacter(Figure figure);
+
     public abstract void collect(Square square);
+
+    public abstract String getCharacterName();
 
     public abstract void collect(SpawnPoint spawnPoint, int choice);
 

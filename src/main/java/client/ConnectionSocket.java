@@ -23,6 +23,16 @@ public class ConnectionSocket extends Connection {
         this.gameModel = new GameModel();
     }
 
+    public void addPlayerCharacter(String name){
+
+    }
+
+
+    public boolean CharacterChoice(String name){
+        return true;
+    }
+
+
     public String getMap(){
         return this.mapChoice;
     }

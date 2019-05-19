@@ -2,9 +2,11 @@ package server;
 
 import client.ReceiverInterface;
 import server.controller.Controller;
+import server.model.player.PlayerAbstract;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 
 public class ServerRMI implements Runnable, ServerInterface {
@@ -22,6 +24,14 @@ public class ServerRMI implements Runnable, ServerInterface {
         this.server = server;
     }
 
+    public boolean isCharacterTaken(String name){
+        Map<PlayerAbstract, Integer> temp = controller.getPlayerToClient();
+        for (Map.Entry<PlayerAbstract, Integer> entry : temp.entrySet()){
+            if(entry.getKey().getCharacterName().equals(name.toUpperCase()))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public void run() {

@@ -52,6 +52,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         int initialSkulls = -1;
         boolean initialSkullsChosen = false;
 
+        String characterName;
         String mapName = "No one has chosen yet";
 
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
@@ -178,7 +179,17 @@ public class UpdaterCLI  implements Updater,Runnable{
             mapNumber = 4;
         }
         connection.add(playerName, mapNumber, initialSkulls);
+
+
+        do{
+            System.out.println(">Insert your character name:");
+            characterName = myObj.nextLine();
+        } while ((characterName.equals("")) || (!connection.CharacterChoice(characterName)));
+
+        System.out.println("Name is: " +characterName.toUpperCase());
+        connection.addPlayerCharacter(characterName);
     }
+
 
 
     @Override
@@ -196,6 +207,15 @@ public class UpdaterCLI  implements Updater,Runnable{
         while (alwaysTrue) {
             System.out.println(">Write a command: ");
             read = myObj.nextLine();
+            if(read.toUpperCase() == "MOVE"){
+
+            }
+            else if(read.toUpperCase() == "SHOOT"){
+
+            }
+            else if(read.toUpperCase() == "COLLECT"){
+
+            }
             if (startGame) {
                 try{
                     action = actionParser.createValidEvent(read);

@@ -5,12 +5,14 @@ import client.ReceiverInterface;
 import server.ServerAnswer.ServerAnswer;
 import server.controller.playeraction.Action;
 import server.model.player.ConcretePlayer;
+import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
@@ -26,6 +28,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI = serverRMI;
         UnicastRemoteObject.exportObject(this, 1099);
+    }
+
+    @Override
+    public boolean isCharacterTaken(String nameChar) throws RemoteException{
+        return this.serverRMI.isCharacterTaken(nameChar);
     }
 
     @Override
@@ -70,6 +77,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public boolean addPlayerCharacter(String name) throws RemoteException{
+        this.player.setPlayerCharacter(Figure.fromString(name));
+        return true;
+    }
+
+
+    @Override
     public String getMap() throws RemoteException{
         if(this.numMap == 1)
             return "map11.txt";
@@ -104,6 +118,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         serverRMI.getServer().setMap(numMap);
         serverRMI.setController(serverRMI.getServer().getController());
         System.out.println("Controller set for serverRMI");
+        return true;
+    }
+
+    @Override
+    public boolean addMapPlayer() throws RemoteException{
         serverRMI.addMapClient();
         System.out.println("Added the map of the client and of the player");
         return true;
