@@ -1,7 +1,5 @@
 package server.controller.playeraction;
 
-import client.ShootInfo;
-
 public interface WeaponRulesInterface {
 
     public boolean validate(ShootInfo pack);

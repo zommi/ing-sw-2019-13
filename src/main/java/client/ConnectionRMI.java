@@ -4,7 +4,6 @@ import server.GameProxyInterface;
 import view.ServerAnswer;
 
 import java.io.Serializable;
-import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -78,7 +77,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         return clientID;
     }
 
-    public void send(ActionInfo action){
+    public void send(Info action){
         try{
             boolean serverAnswer = game.makeAction(this.clientID, action);
         }

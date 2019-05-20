@@ -1,6 +1,7 @@
 package server.controller.playeraction;
 
-import client.ShootInfo;
+
+import client.MacroInfo;
 import exceptions.NoSuchEffectException;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;

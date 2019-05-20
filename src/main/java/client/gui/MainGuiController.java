@@ -54,7 +54,7 @@ public class MainGuiController {
 
     private int side = 175;
 
-    GameBoard gb = new GameBoard(4,6);
+    GameBoard gb = new GameBoard(1,6);
 
     public void setGuiMain(UpdaterGUI guiMain){
         this.gui = guiMain;

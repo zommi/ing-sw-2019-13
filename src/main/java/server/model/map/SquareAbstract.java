@@ -160,8 +160,7 @@ public abstract class  SquareAbstract {
      * @return a list of the characters that physically stay on this square
      */
     public List<GameCharacter> getCharacters() {
-        ArrayList<GameCharacter> returnedList = (ArrayList<GameCharacter>) charactersList;
-        return (ArrayList<GameCharacter>)  returnedList.clone();
+        return charactersList;
     }
 
     /**
@@ -171,8 +170,7 @@ public abstract class  SquareAbstract {
      * @return a list with the characters that are visible from this square
      */
     public List<GameCharacter> getVisibleCharacters(){
-        List<GameCharacter> visibleGameCharacters = new ArrayList<>();
-        visibleGameCharacters.addAll(room.getCharacters());
+        List<GameCharacter> visibleGameCharacters = new ArrayList<>(room.getCharacters());
         for(Room tempRoom : this.getVisibleRooms()){
             visibleGameCharacters.addAll(tempRoom.getCharacters());
         }
@@ -185,127 +183,11 @@ public abstract class  SquareAbstract {
      * @return a list with the squares that are visible from this square
      */
     public List<SquareAbstract> getVisibleSquares(){
-        List<SquareAbstract> visibleSquares = new ArrayList<>();
-        visibleSquares.addAll(room.getSquares());
+        List<SquareAbstract> visibleSquares = new ArrayList<>(room.getSquares());
         for(Room tempRoom : this.getVisibleRooms()){
             visibleSquares.addAll(tempRoom.getSquares());
         }
         return visibleSquares;
-    }
-
-    /**
-     * Returns a list with the characters that stand on a square that
-     * has the same row OR the same column of this square. Thus, a character
-     * could be in the same square too.
-     * @return a list with the characters that stand on a square that
-     *        has the same row OR the same column of this square
-     */
-    public List<GameCharacter> getCharactersThroughWalls(){
-        List<GameCharacter> tempCharactersList = new ArrayList<>();
-        List<SquareAbstract> rowSquares = gameMap.getSquaresWithSameRow(this);
-        List<SquareAbstract> colSquares = gameMap.getSquaresWithSameCol(this);
-        for(SquareAbstract tempSquare : rowSquares){
-            tempCharactersList.addAll(tempSquare.getCharacters());
-
-        }
-        for(SquareAbstract tempSquare : colSquares){
-            tempCharactersList.addAll(tempSquare.getCharacters());
-        }
-        tempCharactersList.addAll(this.getCharacters());
-        return tempCharactersList;
-
-    }
-
-    /**
-     * Returns a list with squares that are exactly two moves
-     * away from the square on which the method is called.
-     * @return a list with squares that are exactly two moves
-     *         away from the square on which the method is called.
-     */
-
-    public List<SquareAbstract> getExactlyTwoMovementsSquares(){
-        List<SquareAbstract> tempSquaresList = new ArrayList<>();
-        for(SquareAbstract square : this.getAdjacentSquares()){
-            for(SquareAbstract square2 : square.getAdjacentSquares())
-                if(!tempSquaresList.contains(square2) && !square2.equals(this))
-                    tempSquaresList.add(square2);
-        }
-        return tempSquaresList;
-    }
-
-    /**
-     * Returns a list with characters that are at least two moves
-     * away from the square on which the method is called.
-     * @return a list with characters that are at least two moves
-     *         away from the square on which the method is called
-     */
-
-    public List<GameCharacter> getExactlyTwoMovementsCharacters() {
-        List<GameCharacter> tempCharactersList = new ArrayList<>();
-        for(SquareAbstract square : getExactlyTwoMovementsSquares()){
-            tempCharactersList.addAll(square.getCharacters());
-        }
-        return tempCharactersList;
-    }
-
-    /**
-     * Returns a list with all the characters that stand on the linked adjacent squares.
-     * @return a list with all the characters that stand on the linked adjacent squares
-     */
-    public List<GameCharacter> getExactlyOneMovementCharacters(){
-        List<GameCharacter> tempCharactersList = new ArrayList<>();
-        for(SquareAbstract square : this.getAdjacentSquares()){
-            tempCharactersList.addAll(square.getCharacters());
-        }
-        return tempCharactersList;
-    }
-
-    /**
-     * Returns a list with all the characters that stand on the linked adjacent squares,
-     * plus those that stand on this square.
-     * @return a list with all the characters that stand on the linked adjacent squares,
-     * plus those that stand on this square
-     */
-    public List<GameCharacter> getUpToOneMovementCharacters(){
-        List<GameCharacter> tempCharactersList = new ArrayList<>();
-        for(SquareAbstract square : this.getAdjacentSquares()){
-            tempCharactersList.addAll(square.getCharacters());
-        }
-        tempCharactersList.addAll(this.getCharacters());
-        return tempCharactersList;
-    }
-
-    /**
-     * Returns a list with characters that are at least one move away from
-     * the square on which the method is called.
-     * @return a list with characters that are at least one move away from
-     *         the square on which the method is called
-     */
-
-    public List<GameCharacter> getAtLeastOneMovementCharacters(){
-        List<GameCharacter> tempCharactersList = new ArrayList<>();
-        tempCharactersList.addAll(GameCharacter.getTakenCharacters());
-        tempCharactersList.removeAll(this.getCharacters());
-        return tempCharactersList;
-    }
-
-    /**
-     * Returns two squares that are linked in the given direction to this square.
-     * The returned list may only contain the adjacent square, or may be empty,
-     * accordingly to the map.
-     * @param dir direction
-     * @return a list of at most two squares that are linked in the given direction to this square
-     */
-    public List<SquareAbstract> getTwoSquaresInTheSameDirection(Direction dir){
-        List<SquareAbstract> returnedList = new ArrayList<>();
-
-        if(getNearFromDir(dir) != null){
-            returnedList.add(getNearFromDir(dir));
-            if(getNearFromDir(dir).getNearFromDir(dir) != null)
-                returnedList.add(getNearFromDir(dir).getNearFromDir(dir));
-        }
-
-        return returnedList;
     }
 
     /**
@@ -326,23 +208,6 @@ public abstract class  SquareAbstract {
 
         return roomsList;
 
-    }
-
-    /**
-     * Returns all the linked adjacent squares.
-     * @return a list with all the linked adjacent squares
-     */
-    public List<SquareAbstract> getAdjacentSquares() {
-        List<SquareAbstract> squaresList= new ArrayList<>();
-        if(nSquare != null)
-            squaresList.add(nSquare);
-        if(sSquare != null)
-            squaresList.add(sSquare);
-        if(wSquare != null)
-            squaresList.add(wSquare);
-        if(eSquare != null)
-            squaresList.add(eSquare);
-        return squaresList;
     }
 
     public abstract void removeItem(CollectableInterface itemToAdd);

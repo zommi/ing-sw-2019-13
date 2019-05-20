@@ -4,7 +4,7 @@ import constants.Constants;
 
 import java.io.Serializable;
 
-public class CollectInfo implements ActionInfo{
+public class CollectInfo implements Serializable, Info {
 
     /**
      * Int containing the index of the weapon the player

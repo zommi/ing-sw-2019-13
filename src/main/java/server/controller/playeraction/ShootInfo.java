@@ -1,15 +1,17 @@
-package client;
+package server.controller.playeraction;
 
+import client.Info;
+import client.MacroInfo;
 import exceptions.NoSuchEffectException;
-import server.controller.playeraction.MacroInfo;
-import server.controller.playeraction.MicroInfo;
 import server.model.cards.MicroEffect;
 import server.model.cards.Weapon;
 import server.model.player.PlayerAbstract;
 
+
+import java.io.Serializable;
 import java.util.List;
 
-public class ShootInfo {
+public class ShootInfo implements Serializable, Info {
 
     private PlayerAbstract attacker;
     private Weapon weapon;

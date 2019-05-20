@@ -3,7 +3,7 @@ package server.model.cards;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.NoSuchEffectException;
 import server.controller.playeraction.MicroInfo;
-import client.ShootInfo;
+import server.controller.playeraction.ShootInfo;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
