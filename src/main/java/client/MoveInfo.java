@@ -1,11 +1,11 @@
-package server.controller.playeraction;
+package client;
 
 import constants.Direction;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
 
-public class MoveInfo {
+public class MoveInfo implements ActionInfo{
 
     private List<Direction> moves;
 

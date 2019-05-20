@@ -113,6 +113,16 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
+    public void sendGameModel(GameModel gameModel){
+        try{
+            gameProxy.sendGameModel(gameModel);
+        }
+        catch(RemoteException e){
+            System.out.println("Exception while adding the new game model");
+        }
+    }
+
+    @Override
     public void configure() {
         try{
             this.game = initializeRMI();
@@ -153,6 +163,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
                 characterNameSet = gameProxy.addPlayerCharacter(name);
                 gameProxy.addMapPlayer();
                 characterNameSet = true;
+                System.out.println("Name sent to to the server!");
             }
             catch(RemoteException re){
                 System.out.println("Could not send the character");

@@ -1,10 +1,10 @@
-package server.controller.playeraction;
+package client;
 
 import constants.Constants;
 
 import java.io.Serializable;
 
-public class CollectInfo {
+public class CollectInfo implements ActionInfo{
 
     /**
      * Int containing the index of the weapon the player

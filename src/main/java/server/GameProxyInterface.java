@@ -1,6 +1,7 @@
 package server;
 
 import client.ActionInfo;
+import client.GameModel;
 import client.ReceiverInterface;
 import server.controller.playeraction.Action;
 import server.model.player.PlayerAbstract;
@@ -13,6 +14,8 @@ public interface GameProxyInterface extends Remote {
 
 
     public String getMap() throws RemoteException;
+
+    public abstract void sendGameModel(GameModel gameModel) throws RemoteException;
 
     public boolean addPlayerCharacter(String name) throws RemoteException;
 

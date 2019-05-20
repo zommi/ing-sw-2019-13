@@ -32,6 +32,10 @@ public class ConnectionSocket extends Connection {
 
     }
 
+    public void sendGameModel(GameModel gameModel){
+
+    }
+
 
     public boolean CharacterChoice(String name){
         return true;

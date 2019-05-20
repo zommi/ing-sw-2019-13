@@ -24,6 +24,9 @@ public class PlayerHand {
         this.powerupHand = new ArrayList<>();
     }
 
+    public ConcretePlayer getPlayer(){
+        return this.player;
+    }
 
     public List<WeaponCard> getWeapons() {
         return (ArrayList<WeaponCard>) weaponHand.clone();

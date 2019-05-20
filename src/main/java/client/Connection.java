@@ -16,6 +16,8 @@ public abstract class Connection implements Serializable {
 
     public abstract boolean CharacterChoice(String name);
 
+    public abstract void sendGameModel(GameModel gameModel);
+
     public abstract int getInitialSkulls();
 
     public abstract int getClientID();

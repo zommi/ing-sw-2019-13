@@ -2,7 +2,7 @@ package server.controller.playeraction.normalaction;
 
 import constants.*;
 import server.controller.playeraction.MoveActuator;
-import server.controller.playeraction.MoveInfo;
+import client.MoveInfo;
 import server.controller.playeraction.MoveValidator;
 import server.model.player.PlayerAbstract;
 

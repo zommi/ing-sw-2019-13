@@ -1,5 +1,7 @@
 package server.controller.playeraction.normalaction;
 
+import client.CollectInfo;
+import client.MoveInfo;
 import constants.*;
 import server.controller.playeraction.*;
 import server.model.player.PlayerAbstract;
