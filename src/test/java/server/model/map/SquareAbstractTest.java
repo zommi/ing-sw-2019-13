@@ -43,66 +43,6 @@ class SquareAbstractTest {
     }
 
     @Test
-    void getCharactersThroughWalls() throws  NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
-        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
-        GameCharacter char3 = new GameCharacter(Figure.DOZER);
-        gameMap.getSquare(0,1).addCharacter(char1);
-        gameMap.getSquare(1,1).addCharacter(char2);
-        gameMap.getSquare(2,1).addCharacter(char3);
-        assertTrue(gameMap.getSquare(1,1).getCharactersThroughWalls().contains(char1));
-        assertTrue(gameMap.getSquare(1,1).getCharactersThroughWalls().contains(char3));
-        assertTrue(gameMap.getSquare(1,1).getCharactersThroughWalls().contains(char2));
-        assertTrue(gameMap.getSquare(0,1).getCharactersThroughWalls().contains(char2));
-        assertFalse(gameMap.getSquare(0,0).getCharactersThroughWalls().contains(char2));
-    }
-
-    @Test
-    void getExactlyOneMovementCharacters() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
-        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
-        GameCharacter char3 = new GameCharacter(Figure.DOZER);
-        gameMap.getSquare(1,0).addCharacter(char1);
-        gameMap.getSquare(0,1).addCharacter(char2);
-        gameMap.getSquare(1,3).addCharacter(char3);
-        assertTrue(gameMap.getSquare(1,1).getExactlyOneMovementCharacters().contains(char1));
-        assertFalse(gameMap.getSquare(1,1).getExactlyOneMovementCharacters().contains(char2));
-        assertFalse(gameMap.getSquare(1,1).getExactlyOneMovementCharacters().contains(char3));
-        gameMap.getSquare(1,0).removeCharacter(char1);
-        gameMap.getSquare(1,1).addCharacter(char1);
-        assertFalse(gameMap.getSquare(1,1).getExactlyOneMovementCharacters().contains(char1));
-
-
-    }
-
-    @Test
-    void getUpToOneMovementCharacters() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
-        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
-        GameCharacter char3 = new GameCharacter(Figure.DOZER);
-        gameMap.getSquare(1,0).addCharacter(char1);
-        gameMap.getSquare(0,1).addCharacter(char2);
-        gameMap.getSquare(1,3).addCharacter(char3);
-        assertTrue(gameMap.getSquare(1,1).getUpToOneMovementCharacters().contains(char1));
-        assertFalse(gameMap.getSquare(1,1).getUpToOneMovementCharacters().contains(char2));
-        assertFalse(gameMap.getSquare(1,1).getUpToOneMovementCharacters().contains(char3));
-        gameMap.getSquare(1,0).removeCharacter(char1);
-        gameMap.getSquare(1,1).addCharacter(char1);
-        assertTrue(gameMap.getSquare(1,1).getUpToOneMovementCharacters().contains(char1));
-    }
-
-    @Test
-    void getTwoSquaresInTheSameDirection() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.SOUTH).contains(gameMap.getSquare(1,2)));
-        assertFalse(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.SOUTH).contains(gameMap.getSquare(2,2)));
-        assertTrue(gameMap.getSquare(0,2).getTwoSquaresInTheSameDirection(Direction.WEST).contains(gameMap.getSquare(0,0)));
-    }
-
-    @Test
     void getVisibleRooms() throws NoSuchSquareException{
         GameMap gameMap = new GameMap(1);
         SquareAbstract square1 = gameMap.getSquare(1,2);
@@ -110,15 +50,6 @@ class SquareAbstractTest {
         assertTrue(square1.getVisibleRooms().contains(gameMap.getRoom(Color.YELLOW)));
         assertFalse(square1.getVisibleRooms().contains(gameMap.getRoom(Color.RED)));
         assertFalse(square1.getVisibleRooms().contains(gameMap.getRoom(Color.WHITE)));
-    }
-
-    @Test
-    void getAdjacentSquares() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        assertTrue(gameMap.getSquare(1,2).getAdjacentSquares().contains(gameMap.getSquare(1,1)));
-        assertTrue(gameMap.getSquare(0,0).getAdjacentSquares().contains(gameMap.getSquare(0,1)));
-        assertTrue(gameMap.getSquare(1,2).getAdjacentSquares().contains(gameMap.getSquare(1,3)));
-        assertFalse(gameMap.getSquare(1,2).getAdjacentSquares().contains(gameMap.getSquare(2,2)));
     }
 
     @Test
@@ -130,49 +61,6 @@ class SquareAbstractTest {
         assertTrue(gameMap.getSquare(1,2).getVisibleSquares().contains(gameMap.getSquare(1,3)));
         assertTrue(gameMap.getSquare(1,2).getVisibleSquares().contains(gameMap.getSquare(2,3)));
         assertFalse(gameMap.getSquare(1,2).getVisibleSquares().contains(gameMap.getSquare(2,2)));
-    }
-
-    @Test
-    void getExactlyTwoMovementsSquares() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(1,0)));
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(0,1)));
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(2,1)));
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(2,3)));
-        assertFalse(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(1,2)));
-        assertFalse(gameMap.getSquare(1,2).getExactlyTwoMovementsSquares().contains(gameMap.getSquare(0,2)));
-        //TODO check !exist duplicates
-    }
-
-    @Test
-    void getExactlyTwoMovementsCharacters() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
-        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
-        GameCharacter char3 = new GameCharacter(Figure.DOZER);
-        gameMap.getSquare(1,0).addCharacter(char1);
-        gameMap.getSquare(0,1).addCharacter(char2);
-        gameMap.getSquare(0,1).addCharacter(char3);
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsCharacters().contains(char1));
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsCharacters().contains(char2));
-        assertTrue(gameMap.getSquare(1,2).getExactlyTwoMovementsCharacters().contains(char3));
-
-
-    }
-
-    @Test
-    void getAtLeastOneMovementCharacters() throws NoSuchSquareException{
-        GameMap gameMap = new GameMap(1);
-        GameCharacter char1 = new GameCharacter(Figure.DESTRUCTOR);
-        GameCharacter char2 = new GameCharacter(Figure.BANSHEE);
-        GameCharacter char3 = new GameCharacter(Figure.DOZER);
-        gameMap.getSquare(1,2).addCharacter(char1);
-        gameMap.getSquare(0,2).addCharacter(char2);
-        gameMap.getSquare(2,2).addCharacter(char3);
-        assertFalse(gameMap.getSquare(1,2).getAtLeastOneMovementCharacters().contains(char1));
-        assertTrue(gameMap.getSquare(1,2).getAtLeastOneMovementCharacters().contains(char2));
-        assertTrue(gameMap.getSquare(1,2).getAtLeastOneMovementCharacters().contains(char3));
-
     }
 
     @Test

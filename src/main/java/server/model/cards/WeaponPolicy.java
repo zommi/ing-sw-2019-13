@@ -2,15 +2,10 @@ package server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.NoSuchEffectException;
-import javafx.geometry.NodeOrientation;
-import server.controller.playeraction.MicroInfo;
-import server.controller.playeraction.ShootInfo;
-import server.model.game.Game;
-import server.model.gameboard.GameBoard;
+import client.MicroInfo;
+import client.ShootInfo;
 import server.model.map.Room;
-import server.model.map.Square;
 import server.model.map.SquareAbstract;
-import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
 
 import java.util.ArrayList;

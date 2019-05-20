@@ -1,8 +1,10 @@
 package server.controller.playeraction;
 
+import client.MacroInfo;
+import client.MicroInfo;
+import client.ShootInfo;
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
-import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;

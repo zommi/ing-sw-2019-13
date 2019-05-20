@@ -1,4 +1,4 @@
-package server.controller.playeraction;
+package client;
 
 import exceptions.NoSuchEffectException;
 import server.model.cards.MicroEffect;

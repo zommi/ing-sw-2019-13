@@ -1,7 +1,7 @@
 package server.controller.playeraction.normalaction;
 
 import server.controller.playeraction.Action;
-import server.controller.playeraction.ShootInfo;
+import client.ShootInfo;
 import server.controller.playeraction.WeaponRulesInterface;
 
 public class ShootAction implements Action {

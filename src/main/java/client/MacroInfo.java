@@ -1,5 +1,6 @@
-package server.controller.playeraction;
+package client;
 
+import client.MicroInfo;
 import exceptions.NoSuchEffectException;
 
 import java.util.List;
