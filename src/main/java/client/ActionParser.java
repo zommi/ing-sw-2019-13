@@ -6,21 +6,24 @@ import java.util.StringTokenizer;
 
 public class ActionParser {
 
-    public static ActionInfo createShootEvent(String read) throws CommandIsNotValidException {
+    public Info createShootEvent(String read) throws CommandIsNotValidException {
         return null;
     }
 
-    public static ActionInfo createMoveEvent(int coordinatex, int coordinatey){
+    public Info createMoveEvent(int coordinatex, int coordinatey)throws CommandIsNotValidException{
         return null;
     }
 
-    public static ActionInfo createCollectEvent(int collectDecision){
+    public Info createCollectEvent(int collectDecision)throws CommandIsNotValidException{
         return null;
     }
 
-    public static ActionInfo createPowerUpEvent(String PowerUp){
+    public Info createPowerUpEvent(String PowerUp)throws CommandIsNotValidException{
         return null;
     }
 
-        
+
+    public Info createValidEvent(String read) throws CommandIsNotValidException{
+        return null;
+    }
 }

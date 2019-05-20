@@ -194,18 +194,14 @@ public class UpdaterCLI  implements Updater,Runnable{
     @Override
     public void run(){
         String read;
+        Info action;
         PlayerHand playerHand;
         PlayerBoard playerBoard;
         List<WeaponCard> weapons;
         List<PowerupCard> powerups;
-        int collectDecision = 0;
-        boolean collectChosen = false;
-        boolean powerupChosen = false;
         int ammoRED;
         int ammoBLUE;
         int ammoYELLOW;
-        int coordinatex;
-        int coordinatey;
         ActionParser actionParser = new ActionParser();
         Scanner myObj = new Scanner(System.in);
         try {
@@ -215,89 +211,52 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("Exception caught");
         }
         while (alwaysTrue) {
-            if (startGame) {
-                //try{
-                    playerHand = gameModel.getPlayerHand();
-                    playerBoard = gameModel.getPlayerBoard();
-                    weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
-                    System.out.println(">You have the following weapons: ");
-                    if(weapons.size() == 0){
-                        System.out.println(">You have no weapons!");
-                    }
-
-                    for(int i = 0; i < weapons.size(); i++){
-                        System.out.println("> " +weapons.get(i).getName());
-                    }
-
-                    powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
-                    System.out.println(">You have the following puwerups: ");
-                    for(int i = 0; i < weapons.size(); i++){
-                        System.out.println("> " +powerups.get(i).getName());
-                    }
-
-                    ammoRED = playerBoard.getRedAmmo();
-                    System.out.println(">You have %d red ammos:" +ammoRED);
-
-                    ammoBLUE = playerBoard.getBlueAmmo();
-                    System.out.println(">You have %d blue ammos:" +ammoBLUE );
-
-                    ammoYELLOW = playerBoard.getYellowAmmo();
-                    System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
-
-                    System.out.println(">Write a command: ");
-                    read = myObj.nextLine();
-                    if(read.toUpperCase() == "MOVE"){
-                        System.out.println(">Choose the coordinate x you want to move to: " );
-                        coordinatex = Integer.parseInt(myObj.nextLine());
-                        System.out.println(">Choose the coordinate y you want to move to: " );
-                        coordinatey = Integer.parseInt(myObj.nextLine());
-                        ActionInfo action = ActionParser.createMoveEvent(coordinatex, coordinatey);
-                        connection.send(action);
-                    }
-                    else if(read.toUpperCase() == "SHOOT"){
-
-                        //TODO
-                        //shootDecision = 0;
-                        //ActionInfo action = ActionParser.createShootEvent(shootDecision);
-                        //connection.send(action);
-                    }
-                    else if(read.toUpperCase() == "COLLECT"){
-                        do {System.out.println(">Choose what you want to collect: " );
-                            System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                            System.out.println("PowerUp Card (2)"); //2 is to collect powerup
-                            System.out.println("Ammo (3)"); //3 is to collect ammo
-                            read = myObj.nextLine();
-                            if (read.equals("1")) {
-                                collectDecision = 1;
-                                collectChosen = true;
-                            } else if (read.equals("2")) {
-                                collectDecision = 2;
-                                collectChosen = true;
-                            } else if (read.equals("3")) {
-                                collectDecision = 3;
-                                collectChosen = true;
-                            }
-                        } while (!collectChosen);
-                        ActionInfo action = ActionParser.createCollectEvent(collectDecision);
-                        connection.send(action);
-                    }
-                    else if(read.toUpperCase() == "USE POWERUP"){
-                        do {System.out.println(">Choose what powerup you want to use: " );
-                            read = myObj.nextLine();
-                            powerupChosen = true;
-                        } while (!powerupChosen);
-                        ActionInfo action = ActionParser.createPowerUpEvent(read.toUpperCase());
-                        connection.send(action);
-                    }
-                    else{
-                        System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
-                    }
-                //}
-                //catch (CommandIsNotValidException e) {
-                //    System.out.println(">The command written is not valid");
-                //}
+            playerHand = gameModel.getPlayerHand();
+            playerBoard = gameModel.getPlayerBoard();
+            weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
+            System.out.println(">You have the following weapons: ");
+            if(weapons.size() == 0){
+                System.out.println(">You have no weapons!");
             }
-            else {
+
+            for(int i = 0; i < weapons.size(); i++){
+                System.out.println("> " +weapons.get(i).getName());
+            }
+
+            powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
+            System.out.println(">You have the following puwerups: ");
+            for(int i = 0; i < weapons.size(); i++){
+                System.out.println("> " +powerups.get(i).getName());
+            }
+
+            ammoRED = playerBoard.getRedAmmo();
+            System.out.println(">You have %d red ammos:" +ammoRED);
+
+            ammoBLUE = playerBoard.getBlueAmmo();
+            System.out.println(">You have %d blue ammos:" +ammoBLUE );
+
+            ammoYELLOW = playerBoard.getYellowAmmo();
+            System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+
+            System.out.println(">Write a command: ");
+            read = myObj.nextLine();
+            if(read.toUpperCase() == "MOVE"){
+
+            }
+            else if(read.toUpperCase() == "SHOOT"){
+
+            }
+            else if(read.toUpperCase() == "COLLECT"){
+
+            }
+            if (startGame) {
+                try{
+                    action = actionParser.createValidEvent(read);
+                    connection.send(action);
+                } catch (CommandIsNotValidException e) {
+                    System.out.println(">The command written is not valid");
+                }
+            } else {
                 System.out.println("Match isn't started, please wait a minute");
             }
         }

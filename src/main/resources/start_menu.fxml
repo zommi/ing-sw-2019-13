@@ -36,8 +36,8 @@
                <children>
                   <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: #ffffff80; -fx-stroke: #ffaa44cc; -fx-stroke-width: 7;" width="268.0" />
-                        <GridPane>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="124.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: #ffffff80; -fx-stroke: #ffaa44cc; -fx-stroke-width: 7;" width="268.0" />
+                        <GridPane prefHeight="172.0" prefWidth="268.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="62.0" minWidth="10.0" prefWidth="22.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="149.0" minWidth="10.0" prefWidth="127.0" />
@@ -46,18 +46,18 @@
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="84.0" minHeight="8.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="84.0" minHeight="8.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="8.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="92.0" minHeight="6.0" prefHeight="17.0" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                              <Label text="Enter name:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <ChoiceBox prefHeight="27.0" prefWidth="181.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                              <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label text="Enter name:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ChoiceBox prefHeight="27.0" prefWidth="181.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                            </children>
                         </GridPane>
                      </children>

@@ -2,14 +2,15 @@ package server.controller.playeraction;
 
 import constants.Color;
 import exceptions.NoSuchEffectException;
-import server.model.cards.Weapon;
+import server.controller.Info;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MicroInfo {
+public class MicroInfo implements Serializable, Info {
     private int macroNumber;
     private int microNumber;
     private List<PlayerAbstract> playersList;

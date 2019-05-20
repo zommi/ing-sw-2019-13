@@ -1,31 +1,36 @@
 package client;
 
-import server.GameProxyInterface;
-import server.controller.playeraction.Action;
-import server.model.map.GameMap;
-import server.model.player.PlayerAbstract;
 import view.ServerAnswer;
 
 import java.io.IOException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.Map;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class ConnectionSocket extends Connection {
 
+    private Socket socket;
     private int clientID;
     private String mapChoice;
     private GameModel gameModel;
     private int initialSkulls;
+    private boolean isConnected;
+
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
+
+    private static final String SERVER_ADDRESS  = "localhost";
+    private static final int REGISTRATION_PORT = 55555;
 
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
         this.gameModel = new GameModel();
+        this.isConnected = false;
+        this.socket = null;
     }
 
     public void addPlayerCharacter(String name){
-
+        send(new SetupInfo(name));
     }
 
     public void saveAnswer(ServerAnswer answer){
@@ -51,23 +56,38 @@ public class ConnectionSocket extends Connection {
     }
 
     public void configure(){
-
+        try {
+            System.out.println("Configuring socket connection...");
+            this.gameModel.setClientID(this.clientID);
+            this.socket = new Socket(SERVER_ADDRESS, REGISTRATION_PORT);
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException e) {
+            System.out.println("SOCKET CONFIGURATION FAILED");
+            e.printStackTrace();
+        }
     }
 
-    public void send(ActionInfo action){
-
+    public void send(Info info){
+        try {
+            outputStream.writeObject(info);
+            outputStream.flush();
+        } catch (IOException e) {
+            System.console().printf("ERROR DURING SERIALIZATION\n");
+            e.printStackTrace();
+        }
     }
 
     public void initializeSocket(){
 
     }
 
-        public GameModel getGameModel(){
-        return null;
+    public GameModel getGameModel(){
+        return this.gameModel;
     }
 
     public void add(String playerName, int map, int initialSkulls){
-
+        send(new SetupInfo(map,initialSkulls,playerName));
     }
 
     public int getInitialSkulls(){

@@ -1,9 +1,8 @@
 package server;
 
-import client.ActionInfo;
 import client.GameModel;
+import client.Info;
 import client.ReceiverInterface;
-import server.model.map.GameMap;
 import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -39,7 +38,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, ActionInfo action)  throws RemoteException{
+    public boolean makeAction(int clientID, Info action)  throws RemoteException{
         return true;
     }
 
@@ -48,7 +47,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void sendMessage(ServerAnswer message) {
+    public void sendMessage(ServerAnswer message){
     }
 
     @Override
@@ -118,11 +117,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.initialSkulls;
     }
 
-    @Override
-    public void sendGameModel(GameModel gameModel) throws RemoteException{
-        this.serverRMI.getServer().addGameModel(gameModel);
-    }
-
 
     @Override
     public boolean sendMap(int numMap)  throws RemoteException{
@@ -144,6 +138,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public PlayerAbstract getPlayer() throws RemoteException{
         return player;
+    }
+
+    @Override
+    public void sendGameModel(GameModel gameModel) throws RemoteException {
+
     }
 
 }
