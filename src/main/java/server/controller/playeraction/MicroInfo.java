@@ -1,8 +1,8 @@
 package server.controller.playeraction;
 
+import client.ShootInfo;
 import constants.Color;
 import exceptions.NoSuchEffectException;
-import server.model.cards.Weapon;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;

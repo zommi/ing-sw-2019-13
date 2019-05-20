@@ -1,14 +1,11 @@
 package server.controller.playeraction;
 
+import client.ShootInfo;
 import exceptions.NoSuchEffectException;
 import server.model.cards.*;
-import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ShootValidator {
 
