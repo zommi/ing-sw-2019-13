@@ -1,6 +1,7 @@
 package server;
 
-import client.ActionInfo;
+import client.GameModel;
+import client.Info;
 import client.ReceiverInterface;
 import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
@@ -37,7 +38,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, ActionInfo action)  throws RemoteException{
+    public boolean makeAction(int clientID, Info action)  throws RemoteException{
         return true;
     }
 
@@ -137,6 +138,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public PlayerAbstract getPlayer() throws RemoteException{
         return player;
+    }
+
+    @Override
+    public void sendGameModel(GameModel gameModel) throws RemoteException {
+
     }
 
 }

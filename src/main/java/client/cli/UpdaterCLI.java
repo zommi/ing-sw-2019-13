@@ -94,6 +94,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
+        connection.sendGameModel(gameModel);
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -193,7 +194,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     @Override
     public void run(){
         String read;
-        ActionInfo action;
+        Info action;
         PlayerHand playerHand;
         PlayerBoard playerBoard;
         List<WeaponCard> weapons;

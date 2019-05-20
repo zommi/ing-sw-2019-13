@@ -1,6 +1,7 @@
 package server;
 
-import client.ActionInfo;
+import client.GameModel;
+import client.Info;
 import client.ReceiverInterface;
 import server.controller.playeraction.Action;
 import server.model.player.PlayerAbstract;
@@ -24,7 +25,7 @@ public interface GameProxyInterface extends Remote {
 
     public int getInitialSkulls() throws RemoteException;
 
-    public boolean makeAction(int clientID, ActionInfo action) throws RemoteException;
+    public boolean makeAction(int clientID, Info action) throws RemoteException;
 
     public int getClientID() throws RemoteException;
 
@@ -38,4 +39,5 @@ public interface GameProxyInterface extends Remote {
 
     public PlayerAbstract getPlayer() throws RemoteException;
 
+    void sendGameModel(GameModel gameModel) throws RemoteException;
 }

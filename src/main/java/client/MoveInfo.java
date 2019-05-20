@@ -1,11 +1,13 @@
-package server.controller.playeraction;
+package client;
 
 import constants.Direction;
+import server.controller.Info;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MoveInfo {
+public class MoveInfo implements Serializable, Info {
 
     private List<Direction> moves;
 

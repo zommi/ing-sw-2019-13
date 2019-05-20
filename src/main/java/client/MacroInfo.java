@@ -2,10 +2,12 @@ package client;
 
 import client.MicroInfo;
 import exceptions.NoSuchEffectException;
+import server.controller.Info;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MacroInfo {
+public class MacroInfo implements Serializable, Info {
     private int macroNumber;
     private List<MicroInfo> activatedMicros;
 

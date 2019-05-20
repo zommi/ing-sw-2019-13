@@ -1,5 +1,6 @@
 package server;
 
+import client.GameModel;
 import client.ReceiverInterface;
 import server.controller.Controller;
 
@@ -20,7 +21,13 @@ public class Server {
     private int initialSkulls;
     private int clientIDadded;
     private static List<Integer> listOfClients = new ArrayList<Integer>();
+    public List<GameModel> listGameModel = new ArrayList<>();
 
+
+    public void addGameModel(GameModel gameModel){
+        System.out.println("Adding the GameModel of the new client to the list");
+        listGameModel.add(gameModel);
+    }
 
     public int addClient(ReceiverInterface client){
         if(listOfClients.size() == 0){

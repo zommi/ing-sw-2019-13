@@ -23,7 +23,7 @@ class GameTest {
         testList.add(testPlayer1);
         testList.add(testPlayer2);
         try{
-            testGame.nextState();
+
             testGame.addPlayer(testPlayer1);
             testGame.addPlayer(testPlayer2);
 

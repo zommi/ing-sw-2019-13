@@ -3,7 +3,6 @@ package client;
 import view.ServerAnswer;
 
 import java.io.Serializable;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public abstract class Connection implements Serializable {
@@ -16,11 +15,13 @@ public abstract class Connection implements Serializable {
 
     public abstract boolean CharacterChoice(String name);
 
+    public abstract void sendGameModel(GameModel gameModel);
+
     public abstract int getInitialSkulls();
 
     public abstract int getClientID();
 
-    public abstract void send(ActionInfo action);
+    public abstract void send(Info action);
 
     public abstract String getMap();
 
