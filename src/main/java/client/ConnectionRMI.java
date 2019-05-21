@@ -197,7 +197,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
 
     @Override
-    public void add(String playerName, int mapClient, int initialSkulls) throws RemoteException{
+    public void add(String playerName, int mapClient, int initialSkulls){
         //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
 
         if(clientID == 0) {
@@ -211,7 +211,12 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
                     re.printStackTrace();
                 }
             }
-            this.initialSkulls = gameProxy.getInitialSkulls();
+            try{
+                this.initialSkulls = gameProxy.getInitialSkulls();
+            }
+            catch(RemoteException e){
+                System.out.println("Remote Exception");
+            }
         }
 
         System.out.println("Trying to send your name to the server...");
@@ -240,7 +245,12 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
                 }
             }
             System.out.println("The server received your choice of the map...");
-            this.mapChoice = gameProxy.getMap();
+            try{
+                this.mapChoice = gameProxy.getMap();
+            }
+            catch(RemoteException e){
+                System.out.println("Remote Exception caught");
+            }
 
         }
 

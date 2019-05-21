@@ -1,25 +1,29 @@
 package view;
+import server.model.map.Room;
+import server.model.map.SpawnPoint;
+import server.model.map.SquareAbstract;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapElement {
-    private int x;
-    private int y;
-    private String character;
+    private List<SpawnPoint> spawnPoints;
+    private ArrayList<ArrayList<SquareAbstract>> squares;
+    private List<Room> rooms;
 
-    public MapElement(int x, int y, String name) {
-        this.x = x;
-        this.y = y;
-        this.character = name;
+    public MapElement(){
+
     }
 
-    public int getX() {
-        return x;
+    public void setSpawnPoints(List<SpawnPoint> spawnPoints){
+
     }
 
-    public int getY() {
-        return y;
+    public void setSquares(ArrayList<ArrayList<SquareAbstract>> squares){
+
     }
 
-    public String getCharacter() {
-        return character;
+    public void setRooms(List<Room> rooms){
+
     }
+
 }

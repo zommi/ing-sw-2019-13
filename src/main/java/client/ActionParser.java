@@ -14,6 +14,7 @@ public class ActionParser {
         //TODO
     }
 
+
     public static Info createCollectEvent(int collectDecision) {
         return null;
     }

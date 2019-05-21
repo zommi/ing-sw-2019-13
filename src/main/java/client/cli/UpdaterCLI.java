@@ -2,9 +2,7 @@ package client.cli;
 
 
 import client.*;
-import exceptions.CommandIsNotValidException;
 import exceptions.NotEnoughPlayersException;
-import server.controller.playeraction.Action;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerBoard;
