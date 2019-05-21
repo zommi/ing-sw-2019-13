@@ -1,5 +1,6 @@
 package server.controller.playeraction;
 
+
 import exceptions.NoSuchEffectException;
 
 public class ShootActuator {

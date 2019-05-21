@@ -141,8 +141,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void sendGameModel(GameModel gameModel) throws RemoteException {
-
+    public void sendGameModel(GameModel gameModel) throws RemoteException{
+        this.serverRMI.getServer().addGameModel(gameModel);
     }
 
 }

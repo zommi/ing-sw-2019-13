@@ -1,12 +1,14 @@
 package server.controller.playeraction;
 
 import server.controller.playeraction.ShootInfo;
+import client.Info;
 import constants.Color;
 import exceptions.NoSuchEffectException;
-import server.controller.Info;
+import server.controller.playeraction.ShootInfo;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
+
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,7 +1,6 @@
 package client;
 
 import constants.Constants;
-import server.controller.Info;
 
 import java.io.Serializable;
 

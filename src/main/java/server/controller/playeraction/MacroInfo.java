@@ -2,7 +2,7 @@ package server.controller.playeraction;
 
 import server.controller.playeraction.MicroInfo;
 import exceptions.NoSuchEffectException;
-import server.controller.Info;
+import server.controller.playeraction.MicroInfo;
 
 import java.io.Serializable;
 import java.util.List;
