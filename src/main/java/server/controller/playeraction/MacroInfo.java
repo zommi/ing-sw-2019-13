@@ -1,13 +1,11 @@
 package server.controller.playeraction;
 
-import server.controller.playeraction.MicroInfo;
 import exceptions.NoSuchEffectException;
-import server.controller.playeraction.MicroInfo;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class MacroInfo implements Serializable, Info {
+public class MacroInfo implements Serializable {
     private int macroNumber;
     private List<MicroInfo> activatedMicros;
 
