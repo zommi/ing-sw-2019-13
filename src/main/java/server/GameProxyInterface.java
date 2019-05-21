@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.GameModel;
 import client.Info;
 import client.ReceiverInterface;
@@ -16,6 +17,8 @@ public interface GameProxyInterface extends Remote {
     public String getMap() throws RemoteException;
 
     public boolean addPlayerCharacter(String name) throws RemoteException;
+
+    public void startTimer() throws RemoteException;
 
     public boolean addMapPlayer() throws RemoteException;
 
@@ -39,5 +42,5 @@ public interface GameProxyInterface extends Remote {
 
     public PlayerAbstract getPlayer() throws RemoteException;
 
-    void sendGameModel(GameModel gameModel) throws RemoteException;
+    public void sendConnection(Connection connection) throws RemoteException;
 }

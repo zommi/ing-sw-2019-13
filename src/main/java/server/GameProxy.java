@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.GameModel;
 import client.Info;
 import client.ReceiverInterface;
@@ -117,6 +118,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.initialSkulls;
     }
 
+    @Override
+    public void startTimer() throws RemoteException{
+        boolean timerExpired = false;
+        timerExpired = this.serverRMI.getServer().startTimer(); //it is true when the timer expires. so now we have to put startGame true
+
+    }
+
 
     @Override
     public boolean sendMap(int numMap)  throws RemoteException{
@@ -141,8 +149,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void sendGameModel(GameModel gameModel) throws RemoteException{
-        this.serverRMI.getServer().addGameModel(gameModel);
+    public void sendConnection(Connection connection) throws RemoteException{
+        this.serverRMI.getServer().addConnection(connection);
     }
 
 }

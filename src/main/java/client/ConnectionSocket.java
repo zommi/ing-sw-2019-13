@@ -15,6 +15,7 @@ public class ConnectionSocket extends Connection {
     private GameModel gameModel;
     private int initialSkulls;
     private boolean isConnected;
+    private boolean startGame = false;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -37,7 +38,7 @@ public class ConnectionSocket extends Connection {
 
     }
 
-    public void sendGameModel(GameModel gameModel){
+    public void sendConnection(){
 
     }
 
@@ -53,6 +54,20 @@ public class ConnectionSocket extends Connection {
 
     public int getClientID(){
         return this.clientID;
+    }
+
+    public void startTimer(){
+
+    }
+
+    @Override
+    public void setStartGame(){
+        this.startGame = true;
+    }
+
+    @Override
+    public boolean getStartGame(){
+        return this.startGame;
     }
 
     public void configure(){

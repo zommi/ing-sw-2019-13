@@ -22,7 +22,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
     private Connection connection;
-    private boolean startGame = false;
     private boolean alwaysTrue = true;
 
     private GameModel gameModel;
@@ -48,6 +47,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the playerhand");
         }
     }
+
 
     @Override
     public void set() throws NotBoundException, RemoteException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
@@ -95,7 +95,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
-        connection.sendGameModel(gameModel);
+        connection.sendConnection();
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -153,7 +153,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     mapName = "No one has chosen yet";
                 }
             } while (!mapChosen);
-            startGame = true;
             System.out.println(">You have chosen the map: " +mapName);
         }
         else
@@ -188,6 +187,9 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         System.out.println("Name is: " +characterName.toUpperCase());
         connection.addPlayerCharacter(characterName);
+        if(gameModel.getClientID() == 0){
+            connection.startTimer();
+        }
     }
 
 
@@ -216,7 +218,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
 
         while (alwaysTrue) {
-            if (startGame) {
+            if (connection.getStartGame()) {
                 //try{
                 playerHand = gameModel.getPlayerHand();
                 playerBoard = gameModel.getPlayerBoard();
