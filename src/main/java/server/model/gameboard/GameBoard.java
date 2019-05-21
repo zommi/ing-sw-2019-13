@@ -38,13 +38,11 @@ public class GameBoard {
      */
     private AmmoTileDeck ammoTileDeck;
 
-    /**
-     * reference to the itself
-     */
-    public static GameBoard instance;
-
     private List<GameCharacter> gameCharacterList;
 
+    public GameBoard(){
+
+    }
 
     /**
      * Constructor called by the instance method
@@ -87,6 +85,17 @@ public class GameBoard {
         }
     }
 
+    public GameBoard CreateCopy(GameBoard gameBoardToCopy){
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.gameCharacterList = null;
+        gameBoard.gameMap = gameBoardToCopy.gameMap.CreateCopy(gameBoardToCopy.gameMap);
+        gameBoard.track = gameBoardToCopy.track.CreateCopy(gameBoardToCopy.track);
+        //gameBoard.weaponDeck =
+        //gameBoard.powerupDeck =
+        //gameBoard.ammoTileDeck =
+        return gameBoard;
+
+    }
 
     public KillshotTrack getTrack() {
         return this.track;

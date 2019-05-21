@@ -1,10 +1,8 @@
 package server;
 
 import client.Connection;
-import client.GameModel;
 import client.Info;
 import client.ReceiverInterface;
-import server.controller.playeraction.Action;
 import server.model.player.PlayerAbstract;
 
 import java.rmi.NotBoundException;

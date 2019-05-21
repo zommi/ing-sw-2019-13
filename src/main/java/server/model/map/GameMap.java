@@ -25,6 +25,10 @@ public class GameMap {
      *               It could go from 1 to 4.
      */
 
+    public GameMap(){
+
+    }
+
     public GameMap(int mapNum) {
         valid = true;
         String path;
@@ -277,6 +281,18 @@ public class GameMap {
             }
         }
         return squareList;
+    }
+
+    public GameMap CreateCopy(GameMap MapToCopy){
+        GameMap result = new GameMap();
+        result.squares.addAll(MapToCopy.getSquares());
+        result.spawnPoints.addAll(MapToCopy.getSpawnPoints());
+        result.roomsToBuild = null; //we don't need roomsToBuild
+        result.valid = this.valid;
+        for(int i = 0; i < MapToCopy.rooms.size(); i++){
+            result.rooms.add(MapToCopy.rooms.get(i).RoomCreateCopy(MapToCopy.getRooms().get(i)));
+        }
+        return result;
     }
 
     public ArrayList<ArrayList<SquareAbstract>> getSquares() {

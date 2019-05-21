@@ -84,7 +84,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("Method set: " +methodChosen);
 
 
-        int lastClientID = GameModel.getNextClientID(); //because it is static. It will always return 0. Then the server will return the true clientID
+        int lastClientID = 0;
 
         if (methodChosen.equals("1")) {
             connection = new ConnectionRMI(lastClientID);

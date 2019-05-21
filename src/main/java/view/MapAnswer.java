@@ -2,22 +2,18 @@ package view;
 
 import server.model.map.GameMap;
 
+
 public class MapAnswer {
 
-    private MapElement result;
+    private GameMap result;
 
     public MapAnswer(GameMap map){
-        this.result = CreateCopy(map);
+        this.result = map.CreateCopy(map);
     }
 
-    public MapElement getResult(){
+    public GameMap getResult(){
         return this.result;
     }
 
-    public static MapElement CreateCopy(GameMap gameMap){
-        MapElement el = new MapElement();
 
-
-        return el;
-    }
 }

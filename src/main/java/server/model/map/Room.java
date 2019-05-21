@@ -1,5 +1,4 @@
 package server.model.map;
-
 import constants.Color;
 import server.model.player.GameCharacter;
 
@@ -17,11 +16,28 @@ public class Room {
     /**
      * Default constructor
      */
+
+    public Room(){
+
+    }
+
     public Room(Color color) {
         this.color = color;
         charactersList = new ArrayList<>();
         squareList = new ArrayList<>();
     }
+
+    public Room RoomCreateCopy(Room roomToCopy) {
+        Room room = new Room();
+        room.color = roomToCopy.getColor();
+        room.squareList.addAll(roomToCopy.getSquares());
+        room.charactersList = new ArrayList<>();
+        for(int i = 0; i < roomToCopy.charactersList.size(); i++){
+            room.charactersList.add(roomToCopy.charactersList.get(i).CharacterCreateCopy(roomToCopy.getCharacters().get(i)));
+        }
+        return room;
+    }
+
 
     public Color getColor() {
         return color;
