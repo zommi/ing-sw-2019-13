@@ -1,12 +1,7 @@
-package server.model.cards;
+package client;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import constants.Color;
-import server.model.items.AmmoCube;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Cost {
 

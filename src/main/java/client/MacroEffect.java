@@ -1,4 +1,4 @@
-package server.model.cards;
+package client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.NoSuchEffectException;

@@ -1,5 +1,6 @@
 package server.controller.playeraction;
 
+import server.controller.playeraction.ShootInfo;
 import client.Info;
 import constants.Color;
 import exceptions.NoSuchEffectException;

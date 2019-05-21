@@ -1,6 +1,6 @@
 package server.model.player;
 
-import server.model.cards.*;
+import client.Cost;
 import server.model.items.AmmoCube;
 import server.model.map.*;
 import server.model.gameboard.*;

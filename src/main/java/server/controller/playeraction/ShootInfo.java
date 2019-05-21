@@ -1,10 +1,9 @@
 package server.controller.playeraction;
 
 import client.Info;
-import client.MacroInfo;
 import exceptions.NoSuchEffectException;
-import server.model.cards.MicroEffect;
-import server.model.cards.Weapon;
+import client.MicroEffect;
+import client.Weapon;
 import server.model.player.PlayerAbstract;
 
 

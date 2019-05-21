@@ -16,6 +16,7 @@ public class GameModel extends Observable implements Serializable { // so that t
     private GameMap map;
     private PlayerBoard playerBoard;
     private PlayerHand playerHand;
+    private List<Weapon> weapons;
     private int clientID;
     private static int lastClientID = 0;
 

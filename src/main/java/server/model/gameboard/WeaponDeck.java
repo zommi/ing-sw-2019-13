@@ -2,7 +2,7 @@ package server.model.gameboard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.ReadJsonErrorException;
-import server.model.cards.Weapon;
+import client.Weapon;
 import server.model.cards.WeaponCard;
 import constants.Constants;
 

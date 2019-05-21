@@ -1,6 +1,7 @@
-package server.model.cards;
+package client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import server.model.cards.WeaponPolicy;
 
 import java.util.List;
 
