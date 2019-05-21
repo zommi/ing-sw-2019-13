@@ -19,6 +19,7 @@ import java.util.List;
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
     private ReceiverInterface clientRMI;
+    private int startGame;
     private int numMap;
     private String playerName;
     private ServerRMI serverRMI;
@@ -90,7 +91,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return true;
     }
 
-
     @Override
     public String getMap() throws RemoteException{
         if(this.numMap == 1)
@@ -120,9 +120,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public void startTimer() throws RemoteException{
-        boolean timerExpired = false;
-        timerExpired = this.serverRMI.getServer().startTimer(); //it is true when the timer expires. so now we have to put startGame true
-
+        System.out.println("Starting the timer");
+        startGame = this.serverRMI.getServer().startTimer();
     }
 
 
@@ -147,6 +146,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public PlayerAbstract getPlayer() throws RemoteException{
         return player;
     }
+
+    @Override
+    public int getStartGame() throws RemoteException{
+        return this.startGame;
+    }
+
 
     @Override
     public void sendConnection(Connection connection) throws RemoteException{

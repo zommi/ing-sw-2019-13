@@ -11,15 +11,13 @@ public abstract class Connection implements Serializable {
 
     public abstract void addPlayerCharacter(String name);
 
+    public abstract void startTimer();
+
     public abstract void saveAnswer(ServerAnswer answer);
 
     public abstract boolean CharacterChoice(String name);
 
-    public abstract void setStartGame();
-
-    public abstract boolean getStartGame();
-
-    public abstract void startTimer();
+    public abstract int getStartGame();
 
     public abstract void sendConnection();
 

@@ -2,29 +2,25 @@ package server;
 
 import client.Connection;
 import client.ConnectionRMI;
-import client.GameModel;
 import client.ReceiverInterface;
 import server.controller.Controller;
-import view.MapAnswer;
-import view.MapElement;
+import server.model.game.Game;
+import view.InitialMapAnswer;
 import view.ServerAnswer;
-
-import java.util.Timer;
-import java.util.TimerTask;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
 
     private final Registry registry;
+    private Game game;
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
-    private int seconds;
     private int mapChoice;
     private Controller controller;
     private int initialSkulls;
@@ -40,40 +36,40 @@ public class Server {
 
 
 
-    public boolean startTimer(){
+    public int startTimer(){
+        try{
+            TimeUnit.SECONDS.sleep(30);
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("Exception thrown");
+        }
+        System.out.println("I waited 30 seconds");
 
-        Timer timer = new Timer();
-        seconds = 0;
-        TimerTask task;
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                while (seconds < 30) {
-                    System.out.println("Seconds = " + seconds);
-                    seconds++;
+        if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
+            System.out.println("The game still has less than 3 players");
+            listConnections = null;
+            listOfClients = null;
+            game = null;
+            return 2;
+        }
+        //now we have to start the game!
+        else{
+            game = new Game(mapChoice, initialSkulls);
+            //does it work with socket too? we have to test the clienID with socket too.
+            ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
+            for(int i = 0; i < listConnections.size(); i++){
+                if(listConnections.get(i) instanceof ConnectionRMI){       //this methods is used to update all the RMI gameModels
+                    ((ConnectionRMI) listConnections.get(i)).publishMessage(mapAnswer);
                 }
             }
-        };
-        timer.schedule(task, 0, 30);
-        //now we have to start the game!
-
-        ArrayList<MapElement> charactersPosition = new ArrayList<>();
-        controller.getPlayerToClient();
-        //TODO INITIALIZE GAME!
-        //TODO initialize charactersPosition. Maybe I could just eliminate the charactersPosition
-        ServerAnswer mapAnswer = new MapAnswer(mapChoice, charactersPosition);
-        for(int i = 0; i < listConnections.size(); i++){
-            if(listConnections.get(i) instanceof ConnectionRMI){       //this methods is used to update all the RMI gameModels
-                ((ConnectionRMI) listConnections.get(i)).publishMessage(mapAnswer);
-            }
+            return 1;
         }
-        return true;
     }
 
 
     public int addClient(ReceiverInterface client){
         if(listOfClients.size() == 0){
-            listOfClients = new ArrayList<>();
             listOfClients.add(0);
             this.clientIDadded = 0;
         }

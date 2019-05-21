@@ -27,7 +27,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     private static final String SERVER_ADDRESS  = "localhost";
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private static final int REGISTRATION_PORT = 1099;
-    private boolean startGame = false;
+    private int startGame = 0;
 
 
     public String getMap(){
@@ -42,13 +42,15 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
-    public boolean getStartGame(){
-        return this.startGame;
-    }
-
-    @Override
-    public void setStartGame(){
-        this.startGame = true;
+    public int getStartGame(){
+        try{
+            return gameProxy.getStartGame();
+        }
+        catch(RemoteException e)
+        {
+            System.out.println("Exception while starting the game");
+        }
+        return 0;
     }
 
     public ConnectionRMI(int clientID){
@@ -122,6 +124,16 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
+    public void startTimer(){
+        try{
+            gameProxy.startTimer();
+        }
+        catch (RemoteException e){
+            System.out.println("Exception while starting the timer");
+        }
+    }
+
+    @Override
     public void sendConnection(){
         try{
             gameProxy.sendConnection(this);
@@ -141,15 +153,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         }
     }
 
-    @Override
-    public void startTimer() {
-        try{
-            gameProxy.startTimer();
-        }
-        catch(RemoteException e){
-            System.out.println("Exception starting the timer");
-        }
-    }
+
 
     public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException {
         System.out.println("Connecting to the Remote Object... ");

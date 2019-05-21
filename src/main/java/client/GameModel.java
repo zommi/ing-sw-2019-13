@@ -56,7 +56,7 @@ public class GameModel extends Observable implements Serializable { // so that t
             notifyObservers("GameBoard");
         }
 
-        if (answer instanceof MapAnswer) {
+        if (answer instanceof InitialMapAnswer) {
             map = (GameMap) answer;
             setChanged();
             notifyObservers("Map");

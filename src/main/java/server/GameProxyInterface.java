@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 
 public interface GameProxyInterface extends Remote {
 
+    public int getStartGame() throws RemoteException;
 
     public String getMap() throws RemoteException;
 
