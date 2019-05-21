@@ -2,7 +2,7 @@ package server.model.player;
 
 import constants.Color;
 import constants.Direction;
-import server.model.cards.Cost;
+import client.Cost;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;

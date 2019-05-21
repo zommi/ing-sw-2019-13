@@ -1,9 +1,9 @@
-package client;
+package server.controller.playeraction;
 
 import exceptions.NoSuchEffectException;
 import server.controller.Info;
-import server.model.cards.MicroEffect;
-import server.model.cards.Weapon;
+import client.MicroEffect;
+import client.Weapon;
 import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;

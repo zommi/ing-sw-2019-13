@@ -1,12 +1,7 @@
 package server.controller.turns;
 
-import exceptions.InvalidMoveException;
 import server.controller.playeraction.Action;
-import server.controller.playeraction.normalaction.CollectAction;
-import server.model.cards.Weapon;
 import server.model.player.PlayerAbstract;
-
-import java.util.List;
 
 public class TurnHandler {
 

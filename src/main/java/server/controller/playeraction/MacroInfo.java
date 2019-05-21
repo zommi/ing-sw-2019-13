@@ -1,6 +1,6 @@
-package client;
+package server.controller.playeraction;
 
-import client.MicroInfo;
+import server.controller.playeraction.MicroInfo;
 import exceptions.NoSuchEffectException;
 import server.controller.Info;
 

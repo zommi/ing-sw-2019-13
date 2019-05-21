@@ -1,8 +1,5 @@
 package server.controller.playeraction;
 
-import client.MacroInfo;
-import client.MicroInfo;
-import client.ShootInfo;
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
 import server.model.gameboard.GameBoard;

@@ -1,8 +1,8 @@
 package server.controller.playeraction;
 
-import client.MacroInfo;
-import client.MicroInfo;
-import client.ShootInfo;
+import client.Cost;
+import client.MacroEffect;
+import client.MicroEffect;
 import exceptions.NoSuchEffectException;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;
