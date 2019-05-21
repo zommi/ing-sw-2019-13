@@ -1,28 +1,21 @@
 package client;
-
-import constants.Direction;
-import server.controller.Info;
-import server.model.player.PlayerAbstract;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class MoveInfo implements Serializable, Info {
 
-    private List<Direction> moves;
+    private int coordinateX;
+    private int coordinateY;
 
-    private PlayerAbstract player;
-
-    public MoveInfo(PlayerAbstract player, List<Direction> moves){
-        this.player = player;
-        this.moves = moves;
+    public MoveInfo(int x, int y){
+        this.coordinateX = x;
+        this.coordinateY = y;
     }
 
-    public PlayerAbstract getPlayer() {
-        return player;
+    public int getCoordinateX() {
+        return coordinateX;
     }
 
-    public List<Direction> getMoves() {
-        return moves;
+    public int getCoordinateY() {
+        return coordinateY;
     }
 }

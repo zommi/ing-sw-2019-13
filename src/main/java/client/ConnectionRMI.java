@@ -88,8 +88,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
 
     @Override
     public void publishMessage(ServerAnswer answer){
-    //TODO has to store the answer in the ClientModel
-        //this.ClientModel.storeResponse(message);
+        this.gameModel.saveAnswer(answer);
         return;
     }
 

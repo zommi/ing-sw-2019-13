@@ -247,7 +247,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                 System.out.println(">Write a command: ");
                 read = myObj.nextLine();
-                if(read.toUpperCase() == "MOVE"){
+                if(read.toUpperCase().equals("MOVE")){
                     System.out.println(">Choose the coordinate x you want to move to: " );
                     coordinatex = Integer.parseInt(myObj.nextLine());
                     System.out.println(">Choose the coordinate y you want to move to: " );
@@ -255,14 +255,11 @@ public class UpdaterCLI  implements Updater,Runnable{
                     Info action = ActionParser.createMoveEvent(coordinatex, coordinatey);
                     connection.send(action);
                 }
-                else if(read.toUpperCase() == "SHOOT"){
-
-                    //TODO
-                    //shootDecision = 0;
-                    //ActionInfo action = ActionParser.createShootEvent(shootDecision);
-                    //connection.send(action);
+                else if(read.toUpperCase().equals("SHOOT")){
+                    Info action = ActionParser.createShootEvent();
+                    connection.send(action);
                 }
-                else if(read.toUpperCase() == "COLLECT"){
+                else if(read.toUpperCase().equals("COLLECT")){
                     do {System.out.println(">Choose what you want to collect: " );
                         System.out.println("Weapon Card (1)"); //1 is to collect weapon
                         System.out.println("PowerUp Card (2)"); //2 is to collect powerup
@@ -282,10 +279,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                     Info action = ActionParser.createCollectEvent(collectDecision);
                     connection.send(action);
                 }
-                else if(read.toUpperCase() == "USE POWERUP"){
+                else if(read.toUpperCase().equals("USE POWERUP")){
                     do {System.out.println(">Choose what powerup you want to use: " );
                         read = myObj.nextLine();
-                    } while (read != "");
+                    } while ((read.equals(""))||((!read.toUpperCase().equals("TELEPORTER"))&&(!read.toUpperCase().equals("NEWTON"))&&(!read.toUpperCase().equals("TARGETING SCOPE"))&&(!read.toUpperCase().equals("TAGBACK GRANADE"))));
                     Info action = ActionParser.createPowerUpEvent(read.toUpperCase());
                     connection.send(action);
                 }

@@ -16,8 +16,9 @@ public class MoveAction {
     private MoveActuator actuator;
 
     public MoveAction(MoveInfo info){
-        this.moves = info.getMoves();
-        this.player = info.getPlayer();
+        //(TODO change implementation!
+        //this.moves = info.getMoves();
+        //this.player = info.getPlayer();
         this.validator = new MoveValidator();
         this.actuator = new MoveActuator();
     }

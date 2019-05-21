@@ -4,12 +4,14 @@ import java.util.StringTokenizer;
 
 public class ActionParser {
 
-    public static Info createShootEvent(String read) {
+    public static Info createMoveEvent(int coordinatex, int coordinatey) {
+        Info moveInfo = new MoveInfo(coordinatex, coordinatey);
         return null;
     }
 
-    public static Info createMoveEvent(int coordinatex, int coordinatey) {
+    public static Info createShootEvent(){
         return null;
+        //TODO
     }
 
     public static Info createCollectEvent(int collectDecision) {
