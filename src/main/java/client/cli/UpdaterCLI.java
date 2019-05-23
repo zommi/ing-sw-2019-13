@@ -251,28 +251,36 @@ public class UpdaterCLI  implements Updater,Runnable{
                 playerBoard = gameModel.getPlayerBoard();
                 weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
                 System.out.println(">You have the following weapons: ");
-                if(weapons.size() == 0){
+                if((weapons == null)||(weapons.size() == 0)){
                     System.out.println(">You have no weapons!");
                 }
-
-                for(int i = 0; i < weapons.size(); i++){
-                    System.out.println("> " +weapons.get(i).getName());
+                else{
+                    for(int i = 0; i < weapons.size(); i++){
+                        System.out.println("> " +weapons.get(i).getName());
+                    }
                 }
 
                 powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
                 System.out.println(">You have the following puwerups: ");
-                for(int i = 0; i < weapons.size(); i++){
-                    System.out.println("> " +powerups.get(i).getName());
+                if((powerups == null)||(powerups.size() == 0)){
+                    System.out.println(">You have no powerups!");
+                }
+                else {
+                    for (int i = 0; i < powerups.size(); i++) {
+                        System.out.println("> " + powerups.get(i).getName());
+                    }
                 }
 
-                ammoRED = playerBoard.getRedAmmo();
-                System.out.println(">You have %d red ammos:" +ammoRED);
+                if(playerBoard != null){ //these checks are used when the clients still do not have any update, at the start of the match
+                    ammoRED = playerBoard.getRedAmmo();
+                    System.out.println(">You have %d red ammos:" +ammoRED);
 
-                ammoBLUE = playerBoard.getBlueAmmo();
-                System.out.println(">You have %d blue ammos:" +ammoBLUE );
+                    ammoBLUE = playerBoard.getBlueAmmo();
+                    System.out.println(">You have %d blue ammos:" +ammoBLUE );
 
-                ammoYELLOW = playerBoard.getYellowAmmo();
-                System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+                    ammoYELLOW = playerBoard.getYellowAmmo();
+                    System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+                }
 
                 System.out.println(">Write a command: ");
                 read = myObj.nextLine();

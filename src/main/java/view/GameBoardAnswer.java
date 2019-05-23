@@ -7,7 +7,7 @@ public class GameBoardAnswer implements ServerAnswer {
     private GameBoard result;
 
     public GameBoardAnswer(GameBoard gameBoard){
-        result = gameBoard.CreateCopy(gameBoard);
+        result = gameBoard.createCopy(gameBoard);
     }
 
     public GameBoard getResult() {

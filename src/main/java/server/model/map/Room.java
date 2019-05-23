@@ -27,7 +27,7 @@ public class Room {
         squareList = new ArrayList<>();
     }
 
-    public Room RoomCreateCopy(Room roomToCopy) {
+    public Room roomCreateCopy(Room roomToCopy) {
         Room room = new Room();
         room.color = roomToCopy.getColor();
         room.squareList.addAll(roomToCopy.getSquares());

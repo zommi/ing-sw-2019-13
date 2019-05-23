@@ -35,7 +35,7 @@ public class KillshotTrack {
         this.damageTokens = new Color[initialSkull];
     }
 
-    public KillshotTrack CreateCopy(KillshotTrack killshotTrackToCopy){
+    public KillshotTrack createCopy(KillshotTrack killshotTrackToCopy){
         KillshotTrack killshotTrack = new KillshotTrack();
         killshotTrack.remainingSkulls = killshotTrackToCopy.getRemainingSkulls();
         killshotTrack.damageTokens = killshotTrackToCopy.getDamageTokens();

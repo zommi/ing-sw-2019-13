@@ -70,7 +70,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
-        if(serverRMI.getServer().getStartGame() == true){
+        if(serverRMI.getServer().getStartGame() == 1){
             throw new GameAlreadyStartedException();
         };
         this.clientIDadded = serverRMI.addClient(client);
@@ -179,7 +179,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public int getStartGame() throws RemoteException{
-        return this.startGame;
+        return this.serverRMI.getServer().getStartGame();
     }
 }
 

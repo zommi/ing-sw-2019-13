@@ -26,10 +26,10 @@ public class Server {
     private Controller controller;
     private int initialSkulls;
     private int clientIDadded;
-    private boolean startGame = false;
+    private int startGame = 0;
     private static List<Integer> listOfClients = new ArrayList<Integer>();
 
-    public boolean getStartGame(){
+    public int getStartGame(){
         return this.startGame;
     }
 
@@ -38,11 +38,12 @@ public class Server {
             System.out.println("The game still has less than 3 players");
             listOfClients = null;
             game = null;
+            startGame = 2;
             return 2;
         }
         //now we have to start the game!
         else{
-            startGame = true;
+            startGame = 1;
             game = new Game(mapChoice, initialSkulls);
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.

@@ -8,7 +8,7 @@ public class MapAnswer {
     private GameMap result;
 
     public MapAnswer(GameMap map){
-        this.result = map.CreateCopy(map);
+        this.result = map.createCopy(map);
     }
 
     public GameMap getResult(){

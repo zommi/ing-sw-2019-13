@@ -32,6 +32,11 @@ public class PlayerBoard{
     /**
      * Default constructor
      */
+
+    public PlayerBoard(){
+
+    }
+
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
         this.damage = new Color[Constants.MAX_HP];
@@ -46,6 +51,29 @@ public class PlayerBoard{
         this.damage[i] = color;
     }
 
+    public PlayerBoard createCopy(PlayerBoard playerBoardToCopy){
+        PlayerBoard playerBoard = new PlayerBoard();
+        playerBoard.player = playerBoardToCopy.getPlayer();
+        playerBoard.damageTaken = playerBoardToCopy.getDamageTaken();
+        playerBoard.damage = playerBoardToCopy.getDamage();
+        playerBoard.marks = playerBoardToCopy.getMarks();
+        playerBoard.numberOfDeaths = playerBoardToCopy.getNumberOfDeaths();
+        playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
+        playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
+        return playerBoard;
+    }
+
+    public ConcretePlayer getPlayer() {
+        return player;
+    }
+
+    public Color[] getDamage() {
+        return damage;
+    }
+
+    public int getCurrentPointValueCursor(){
+        return this.currentPointValueCursor;
+    }
 
     public int getDamageTaken() {
         return damageTaken;
@@ -85,6 +113,10 @@ public class PlayerBoard{
         } else{
             System.err.println("PLAYER STILL ALIVE");
         }
+    }
+
+    public int[] getPointValueArray(){
+        return this.pointValue;
     }
 
     public int getPointValue(){

@@ -85,11 +85,11 @@ public class GameBoard {
         }
     }
 
-    public GameBoard CreateCopy(GameBoard gameBoardToCopy){
+    public GameBoard createCopy(GameBoard gameBoardToCopy){
         GameBoard gameBoard = new GameBoard();
         gameBoard.gameCharacterList = null;
-        gameBoard.gameMap = gameBoardToCopy.gameMap.CreateCopy(gameBoardToCopy.gameMap);
-        gameBoard.track = gameBoardToCopy.track.CreateCopy(gameBoardToCopy.track);
+        gameBoard.gameMap = gameBoardToCopy.gameMap.createCopy(gameBoardToCopy.gameMap);
+        gameBoard.track = gameBoardToCopy.track.createCopy(gameBoardToCopy.track);
         //gameBoard.weaponDeck =
         //gameBoard.powerupDeck =
         //gameBoard.ammoTileDeck =
