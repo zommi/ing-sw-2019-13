@@ -5,9 +5,11 @@ import client.Info;
 import client.ReceiverInterface;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface GameProxyInterface extends Remote {
 
@@ -15,13 +17,15 @@ public interface GameProxyInterface extends Remote {
 
     public String getMap() throws RemoteException;
 
-    public boolean addPlayerCharacter(String name) throws RemoteException;
+    public boolean addPlayerCharacter(String name, int ID) throws RemoteException;
 
-    public void startTimer() throws RemoteException;
+    public void startMatch() throws RemoteException;
 
     public boolean addMapPlayer() throws RemoteException;
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
+
+    public List<ReceiverInterface> getClientRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
 
@@ -35,11 +39,9 @@ public interface GameProxyInterface extends Remote {
 
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException;
 
-    public boolean sendPlayer(String name) throws RemoteException;
+    public boolean sendPlayer(String name, int ID) throws RemoteException;
 
     public boolean sendMap(int numMap) throws RemoteException;
 
     public PlayerAbstract getPlayer() throws RemoteException;
-
-    public void sendConnection(Connection connection) throws RemoteException;
 }

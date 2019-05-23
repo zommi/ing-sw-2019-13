@@ -6,13 +6,12 @@ import server.model.game.Game;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Controller implements MyObserver {
 
-    private Map<PlayerAbstract, Integer> playerToClient = new HashMap<>();
+    private List<PlayerAbstract> players = new ArrayList<>();
 
     private Game currentGame;
 
@@ -36,12 +35,12 @@ public class Controller implements MyObserver {
         this.currentGame.nextPlayer();
     }
 
-    public void addClientInMap(PlayerAbstract player, int clientID){
-        this.playerToClient.put(player, clientID);
+    public void addClientInMap(PlayerAbstract player){
+        this.players.add(player);
     }
 
-    public Map<PlayerAbstract, Integer> getPlayerToClient(){
-        return this.playerToClient;
+    public List<PlayerAbstract> getPlayers(){
+        return this.players;
     }
 
     public void update(){}

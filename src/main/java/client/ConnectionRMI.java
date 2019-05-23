@@ -5,12 +5,12 @@ import view.ServerAnswer;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
-public class ConnectionRMI extends Connection implements Serializable, ReceiverInterface, Remote {
+public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
     private GameProxyInterface gameProxy;
     private String name = "rmiconnection";
@@ -21,7 +21,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     private boolean initialSkullsSet = false;
     private boolean characterNameSet = false;
     private boolean mapSet = false;
-    private transient GameModel gameModel;
+    private GameModel gameModel;
     private GameProxyInterface game;
     private int clientID;
     private static final String SERVER_ADDRESS  = "localhost";
@@ -53,7 +53,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         return 0;
     }
 
-    public ConnectionRMI(int clientID){
+    public ConnectionRMI(int clientID) throws RemoteException{
         this.clientID = clientID;
         this.gameModel = new GameModel();
     }
@@ -100,9 +100,9 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
-    public void publishMessage(ServerAnswer answer){
+    public void publishMessage(ServerAnswer answer) throws RemoteException{
+        System.out.println("Saving the answer of the server with the map");
         this.gameModel.saveAnswer(answer);
-        return;
     }
 
     @Override
@@ -124,22 +124,12 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
     }
 
     @Override
-    public void startTimer(){
+    public void startMatch(){
         try{
-            gameProxy.startTimer();
+            gameProxy.startMatch();
         }
         catch (RemoteException e){
             System.out.println("Exception while starting the timer");
-        }
-    }
-
-    @Override
-    public void sendConnection(){
-        try{
-            gameProxy.sendConnection(this);
-        }
-        catch(RemoteException e){
-            System.out.println("Exception while adding the new game model");
         }
     }
 
@@ -153,6 +143,10 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         }
     }
 
+    @Override
+    public void print() throws RemoteException{
+        System.out.println("caccameroni");
+    }
 
 
     public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException {
@@ -183,7 +177,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         System.out.println("Trying to send the name of your character to the server...");
         while (characterNameSet == false) {
             try{
-                characterNameSet = gameProxy.addPlayerCharacter(name);
+                characterNameSet = gameProxy.addPlayerCharacter(name, clientID);
                 gameProxy.addMapPlayer();
                 characterNameSet = true;
                 System.out.println("Name sent to to the server!");
@@ -222,7 +216,7 @@ public class ConnectionRMI extends Connection implements Serializable, ReceiverI
         System.out.println("Trying to send your name to the server...");
         while (playerNameSet == false) {
             try{
-                playerNameSet = gameProxy.sendPlayer(playerName);
+                playerNameSet = gameProxy.sendPlayer(playerName, clientID);
                 playerNameSet = true;
             }
             catch(RemoteException re){

@@ -7,6 +7,7 @@ import server.controller.Controller;
 import server.model.game.Game;
 import view.InitialMapAnswer;
 import view.ServerAnswer;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Server {
 
     private final Registry registry;
+    private GameProxyInterface gameProxy;
     private Game game;
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private int mapChoice;
@@ -26,29 +27,11 @@ public class Server {
     private int initialSkulls;
     private int clientIDadded;
     private static List<Integer> listOfClients = new ArrayList<Integer>();
-    public List<Connection> listConnections = new ArrayList<>();
 
 
-    public void addConnection(Connection connection){
-        System.out.println("Adding the GameModel of the new client to the list");
-        listConnections.add(connection);
-    }
-
-
-
-    public int startTimer(){
-        try{
-            TimeUnit.SECONDS.sleep(30);
-        }
-        catch(InterruptedException e)
-        {
-            System.out.println("Exception thrown");
-        }
-        System.out.println("I waited 30 seconds");
-
+    public int startMatch(){
         if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
             System.out.println("The game still has less than 3 players");
-            listConnections = null;
             listOfClients = null;
             game = null;
             return 2;
@@ -56,13 +39,27 @@ public class Server {
         //now we have to start the game!
         else{
             game = new Game(mapChoice, initialSkulls);
+            System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
-            for(int i = 0; i < listConnections.size(); i++){
-                if(listConnections.get(i) instanceof ConnectionRMI){       //this methods is used to update all the RMI gameModels
-                    ((ConnectionRMI) listConnections.get(i)).publishMessage(mapAnswer);
+            System.out.println("Now I will send the map to the client");
+            try{ //TODO WITH SOCKET CONNECTION!!!!!
+                List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+                for(int i = 0; i < temp.size(); i++){
+                    System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
+                    if(temp.get(i).getClientID() != 0) {//this methods is used to update all the RMI gameModels
+                        System.out.println("Found a connection that is not client 0, but it is: " + temp.get(i).getClientID());
+                        temp.get(i).publishMessage(mapAnswer);
+                        System.out.println("Sent the map to the connection RMI");
+                    }
                 }
             }
+            catch(RemoteException e){
+                System.out.println("Exception caught");
+                e.printStackTrace();
+            }
+
+            System.out.println("The game is starting");
             return 1;
         }
     }
@@ -91,6 +88,10 @@ public class Server {
 
     public Controller getController(){
         return this.controller;
+    }
+
+    public void setGameProxy(GameProxyInterface gameProxy){
+        this.gameProxy = gameProxy;
     }
 
     public void setInitialSkulls(int initialSkulls){

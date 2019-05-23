@@ -6,6 +6,7 @@ import server.model.player.PlayerAbstract;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -22,15 +23,6 @@ public class ServerRMI implements Runnable, ServerInterface {
 
     public ServerRMI(Server server) {
         this.server = server;
-    }
-
-    public boolean isCharacterTaken(String name){
-        Map<PlayerAbstract, Integer> temp = controller.getPlayerToClient();
-        for (Map.Entry<PlayerAbstract, Integer> entry : temp.entrySet()){
-            if(entry.getKey().getCharacterName().equals(name.toUpperCase()))
-                return true;
-        }
-        return false;
     }
 
     @Override
@@ -58,7 +50,7 @@ public class ServerRMI implements Runnable, ServerInterface {
     public void addMapClient() {
         try {
             System.out.println("Trying to add the client to the map ");
-            controller.addClientInMap(gameProxy.getPlayer(), this.server.getClientIDadded());
+            controller.addClientInMap(gameProxy.getPlayer());
         } catch (RemoteException re) {
             System.out.println("Could not add the client to the map ");
         }

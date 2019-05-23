@@ -5,33 +5,29 @@ import view.ServerAnswer;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
-public abstract class Connection implements Serializable {
+public interface Connection extends Serializable {
 
-    private GameModel gamemodel;
+    public void addPlayerCharacter(String name);
 
-    public abstract void addPlayerCharacter(String name);
+    public void startMatch();
 
-    public abstract void startTimer();
+    public void saveAnswer(ServerAnswer answer);
 
-    public abstract void saveAnswer(ServerAnswer answer);
+    public boolean CharacterChoice(String name);
 
-    public abstract boolean CharacterChoice(String name);
+    public int getStartGame();
 
-    public abstract int getStartGame();
+    public int getInitialSkulls();
 
-    public abstract void sendConnection();
+    public int getClientID();
 
-    public abstract int getInitialSkulls();
+    public void send(Info action);
 
-    public abstract int getClientID();
+    public String getMap();
 
-    public abstract void send(Info action);
+    public void configure();
 
-    public abstract String getMap();
+    public GameModel getGameModel();
 
-    public abstract void configure();
-
-    public abstract GameModel getGameModel();
-
-    public abstract void add(String playerName, int map, int initialSkulls) throws RemoteException;
+    public void add(String playerName, int map, int initialSkulls) throws RemoteException;
 }

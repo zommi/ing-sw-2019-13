@@ -18,8 +18,9 @@ public class ConcretePlayer extends PlayerAbstract {
     private PlayerHand hand;
     private PlayerBoard board;
     private GameBoard currentGameBoard;
-    private UUID id;
     private PlayerState state;
+    private int clientID;
+    private boolean ifCharacter;
 
     /**
      *Creates a player by giving him a name, a unique id, a hand
@@ -35,12 +36,25 @@ public class ConcretePlayer extends PlayerAbstract {
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;
         this.state = PlayerState.NORMAL;
-        id = UUID.randomUUID();
     }
 
     public ConcretePlayer(String name) {
         this.name = name;
-        id = UUID.randomUUID();
+    }
+    public void setIfCharacter(boolean choice){
+        this.ifCharacter = choice;
+    }
+
+    public boolean getIfCharacter(){
+        return this.ifCharacter;
+    }
+
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
+    }
+
+    public int getClientID(){
+        return this.clientID;
     }
 
     public String getCharacterName(){
@@ -127,10 +141,6 @@ public class ConcretePlayer extends PlayerAbstract {
         gameCharacter.spawn(sp);
     }
 
-
-    public UUID getId(){
-        return this.id;
-    }
 
     public Color getColor(){
         return this.gameCharacter.getColor();

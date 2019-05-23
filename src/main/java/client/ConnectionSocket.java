@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ConnectionSocket extends Connection {
+public class ConnectionSocket implements Connection {
 
     private Socket socket;
     private int clientID;
@@ -38,10 +38,6 @@ public class ConnectionSocket extends Connection {
 
     }
 
-    public void sendConnection(){
-
-    }
-
 
     public boolean CharacterChoice(String name){
         return true;
@@ -56,7 +52,7 @@ public class ConnectionSocket extends Connection {
         return this.clientID;
     }
 
-    public void startTimer(){
+    public void startMatch(){
 
     }
 

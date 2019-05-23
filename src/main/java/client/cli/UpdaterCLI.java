@@ -36,6 +36,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the gameboard");
         }
 
+        if(object.equals("Map initialized")){
+            System.out.println("New Update of the map number");
+        }
+
         if(object.equals("Map")){
             System.out.println("New Update of the map");
         }
@@ -96,7 +100,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
-        connection.sendConnection();
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -188,17 +191,30 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         System.out.println("Name is: " +characterName.toUpperCase());
         connection.addPlayerCharacter(characterName);
+
         if(gameModel.getClientID() == 0){
             System.out.println("Waiting 30 seconds for the others to join the game");
-            connection.startTimer();
+            startTimer();
             System.out.println("Waited 30 seconds for the others to join the game");
+            connection.startMatch();
         }
+
         if(connection.getStartGame() == 2){
             System.out.println("Unfortunately, not enough people joined the game so you will be disconnected. Bye");
             throw new NotEnoughPlayersException();
         }
     }
 
+    public void startTimer(){
+        try{
+            TimeUnit.SECONDS.sleep(30);
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("Exception thrown");
+        }
+        System.out.println("I waited 30 seconds");
+    }
 
 
     @Override
@@ -222,6 +238,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         catch(NotBoundException|RemoteException|NotEnoughPlayersException nbe) {
             System.out.println("Exception caught");
+            return;
         }
 
         while (alwaysTrue) {
@@ -313,7 +330,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
             }
             else if(connection.getStartGame() == 2) {
-                System.out.println("The number of player is not enough. Bye!");
+                System.out.println("The number of players is not enough. Bye!");
                 return;
             }
         }
@@ -322,6 +339,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
         exec.submit(new UpdaterCLI());
-        exec.shutdown();
+        //exec.shutdown();
     }
 }

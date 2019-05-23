@@ -52,6 +52,12 @@ public abstract class PlayerAbstract implements Serializable {
     public void shoot() {
     }
 
+    public abstract void setIfCharacter(boolean choice);
+
+    public abstract boolean getIfCharacter();
+
+    public abstract int getClientID();
+
     public abstract void setPlayerCharacter(Figure figure);
 
     public abstract void collect(Square square);
@@ -69,8 +75,6 @@ public abstract class PlayerAbstract implements Serializable {
     }
 
     public abstract void usePowerup(int powerupIndex);
-
-    public abstract UUID getId();
 
     public abstract PlayerBoard getBoard();
 
