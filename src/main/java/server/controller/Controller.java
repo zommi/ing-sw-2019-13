@@ -45,4 +45,8 @@ public class Controller implements MyObserver {
 
     public void update(){}
 
+    public void startGame(){
+
+    }
+
 }

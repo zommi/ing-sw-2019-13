@@ -3,6 +3,7 @@ package server;
 import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
+import exceptions.GameAlreadyStartedException;
 import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -67,8 +68,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException{
+    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
+        if(serverRMI.getServer().getStartGame() == true){
+            throw new GameAlreadyStartedException();
+        };
         this.clientIDadded = serverRMI.addClient(client);
         System.out.println("Added client number: " +clientIDadded);
 
@@ -143,11 +147,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.initialSkulls;
     }
 
+    /*
     @Override
     public void startMatch() throws RemoteException{
         System.out.println("Starting the match");
         startGame = this.serverRMI.getServer().startMatch();
-    }
+    }*/
 
 
     @Override

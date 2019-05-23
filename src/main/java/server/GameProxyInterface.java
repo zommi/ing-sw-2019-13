@@ -3,6 +3,7 @@ package server;
 import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
+import exceptions.GameAlreadyStartedException;
 import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public interface GameProxyInterface extends Remote {
 
     public boolean addPlayerCharacter(String name, int ID) throws RemoteException;
 
-    public void startMatch() throws RemoteException;
+    /*public void startMatch() throws RemoteException;*/
 
     public boolean addMapPlayer() throws RemoteException;
 
@@ -35,7 +36,7 @@ public interface GameProxyInterface extends Remote {
 
     public int getClientID() throws RemoteException;
 
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException;
+    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException;
 

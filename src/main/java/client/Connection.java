@@ -9,10 +9,6 @@ public interface Connection extends Serializable {
 
     public void addPlayerCharacter(String name);
 
-    public void startMatch();
-
-    public void saveAnswer(ServerAnswer answer);
-
     public boolean CharacterChoice(String name);
 
     public int getStartGame();
@@ -20,6 +16,8 @@ public interface Connection extends Serializable {
     public int getInitialSkulls();
 
     public int getClientID();
+
+    public boolean getError();
 
     public void send(Info action);
 

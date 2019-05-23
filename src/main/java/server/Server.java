@@ -1,7 +1,5 @@
 package server;
 
-import client.Connection;
-import client.ConnectionRMI;
 import client.ReceiverInterface;
 import server.controller.Controller;
 import server.model.game.Game;
@@ -13,6 +11,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,8 +26,12 @@ public class Server {
     private Controller controller;
     private int initialSkulls;
     private int clientIDadded;
+    private boolean startGame = false;
     private static List<Integer> listOfClients = new ArrayList<Integer>();
 
+    public boolean getStartGame(){
+        return this.startGame;
+    }
 
     public int startMatch(){
         if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
@@ -38,6 +42,7 @@ public class Server {
         }
         //now we have to start the game!
         else{
+            startGame = true;
             game = new Game(mapChoice, initialSkulls);
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
@@ -47,11 +52,8 @@ public class Server {
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
-                    if(temp.get(i).getClientID() != 0) {//this methods is used to update all the RMI gameModels
-                        System.out.println("Found a connection that is not client 0, but it is: " + temp.get(i).getClientID());
-                        temp.get(i).publishMessage(mapAnswer);
-                        System.out.println("Sent the map to the connection RMI");
-                    }
+                    temp.get(i).publishMessage(mapAnswer);
+                    System.out.println("Sent the map to the connection RMI");
                 }
             }
             catch(RemoteException e){
@@ -60,9 +62,11 @@ public class Server {
             }
 
             System.out.println("The game is starting");
+
             return 1;
         }
     }
+
 
 
     public int addClient(ReceiverInterface client){
@@ -75,6 +79,13 @@ public class Server {
             this.clientIDadded = clientIDadded + 1;
         }
         System.out.println("Added the clientID ");
+
+        if(listOfClients.size() == 3){ //start timer di N secondi
+            TimerTask timerTask = new MyTimerTask(this);
+            Timer timer = new Timer(true);
+            timer.schedule(timerTask, 0);
+            System.out.println("Task started");
+        }
         return clientIDadded;
     }
 

@@ -1,5 +1,6 @@
 package client;
 
+import exceptions.GameAlreadyStartedException;
 import server.GameProxyInterface;
 import view.ServerAnswer;
 
@@ -17,6 +18,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private String mapChoice;
     private int initialSkulls;
 
+    private boolean error = false;
     private boolean playerNameSet = false;
     private boolean initialSkullsSet = false;
     private boolean characterNameSet = false;
@@ -123,7 +125,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
-    @Override
+    /*@Override
     public void startMatch(){
         try{
             gameProxy.startMatch();
@@ -131,12 +133,19 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         catch (RemoteException e){
             System.out.println("Exception while starting the timer");
         }
+    }*/
+
+    @Override
+    public boolean getError(){
+        return this.error;
     }
 
     @Override
     public void configure() {
         try{
             this.game = initializeRMI();
+            if(game == null)
+                this.error = true;
         }
         catch(RemoteException|NotBoundException re){
             System.out.println("Exception while initializing");
@@ -164,7 +173,13 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         (ReceiverInterface) UnicastRemoteObject.exportObject(this, 1000)*/
 
         gameProxy.setClientRMI(this);
-        gameProxy.register(this);
+        try{
+            gameProxy.register(this);
+        }
+        catch(GameAlreadyStartedException e){
+            System.out.println("The Game already started!");
+            return null;
+        }
         setClientID(gameProxy.getClientID());
         this.gameModel.setClientID(clientID);
 
@@ -251,8 +266,5 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         //TODO manca la parte in cui salvo le scelte del client!
     }
 
-    public void saveAnswer(ServerAnswer answer){
-        this.gameModel.saveAnswer(answer);
-    }
 }
 

@@ -16,6 +16,7 @@ public class ConnectionSocket implements Connection {
     private int initialSkulls;
     private boolean isConnected;
     private int startGame = 0;
+    private boolean error = false;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -30,14 +31,14 @@ public class ConnectionSocket implements Connection {
         this.socket = null;
     }
 
+    @Override
+    public boolean getError(){
+        return this.error;
+    }
+
     public void addPlayerCharacter(String name){
         send(new SetupInfo(name));
     }
-
-    public void saveAnswer(ServerAnswer answer){
-
-    }
-
 
     public boolean CharacterChoice(String name){
         return true;
@@ -52,9 +53,6 @@ public class ConnectionSocket implements Connection {
         return this.clientID;
     }
 
-    public void startMatch(){
-
-    }
 
     @Override
     public int getStartGame(){
