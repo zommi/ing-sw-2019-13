@@ -1,10 +1,7 @@
 package server.controller.playeraction;
 
-import server.controller.playeraction.ShootInfo;
 import client.Info;
 import constants.Color;
-import exceptions.NoSuchEffectException;
-import server.controller.playeraction.ShootInfo;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
@@ -68,20 +65,16 @@ public class MicroInfo implements Serializable, Info {
 
     public void actuate(ShootInfo shootInfo){
         Color color = shootInfo.getAttacker().getColor();
-        try {
-            for (PlayerAbstract playerAbstract : playersList) {
-                playerAbstract.addDamage(shootInfo.getWeapon()
-                        .getMicroEffect(macroNumber, microNumber).getDamage(), color);
-                playerAbstract.addMarks(shootInfo.getWeapon()
-                        .getMicroEffect(macroNumber, microNumber).getMarks(), color);
-                if (shootInfo.getWeapon()
-                        .getMicroEffect(macroNumber, microNumber).isMoveFlag())
-                    playerAbstract.getGameCharacter().move(this.square);
-            }
-        } catch(NoSuchEffectException e){
-            //this should never happen
+        for (PlayerAbstract playerAbstract : playersList) {
+            playerAbstract.addDamage(shootInfo.getWeapon()
+                    .getMicroEffect(macroNumber, microNumber).getDamage(), color);
+            playerAbstract.addMarks(shootInfo.getWeapon()
+                    .getMicroEffect(macroNumber, microNumber).getMarks(), color);
+            if (shootInfo.getWeapon()
+                    .getMicroEffect(macroNumber, microNumber).isMoveFlag())
+                playerAbstract.getGameCharacter().move(this.square);
         }
-
+        //not checking if getMicroEffect==null cause it has already been validated
     }
 
 }

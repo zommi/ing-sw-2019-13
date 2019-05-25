@@ -1,8 +1,5 @@
 package client;
 
-import exceptions.NoSuchEffectException;
-
-import javax.crypto.Mac;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +8,7 @@ public class ShootParser {
     private boolean isLimitedActivated;
     private Weapon weapon;
 
-    public ShoootInfo getWeaponInput(Weapon weapon, InputInterface input) throws NoSuchEffectException {
+    public ShoootInfo getWeaponInput(Weapon weapon, InputInterface input){
         this.isLimitedActivated = false;
         this.weapon = weapon;
         ShoootInfo shoootInfo = new ShoootInfo(weapon.getName());
@@ -27,6 +24,8 @@ public class ShootParser {
                         this.chooseMacro(macroEffect, input);
 
                 }
+            case ALTERNATIVE:
+
         }
         return null;
     }
@@ -44,6 +43,9 @@ public class ShootParser {
     }
 
     private void chooseMacro(MacroEffect macroEffect, InputInterface input){
-        input.getChoice(macroEffect);
+        boolean answer = input.getChoice(macroEffect);
+        if(answer){
+            this.manageMacro(macroEffect, input);
+        }
     }
 }

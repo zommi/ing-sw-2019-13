@@ -1,7 +1,6 @@
 package server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import exceptions.NoSuchEffectException;
 import server.controller.playeraction.MicroInfo;
 import server.controller.playeraction.ShootInfo;
 import server.model.map.Room;
@@ -81,47 +80,38 @@ public class WeaponPolicy {
                 }
             }
             else if(effectFlag && effectList.equals("player")){
-                try {
-                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                        if(playerAbstract != shootInfo
-                                .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer())
-                            microInfo.getPlayersList().remove(playerAbstract);
-                    }
-                }catch(NoSuchEffectException e){
-                    //this should never happen
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    if(playerAbstract != shootInfo
+                            .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer())
+                        //not checking if micro is null cause it must have been activated
+                        microInfo.getPlayersList().remove(playerAbstract);
                 }
             }
         }
     }
 
     private void generateSpecificSquare(ShootInfo shootInfo, MicroInfo microInfo){
-        try {
-            if (policyType.equals("square")) {
-                if (effectFlag) {
-                    if (effectList.equals("square")) {
-                        microInfo.setSquare(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare());
-                    } else if (effectList.equals("player")) {
-                        microInfo.setSquare(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
-                                .getFirstPlayer().getPosition());
-                    }
+        if (policyType.equals("square")) {
+            if (effectFlag) {
+                if (effectList.equals("square")) {
+                    microInfo.setSquare(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare());
+                } else if (effectList.equals("player")) {
+                    microInfo.setSquare(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
+                            .getFirstPlayer().getPosition());
                 }
+                //not checking if micro is null cause it must have been activated
             }
-        }catch(NoSuchEffectException e){
-            //this should never happen
         }
     }
 
     private void generateAllPlayersInRoom(ShootInfo shootInfo, MicroInfo microInfo){
-        try{
-            if(policyType.equals("player") && effectFlag && effectList.equals("room"))
-                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                    if(!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
-                            .getFirstRoom().getCharacters().contains(playerAbstract.getGameCharacter()))
-                        microInfo.getPlayersList().remove(playerAbstract);
-                }
-        }catch(NoSuchEffectException e){
-            //this should never happen
-        }
+        if(policyType.equals("player") && effectFlag && effectList.equals("room"))
+            for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                if(!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
+                        .getFirstRoom().getCharacters().contains(playerAbstract.getGameCharacter()))
+                    microInfo.getPlayersList().remove(playerAbstract);
+            }
+        //not checking if micro is null cause it must have been activated
     }
 
     private void generateDistance(ShootInfo shootInfo, MicroInfo microInfo){
@@ -144,42 +134,40 @@ public class WeaponPolicy {
     }
 
     private boolean checkDistance(ShootInfo shootInfo, MicroInfo microInfo){
-        try{
-            List<SquareAbstract> list = new ArrayList<>();
-            switch(policyType){
-                case "player":
-                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                        list.add(playerAbstract.getPosition());
-                    }
-                    break;
-                case "square":
-                    list.add(microInfo.getSquare());
-                    break;
-                case "noMoveSquare":
-                    list.addAll(microInfo.getNoMoveSquaresList());
-                    break;
-                default: return false;
-            }
-            SquareAbstract square2 = null;
-            if(attackerFlag){
-                square2 = shootInfo.getAttacker().getPosition();
-            }
-            else if(effectFlag){
-                if(effectList.equals("player"))
+        List<SquareAbstract> list = new ArrayList<>();
+        switch(policyType){
+            case "player":
+                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                    list.add(playerAbstract.getPosition());
+                }
+                break;
+            case "square":
+                list.add(microInfo.getSquare());
+                break;
+            case "noMoveSquare":
+                list.addAll(microInfo.getNoMoveSquaresList());
+                break;
+            default: return false;
+        }
+        SquareAbstract square2 = null;
+        if(attackerFlag){
+            square2 = shootInfo.getAttacker().getPosition();
+        }
+        else if(effectFlag){
+            if(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex) == null)
+                return true;
+            else {
+                if (effectList.equals("player"))
                     square2 = shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
                             .getFirstPlayer().getPosition();
-                else if(effectList.equals("square")){
+                else if (effectList.equals("square")) {
                     square2 = microInfo.getSquare();
-                }
-                else if(effectList.equals("noMoveSquare")){
+                } else if (effectList.equals("noMoveSquare")) {
                     square2 = microInfo.getFirstNMS();
-                }
-                else return false;
+                } else return false;
             }
-            return distanceCheckSwitch(list, square2);
-        }catch(NoSuchEffectException e){
-            return true;
         }
+        return distanceCheckSwitch(list, square2);
     }
 
     private boolean distanceCheckSwitch(List<SquareAbstract> list, SquareAbstract square){
@@ -223,7 +211,9 @@ public class WeaponPolicy {
                         .getVisibleCharacters().contains(player.getGameCharacter()))
                     return false;
                 else if(effectFlag){
-                    try{
+                    if(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex) == null)
+                        return true;
+                    else{
                         if(effectList.equals("player") && !shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
                             .getPlayersList().get(0).getPosition().getVisibleCharacters().contains(player.getGameCharacter()))
                             return false;
@@ -233,8 +223,6 @@ public class WeaponPolicy {
                         }
                         else if(!effectList.equals("player") && !effectList.equals("square"))
                             return false;
-                    } catch(NoSuchEffectException e){
-                        //automatically verified
                     }
                 }
             }
@@ -260,13 +248,13 @@ public class WeaponPolicy {
 
     private boolean checkDifferent(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && effectFlag && effectList.equals("player")){
-             try {
+             if(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex) == null)
+                return true;
+             else{
                  for (PlayerAbstract playerAbstract : microInfo.getPlayersList())
                      if(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
                              .getPlayersList().contains(playerAbstract))
                              return false;
-             } catch (NoSuchEffectException e){
-                 return true;
              }
             return true;
         }
@@ -287,14 +275,14 @@ public class WeaponPolicy {
 
     private boolean checkInList(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && effectFlag && effectList.equals("player")){
-            try {
+            if(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex) == null)
+                return true;
+            else{
                 for (PlayerAbstract playerAbstract : microInfo.getPlayersList()) {
                     if (!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
                             .getPlayersList().contains(playerAbstract))
                         return false;
                 }
-            } catch(NoSuchEffectException e){
-                return true;
             }
             return true;
         }
@@ -320,29 +308,26 @@ public class WeaponPolicy {
                     break;
                 default: return false;
             }
-            try {
-                if (effectFlag) {
-                    switch (effectList) {
-                        case "player":
-                            for (PlayerAbstract playerAbstract : shootInfo
-                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getPlayersList()) {
-                                squareAbstractList.add(playerAbstract.getPosition());
-                            }
-                            break;
-                        case "noMoveSquare":
-                            squareAbstractList.addAll(shootInfo
-                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getNoMoveSquaresList());
-                            break;
-                        case "square":
-                            squareAbstractList.add(shootInfo
-                                    .getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare());
-                            break;
-                        default:
-                            return false;
-                    }
+            if (effectFlag && shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex) != null) {
+                switch (effectList) {
+                    case "player":
+                        for (PlayerAbstract playerAbstract : shootInfo
+                                .getActivatedMicro(macroEffectIndex, microEffectIndex).getPlayersList()) {
+                            squareAbstractList.add(playerAbstract.getPosition());
+                        }
+                        break;
+                    case "noMoveSquare":
+                        squareAbstractList.addAll(shootInfo
+                                .getActivatedMicro(macroEffectIndex, microEffectIndex).getNoMoveSquaresList());
+                        break;
+                    case "square":
+                        squareAbstractList.add(shootInfo
+                                .getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare());
+                        break;
+                    default:
+                        return false;
                 }
-            } catch(NoSuchEffectException e){
-                //no square is added
+                //else no square is added
             }
             return squareAbstract.areSameDirection(squareAbstractList);
         }

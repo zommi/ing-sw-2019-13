@@ -1,7 +1,6 @@
 package server.controller.playeraction;
 
 import client.Info;
-import exceptions.NoSuchEffectException;
 import client.MicroEffect;
 import client.Weapon;
 import server.model.player.PlayerAbstract;
@@ -36,14 +35,14 @@ public class ShootInfo implements Serializable, Info {
         return activatedMacros;
     }
 
-    public MacroInfo getActivatedMacro(int macro) throws NoSuchEffectException{
+    public MacroInfo getActivatedMacro(int macro){
         for(MacroInfo macroInfo : activatedMacros)
             if(macroInfo.getMacroNumber() == macro)
                 return activatedMacros.get(macro);
-        throw new NoSuchEffectException();
+        return null;
     }
 
-    public MicroInfo getActivatedMicro(int macro, int micro) throws NoSuchEffectException{
+    public MicroInfo getActivatedMicro(int macro, int micro){
         return getActivatedMacro(macro).getActivatedMicro(micro);
     }
 

@@ -1,7 +1,5 @@
 package client;
 
-import exceptions.NoSuchEffectException;
-
 import java.util.List;
 
 public class ShoootInfo implements Info{
@@ -17,14 +15,16 @@ public class ShoootInfo implements Info{
         return activatedMacros;
     }
 
-    public MacroPack getActivatedMacro(int macro) throws NoSuchEffectException {
+    public MacroPack getActivatedMacro(int macro){
         for(MacroPack macroPack : activatedMacros)
             if(macroPack.getMacroNumber() == macro)
                 return activatedMacros.get(macro);
-        throw new NoSuchEffectException();
+        return null;
     }
 
-    public MicroPack getActivatedMicro(int macro, int micro) throws NoSuchEffectException{
-        return getActivatedMacro(macro).getActivatedMicro(micro);
+    public MicroPack getActivatedMicro(int macro, int micro){
+        if(getActivatedMacro(macro) != null)
+            return getActivatedMacro(macro).getActivatedMicro(micro);
+        else return null;
     }
 }

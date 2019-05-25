@@ -1,8 +1,10 @@
 package server.model.player;
 
+import client.Weapon;
 import constants.Color;
 import constants.Direction;
 import client.Cost;
+import server.model.cards.WeaponCard;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
@@ -59,6 +61,10 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract int getClientID();
 
     public abstract void setPlayerCharacter(Figure figure);
+
+    public abstract PlayerHand getHand();
+
+    public abstract WeaponCard getWeaponCard(Weapon weapon);
 
     public abstract void collect(Square square);
 

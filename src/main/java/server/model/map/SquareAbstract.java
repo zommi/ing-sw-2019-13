@@ -1,6 +1,5 @@
 package server.model.map;
 
-import exceptions.NoSuchEffectException;
 import exceptions.NotAlignedException;
 import server.model.cards.CollectableInterface;
 import constants.Color;
