@@ -1,4 +1,4 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

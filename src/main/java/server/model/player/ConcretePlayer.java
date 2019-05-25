@@ -1,7 +1,7 @@
 package server.model.player;
 
-import client.Cost;
-import client.Weapon;
+import client.weapons.Cost;
+import client.weapons.Weapon;
 import server.model.cards.WeaponCard;
 import server.model.items.AmmoCube;
 import server.model.map.*;

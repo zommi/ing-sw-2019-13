@@ -1,4 +1,4 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -79,5 +79,9 @@ public class MacroEffect {
 
     public int getMacroEffectIndex() {
         return macroEffectIndex;
+    }
+
+    public String toString(){
+        return this.description + "\ncost: " + cost;
     }
 }

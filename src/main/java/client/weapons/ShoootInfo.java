@@ -1,14 +1,18 @@
-package client;
+package client.weapons;
 
+import client.Info;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class ShoootInfo implements Info{
+public class ShoootInfo implements Info {
 
     private String weapon;
     List<MacroPack> activatedMacros;
 
     public ShoootInfo(String weapon){
-
+        this.weapon = weapon;
+        this.activatedMacros = new ArrayList<>();
     }
 
     public List<MacroPack> getActivatedMacros() {

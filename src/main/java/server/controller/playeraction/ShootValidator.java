@@ -1,10 +1,10 @@
 package server.controller.playeraction;
 
-import client.Cost;
-import client.MacroEffect;
-import client.MicroEffect;
+import client.weapons.Cost;
+import client.weapons.MacroEffect;
+import client.weapons.MicroEffect;
 
-import client.WeaponType;
+import client.weapons.WeaponType;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;
 import server.model.player.GameCharacter;
@@ -13,13 +13,20 @@ import server.model.player.PlayerAbstract;
 public class ShootValidator {
 
     public boolean validate(ShootInfo shootInfo, GameBoard gameBoard){
-//        //attacker must have the selected weapon
-//        if(shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()) == null)
-//            return false;
-//
-//        //weapon must be loaded
-//        if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
-//            return false;
+       /*
+       IMPORTANT:
+        uncomment these lines only when instantiating weapon cards and assigning them to players
+
+        //attacker must have the selected weapon
+        if(shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()) == null)
+            return false;
+
+        //weapon must be loaded
+        if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
+            return false;
+
+
+        */
 
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){

@@ -1,9 +1,9 @@
 package server.model.player;
 
-import client.Weapon;
+import client.weapons.Weapon;
 import constants.Color;
 import constants.Direction;
-import client.Cost;
+import client.weapons.Cost;
 import server.model.cards.WeaponCard;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
@@ -12,7 +12,6 @@ import server.model.map.SquareAbstract;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  *

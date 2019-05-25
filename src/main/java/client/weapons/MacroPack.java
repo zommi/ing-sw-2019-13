@@ -1,4 +1,4 @@
-package client;
+package client.weapons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +28,7 @@ public class MacroPack {
         return null;
     }
 
+    public void setMacroNumber(int macroNumber) {
+        this.macroNumber = macroNumber;
+    }
 }

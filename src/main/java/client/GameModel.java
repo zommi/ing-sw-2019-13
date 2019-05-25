@@ -1,5 +1,6 @@
 package client;
 
+import client.weapons.Weapon;
 import view.*;
 import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
@@ -9,7 +10,9 @@ import server.model.player.PlayerHand;
 import java.io.Serializable;
 import java.util.*;
 
-public class GameModel extends Observable implements Serializable { // so that the GUI can be an observer of this class and this class is an observer of the model GAMESTATE
+public class GameModel extends Observable implements Serializable {
+    // so that the GUI can be an observer of this class and
+    // this class is an observer of the model GAMESTATE
 
 
     private GameBoard gameBoard;

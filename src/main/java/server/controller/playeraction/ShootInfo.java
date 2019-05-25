@@ -1,8 +1,8 @@
 package server.controller.playeraction;
 
 import client.Info;
-import client.MicroEffect;
-import client.Weapon;
+import client.weapons.MicroEffect;
+import client.weapons.Weapon;
 import server.model.player.PlayerAbstract;
 
 
