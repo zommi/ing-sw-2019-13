@@ -18,6 +18,11 @@ public class PlayerHand {
     /**
      *
      */
+
+    public PlayerHand(){
+
+    }
+
     public PlayerHand(ConcretePlayer p) {
         this.player = p;
         this.weaponHand = new ArrayList<>();
@@ -36,6 +41,13 @@ public class PlayerHand {
         return (ArrayList<PowerupCard>) powerupHand.clone();
     }
 
+    public PlayerHand createCopy(PlayerHand playerHandToCopy){
+        PlayerHand playerHand = new PlayerHand();
+        playerHand.player = playerHandToCopy.getPlayer();
+        playerHand.weaponHand = (ArrayList<WeaponCard>) playerHandToCopy.getWeapons();
+        playerHand.powerupHand = (ArrayList<PowerupCard>) playerHandToCopy.getPowerups();
+        return playerHand;
+    }
 
     /*
     public void playWeapon(int choice, int extra, int x, int y){

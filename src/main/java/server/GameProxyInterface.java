@@ -1,25 +1,32 @@
 package server;
 
-import client.GameModel;
+import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
-import server.controller.playeraction.Action;
+import exceptions.GameAlreadyStartedException;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface GameProxyInterface extends Remote {
 
+    public int getStartGame() throws RemoteException;
 
     public String getMap() throws RemoteException;
 
-    public boolean addPlayerCharacter(String name) throws RemoteException;
+    public boolean addPlayerCharacter(String name, int ID) throws RemoteException;
+
+    /*public void startMatch() throws RemoteException;*/
 
     public boolean addMapPlayer() throws RemoteException;
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
+
+    public List<ReceiverInterface> getClientRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
 
@@ -29,15 +36,13 @@ public interface GameProxyInterface extends Remote {
 
     public int getClientID() throws RemoteException;
 
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException;
+    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException;
 
-    public boolean sendPlayer(String name) throws RemoteException;
+    public boolean sendPlayer(String name, int ID) throws RemoteException;
 
     public boolean sendMap(int numMap) throws RemoteException;
 
     public PlayerAbstract getPlayer() throws RemoteException;
-
-    void sendGameModel(GameModel gameModel) throws RemoteException;
 }

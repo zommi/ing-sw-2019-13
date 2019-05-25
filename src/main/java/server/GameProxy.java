@@ -1,8 +1,9 @@
 package server;
 
-import client.GameModel;
+import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
+import exceptions.GameAlreadyStartedException;
 import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -18,10 +19,11 @@ import java.util.List;
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
     private ReceiverInterface clientRMI;
+    private int startGame;
     private int numMap;
     private String playerName;
     private ServerRMI serverRMI;
-    private PlayerAbstract player;
+    private List<PlayerAbstract> player = new ArrayList();
     private int clientIDadded;
     private int initialSkulls;
     private List<ReceiverInterface> clientRMIadded = new ArrayList<>();
@@ -29,12 +31,27 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI = serverRMI;
+        this.serverRMI.getServer().setGameProxy(this);
         UnicastRemoteObject.exportObject(this, 1099);
+    }
+
+    public List<ReceiverInterface> getClientRMIadded() throws RemoteException{
+        return this.clientRMIadded;
     }
 
     @Override
     public boolean isCharacterTaken(String nameChar) throws RemoteException{
-        return this.serverRMI.isCharacterTaken(nameChar);
+        System.out.println("Checking if the character is already taken by someone else");
+        System.out.println("In my list I have " +player.size() +"players, i will check if they already have chosen their characters");
+        for(int i = 0; i < player.size(); i++){
+            if((player.get(i).getIfCharacter() == true)&&(player.get(i).getCharacterName().equalsIgnoreCase(nameChar))){
+                System.out.println("Found " +player.get(i).getCharacterName());
+                System.out.println("The character is already taken by someone else");
+                return true;
+            }
+        }
+        System.out.println("The character name you chose is ok");
+        return false;
     }
 
     @Override
@@ -51,9 +68,14 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException{
+    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
+        if(serverRMI.getServer().getStartGame() == 1){
+            throw new GameAlreadyStartedException();
+        };
         this.clientIDadded = serverRMI.addClient(client);
+        System.out.println("Added client number: " +clientIDadded);
+
 
         /*System.out.println("I am trying to connect to the client");
         Registry registryClient = LocateRegistry.getRegistry("localhost",1000);
@@ -71,24 +93,32 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
         this.clientRMI = clientRMI;
+        clientRMI.print();
         this.addClientRMI(clientRMI);
         System.out.println("I just connected to the client");
     }
 
     @Override
-    public boolean sendPlayer(String name)  throws RemoteException{
+    public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
-        this.playerName = name;
-        this.player = new ConcretePlayer(name);
+        PlayerAbstract playerToAdd = new ConcretePlayer(name);
+        playerToAdd.setIfCharacter(false);
+        ((ConcretePlayer) playerToAdd).setClientID(clientID);
+        player.add(playerToAdd);
         return true;
     }
 
     @Override
-    public boolean addPlayerCharacter(String name) throws RemoteException{
-        this.player.setPlayerCharacter(Figure.fromString(name));
+    public boolean addPlayerCharacter(String name, int ID) throws RemoteException{
+        for(int i = 0; i < player.size(); i++){
+            if(player.get(i).getClientID() == ID){
+                this.player.get(i).setPlayerCharacter(Figure.fromString(name));
+                this.player.get(i).setIfCharacter(true);
+            }
+            System.out.println("For now I have received client number " +player.get(i).getClientID());
+        }
         return true;
     }
-
 
     @Override
     public String getMap() throws RemoteException{
@@ -117,6 +147,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.initialSkulls;
     }
 
+    /*
+    @Override
+    public void startMatch() throws RemoteException{
+        System.out.println("Starting the match");
+        startGame = this.serverRMI.getServer().startMatch();
+    }*/
+
 
     @Override
     public boolean sendMap(int numMap)  throws RemoteException{
@@ -137,13 +174,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public PlayerAbstract getPlayer() throws RemoteException{
-        return player;
+        return player.get(player.size() - 1);
     }
 
     @Override
-    public void sendGameModel(GameModel gameModel) throws RemoteException{
-        this.serverRMI.getServer().addGameModel(gameModel);
+    public int getStartGame() throws RemoteException{
+        return this.serverRMI.getServer().getStartGame();
     }
-
 }
 

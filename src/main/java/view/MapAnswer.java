@@ -1,21 +1,19 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.List;
+import server.model.map.GameMap;
 
-public class MapAnswer implements ServerAnswer {
-    private int numMap;
-    private List<MapElement> charactersPosition;
 
-    public MapAnswer(int numMap, ArrayList<MapElement> charactersPosition){
-        this.numMap = numMap;
-        this.charactersPosition = charactersPosition;
+public class MapAnswer {
+
+    private GameMap result;
+
+    public MapAnswer(GameMap map){
+        this.result = map.createCopy(map);
     }
 
-    public int getNumMap(){
-        return this.numMap;
+    public GameMap getResult(){
+        return this.result;
     }
-    public List<MapElement> getCharactersPosition(){
-        return this.charactersPosition;
-    }
+
+
 }

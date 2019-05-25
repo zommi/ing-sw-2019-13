@@ -20,11 +20,22 @@ public class GameCharacter {
     private ConcretePlayer concretePlayer;
     private SquareAbstract oldPosition;
 
+    public GameCharacter(){
+
+    }
 
     public GameCharacter(Figure f){
         this.figure = f;
         f.setOwner(this);
         setTaken(f);
+    }
+
+    public GameCharacter CharacterCreateCopy(GameCharacter gameCharacterToCopy){
+        GameCharacter gameCharacter = new GameCharacter();
+        gameCharacter.position = gameCharacterToCopy.getPosition();
+        gameCharacter.oldPosition = gameCharacterToCopy.getOldPosition();
+        gameCharacter.concretePlayer = null;
+        return gameCharacter;
     }
 
     public static void initialize(){

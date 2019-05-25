@@ -22,6 +22,9 @@ public class KillshotTrack {
      */
     private int[] multiciplityToken;
 
+    public KillshotTrack(){
+
+    }
     /**
      * constructor for the killshotTrack
      * @param initialSkull number of skulls in a game
@@ -32,6 +35,13 @@ public class KillshotTrack {
         this.damageTokens = new Color[initialSkull];
     }
 
+    public KillshotTrack createCopy(KillshotTrack killshotTrackToCopy){
+        KillshotTrack killshotTrack = new KillshotTrack();
+        killshotTrack.remainingSkulls = killshotTrackToCopy.getRemainingSkulls();
+        killshotTrack.damageTokens = killshotTrackToCopy.getDamageTokens();
+        killshotTrack.multiciplityToken = killshotTrackToCopy.getMulticiplityToken();
+        return killshotTrack;
+    }
 
     /**
      *
@@ -41,7 +51,13 @@ public class KillshotTrack {
         return this.remainingSkulls;
     }
 
+    public Color[] getDamageTokens() {
+        return this.damageTokens;
+    }
 
+    public int[] getMulticiplityToken() {
+        return this.multiciplityToken;
+    }
     /**
      *
      * @param index index of a cell in multiplicityToken

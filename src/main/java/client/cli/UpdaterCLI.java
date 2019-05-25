@@ -2,8 +2,8 @@ package client.cli;
 
 
 import client.*;
-import exceptions.CommandIsNotValidException;
-import server.controller.playeraction.Action;
+import exceptions.GameAlreadyStartedException;
+import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerBoard;
@@ -17,12 +17,12 @@ import java.util.Scanner;  // Import the Scanner class
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class UpdaterCLI  implements Updater,Runnable{
 
 
     private Connection connection;
-    private boolean startGame = false;
     private boolean alwaysTrue = true;
 
     private GameModel gameModel;
@@ -30,10 +30,15 @@ public class UpdaterCLI  implements Updater,Runnable{
         super();
     }
 
+
     @Override
     public void update(Observable obs, Object object){
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
+        }
+
+        if(object.equals("Map initialized")){
+            System.out.println("New Update of the map number");
         }
 
         if(object.equals("Map")){
@@ -49,8 +54,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+
     @Override
-    public void set() throws NotBoundException, RemoteException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
+    public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
         String read;
         String playerName;
@@ -83,7 +89,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("Method set: " +methodChosen);
 
 
-        int lastClientID = GameModel.getNextClientID(); //because it is static. It will always return 0. Then the server will return the true clientID
+        int lastClientID = 0;
 
         if (methodChosen.equals("1")) {
             connection = new ConnectionRMI(lastClientID);
@@ -95,7 +101,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
-        connection.sendGameModel(gameModel);
+        if(connection.getError() == true)
+            throw new GameAlreadyStartedException();
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -153,7 +160,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     mapName = "No one has chosen yet";
                 }
             } while (!mapChosen);
-            startGame = true;
             System.out.println(">You have chosen the map: " +mapName);
         }
         else
@@ -188,8 +194,30 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         System.out.println("Name is: " +characterName.toUpperCase());
         connection.addPlayerCharacter(characterName);
+
+        /*if(gameModel.getClientID() == 0){
+            System.out.println("Waiting 30 seconds for the others to join the game");
+            startTimer();
+            System.out.println("Waited 30 seconds for the others to join the game");
+            connection.startMatch();
+        }*/
+
+        if(connection.getStartGame() == 2){
+            System.out.println("Unfortunately, not enough people joined the game so you will be disconnected. Bye");
+            throw new NotEnoughPlayersException();
+        }
     }
 
+    /*public void startTimer(){
+        try{
+            TimeUnit.SECONDS.sleep(30);
+        }
+        catch(InterruptedException e)
+        {
+            System.out.println("Exception thrown");
+        }
+        System.out.println("I waited 30 seconds");
+    }*/
 
 
     @Override
@@ -211,39 +239,48 @@ public class UpdaterCLI  implements Updater,Runnable{
         try {
             this.set();
         }
-        catch(NotBoundException|RemoteException nbe) {
+        catch(NotBoundException|RemoteException|NotEnoughPlayersException|GameAlreadyStartedException nbe) {
             System.out.println("Exception caught");
+            return;
         }
 
         while (alwaysTrue) {
-            if (startGame) {
+            if (connection.getStartGame() == 1) { //the game can start
                 //try{
                 playerHand = gameModel.getPlayerHand();
                 playerBoard = gameModel.getPlayerBoard();
                 weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
                 System.out.println(">You have the following weapons: ");
-                if(weapons.size() == 0){
+                if((weapons == null)||(weapons.size() == 0)){
                     System.out.println(">You have no weapons!");
                 }
-
-                for(int i = 0; i < weapons.size(); i++){
-                    System.out.println("> " +weapons.get(i).getName());
+                else{
+                    for(int i = 0; i < weapons.size(); i++){
+                        System.out.println("> " +weapons.get(i).getName());
+                    }
                 }
 
                 powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
                 System.out.println(">You have the following puwerups: ");
-                for(int i = 0; i < weapons.size(); i++){
-                    System.out.println("> " +powerups.get(i).getName());
+                if((powerups == null)||(powerups.size() == 0)){
+                    System.out.println(">You have no powerups!");
+                }
+                else {
+                    for (int i = 0; i < powerups.size(); i++) {
+                        System.out.println("> " + powerups.get(i).getName());
+                    }
                 }
 
-                ammoRED = playerBoard.getRedAmmo();
-                System.out.println(">You have %d red ammos:" +ammoRED);
+                if(playerBoard != null){ //these checks are used when the clients still do not have any update, at the start of the match
+                    ammoRED = playerBoard.getRedAmmo();
+                    System.out.println(">You have %d red ammos:" +ammoRED);
 
-                ammoBLUE = playerBoard.getBlueAmmo();
-                System.out.println(">You have %d blue ammos:" +ammoBLUE );
+                    ammoBLUE = playerBoard.getBlueAmmo();
+                    System.out.println(">You have %d blue ammos:" +ammoBLUE );
 
-                ammoYELLOW = playerBoard.getYellowAmmo();
-                System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+                    ammoYELLOW = playerBoard.getYellowAmmo();
+                    System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
+                }
 
                 System.out.println(">Write a command: ");
                 read = myObj.nextLine();
@@ -294,8 +331,18 @@ public class UpdaterCLI  implements Updater,Runnable{
                 //    System.out.println(">The command written is not valid");
                 //}
             }
-            else {
+            else if(connection.getStartGame() == 0) {
                 System.out.println("Match isn't started, please wait a minute");
+                try{
+                    TimeUnit.SECONDS.sleep(5);
+                }
+                catch(InterruptedException e){
+                    System.out.println("Exception while waiting");
+                }
+            }
+            else if(connection.getStartGame() == 2) {
+                System.out.println("The number of players is not enough. Bye!");
+                return;
             }
         }
     }
@@ -303,5 +350,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();
         exec.submit(new UpdaterCLI());
+        //exec.shutdown();
     }
 }

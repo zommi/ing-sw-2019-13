@@ -21,8 +21,6 @@ class ConcretePlayerTest {
         PlayerAbstract player2 = new ConcretePlayer("Pluto", testGb, Figure.BANSHEE);
 
 
-        assertNotEquals(player1.getId(),player2.getId());
-
         List<GameCharacter> list1 = new ArrayList<GameCharacter>();
         list1.add(player1.getGameCharacter());
         List<GameCharacter> list2 = new ArrayList<GameCharacter>();

@@ -1,26 +1,18 @@
 package view;
 
-import server.model.cards.Powerup;
-import server.model.cards.PowerupCard;
-import server.model.cards.WeaponCard;
 import server.model.player.PlayerHand;
-import java.util.List;
+
 
 public class PlayerHandAnswer implements ServerAnswer {
 
-    private List<WeaponCard> weaponHand;
-    private List<PowerupCard> powerupHand;
-
+    private PlayerHand playerHand;
 
     public PlayerHandAnswer(PlayerHand p){
-        this.weaponHand = p.getWeapons();
-        this.powerupHand = p.getPowerups();
+        this.playerHand = p.createCopy(p);
     }
 
-    public List<WeaponCard> getWeaponHand(){
-        return this.weaponHand;
+    public PlayerHand getplayerHand() {
+        return this.playerHand;
     }
-    public List<PowerupCard> getPowerupHand(){
-        return this.powerupHand;
-    }
+
 }

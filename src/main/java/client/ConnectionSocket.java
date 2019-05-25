@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ConnectionSocket extends Connection {
+public class ConnectionSocket implements Connection {
 
     private Socket socket;
     private int clientID;
@@ -15,6 +15,8 @@ public class ConnectionSocket extends Connection {
     private GameModel gameModel;
     private int initialSkulls;
     private boolean isConnected;
+    private int startGame = 0;
+    private boolean error = false;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -29,18 +31,14 @@ public class ConnectionSocket extends Connection {
         this.socket = null;
     }
 
+    @Override
+    public boolean getError(){
+        return this.error;
+    }
+
     public void addPlayerCharacter(String name){
         send(new SetupInfo(name));
     }
-
-    public void saveAnswer(ServerAnswer answer){
-
-    }
-
-    public void sendGameModel(GameModel gameModel){
-
-    }
-
 
     public boolean CharacterChoice(String name){
         return true;
@@ -53,6 +51,12 @@ public class ConnectionSocket extends Connection {
 
     public int getClientID(){
         return this.clientID;
+    }
+
+
+    @Override
+    public int getStartGame(){
+        return this.startGame;
     }
 
     public void configure(){
