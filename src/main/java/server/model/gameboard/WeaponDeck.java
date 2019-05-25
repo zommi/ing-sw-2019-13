@@ -1,5 +1,7 @@
 package server.model.gameboard;
 
+import client.MacroEffect;
+import client.MicroEffect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.ReadJsonErrorException;
 import client.Weapon;
@@ -45,6 +47,20 @@ public class WeaponDeck {
         }
 
         if(arrayOfWeapons.length == 0) throw new ReadJsonErrorException();
+
+        for(Weapon weapon : arrayOfWeapons){
+            int macro = 0;
+            for(MacroEffect macroEffect : weapon.getMacroEffects()){
+                macroEffect.setNumber(macro);
+                int micro = 0;
+                for(MicroEffect microEffect : macroEffect.getMicroEffects()){
+                    microEffect.setNumber(micro);
+                    microEffect.setMacroNumber(macro);
+                    micro++;
+                }
+                macro++;
+            }
+        }
 
         this.deck = new LinkedList<>();
 

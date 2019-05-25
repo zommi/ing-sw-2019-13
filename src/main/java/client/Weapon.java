@@ -2,7 +2,6 @@ package client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import exceptions.NoSuchEffectException;
-import server.model.cards.WeaponType;
 
 import java.util.List;
 

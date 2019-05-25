@@ -265,11 +265,11 @@
     },
     "macroEffects": [
       {
-        "mandatory"  : true,
+        "limited" : true,
         "microEffects" : [
           {
             "moveFlag" : true,
-            "limited" : true,
+            "mandatory" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -284,13 +284,42 @@
                 "attackerFlag" : true
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "mandatory"  : true,
+        "microEffects" : [
           {
             "mandatory" : true,
+            "damage" : 2,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
                 "policyName" : "visible",
+                "policyType" : "player",
+                "attackerFlag" : true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "limited" : true,
+        "microEffects" : [
+          {
+            "moveFlag" : true,
+            "mandatory" : true,
+            "generatePlayerFlag" : true,
+            "policies" : [
+              {
+                "policyName" : "distanceSmaller",
+                "policyType" : "square",
+                "distance" : 3,
+                "attackerFlag" : true
+              },
+              {
+                "policyName" : "specificPlayer",
                 "policyType" : "player",
                 "attackerFlag" : true
               }
@@ -304,25 +333,8 @@
         },
         "microEffects" : [
           {
-            "moveFlag" : true,
-            "limited" : true,
-            "generatePlayerFlag" : true,
-            "policies" : [
-              {
-                "policyName" : "distanceSmaller",
-                "policyType" : "square",
-                "distance" : 3,
-                "attackerFlag" : true
-              },
-              {
-                "policyName" : "specificPlayer",
-                "policyType" : "player",
-                "attackerFlag" : true
-              }
-            ]
-          },
-          {
             "mandatory" : true,
+            "damage" : 1,
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -332,28 +344,6 @@
                 "macroEffectIndex" : 0,
                 "microEffectIndex" : 1,
                 "effectList" : "player"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "microEffects" : [
-          {
-            "moveFlag" : true,
-            "limited" : true,
-            "generatePlayerFlag" : true,
-            "policies" : [
-              {
-                "policyName" : "distanceSmaller",
-                "policyType" : "square",
-                "distance" : 3,
-                "attackerFlag" : true
-              },
-              {
-                "policyName" : "specificPlayer",
-                "policyType" : "player",
-                "attackerFlag" : true
               }
             ]
           }
@@ -1254,10 +1244,10 @@
     },
     "macroEffects": [
       {
-        "mandatory" : true,
+        "limited" : true,
         "microEffects" : [
           {
-            "limited" : true,
+            "mandatory" : true,
             "moveFlag" : true,
             "generatePlayerFlag" : true,
             "policies" : [
@@ -1273,7 +1263,12 @@
                 "attackerFlag" : true
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "mandatory" : true,
+        "microEffects" : [
           {
             "mandatory" : true,
             "maxTargetPlayerSize" : 1,
@@ -1290,12 +1285,10 @@
         ]
       },
       {
-        "cost" : {
-          "yellow" : 1
-        },
+        "limited" : true,
         "microEffects" : [
           {
-            "limited" : true,
+            "mandatory" : true,
             "moveFlag" : true,
             "generatePlayerFlag" : true,
             "policies" : [
@@ -1311,7 +1304,14 @@
                 "attackerFlag" : true
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "cost" : {
+          "yellow" : 1
+        },
+        "microEffects" : [
           {
             "mandatory" : true,
             "maxTargetPlayerSize" : 1,
@@ -1336,10 +1336,10 @@
         ]
       },
       {
-        "mandatory" : true,
+        "limited" : true,
         "microEffects" : [
           {
-            "limited" : true,
+            "mandatory" : true,
             "moveFlag" : true,
             "generatePlayerFlag" : true,
             "policies" : [

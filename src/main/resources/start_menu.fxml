@@ -16,7 +16,7 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
          <image>
-            <Image url="@../../../../Schermata%202019-05-16%20alle%2023.24.38.png" />
+            <Image url="@../../../../Schermata%202019-05-16%20alle%2023.24.38.png" />frame id and child
          </image>
       </ImageView>
       <StackPane alignment="BOTTOM_CENTER" StackPane.alignment="BOTTOM_CENTER">

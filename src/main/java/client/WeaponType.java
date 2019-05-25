@@ -1,4 +1,4 @@
-package server.model.cards;
+package client;
 
 public enum WeaponType {
 

@@ -4,6 +4,7 @@ import client.Cost;
 import client.MacroEffect;
 import client.MicroEffect;
 
+import client.WeaponType;
 import exceptions.NoSuchEffectException;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;

@@ -49,6 +49,26 @@ public class MicroEffect {
     @JsonProperty
     private boolean moveFlag;
 
+    private int macroNumber;
+
+    private int number;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public int getMacroNumber() {
+        return macroNumber;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public void setMacroNumber(int macroNumber) {
+        this.macroNumber = macroNumber;
+    }
+
     public boolean isConditional() {
         return conditional;
     }

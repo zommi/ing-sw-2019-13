@@ -14,6 +14,9 @@ public class MacroEffect {
     private boolean conditional;
 
     @JsonProperty
+    private boolean limited;
+
+    @JsonProperty
     private int macroEffectIndex;
 
     @JsonProperty
@@ -28,6 +31,15 @@ public class MacroEffect {
     @JsonProperty
     private boolean atLeastOneActiveFlag;
 
+    private int number;
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getNumber() {
+        return number;
+    }
 
     public MicroEffect getMicroEffect(int micro) throws NoSuchEffectException {
         if(micro < microEffects.size())
@@ -41,6 +53,10 @@ public class MacroEffect {
 
     public boolean isMandatory() {
         return mandatory;
+    }
+
+    public boolean isLimited() {
+        return limited;
     }
 
     public boolean isConditional() {
