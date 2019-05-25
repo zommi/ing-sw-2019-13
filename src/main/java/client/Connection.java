@@ -31,5 +31,5 @@ public interface Connection extends Serializable {
 
     public GameModel getGameModel();
 
-    public void add(String playerName, int map, int initialSkulls) throws RemoteException;
+    public void add(String playerName, int map, int initialSkulls);
 }
