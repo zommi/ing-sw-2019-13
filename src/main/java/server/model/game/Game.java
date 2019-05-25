@@ -1,6 +1,8 @@
 package server.model.game;
 
 import exceptions.*;
+import server.controller.turns.TurnHandler;
+import server.controller.turns.TurnPhase;
 import server.model.gameboard.*;
 import server.model.player.*;
 import server.model.map.*;
@@ -11,6 +13,10 @@ import java.util.*;
  * 
  */
 public class Game {
+
+    private TurnHandler turnHandler;
+
+    private TurnPhase currentTurn;
 
     private GameState currentState;
 
@@ -43,7 +49,17 @@ public class Game {
         this.powerupDeck = currentGameBoard.getPowerupDeck();
         this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
         this.currentPlayerIndex = 0;
+        this.turnHandler = new TurnHandler();
     }
+
+    public TurnPhase getCurrentTurn(){
+        return this.currentTurn;
+    }
+
+    public TurnHandler getTurnHandler() {
+        return turnHandler;
+    }
+
 
     public void addPlayer(PlayerAbstract player) throws WrongGameStateException {
         if (this.currentState == GameState.SETUP) {

@@ -53,6 +53,15 @@ public class ConnectionSocket implements Connection {
         return this.clientID;
     }
 
+    @Override
+    public String getCurrentCharacter(){
+        return null;
+    }
+
+    @Override
+    public int getCurrentID(){
+        return 0;
+    }
 
     @Override
     public int getStartGame(){

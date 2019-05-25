@@ -35,6 +35,10 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         UnicastRemoteObject.exportObject(this, 1099);
     }
 
+    public String getCurrentCharacter() throws RemoteException{
+        return this.serverRMI.getServer().getController().getCurrentCharacter();
+    }
+
     public List<ReceiverInterface> getClientRMIadded() throws RemoteException{
         return this.clientRMIadded;
     }
@@ -56,6 +60,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public boolean makeAction(int clientID, Info action)  throws RemoteException{
+        this.serverRMI.getServer().getController().makeAction(clientID, action);
         return true;
     }
 
@@ -65,6 +70,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public void sendMessage(ServerAnswer message){
+    }
+
+    @Override
+    public int getCurrentID() throws RemoteException{
+        return this.serverRMI.getServer().getController().getCurrentID();
     }
 
     @Override

@@ -4,7 +4,7 @@ import exceptions.NoSuchEffectException;
 
 import java.util.List;
 
-public class ShoootInfo {
+public class ShoootInfo implements Info{
 
     private String weapon;
     List<MacroPack> activatedMacros;

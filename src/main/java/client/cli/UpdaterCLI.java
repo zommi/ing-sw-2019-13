@@ -54,7 +54,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-
     @Override
     public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
@@ -246,90 +245,92 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         while (alwaysTrue) {
             if (connection.getStartGame() == 1) { //the game can start
-                //try{
-                playerHand = gameModel.getPlayerHand();
-                playerBoard = gameModel.getPlayerBoard();
-                weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
-                System.out.println(">You have the following weapons: ");
-                if((weapons == null)||(weapons.size() == 0)){
-                    System.out.println(">You have no weapons!");
-                }
-                else{
-                    for(int i = 0; i < weapons.size(); i++){
-                        System.out.println("> " +weapons.get(i).getName());
-                    }
-                }
-
-                powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
-                System.out.println(">You have the following puwerups: ");
-                if((powerups == null)||(powerups.size() == 0)){
-                    System.out.println(">You have no powerups!");
-                }
-                else {
-                    for (int i = 0; i < powerups.size(); i++) {
-                        System.out.println("> " + powerups.get(i).getName());
-                    }
-                }
-
-                if(playerBoard != null){ //these checks are used when the clients still do not have any update, at the start of the match
-                    ammoRED = playerBoard.getRedAmmo();
-                    System.out.println(">You have %d red ammos:" +ammoRED);
-
-                    ammoBLUE = playerBoard.getBlueAmmo();
-                    System.out.println(">You have %d blue ammos:" +ammoBLUE );
-
-                    ammoYELLOW = playerBoard.getYellowAmmo();
-                    System.out.println(">You have %d yellow ammos:" +ammoYELLOW );
-                }
-
-                System.out.println(">Write a command: ");
-                read = myObj.nextLine();
-                if(read.toUpperCase().equals("MOVE")){
-                    System.out.println(">Choose the coordinate x you want to move to: " );
-                    coordinatex = Integer.parseInt(myObj.nextLine());
-                    System.out.println(">Choose the coordinate y you want to move to: " );
-                    coordinatey = Integer.parseInt(myObj.nextLine());
-                    Info action = ActionParser.createMoveEvent(coordinatex, coordinatey);
-                    connection.send(action);
-                }
-                else if(read.toUpperCase().equals("SHOOT")){
-                    Info action = ActionParser.createShootEvent();
-                    connection.send(action);
-                }
-                else if(read.toUpperCase().equals("COLLECT")){
-                    do {System.out.println(">Choose what you want to collect: " );
-                        System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                        System.out.println("PowerUp Card (2)"); //2 is to collect powerup
-                        System.out.println("Ammo (3)"); //3 is to collect ammo
-                        read = myObj.nextLine();
-                        if (read.equals("1")) {
-                            collectDecision = 1;
-                            collectChosen = true;
-                        } else if (read.equals("2")) {
-                            collectDecision = 2;
-                            collectChosen = true;
-                        } else if (read.equals("3")) {
-                            collectDecision = 3;
-                            collectChosen = true;
+                if (connection.getClientID() == connection.getCurrentID()) {
+                    //try{
+                    playerHand = gameModel.getPlayerHand();
+                    playerBoard = gameModel.getPlayerBoard();
+                    weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
+                    System.out.println(">You have the following weapons: ");
+                    if ((weapons == null) || (weapons.size() == 0)) {
+                        System.out.println(">You have no weapons!");
+                    } else {
+                        for (int i = 0; i < weapons.size(); i++) {
+                            System.out.println("> " + weapons.get(i).getName());
                         }
-                    } while (!collectChosen);
-                    Info action = ActionParser.createCollectEvent(collectDecision);
-                    connection.send(action);
-                }
-                else if(read.toUpperCase().equals("USE POWERUP")){
-                    do {System.out.println(">Choose what powerup you want to use: " );
-                        read = myObj.nextLine();
-                    } while ((read.equals(""))||((!read.toUpperCase().equals("TELEPORTER"))&&(!read.toUpperCase().equals("NEWTON"))&&(!read.toUpperCase().equals("TARGETING SCOPE"))&&(!read.toUpperCase().equals("TAGBACK GRANADE"))));
-                    Info action = ActionParser.createPowerUpEvent(read.toUpperCase());
-                    connection.send(action);
+                    }
+
+                    powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
+                    System.out.println(">You have the following puwerups: ");
+                    if ((powerups == null) || (powerups.size() == 0)) {
+                        System.out.println(">You have no powerups!");
+                    } else {
+                        for (int i = 0; i < powerups.size(); i++) {
+                            System.out.println("> " + powerups.get(i).getName());
+                        }
+                    }
+
+                    if (playerBoard != null) { //these checks are used when the clients still do not have any update, at the start of the match
+                        ammoRED = playerBoard.getRedAmmo();
+                        System.out.println(">You have %d red ammos:" + ammoRED);
+
+                        ammoBLUE = playerBoard.getBlueAmmo();
+                        System.out.println(">You have %d blue ammos:" + ammoBLUE);
+
+                        ammoYELLOW = playerBoard.getYellowAmmo();
+                        System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
+                    }
+
+                    System.out.println(">Write a command: ");
+                    read = myObj.nextLine();
+                    if (read.toUpperCase().equals("MOVE")) {
+                        System.out.println(">Choose the coordinate x you want to move to: ");
+                        coordinatex = Integer.parseInt(myObj.nextLine());
+                        System.out.println(">Choose the coordinate y you want to move to: ");
+                        coordinatey = Integer.parseInt(myObj.nextLine());
+                        Info action = ActionParser.createMoveEvent(coordinatex, coordinatey);
+                        connection.send(action);
+                    } else if (read.toUpperCase().equals("SHOOT")) {
+                        Info action = ActionParser.createShootEvent();
+                        connection.send(action);
+                    } else if (read.toUpperCase().equals("COLLECT")) {
+                        do {
+                            System.out.println(">Choose what you want to collect: ");
+                            System.out.println("Weapon Card (1)"); //1 is to collect weapon
+                            System.out.println("PowerUp Card (2)"); //2 is to collect powerup
+                            System.out.println("Ammo (3)"); //3 is to collect ammo
+                            read = myObj.nextLine();
+                            if (read.equals("1")) {
+                                collectDecision = 1;
+                                collectChosen = true;
+                            } else if (read.equals("2")) {
+                                collectDecision = 2;
+                                collectChosen = true;
+                            } else if (read.equals("3")) {
+                                collectDecision = 3;
+                                collectChosen = true;
+                            }
+                        } while (!collectChosen);
+                        Info action = ActionParser.createCollectEvent(collectDecision);
+                        connection.send(action);
+                    } else if (read.toUpperCase().equals("USE POWERUP")) {
+                        do {
+                            System.out.println(">Choose what powerup you want to use: ");
+                            read = myObj.nextLine();
+                        }
+                        while ((read.equals("")) || ((!read.toUpperCase().equals("TELEPORTER")) && (!read.toUpperCase().equals("NEWTON")) && (!read.toUpperCase().equals("TARGETING SCOPE")) && (!read.toUpperCase().equals("TAGBACK GRANADE"))));
+                        Info action = ActionParser.createPowerUpEvent(read.toUpperCase());
+                        connection.send(action);
+                    } else {
+                        System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
+                    }
+                    //}
+                    //catch (CommandIsNotValidException e) {
+                    //    System.out.println(">The command written is not valid");
+                    //}
                 }
                 else{
-                    System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
+                    System.out.println("For now it is not your turn: " +connection.getCurrentCharacter() +"is playing");
                 }
-                //}
-                //catch (CommandIsNotValidException e) {
-                //    System.out.println(">The command written is not valid");
-                //}
             }
             else if(connection.getStartGame() == 0) {
                 System.out.println("Match isn't started, please wait a minute");

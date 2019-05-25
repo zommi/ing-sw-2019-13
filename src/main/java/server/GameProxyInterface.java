@@ -16,6 +16,10 @@ public interface GameProxyInterface extends Remote {
 
     public int getStartGame() throws RemoteException;
 
+    public String getCurrentCharacter() throws RemoteException;
+
+    public int getCurrentID() throws RemoteException;
+
     public String getMap() throws RemoteException;
 
     public boolean addPlayerCharacter(String name, int ID) throws RemoteException;

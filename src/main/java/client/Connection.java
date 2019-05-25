@@ -11,6 +11,10 @@ public interface Connection extends Serializable {
 
     public boolean CharacterChoice(String name);
 
+    public int getCurrentID();
+
+    public String getCurrentCharacter();
+
     public int getStartGame();
 
     public int getInitialSkulls();

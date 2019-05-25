@@ -31,6 +31,20 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private static final int REGISTRATION_PORT = 1099;
     private int startGame = 0;
 
+    public ConnectionRMI(int clientID) throws RemoteException{
+        this.clientID = clientID;
+        this.gameModel = new GameModel();
+    }
+
+    public String getCurrentCharacter(){
+        try{
+            return gameProxy.getCurrentCharacter();
+        }
+        catch(RemoteException e){
+            System.out.println("Exception caught");
+        }
+        return null;
+    }
 
     public String getMap(){
         try{
@@ -55,10 +69,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
-    public ConnectionRMI(int clientID) throws RemoteException{
-        this.clientID = clientID;
-        this.gameModel = new GameModel();
-    }
 
     public void setClientID(int clientID){
         this.clientID = clientID;
@@ -67,6 +77,18 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     public GameProxyInterface getGameProxy(){
         return this.gameProxy;
     }
+
+    @Override
+    public int getCurrentID(){
+        try{
+            return gameProxy.getCurrentID();
+        }
+        catch(RemoteException e){
+            System.out.println("Exception caught");
+        }
+        return 0;
+    }
+
 
     @Override
     public boolean CharacterChoice(String name) {

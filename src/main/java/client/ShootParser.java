@@ -11,7 +11,7 @@ public class ShootParser {
     private boolean isLimitedActivated;
     private Weapon weapon;
 
-    public void getWeaponInput(Weapon weapon, InputInterface input) throws NoSuchEffectException {
+    public ShoootInfo getWeaponInput(Weapon weapon, InputInterface input) throws NoSuchEffectException {
         this.isLimitedActivated = false;
         this.weapon = weapon;
         ShoootInfo shoootInfo = new ShoootInfo(weapon.getName());
@@ -28,6 +28,7 @@ public class ShootParser {
 
                 }
         }
+        return null;
     }
 
     private void manageMacro(MacroEffect macroEffect, InputInterface input){

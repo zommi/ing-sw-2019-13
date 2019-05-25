@@ -44,7 +44,7 @@ public class Server {
         //now we have to start the game!
         else{
             startGame = 1;
-            game = new Game(mapChoice, initialSkulls);
+            game = controller.getGame();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
@@ -116,7 +116,7 @@ public class Server {
     }
 
     public void setController(int numMap, int initialSkulls){
-        controller = new Controller(numMap, initialSkulls);
+        controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }
 

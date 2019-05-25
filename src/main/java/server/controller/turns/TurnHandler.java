@@ -33,6 +33,11 @@ public class TurnHandler {
     }
     */
 
+
+    public TurnPhase getCurrentPhase(){
+        return this.currentPhase;
+    }
+
     public void setAndDoAction(Action action){
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION) {
