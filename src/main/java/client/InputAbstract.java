@@ -6,17 +6,27 @@ import client.weapons.Weapon;
 
 import java.util.List;
 
-public interface InputInterface {
-    public boolean getChoice(MacroEffect macroEffect);
-    public MacroEffect chooseOneMacro(Weapon weapon);
+public abstract class InputAbstract {
+    List<String> playersNames;
 
-    public boolean getChoice(MicroEffect microEffect);
+    public void setPlayersNames(List<String> playersNames){
+        this.playersNames = playersNames;
+    }
 
-    List<SquareInfo> askSquares(int maxSquares);
+    public List<String> getPlayersNames() {
+        return playersNames;
+    }
 
-    List<String> askPlayers(int maxTargetPlayerSize);
+    public abstract boolean getChoice(MacroEffect macroEffect);
+    public abstract MacroEffect chooseOneMacro(Weapon weapon);
 
-    List<String> askRooms(int maxTargetRoomSize);
+    public abstract boolean getChoice(MicroEffect microEffect);
+
+    public abstract List<SquareInfo> askSquares(int maxSquares);
+
+    public abstract List<String> askPlayers(int maxTargetPlayerSize);
+
+    public abstract List<String> askRooms(int maxTargetRoomSize);
 
 
 }

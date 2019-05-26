@@ -1,6 +1,7 @@
 package client.weapons;
 
-import client.InputInterface;
+import client.InputAbstract;
+import client.SquareInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,10 @@ public class ShootParser {
 
     private boolean isLimitedActivated;
     private Weapon weapon;
-    private InputInterface input;
+    private InputAbstract input;
     private ShoootInfo shoootInfo;
 
-    public ShoootInfo getWeaponInput(Weapon weapon, InputInterface input){
+    public ShoootInfo getWeaponInput(Weapon weapon, InputAbstract input){
         this.isLimitedActivated = false;
         this.weapon = weapon;
         this.input = input;
@@ -64,6 +65,20 @@ public class ShootParser {
         shoootInfo.getActivatedMacros().get(microEffect.getMacroNumber()).getActivatedMicros().add(microPack);
         if(microEffect.isLimited())
             isLimitedActivated = true;
+
+        //start asking stuff
+        if(microEffect.isMoveFlag()) {
+            microPack.setSquare(input.askSquares(1).get(0));
+        }
+
+        if(microEffect.getMaxTargetPlayerSize() != 0)
+            microPack.setPlayersList(input.askPlayers(microEffect.getMaxTargetPlayerSize()));
+
+        if(microEffect.getMaxNmSquareSize() != 0)
+            microPack.setNoMoveSquaresList(input.askSquares(microEffect.getMaxNmSquareSize()));
+
+        if(microEffect.getMaxTargetRoomSize() != 0)
+            microPack.setRoomsList(input.askRooms(microEffect.getMaxTargetRoomSize()));
 
 
     }

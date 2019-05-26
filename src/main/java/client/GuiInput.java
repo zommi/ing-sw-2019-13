@@ -4,7 +4,9 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 
-public class GuiInput implements InputInterface {
+import java.util.List;
+
+public class GuiInput extends InputAbstract {
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
         return false;
@@ -18,5 +20,20 @@ public class GuiInput implements InputInterface {
     @Override
     public boolean getChoice(MicroEffect microEffect) {
         return false;
+    }
+
+    @Override
+    public List<SquareInfo> askSquares(int maxSquares) {
+        return null;
+    }
+
+    @Override
+    public List<String> askPlayers(int maxTargetPlayerSize) {
+        return null;
+    }
+
+    @Override
+    public List<String> askRooms(int maxTargetRoomSize) {
+        return null;
     }
 }

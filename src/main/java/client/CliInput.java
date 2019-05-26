@@ -4,9 +4,10 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class CliInput implements InputInterface{
+public class CliInput extends InputAbstract{
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
         Scanner in = new Scanner(System.in);
@@ -34,6 +35,22 @@ public class CliInput implements InputInterface{
     }
 
     @Override
+    public List<SquareInfo> askSquares(int maxSquares) {
+        return null;
+    }
+
+    @Override
+    public List<String> askPlayers(int maxTargetPlayerSize) {
+
+        return null;
+    }
+
+    @Override
+    public List<String> askRooms(int maxTargetRoomSize) {
+        return null;
+    }
+
+    @Override
     public MacroEffect chooseOneMacro(Weapon weapon) {
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
             System.out.println(macroEffect.getNumber() + ": " + macroEffect);
@@ -56,8 +73,6 @@ public class CliInput implements InputInterface{
                 System.out.println("Number not valid");
             }
         }
-
-
         return weapon.getMacroEffect(i);
     }
 }

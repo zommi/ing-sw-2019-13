@@ -28,4 +28,20 @@ public class MicroPack {
     public int getMacroNumber() {
         return macroNumber;
     }
+
+    public void setSquare(SquareInfo square) {
+        this.square = square;
+    }
+
+    public void setPlayersList(List<String> playersList) {
+        this.playersList = playersList;
+    }
+
+    public void setNoMoveSquaresList(List<SquareInfo> noMoveSquaresList) {
+        this.noMoveSquaresList = noMoveSquaresList;
+    }
+
+    public void setRoomsList(List<String> roomsList) {
+        this.roomsList = roomsList;
+    }
 }
