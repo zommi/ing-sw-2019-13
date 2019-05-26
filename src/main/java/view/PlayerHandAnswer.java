@@ -19,12 +19,12 @@ public class PlayerHandAnswer implements ServerAnswer {
         return this.playerHand;
     }
 
-    public ArrayList<WeaponCard> getWeapons(){
+    public ArrayList<WeaponCard> getWeaponHand(){
         //TODO
         return null;
     }
 
-    public ArrayList<PowerupCard> getPowerups(){
+    public ArrayList<PowerupCard> getPowerupHand(){
         //TODO
         return null;
     }
