@@ -1,4 +1,4 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,5 +48,10 @@ public class Cost {
         Cost costObject = (Cost) object;
 
         return (this.red == costObject.red && this.blue == costObject.blue && this.yellow == costObject.yellow);
+    }
+
+    public String toString(){
+        //TODO
+        return "";
     }
 }

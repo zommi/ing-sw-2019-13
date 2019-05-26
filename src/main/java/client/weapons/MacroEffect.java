@@ -1,7 +1,6 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import exceptions.NoSuchEffectException;
 
 import java.util.List;
 
@@ -33,6 +32,12 @@ public class MacroEffect {
 
     private int number;
 
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setNumber(int number) {
         this.number = number;
     }
@@ -41,10 +46,11 @@ public class MacroEffect {
         return number;
     }
 
-    public MicroEffect getMicroEffect(int micro) throws NoSuchEffectException {
+    public MicroEffect getMicroEffect(int micro){
         if(micro < microEffects.size())
             return microEffects.get(micro);
-        else throw new NoSuchEffectException();
+        else
+            return null;
     }
 
     public List<MicroEffect> getMicroEffects() {
@@ -73,5 +79,9 @@ public class MacroEffect {
 
     public int getMacroEffectIndex() {
         return macroEffectIndex;
+    }
+
+    public String toString(){
+        return this.description + "\ncost: " + cost;
     }
 }

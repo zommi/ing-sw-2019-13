@@ -1,7 +1,5 @@
 package server.controller.playeraction;
 
-import exceptions.NoSuchEffectException;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,11 +20,11 @@ public class MacroInfo implements Serializable {
         return activatedMicros;
     }
 
-    public MicroInfo getActivatedMicro(int micro) throws NoSuchEffectException{
+    public MicroInfo getActivatedMicro(int micro){
         for(MicroInfo microInfo : activatedMicros){
             if(microInfo.getMicroNumber() == micro)
                 return microInfo;
         }
-        throw new NoSuchEffectException();
+        return null;
     }
 }

@@ -1,10 +1,10 @@
 package server.model.gameboard;
 
-import client.MacroEffect;
-import client.MicroEffect;
+import client.weapons.MacroEffect;
+import client.weapons.MicroEffect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.ReadJsonErrorException;
-import client.Weapon;
+import client.weapons.Weapon;
 import server.model.cards.WeaponCard;
 import constants.Constants;
 

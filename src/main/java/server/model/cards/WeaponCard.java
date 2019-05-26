@@ -1,7 +1,7 @@
 package server.model.cards;
 
 
-import client.Weapon;
+import client.weapons.Weapon;
 
 /**
  *

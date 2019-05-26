@@ -1,11 +1,10 @@
 package server.controller.playeraction;
 
-import client.Cost;
-import client.MacroEffect;
-import client.MicroEffect;
+import client.weapons.Cost;
+import client.weapons.MacroEffect;
+import client.weapons.MicroEffect;
 
-import client.WeaponType;
-import exceptions.NoSuchEffectException;
+import client.weapons.WeaponType;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;
 import server.model.player.GameCharacter;
@@ -14,6 +13,21 @@ import server.model.player.PlayerAbstract;
 public class ShootValidator {
 
     public boolean validate(ShootInfo shootInfo, GameBoard gameBoard){
+       /*
+       IMPORTANT:
+        uncomment these lines only when instantiating weapon cards and assigning them to players
+
+        //attacker must have the selected weapon
+        if(shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()) == null)
+            return false;
+
+        //weapon must be loaded
+        if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
+            return false;
+
+
+        */
+
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
             gameBoard.getMap().setValid(false);
@@ -40,13 +54,9 @@ public class ShootValidator {
             } else {
                 //checks if all mandatory macros are activated(extra type weapon base effect)
                 for (int i = 0; i < shootInfo.getWeapon().getMacroEffects().size(); i++) {
-                    if (shootInfo.getWeapon().getMacroEffects().get(i).isMandatory()) {
-                        try {
-                            shootInfo.getActivatedMacro(i);
-                        } catch (NoSuchEffectException e) {
-                            return false;
-                        }
-                    }
+                    if (shootInfo.getWeapon().getMacroEffects().get(i).isMandatory() &&
+                            shootInfo.getActivatedMacro(i) == null)
+                        return false;
                 }
             }
 
@@ -56,11 +66,10 @@ public class ShootValidator {
             MacroEffect weaponMacro;
             for (MacroInfo macroInfo : shootInfo.getActivatedMacros()) {
                 //weapon must have this macro
-                try {
-                    weaponMacro = shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber());
-                } catch (NoSuchEffectException e) {
+                if(shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber()) == null)
                     return false;
-                }
+                else
+                    weaponMacro = shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber());
 
                 //player should have enough ammo
                 totalCost = totalCost.sum(weaponMacro.getCost());
@@ -68,13 +77,9 @@ public class ShootValidator {
                     return false;
 
                 //checks if macro depends on the activation of another macro
-                if (weaponMacro.isConditional()) {
-                    try {
-                        shootInfo.getActivatedMacro(weaponMacro.getMacroEffectIndex());
-                    } catch (NoSuchEffectException e) {
-                        return false;
-                    }
-                }
+                if (weaponMacro.isConditional() &&
+                        shootInfo.getActivatedMacro(weaponMacro.getMacroEffectIndex()) == null)
+                    return false;
 
                 //checks if micros order is correct and there are no duplicates
                 if (macroInfo.getActivatedMicros().isEmpty())
@@ -86,24 +91,19 @@ public class ShootValidator {
 
                 //checks if all mandatory micros are activated
                 for (int i = 0; i < weaponMacro.getMicroEffects().size(); i++) {
-                    if (weaponMacro.getMicroEffects().get(i).isMandatory()) {
-                        try {
-                            shootInfo.getActivatedMicro(macroInfo.getMacroNumber(), i);
-                        } catch (NoSuchEffectException e) {
-                            return false;
-                        }
-                    }
+                    if (weaponMacro.getMicroEffects().get(i).isMandatory() &&
+                            shootInfo.getActivatedMicro(macroInfo.getMacroNumber(), i) == null)
+                        return false;
                 }
 
                 //now every activated micro for that specific macro is processed
                 for (MicroInfo microInfo : macroInfo.getActivatedMicros()) {
                     //weapon must have the couple macro-micro
                     MicroEffect weaponMicro;
-                    try {
-                        weaponMicro = weaponMacro.getMicroEffect(microInfo.getMicroNumber());
-                    } catch (NoSuchEffectException e) {
+                    if(weaponMacro.getMicroEffect(microInfo.getMicroNumber()) == null)
                         return false;
-                    }
+                    else
+                        weaponMicro = weaponMacro.getMicroEffect(microInfo.getMicroNumber());
 
                     //checks if micro is limited
                     if (weaponMicro.isLimited() && limitedActivated)
@@ -112,13 +112,10 @@ public class ShootValidator {
                         limitedActivated = true;
 
                     //checks if micro is conditional
-                    if (weaponMicro.isConditional()) {
-                        try {
-                            shootInfo.getActivatedMicro(weaponMicro.getMacroEffectIndex(), weaponMicro.getMicroEffectIndex());
-                        } catch (NoSuchEffectException e) {
-                            return false;
-                        }
-                    }
+                    if (weaponMicro.isConditional() &&
+                            shootInfo.getActivatedMicro(weaponMicro.getMacroEffectIndex(),
+                                    weaponMicro.getMicroEffectIndex()) == null)
+                        return false;
 
                     //checks if input dimensions are ok
                     if (!shootInfo.areDimensionsOk(microInfo, weaponMicro))

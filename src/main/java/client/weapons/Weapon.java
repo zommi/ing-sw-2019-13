@@ -1,7 +1,6 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import exceptions.NoSuchEffectException;
 
 import java.util.List;
 
@@ -52,14 +51,18 @@ public class Weapon {
         return type;
     }
 
-    public MacroEffect getMacroEffect(int macro) throws NoSuchEffectException {
+    public MacroEffect getMacroEffect(int macro){
         if(macro < macroEffects.size())
             return macroEffects.get(macro);
-        else throw new NoSuchEffectException();
+        else
+            return null;
     }
 
-    public MicroEffect getMicroEffect(int macro, int micro) throws NoSuchEffectException{
-        return getMacroEffect(macro).getMicroEffect(micro);
+    public MicroEffect getMicroEffect(int macro, int micro){
+        if(getMacroEffect(macro) != null)
+            return getMacroEffect(macro).getMicroEffect(micro);
+        else
+            return null;
 
     }
 

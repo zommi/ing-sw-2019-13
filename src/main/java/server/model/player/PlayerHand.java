@@ -33,19 +33,20 @@ public class PlayerHand {
         return this.player;
     }
 
-    public List<WeaponCard> getWeapons() {
-        return (ArrayList<WeaponCard>) weaponHand.clone();
+
+    public List<WeaponCard> getWeaponHand() {
+        return (ArrayList<WeaponCard>) weaponHand.clone();  //cloning for server answers
     }
 
-    public List<PowerupCard> getPowerups() {
-        return (ArrayList<PowerupCard>) powerupHand.clone();
+    public List<PowerupCard> getPowerupHand() {
+        return (ArrayList<PowerupCard>) powerupHand.clone();    //cloning for server answers
     }
 
     public PlayerHand createCopy(PlayerHand playerHandToCopy){
         PlayerHand playerHand = new PlayerHand();
         playerHand.player = playerHandToCopy.getPlayer();
-        playerHand.weaponHand = (ArrayList<WeaponCard>) playerHandToCopy.getWeapons();
-        playerHand.powerupHand = (ArrayList<PowerupCard>) playerHandToCopy.getPowerups();
+        playerHand.weaponHand = (ArrayList<WeaponCard>) playerHandToCopy.getWeaponHand();
+        playerHand.powerupHand = (ArrayList<PowerupCard>) playerHandToCopy.getPowerupHand();
         return playerHand;
     }
 
@@ -89,4 +90,5 @@ public class PlayerHand {
     public void addCard(PowerupCard draw) {
         if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)this.powerupHand.add(draw);
     }
+
 }

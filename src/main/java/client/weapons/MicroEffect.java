@@ -1,4 +1,4 @@
-package client;
+package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import server.model.cards.WeaponPolicy;
@@ -48,6 +48,8 @@ public class MicroEffect {
 
     @JsonProperty
     private boolean moveFlag;
+
+    private String description;
 
     private int macroNumber;
 
@@ -124,5 +126,10 @@ public class MicroEffect {
     public int getMarks() {
         return marks;
     }
+
+    public String toString(){
+        return this.description;
+    }
+
 }
 

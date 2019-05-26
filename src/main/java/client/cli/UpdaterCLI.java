@@ -251,7 +251,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     //try{
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard();
-                    weapons = (ArrayList<WeaponCard>) playerHand.getWeapons();
+                    weapons = playerHand.getWeaponHand();
                     System.out.println(">You have the following weapons: ");
                     if ((weapons == null) || (weapons.size() == 0)) {
                         System.out.println(">You have no weapons!");
@@ -261,7 +261,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         }
                     }
 
-                    powerups = (ArrayList<PowerupCard>) playerHand.getPowerups();
+                    powerups = playerHand.getPowerupHand();
                     System.out.println(">You have the following puwerups: ");
                     if ((powerups == null) || (powerups.size() == 0)) {
                         System.out.println(">You have no powerups!");

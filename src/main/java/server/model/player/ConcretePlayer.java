@@ -1,6 +1,8 @@
 package server.model.player;
 
-import client.Cost;
+import client.weapons.Cost;
+import client.weapons.Weapon;
+import server.model.cards.WeaponCard;
 import server.model.items.AmmoCube;
 import server.model.map.*;
 import server.model.gameboard.*;
@@ -55,6 +57,19 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public int getClientID(){
         return this.clientID;
+    }
+
+    public PlayerHand getHand() {
+        return hand;
+    }
+
+    @Override
+    public WeaponCard getWeaponCard(Weapon weapon) {
+        for(WeaponCard weaponCard : hand.getWeaponHand()){
+            if(weaponCard.getWeapon() == weapon)
+                return weaponCard;
+        }
+        return null;
     }
 
     public String getCharacterName(){

@@ -1,6 +1,4 @@
-package client;
-
-import exceptions.NoSuchEffectException;
+package client.weapons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +20,15 @@ public class MacroPack {
         return activatedMicros;
     }
 
-    public MicroPack getActivatedMicro(int micro) throws NoSuchEffectException {
+    public MicroPack getActivatedMicro(int micro){
         for(MicroPack microPack : activatedMicros){
             if(microPack.getMicroNumber() == micro)
                 return microPack;
         }
-        throw new NoSuchEffectException();
+        return null;
     }
 
+    public void setMacroNumber(int macroNumber) {
+        this.macroNumber = macroNumber;
+    }
 }
