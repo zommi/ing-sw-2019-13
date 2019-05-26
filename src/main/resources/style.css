@@ -1,0 +1,24 @@
+.choice-rectangle{
+    -fx-fill: #ffffff80;
+    -fx-stroke: #ffaa44cc;
+    -fx-stroke-width: 7;
+}
+
+.background-mapselection-stackpane{
+    -fx-background-color: #000000;
+}
+
+.mapselection-rectangle{
+    -fx-alignment: center;
+    -fx-stroke: #da7f00;
+    -fx-stroke-width: 7;
+}
+
+.mapselection-skull-label{
+    -fx-font-size: 21;
+    -fx-text-fill: #ffffff;
+}
+
+.maingui-scrollpane-background{
+    -fx-background-color: #000000;
+}

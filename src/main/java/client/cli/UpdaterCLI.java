@@ -102,8 +102,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
-        if(connection.getError() == true)
-            throw new GameAlreadyStartedException();
+        //if(connection.getError() == true)
+        //    throw new GameAlreadyStartedException();
 
 
         if(gameModel.getClientID() == 0) {//only if it is the first client!
@@ -331,7 +331,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     //}
                 }
                 else{
-                    System.out.println("For now it is not your turn: " +connection.getCurrentCharacter() +"is playing");
+                    System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
                 }
             }
             else if(connection.getStartGame() == 0) {

@@ -34,6 +34,7 @@ public class ConcretePlayer extends PlayerAbstract {
     public ConcretePlayer(String name, GameBoard gameBoard, Figure figure) {
         this.name = name;
         this.gameCharacter = new GameCharacter(chooseFigure(figure));
+        this.gameCharacter.setConcretePlayer(this);
         this.hand = new PlayerHand(this);
         this.board = new PlayerBoard(this);
         this.currentGameBoard = gameBoard;

@@ -13,4 +13,9 @@ public class GameBoardAnswer implements ServerAnswer {
     public GameBoard getResult() {
         return result;
     }
+
+    public AmmoTileDeck getWeaponDeck() {
+        //TODO
+        return null;
+    }
 }
