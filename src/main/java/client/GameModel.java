@@ -1,10 +1,6 @@
 package client;
 
 import view.*;
-import server.model.gameboard.GameBoard;
-import server.model.map.GameMap;
-import server.model.player.PlayerBoard;
-import server.model.player.PlayerHand;
 
 import java.io.Serializable;
 import java.util.*;
@@ -12,11 +8,11 @@ import java.util.*;
 public class GameModel extends Observable implements Serializable { // so that the GUI can be an observer of this class and this class is an observer of the model GAMESTATE
 
 
-    private GameBoard gameBoard;
-    private GameMap map;
+    private GameBoardAnswer gameBoard;
+    private MapAnswer map;
     private int mapnum;
-    private PlayerBoard playerBoard;
-    private PlayerHand playerHand;
+    private PlayerBoardAnswer playerBoard;
+    private PlayerHandAnswer playerHand;
     private List<Weapon> weapons;
     private int clientID;
     private static int lastClientID = 0;
@@ -52,7 +48,7 @@ public class GameModel extends Observable implements Serializable { // so that t
 
     public void saveAnswer(ServerAnswer answer) { //the GameModel will save the answer of the Server updating the model elements needed and notifying the observers
         if (answer instanceof GameBoardAnswer) {
-            gameBoard = (GameBoard) answer;
+            gameBoard = (GameBoardAnswer) answer;
             setChanged();
             notifyObservers("GameBoard");
         }
@@ -64,25 +60,25 @@ public class GameModel extends Observable implements Serializable { // so that t
         }
 
         if (answer instanceof MapAnswer) {
-            map = (GameMap) answer;
+            map = (MapAnswer) answer;
             setChanged();
             notifyObservers("Map");
         }
 
         if (answer instanceof PlayerBoardAnswer) {
-            playerBoard = (PlayerBoard) answer;
+            playerBoard = (PlayerBoardAnswer) answer;
             setChanged();
             notifyObservers("PlayerBoard");
         }
 
         if (answer instanceof PlayerHandAnswer) {
-            playerHand = (PlayerHand) playerHand;
+            playerHand = (PlayerHandAnswer) playerHand;
             setChanged();
             notifyObservers("PlayerHand");
         }
     }
 
-    public GameBoard getGameBoard(){
+    public GameBoardAnswer getGameBoard(){
         return this.gameBoard;
     }
 
@@ -94,15 +90,15 @@ public class GameModel extends Observable implements Serializable { // so that t
         return listOfClients;
     }*/
 
-    public GameMap getMap(){
+    public MapAnswer getMap(){
         return this.map;
     }
 
-    public PlayerBoard getPlayerBoard() {
+    public PlayerBoardAnswer getPlayerBoard() {
         return playerBoard;
     }
 
-    public PlayerHand getPlayerHand() {
+    public PlayerHandAnswer getPlayerHand() {
         return playerHand;
     }
 }

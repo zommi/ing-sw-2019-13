@@ -14,5 +14,16 @@ public class PlayerBoardAnswer implements ServerAnswer{
         return this.result;
     }
 
-
+    public int getRedAmmo(){
+        //TODO
+        return 0;
+    }
+    public int getBlueAmmo(){
+        //TODO
+        return 0;
+    }
+    public int getYellowAmmo(){
+        //TODO
+        return 0;
+    }
 }

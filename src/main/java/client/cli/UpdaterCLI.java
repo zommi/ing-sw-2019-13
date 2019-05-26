@@ -8,6 +8,8 @@ import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerBoard;
 import server.model.player.PlayerHand;
+import view.PlayerBoardAnswer;
+import view.PlayerHandAnswer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -222,8 +224,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     @Override
     public void run(){
         String read;
-        PlayerHand playerHand;
-        PlayerBoard playerBoard;
+        PlayerHandAnswer playerHand;
+        PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerupCard> powerups;
         int collectDecision = 0;

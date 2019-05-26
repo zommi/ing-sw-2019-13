@@ -1,6 +1,10 @@
 package view;
 
+import server.model.cards.PowerupCard;
+import server.model.cards.WeaponCard;
 import server.model.player.PlayerHand;
+
+import java.util.ArrayList;
 
 
 public class PlayerHandAnswer implements ServerAnswer {
@@ -13,6 +17,16 @@ public class PlayerHandAnswer implements ServerAnswer {
 
     public PlayerHand getplayerHand() {
         return this.playerHand;
+    }
+
+    public ArrayList<WeaponCard> getWeapons(){
+        //TODO
+        return null;
+    }
+
+    public ArrayList<PowerupCard> getPowerups(){
+        //TODO
+        return null;
     }
 
 }
