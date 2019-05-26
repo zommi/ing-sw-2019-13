@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<?import java.net.URL?>
+
+<StackPane prefHeight="550.0" prefWidth="800.0" styleClass="background-mapselection-stackpane" stylesheets="@/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MapSelectionController">
+    <stylesheets>
+        <URL value="@/style.css"/>
+    </stylesheets>
+   <children>
+      <ImageView fitHeight="550.0" fitWidth="800.0" pickOnBounds="true">
+         <image>
+            <Image url="@../startmenuimage.png" />
+         </image>
+      </ImageView>
+      <Rectangle height="270" width="740.0" styleClass="mapselection-rectangle"/>
+      <GridPane prefHeight="550.0" prefWidth="800.0">
+        <columnConstraints>
+          <ColumnConstraints prefWidth="40.0" />
+          <ColumnConstraints prefWidth="720.0" />
+          <ColumnConstraints prefWidth="40.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints prefHeight="170.0" />
+          <RowConstraints prefHeight="210.0" />
+          <RowConstraints prefHeight="170.0" />
+        </rowConstraints>
+         <children>
+            <GridPane fx:id="mapGridPane" prefHeight="210.0" prefWidth="720.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints prefWidth="180.0" />
+                <ColumnConstraints prefWidth="180.0" />
+                <ColumnConstraints prefWidth="180.0" />
+                <ColumnConstraints prefWidth="180.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints prefHeight="170.0" />
+                <RowConstraints prefHeight="40.0" />
+              </rowConstraints>
+               <children>
+                  <ImageView fx:id="map1" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                             GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../map1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="map2" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                             GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../map2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="map3" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                             GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../map3.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="map4" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                             GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../map4.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="40.0" prefWidth="180.0" text="Number of skulls" styleClass="mapselection-skull-label"
+                         GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  </Label>
+                  <ChoiceBox fx:id="skullBox" prefWidth="180.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</StackPane>

@@ -52,6 +52,10 @@ public class GameCharacter {
 
     public Figure getFigure(){ return this.figure;}
 
+    public void setConcretePlayer(ConcretePlayer concretePlayer) {
+        this.concretePlayer = concretePlayer;
+    }
+
     public ConcretePlayer getConcretePlayer(){
         //TODO implement with clone
         return concretePlayer;
