@@ -6,14 +6,11 @@ import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
-import server.model.player.PlayerBoard;
-import server.model.player.PlayerHand;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;  // Import the Scanner class
 import java.util.Observable;
@@ -247,6 +244,9 @@ public class UpdaterCLI  implements Updater,Runnable{
             return;
         }
 
+        ActionParser actionParser = new ActionParser(gameModel);
+        actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
+
         while (alwaysTrue) {
             if (connection.getStartGame() == 1) { //the game can start
                 if (connection.getClientID() == connection.getCurrentID()) {
@@ -291,10 +291,13 @@ public class UpdaterCLI  implements Updater,Runnable{
                         coordinatex = Integer.parseInt(myObj.nextLine());
                         System.out.println(">Choose the coordinate y you want to move to: ");
                         coordinatey = Integer.parseInt(myObj.nextLine());
-                        Info action = ActionParser.createMoveEvent(coordinatex, coordinatey);
+                        Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
                         connection.send(action);
                     } else if (read.toUpperCase().equals("SHOOT")) {
-                        Info action = ActionParser.createShootEvent();
+                        System.out.println(">Choose the name of the weapon: ");
+                        String weaponChosen = myObj.nextLine();
+                        //TODO look if the name of the weapon exixts
+                        Info action = actionParser.createShootEvent(weaponChosen);
                         connection.send(action);
                     } else if (read.toUpperCase().equals("COLLECT")) {
                         do {

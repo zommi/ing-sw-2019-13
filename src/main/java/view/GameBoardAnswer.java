@@ -2,6 +2,9 @@ package view;
 
 import server.model.gameboard.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameBoardAnswer implements ServerAnswer {
 
     private GameBoard result;
@@ -12,6 +15,14 @@ public class GameBoardAnswer implements ServerAnswer {
 
     public GameBoard getResult() {
         return result;
+    }
+
+    public List<String> getCharacterNames() {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < result.getGameCharacterList().size(); i++) {
+            list.add(result.getGameCharacterList().get(i).getFigure().toString());
+        }
+        return list;
     }
 
     public AmmoTileDeck getWeaponDeck() {

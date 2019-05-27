@@ -32,15 +32,12 @@ public class Controller implements MyObserver {
 
     private TurnHandler turnHandler;
 
-    private Game game;
-
     private Server server;
 
 
     public Controller(int mapChoice, int initialSkulls, Server server){
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
-        //this.currentPlayers = this.currentGame.getActivePlayers();
         this.activePlayer = null;
         this.server = server;
     }
@@ -50,28 +47,28 @@ public class Controller implements MyObserver {
     }
 
     public String getCurrentCharacter(){
-        for(int i = 0; i < game.getActivePlayers().size(); i++){
-            if(game.getActivePlayers().get(i).getClientID() == currentID)
-                return game.getActivePlayers().get(i).getCharacterName();
+        for(int i = 0; i < currentGame.getActivePlayers().size(); i++){
+            if(currentGame.getActivePlayers().get(i).getClientID() == currentID)
+                return currentGame.getActivePlayers().get(i).getCharacterName();
         }
         return "No one is playing";
     }
 
     public boolean makeAction(int clientID, Info anction){
-        TurnHandler turnHandler = game.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
+        TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         //TODO initialize currentID and handle the turns.
-        ConcretePlayer currentPlayer = (ConcretePlayer) game.getCurrentPlayer();
+        ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
 
-        if (currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED) || game.getCurrentState().equals(GameState.END_GAME)) {
+        if (currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED) || currentGame.getCurrentState().equals(GameState.END_GAME)) {
             return false;
         }
 
         return true;
     }
 
-    public Game getGame(){
-        return this.game;
+    public Game getCurrentGame(){
+        return this.currentGame;
     }
 
     public void nextPlayer() throws WrongGameStateException {
@@ -80,7 +77,7 @@ public class Controller implements MyObserver {
 
     public void addClientInMap(PlayerAbstract player){
         try{
-            this.game.addPlayer(player);
+            this.currentGame.addPlayer(player);
         }
         catch(WrongGameStateException e){
             System.out.println("Wrong game state exception");
@@ -89,7 +86,7 @@ public class Controller implements MyObserver {
     }
 
     public List<PlayerAbstract> getPlayers(){
-        return game.getActivePlayers();
+        return currentGame.getActivePlayers();
     }
 
     public void update(){}

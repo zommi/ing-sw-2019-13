@@ -44,17 +44,20 @@ public class Server {
         //now we have to start the game!
         else{
             startGame = 1;
-            game = controller.getGame();
+            game = controller.getCurrentGame();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+                ServerAnswer temp1 = controller.getCurrentGame().getWeaponList();
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(mapAnswer);
                     System.out.println("Sent the map to the connection RMI");
+                    temp.get(i).publishMessage(temp1);
+                    System.out.println("Sent the weapon card list to the client RMI");
                 }
             }
             catch(RemoteException e){
@@ -112,10 +115,12 @@ public class Server {
 
     public void setMap(int numMap){
         this.mapChoice = numMap;
+        System.out.println("Instantiating the controller");
         this.setController(numMap, initialSkulls);
     }
 
     public void setController(int numMap, int initialSkulls){
+        System.out.println("Test");
         controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }

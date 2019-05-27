@@ -18,12 +18,16 @@ public class GameModel extends Observable implements Serializable {
     private PlayerHandAnswer playerHand;
     private List<Weapon> weapons;
     private int clientID;
-    public static int lastClientID = 0;
-
+    private static int lastClientID = 0;
+    private ListOfWeaponsAnswer weaponList;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
-        //listOfClients.add(clientID);
+    }
+
+    public List<String> getPlayersNames(){
+        List<String> listNames = gameBoard.getCharacterNames();
+        return listNames;
     }
 
     public void setClientID(int clientID){
@@ -31,18 +35,9 @@ public class GameModel extends Observable implements Serializable {
     }
 
 
-    /*public static List<Integer> getListOfClients(){
-        return listOfClients;
-    }*/
-
     public static int getNextClientID(){
         return lastClientID;
     }
-
-    /*public void addClient(PlayerAbstract player, Integer clientID){
-        this.playerToClient.put(player, clientID);
-        this.clientID = clientID;
-    }*/
 
 
     public Integer getClientID(){
@@ -79,23 +74,19 @@ public class GameModel extends Observable implements Serializable {
         }
 
         if (answer instanceof PlayerHandAnswer) {
-            playerHand = (PlayerHandAnswer) playerHand;
+            playerHand = (PlayerHandAnswer) answer;
             setChanged();
             notifyObservers("PlayerHand");
         }
-    }
 
-    public GameBoardAnswer getGameBoard(){
-        return this.gameBoard;
-    }
-
-    /*public List<Integer> getListOfClients() {
-
-        for(Map.Entry<PlayerAbstract, Integer> entry: playerToClient.entrySet()) {
-            listOfClients.add(entry.getValue());
+        if(answer instanceof ListOfWeaponsAnswer) {
+            weaponList = (ListOfWeaponsAnswer) answer;
+            setChanged();
+            notifyObservers("Weapons list");
         }
-        return listOfClients;
-    }*/
+    }
+
+
 
     public MapAnswer getMap(){
         return this.map;
@@ -108,4 +99,11 @@ public class GameModel extends Observable implements Serializable {
     public PlayerHandAnswer getPlayerHand() {
         return playerHand;
     }
+
+    public GameBoardAnswer getGameBoard() {
+        return gameBoard;
+    }
+
+    public ListOfWeaponsAnswer getWeaponList() {return weaponList; }
+
 }

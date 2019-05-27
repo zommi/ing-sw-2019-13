@@ -1,11 +1,14 @@
 package server.model.game;
 
+import client.weapons.Weapon;
 import exceptions.*;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
+import server.model.cards.WeaponCard;
 import server.model.gameboard.*;
 import server.model.player.*;
 import server.model.map.*;
+import view.ListOfWeaponsAnswer;
 
 import java.util.*;
 
@@ -34,6 +37,8 @@ public class Game {
 
     private PowerupDeck powerupDeck;
 
+    private ListOfWeaponsAnswer weaponList = new ListOfWeaponsAnswer();
+
     private AmmoTileDeck ammoTileDeck;
 
     private Map<Integer, PlayerAbstract> clientToPlayer;
@@ -50,6 +55,15 @@ public class Game {
         this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
         this.currentPlayerIndex = 0;
         this.turnHandler = new TurnHandler();
+        for(int i = 0; i < weaponDeck.getSize(); i++){
+            WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
+            this.weaponList.add(temp);
+            System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
+        }
+    }
+
+    public ListOfWeaponsAnswer getWeaponList(){
+        return this.weaponList;
     }
 
     public TurnPhase getCurrentTurn(){
