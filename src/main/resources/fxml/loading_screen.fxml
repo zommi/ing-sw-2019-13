@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Label?>
+<StackPane prefHeight="550.0" prefWidth="800.0"
+           stylesheets="@/style.css" xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.LoadingScreenController">
+    <children>
+        <ImageView fitHeight="550.0" fitWidth="800.0" pickOnBounds="true">
+            <image>
+                <Image url="@../startmenuimage.png" />
+            </image>
+        </ImageView>
+        <ProgressBar prefWidth="400.0" prefHeight="50.0" StackPane.alignment="BOTTOM_CENTER" >
+        </ProgressBar>
+        <Label text="LOADING..." StackPane.alignment="CENTER" styleClass="loading-screen-label" >
+        </Label>
+    </children>
+</StackPane>
+

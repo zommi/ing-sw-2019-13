@@ -22,3 +22,8 @@
 .maingui-scrollpane-background{
     -fx-background-color: #000000;
 }
+
+.loading-screen-label{
+    -fx-font-size: 50;
+    -fx-text-fill: #ffffff;
+}

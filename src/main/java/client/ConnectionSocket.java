@@ -22,7 +22,7 @@ public class ConnectionSocket implements Connection {
     private ObjectOutputStream outputStream;
 
     private static final String SERVER_ADDRESS  = "localhost";
-    private static final int REGISTRATION_PORT = 55555;
+    private static final int REGISTRATION_PORT = 1337;
 
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
@@ -110,6 +110,21 @@ public class ConnectionSocket implements Connection {
 
     public void add(String playerName, int map, int initialSkulls){
         send(new SetupInfo(map,initialSkulls,playerName));
+    }
+
+    @Override
+    public int getMapIndex() {
+        switch (mapChoice){
+            case "map11.txt":
+                return 1;
+            case "map12.txt":
+                return 2;
+            case "map21.txt":
+                return 3;
+            case "map22.txt":
+                return 4;
+        }
+        return  -1;
     }
 
     public int getInitialSkulls(){

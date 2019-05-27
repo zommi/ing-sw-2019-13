@@ -12,7 +12,9 @@
 
 <?import java.net.URL?>
 
-<StackPane prefHeight="550.0" prefWidth="800.0" styleClass="background-mapselection-stackpane" stylesheets="@/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MapSelectionController">
+<StackPane prefHeight="550.0" prefWidth="800.0" styleClass="background-mapselection-stackpane"
+           stylesheets="@/style.css" xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MapSelectionController">
     <stylesheets>
         <URL value="@/style.css"/>
     </stylesheets>
