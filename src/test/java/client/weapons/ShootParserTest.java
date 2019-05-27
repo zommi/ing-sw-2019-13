@@ -53,15 +53,15 @@ class ShootParserTest {
         player2.spawn(gameBoard.getMap().getSquare(1,0));
         player3.spawn(gameBoard.getMap().getSquare(1,0));
         player4.spawn(gameBoard.getMap().getSquare(1,0));
-        player5.spawn(gameBoard.getMap().getSquare(1,0));
+        player5.spawn(gameBoard.getMap().getSquare(1,3));
 
-        ShootParser shootParser = new ShootParser();
-        //ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("Zx-2"), inputAbstract);
-
-        //ShootValidator shootValidator = new ShootValidator();
-        //boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
-
-        //assertTrue(bool);
+//        ShootParser shootParser = new ShootParser();
+//        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("Zx-2"), inputAbstract);
+//
+//        ShootValidator shootValidator = new ShootValidator();
+//        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
+//
+//        assertTrue(bool);
 
 
     }
