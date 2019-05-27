@@ -1,17 +1,52 @@
 package client;
 
-import java.util.StringTokenizer;
+import client.weapons.ShootParser;
+import client.weapons.Weapon;
+import server.model.cards.WeaponCard;
 
-public class ActionParser {
+import java.util.List;
+import java.util.Scanner;
 
-    public static Info createMoveEvent(int coordinatex, int coordinatey) {
+public class ActionParser{
+
+    private GameModel gameModel;
+    private List<WeaponCard> weaponList;
+    private InputAbstract input;
+
+    public ActionParser(GameModel gameModel){
+        this.gameModel = gameModel;
+        input = new CliInput();
+        weaponList = gameModel.getWeaponList().getList();
+    }
+
+    public InputAbstract getInput(){
+        return input;
+    }
+
+    public Info createMoveEvent(int coordinatex, int coordinatey) {
         Info moveInfo = new MoveInfo(coordinatex, coordinatey);
         return null;
     }
 
-    public static Info createShootEvent(){
+    public Info createShootEvent(String weaponChosen){
+        Weapon weapon = this.weaponFromString(weaponChosen);
+        ShootParser shootParser = new ShootParser();
+        Info shootInfo = shootParser.getWeaponInput(weapon,input);
+        return shootInfo;
+    }
+
+    public Weapon weaponFromString(String name){
+        for(int i = 0; i < weaponList.size(); i++){
+            if(name.equalsIgnoreCase(weaponList.get(i).getName())){
+                return weaponList.get(i).getWeapon();
+            }
+        }
+        System.out.println("ERROR: THE WEAPON DOES NOT EXIST");
+        System.out.println("Insert a new one: ");
+        Scanner myObj = new Scanner(System.in);
+        String read = myObj.nextLine();
+        weaponFromString(read);
         return null;
-        //TODO
     }
 
 

@@ -117,4 +117,8 @@ public class WeaponDeck {
         return null;
     }
 
+    public WeaponCard getWeapon(int index) {
+        return deck.get(index);
+    }
+
 }

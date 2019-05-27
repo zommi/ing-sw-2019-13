@@ -1,9 +1,12 @@
 package server;
 
 import client.ReceiverInterface;
+import client.weapons.Weapon;
 import server.controller.Controller;
+import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import view.InitialMapAnswer;
+import view.ListOfWeaponsAnswer;
 import view.ServerAnswer;
 
 import java.rmi.RemoteException;
@@ -44,17 +47,20 @@ public class Server {
         //now we have to start the game!
         else{
             startGame = 1;
-            game = controller.getGame();
+            game = controller.getCurrentGame();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+                ServerAnswer temp1 = controller.getCurrentGame().getWeaponList();
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(mapAnswer);
                     System.out.println("Sent the map to the connection RMI");
+                    temp.get(i).publishMessage(temp1);
+                    System.out.println("Sent the weapon card list to the client RMI");
                 }
             }
             catch(RemoteException e){

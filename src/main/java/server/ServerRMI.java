@@ -6,8 +6,6 @@ import server.model.player.PlayerAbstract;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
-import java.util.List;
-import java.util.Map;
 
 
 public class ServerRMI implements Runnable, ServerInterface {

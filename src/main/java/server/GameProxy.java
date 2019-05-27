@@ -1,6 +1,5 @@
 package server;
 
-import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
 import exceptions.GameAlreadyStartedException;
@@ -169,7 +168,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean sendMap(int numMap)  throws RemoteException{
         System.out.println("Map choice received");
         this.numMap = numMap;
-        serverRMI.getServer().setMap(numMap);
+        System.out.println("Test 0"); //this works
+        serverRMI.getServer().setMap(numMap); //then the problem is here
+        System.out.println("Test 1"); //this doesn't work
         serverRMI.setController(serverRMI.getServer().getController());
         System.out.println("Controller set for serverRMI");
         return true;
