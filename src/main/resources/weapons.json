@@ -1393,6 +1393,9 @@
         ]
       },
       {
+        "cost" : {
+
+        },
         "microEffects" : [
           {
             "mandatory" : true,

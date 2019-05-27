@@ -5,12 +5,12 @@ import client.Info;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoootInfo implements Info {
+public class ShootPack implements Info {
 
     private String weapon;
     List<MacroPack> activatedMacros;
 
-    public ShoootInfo(String weapon){
+    public ShootPack(String weapon){
         this.weapon = weapon;
         this.activatedMacros = new ArrayList<>();
     }
@@ -22,7 +22,7 @@ public class ShoootInfo implements Info {
     public MacroPack getActivatedMacro(int macro){
         for(MacroPack macroPack : activatedMacros)
             if(macroPack.getMacroNumber() == macro)
-                return activatedMacros.get(macro);
+                return macroPack;
         return null;
     }
 
@@ -30,5 +30,9 @@ public class ShoootInfo implements Info {
         if(getActivatedMacro(macro) != null)
             return getActivatedMacro(macro).getActivatedMicro(micro);
         else return null;
+    }
+
+    public String getWeapon() {
+        return weapon;
     }
 }

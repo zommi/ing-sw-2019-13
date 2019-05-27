@@ -1,8 +1,10 @@
 package server.model.gameboard;
 
+import client.weapons.Weapon;
 import constants.Constants;
 import server.model.map.*;
 import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,5 +125,17 @@ public class GameBoard {
 
     public void addGameCharacter(GameCharacter gameCharacter){
         this.gameCharacterList.add(gameCharacter);
+    }
+
+    public Weapon getWeapon(String name){       //TODO
+        return weaponDeck.getWeapon(name);
+    }
+
+    public PlayerAbstract getPlayer(String string) {        //TODO
+        for(GameCharacter gameCharacter : gameCharacterList){
+            if(gameCharacter.getConcretePlayer().getName().equalsIgnoreCase(string))
+                return gameCharacter.getConcretePlayer();
+        }
+        return null;
     }
 }

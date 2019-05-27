@@ -234,13 +234,13 @@ public class GameMap {
      * @return  the square at the given row and column
      * @throws NoSuchSquareException if there's no square with the given coordinates
      */
-    public SquareAbstract getSquare(int row, int col) throws NoSuchSquareException {
+    public SquareAbstract getSquare(int row, int col){
 
         try {
             return squares.get(row).get(col);
         }
         catch (IndexOutOfBoundsException e){
-            throw new NoSuchSquareException();
+            return null;
         }
 
     }

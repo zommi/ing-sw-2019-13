@@ -49,7 +49,11 @@ public class GameModel extends Observable implements Serializable {
         return clientID;
     }
 
-    public void saveAnswer(ServerAnswer answer) { //the GameModel will save the answer of the Server updating the model elements needed and notifying the observers
+    public void saveAnswer(ServerAnswer answer) {
+
+        //the GameModel will save the answer of the Server
+        // updating the model elements needed and notifying the observers
+
         if (answer instanceof GameBoardAnswer) {
             gameBoard = (GameBoardAnswer) answer;
             setChanged();
