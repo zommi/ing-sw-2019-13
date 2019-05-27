@@ -26,7 +26,7 @@ public class WeaponDeck {
     public WeaponDeck() {
         try {
             initializeDeck();
-        } catch (ReadJsonErrorException e) {
+        } catch (/*ReadJsonErrorException|*/Exception e) {
             e.printStackTrace();
         }
     }
@@ -35,7 +35,7 @@ public class WeaponDeck {
      * initializes the deck by creating all the different cards
      */
     private void initializeDeck() throws ReadJsonErrorException {
-        ObjectMapper mapper = new ObjectMapper();
+         ObjectMapper mapper = new ObjectMapper();
         File file = new File(Constants.PATH_TO_WEAPONS_JSON);
 
         Weapon[] arrayOfWeapons = new Weapon[0];
@@ -117,7 +117,7 @@ public class WeaponDeck {
         return null;
     }
 
-    public WeaponCard getWeapon(int index) {
+    public WeaponCard getWeaponFromIndex(int index) {
         return deck.get(index);
     }
 

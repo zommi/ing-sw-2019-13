@@ -1,12 +1,9 @@
 package server;
 
 import client.ReceiverInterface;
-import client.weapons.Weapon;
 import server.controller.Controller;
-import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import view.InitialMapAnswer;
-import view.ListOfWeaponsAnswer;
 import view.ServerAnswer;
 
 import java.rmi.RemoteException;
@@ -118,10 +115,12 @@ public class Server {
 
     public void setMap(int numMap){
         this.mapChoice = numMap;
+        System.out.println("Instantiating the controller");
         this.setController(numMap, initialSkulls);
     }
 
     public void setController(int numMap, int initialSkulls){
+        System.out.println("Test");
         controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }

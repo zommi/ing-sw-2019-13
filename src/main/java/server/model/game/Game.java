@@ -4,6 +4,7 @@ import client.weapons.Weapon;
 import exceptions.*;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
+import server.model.cards.WeaponCard;
 import server.model.gameboard.*;
 import server.model.player.*;
 import server.model.map.*;
@@ -55,8 +56,9 @@ public class Game {
         this.currentPlayerIndex = 0;
         this.turnHandler = new TurnHandler();
         for(int i = 0; i < weaponDeck.getSize(); i++){
-            this.weaponList.add(weaponDeck.getWeapon(i));
-            System.out.println("added the weapon " +weaponDeck.getWeapon(i).getName());
+            WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
+            this.weaponList.add(temp);
+            System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
         }
     }
 
