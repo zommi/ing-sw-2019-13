@@ -8,6 +8,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -54,7 +55,7 @@ public class MainGuiController implements GuiController{
     private UpdaterGUI gui;
 
     private int side = 175;
-
+    
 
     @FXML
     void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
@@ -183,9 +184,11 @@ public class MainGuiController implements GuiController{
             weapon.setOnMousePressed(e -> {
                 if(weaponHandSize < 3){
                     drawWeapon(e,weapon);
-                   // String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
+                    // ask server to draw card
+                    // String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
                     spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
-                    //spawnPoint.restore(cardToDraw,weapon.getIndex());
+                    // add the card draw to the spawnpoint
+                    // spawnPoint.restore(cardToDraw,weapon.getIndex());
                     alert.close();
                 }
             });

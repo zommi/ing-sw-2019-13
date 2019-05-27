@@ -37,8 +37,8 @@ public class SocketServer implements ServerInterface{
         return 0;
     }
 
-    public static void main(String[] args){
-        SocketServer server = new SocketServer(1099);
+    public void start(){
+        SocketServer server = new SocketServer(1337);
         server.run();
     }
 }

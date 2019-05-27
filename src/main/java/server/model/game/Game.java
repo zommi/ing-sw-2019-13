@@ -58,7 +58,7 @@ public class Game {
         for(int i = 0; i < weaponDeck.getSize(); i++){
             WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
             this.weaponList.add(temp);
-            System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
+            //System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
         }
     }
 

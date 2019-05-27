@@ -87,7 +87,7 @@
                                      prefWidth="125.0" />
                               <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <ChoiceBox fx:id="connectionBox" GridPane.columnIndex="2" GridPane.rowIndex="5"
-                                     prefWidth="125.0"/>
+                                     prefWidth="125.0" />
                            </children>
                         </GridPane>
                      </children>

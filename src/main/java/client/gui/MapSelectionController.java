@@ -36,8 +36,9 @@ public class MapSelectionController implements GuiController {
                 }
             }
             this.gui.setInitialSkulls((int)skullBox.getValue());
-            this.gui.changeStage("gui.fxml");
-            this.gui.createGame();
+            this.gui.getConnection().configure();
+            this.gui.getConnection().add(this.gui.getPlayerName(),this.gui.getMapIndex(),this.gui.getInitialSkulls());
+            this.gui.changeStage("loading_screen.fxml");
         }
     }
 

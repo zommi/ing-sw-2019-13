@@ -60,6 +60,10 @@ public class UpdaterGUI extends Application implements Updater {
 
         }
 
+        if(object.equals("Map initialized")){
+            changeStage("gui.fxml");
+        }
+
         if(object.equals("Map")){
 
         }
@@ -79,7 +83,7 @@ public class UpdaterGUI extends Application implements Updater {
             for(File file: fxmlDir.listFiles()) {
                 String[] subDir = file.getPath().split("/");
                 FXMLLoader loader = new FXMLLoader((getClass().getResource(
-                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length-1])));
+                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length - 1])));
                 this.sceneMap.put(file.getName(), loader.load());
                 GuiController controller = loader.getController();
                 controller.addGui(this);
@@ -130,5 +134,37 @@ public class UpdaterGUI extends Application implements Updater {
 
     public GameModel getGameModel() {
         return model;
+    }
+
+    public GameModel getModel() {
+        return model;
+    }
+
+    public HashMap<String, Parent> getSceneMap() {
+        return sceneMap;
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public int getMapIndex() {
+        return mapIndex;
+    }
+
+    public int getInitialSkulls() {
+        return initialSkulls;
+    }
+
+    public Connection getConnection(){
+        return this.connection;
     }
 }
