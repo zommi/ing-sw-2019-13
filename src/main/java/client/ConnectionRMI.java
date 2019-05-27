@@ -129,7 +129,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     @Override
     public void publishMessage(ServerAnswer answer) throws RemoteException{
-        System.out.println("Saving the answer of the server with the map");
         this.gameModel.saveAnswer(answer);
     }
 
@@ -179,7 +178,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     @Override
     public void print() throws RemoteException{
-        System.out.println("caccameroni");
+        System.out.println("Test Connection");
     }
 
 

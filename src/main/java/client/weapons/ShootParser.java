@@ -1,5 +1,6 @@
 package client.weapons;
 
+import client.GameModel;
 import client.InputAbstract;
 import client.SquareInfo;
 
@@ -12,12 +13,17 @@ public class ShootParser {
     private Weapon weapon;
     private InputAbstract input;
     private ShoootInfo shoootInfo;
+    private GameModel gameModel;
+
+    public ShootParser(GameModel gameModel){
+        this.gameModel = gameModel;
+    }
 
     public ShoootInfo getWeaponInput(Weapon weapon, InputAbstract input){
         this.isLimitedActivated = false;
         this.weapon = weapon;
         this.input = input;
-        shoootInfo = new ShoootInfo(weapon.getName());
+        shoootInfo = new ShoootInfo(weapon.getName(), gameModel);
         List<List<MicroPack>> macroList = new ArrayList<>();
         switch(weapon.getType()){
             case EXTRA:

@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.ReceiverInterface;
 import server.controller.Controller;
 import server.model.game.Game;
@@ -73,7 +74,7 @@ public class Server {
 
 
 
-    public int addClient(ReceiverInterface client){
+    public int addClient(Connection client){
         if(listOfClients.size() == 0){
             listOfClients.add(0);
             this.clientIDadded = 0;
