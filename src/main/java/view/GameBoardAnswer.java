@@ -17,19 +17,16 @@ public class GameBoardAnswer implements ServerAnswer {
         return result;
     }
 
-<<<<<<< HEAD
-    public WeaponDeck getWeaponDeck(){return result.getWeaponDeck(); }
-
-    public List<String> getCharacterNames(){
+    public List<String> getCharacterNames() {
         List<String> list = new ArrayList<>();
-        for(int i = 0; i < result.getGameCharacterList().size(); i++){
+        for (int i = 0; i < result.getGameCharacterList().size(); i++) {
             list.add(result.getGameCharacterList().get(i).getFigure().toString());
         }
         return list;
-=======
+    }
+
     public AmmoTileDeck getWeaponDeck() {
         //TODO
         return null;
->>>>>>> 00ba2c95df615f176f9c28c127d722e22e738d27
     }
 }
