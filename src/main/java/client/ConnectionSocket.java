@@ -31,13 +31,20 @@ public class ConnectionSocket implements Connection {
         this.socket = null;
     }
 
-    @Override
     public boolean getError(){
         return this.error;
     }
 
     public void addPlayerCharacter(String name){
         send(new SetupInfo(name));
+    }
+
+    public void startTimer() {
+
+    }
+
+    public void saveAnswer(ServerAnswer answer) {
+
     }
 
     public boolean CharacterChoice(String name){
@@ -53,12 +60,10 @@ public class ConnectionSocket implements Connection {
         return this.clientID;
     }
 
-    @Override
     public String getCurrentCharacter(){
         return null;
     }
 
-    @Override
     public int getCurrentID(){
         return 0;
     }
@@ -66,6 +71,10 @@ public class ConnectionSocket implements Connection {
     @Override
     public int getStartGame(){
         return this.startGame;
+    }
+
+    public void sendConnection() {
+
     }
 
     public void configure(){

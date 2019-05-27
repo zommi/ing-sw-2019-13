@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.net.URL?>
+
+<!-- start with stackPane to stack different nodes-->
+<StackPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="client.gui.StartMenuController">
+    <stylesheets>
+        <URL value="@/style.css"/>
+    </stylesheets>
+   <children>
+       <!-- background image -->
+      <ImageView fitHeight="550.0" fitWidth="800.0" StackPane.alignment="CENTER">
+         <image>
+            <Image url="@../startmenuimage.png" />
+         </image>
+      </ImageView>
+       <!-- once again using a stackpane as to stack different nodes-->
+      <StackPane StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints prefWidth="265.0" />
+                <ColumnConstraints prefWidth="270.0" />
+                <ColumnConstraints prefWidth="265.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints prefHeight="150.0" />
+                <RowConstraints prefHeight="130.0" />
+                <RowConstraints prefHeight="70.0" />
+                <RowConstraints prefHeight="200.0" />
+              </rowConstraints>
+               <children>
+                   <!-- Gridpane containing buttons -->
+                   <GridPane prefHeight="130.0" prefWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" prefWidth="270.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                           <RowConstraints prefHeight="65.0" vgrow="SOMETIMES" />
+                           <RowConstraints prefHeight="65.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                       <children>
+                           <Button fx:id="createButton" onMousePressed="#createGame"
+                                   prefHeight="65.0" prefWidth="270.0" text="CREATE GAME" GridPane.rowIndex="0" />
+                           <Button fx:id="connectButton" onMousePressed="#connectGame"
+                                   prefHeight="65.0" prefWidth="270.0" text="CONNECT" GridPane.rowIndex="1" />
+                       </children>
+                   </GridPane>
+                  <StackPane prefHeight="170.0" prefWidth="270.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Rectangle styleClass="choice-rectangle" height="170.0" width="270.0" />
+                         <!-- gridpane containing input prompts-->
+                        <GridPane prefHeight="170.0" prefWidth="270.0">
+                          <columnConstraints>
+                            <ColumnConstraints prefWidth="10.0" />
+                            <ColumnConstraints prefWidth="125.0" />
+                            <ColumnConstraints prefWidth="125.0" />
+                            <ColumnConstraints prefWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints prefHeight="40.0" />
+                            <RowConstraints prefHeight="30.0" />
+                            <RowConstraints prefHeight="10.0" />
+                            <RowConstraints prefHeight="30.0" />
+                            <RowConstraints prefHeight="10.0" />
+                            <RowConstraints prefHeight="30.0" />
+                            <RowConstraints prefHeight="40.0" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Enter name:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="nameField" GridPane.columnIndex="2" GridPane.rowIndex="1"
+                                     prefWidth="125.0" />
+                              <Label text="Choose character" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <ChoiceBox fx:id="characterBox" GridPane.columnIndex="2" GridPane.rowIndex="3"
+                                     prefWidth="125.0" />
+                              <Label text="Choose connection" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <ChoiceBox fx:id="connectionBox" GridPane.columnIndex="2" GridPane.rowIndex="5"
+                                     prefWidth="125.0"/>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

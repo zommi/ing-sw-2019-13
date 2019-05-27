@@ -8,14 +8,7 @@ import java.util.List;
 
 public abstract class InputAbstract {
     List<String> playersNames;
-
-    public void setPlayersNames(List<String> playersNames){
-        this.playersNames = playersNames;
-    }
-
-    public List<String> getPlayersNames() {
-        return playersNames;
-    }
+    List<String> roomsNames;
 
     public abstract boolean getChoice(MacroEffect macroEffect);
     public abstract MacroEffect chooseOneMacro(Weapon weapon);
@@ -28,5 +21,19 @@ public abstract class InputAbstract {
 
     public abstract List<String> askRooms(int maxTargetRoomSize);
 
+    public List<String> getRoomsNames() {
+        return roomsNames;
+    }
 
+    public void setRoomsNames(List<String> roomsNames) {
+        this.roomsNames = roomsNames;
+    }
+
+    public void setPlayersNames(List<String> playersNames){
+        this.playersNames = playersNames;
+    }
+
+    public List<String> getPlayersNames() {
+        return playersNames;
+    }
 }

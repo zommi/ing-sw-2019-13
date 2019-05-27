@@ -17,6 +17,7 @@ public class GameBoardAnswer implements ServerAnswer {
         return result;
     }
 
+<<<<<<< HEAD
     public WeaponDeck getWeaponDeck(){return result.getWeaponDeck(); }
 
     public List<String> getCharacterNames(){
@@ -25,5 +26,10 @@ public class GameBoardAnswer implements ServerAnswer {
             list.add(result.getGameCharacterList().get(i).getFigure().toString());
         }
         return list;
+=======
+    public AmmoTileDeck getWeaponDeck() {
+        //TODO
+        return null;
+>>>>>>> 00ba2c95df615f176f9c28c127d722e22e738d27
     }
 }

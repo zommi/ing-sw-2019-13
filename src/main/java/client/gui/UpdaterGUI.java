@@ -1,30 +1,54 @@
 package client.gui;
 
+import client.Connection;
 import client.GameModel;
 import client.Updater;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import server.model.gameboard.GameBoard;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.io.File;
+import java.util.HashMap;
 import java.util.Observable;
 
 public class UpdaterGUI extends Application implements Updater {
 
+    private GameModel model;
+
+    private HashMap<String, Parent> sceneMap = new HashMap<>();
+
+    private Scene currentScene;
+
+    private Stage stage;
+
+    private Connection connection;
+
+    private String playerName;
+
+    private int mapIndex;
+
+    private int initialSkulls;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/gui.fxml"));
-        primaryStage.setTitle("ADRENALINE.EXE");
-        primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.show();
-
+        set();
+        this.stage = primaryStage;
+        run();
     }
 
+    public void attachToObserver(){
+        this.model.addObserver(this);
+    }
+
+    public void setModel(){
+        this.model = connection.getGameModel();
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -50,10 +74,61 @@ public class UpdaterGUI extends Application implements Updater {
     }
 
     public void set(){
-
+        try {
+            File fxmlDir = new File(getClass().getResource("/fxml").toURI());
+            for(File file: fxmlDir.listFiles()) {
+                String[] subDir = file.getPath().split("/");
+                FXMLLoader loader = new FXMLLoader((getClass().getResource(
+                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length-1])));
+                this.sceneMap.put(file.getName(), loader.load());
+                GuiController controller = loader.getController();
+                controller.addGui(this);
+            }
+            currentScene = new Scene(sceneMap.get("start_menu.fxml"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void run(){
+        stage.setTitle("ADRENALINE.EXE");
+        stage.setScene(currentScene);
+        stage.setResizable(false);
+        stage.show();
+    }
 
+    public void changeStage(String scene){
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        currentScene = new Scene(sceneMap.get(scene));
+        stage.setScene(currentScene);
+        stage.setX((screenBounds.getWidth() - currentScene.getWidth()) / 2);
+        stage.setY((screenBounds.getHeight() - currentScene.getHeight()) / 2);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void setConnection(Connection connection){
+        this.connection = connection;
+    }
+
+
+    public void setMapIndex(int mapIndex) {
+        this.mapIndex = mapIndex;
+    }
+
+    public void setInitialSkulls(int initialSkulls) {
+        this.initialSkulls = initialSkulls;
+    }
+
+    public void createGame(){
+        this.connection.add(this.playerName,this.mapIndex,this.initialSkulls);
+    }
+
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    }
+
+    public GameModel getGameModel() {
+        return model;
     }
 }

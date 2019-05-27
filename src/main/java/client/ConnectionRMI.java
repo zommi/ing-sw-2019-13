@@ -69,6 +69,10 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
+    public void sendConnection() {
+
+    }
+
 
     public void setClientID(int clientID){
         this.clientID = clientID;
@@ -157,7 +161,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
     }*/
 
-    @Override
     public boolean getError(){
         return this.error;
     }
@@ -224,6 +227,14 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
                 re.printStackTrace();
             }
         }
+    }
+
+    public void startTimer() {
+
+    }
+
+    public void saveAnswer(ServerAnswer answer) {
+
     }
 
 

@@ -23,8 +23,9 @@ import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
 import server.model.map.SquareAbstract;
+import view.MapAnswer;
 
-public class MainGuiController {
+public class MainGuiController implements GuiController{
 
     @FXML
     private GridPane weaponHand;
@@ -54,11 +55,6 @@ public class MainGuiController {
 
     private int side = 175;
 
-    GameBoard gb = new GameBoard(1,6);
-
-    public void setGuiMain(UpdaterGUI guiMain){
-        this.gui = guiMain;
-    }
 
     @FXML
     void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
@@ -77,8 +73,8 @@ public class MainGuiController {
     }
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
-        gb.setupGameBoard();
-        GameMap map = gb.getMap();//model.getMap();
+        this.model = gui.getGameModel();
+        GameMap map = model.getMap().getResult();
         int col = 0;
         int row = 0;
         int doorSize = side / 3;
@@ -187,9 +183,9 @@ public class MainGuiController {
             weapon.setOnMousePressed(e -> {
                 if(weaponHandSize < 3){
                     drawWeapon(e,weapon);
-                    String cardToDraw = gb.getWeaponDeck().draw().getPath();
+                   // String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
                     spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
-                    spawnPoint.restore(cardToDraw,weapon.getIndex());
+                    //spawnPoint.restore(cardToDraw,weapon.getIndex());
                     alert.close();
                 }
             });
@@ -203,4 +199,8 @@ public class MainGuiController {
         alert.showAndWait();
     }
 
+    @Override
+    public void addGui(UpdaterGUI updaterGUI) {
+        this.gui = updaterGUI;
+    }
 }

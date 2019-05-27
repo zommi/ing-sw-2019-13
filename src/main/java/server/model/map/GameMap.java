@@ -18,17 +18,17 @@ public class GameMap {
     private List<Color> roomsToBuild;
     private boolean valid;
 
+
+
+    public GameMap(){
+
+    }
     /**
      * Generates the whole map, including the graph that links
      * all the squares and the rooms they are assigned to.
      * @param mapNum One of the different configurations of the map.
      *               It could go from 1 to 4.
      */
-
-    public GameMap(){
-
-    }
-
     public GameMap(int mapNum) {
         valid = true;
         String path;
@@ -306,4 +306,5 @@ public class GameMap {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
+
 }
