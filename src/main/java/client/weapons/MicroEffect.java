@@ -3,9 +3,10 @@ package client.weapons;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import server.model.cards.WeaponPolicy;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MicroEffect {
+public class MicroEffect implements Serializable {
 
     @JsonProperty
     private boolean mandatory;

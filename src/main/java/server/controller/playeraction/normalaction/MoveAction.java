@@ -1,6 +1,7 @@
 package server.controller.playeraction.normalaction;
 
 import constants.*;
+import server.controller.playeraction.Action;
 import server.controller.playeraction.MoveActuator;
 import client.MoveInfo;
 import server.controller.playeraction.MoveValidator;
@@ -8,7 +9,7 @@ import server.model.player.PlayerAbstract;
 
 import java.util.List;
 
-public class MoveAction {
+public class MoveAction implements Action {
     private List<Direction> moves;
     private PlayerAbstract player;
 

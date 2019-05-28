@@ -17,6 +17,11 @@ import server.model.map.GameMap;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
+import view.GameBoardAnswer;
+import view.MapAnswer;
+import view.PlayerBoardAnswer;
+import view.PlayerHandAnswer;
+
 import java.util.List;
 
 public class Controller implements MyObserver {
@@ -29,19 +34,12 @@ public class Controller implements MyObserver {
 
     private GameMap currentMap;
 
-    private List<PlayerAbstract> currentPlayers;
-
-    private PlayerAbstract activePlayer;
-
-    private TurnHandler turnHandler;
-
     private Server server;
 
 
     public Controller(int mapChoice, int initialSkulls, Server server){
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
-        this.activePlayer = null;
         this.server = server;
     }
 
@@ -70,21 +68,36 @@ public class Controller implements MyObserver {
 
         if(action instanceof MoveInfo){
             MoveAction moveAction = new MoveAction((MoveInfo) action);
-            turnHandler.setAndDoAction((Action)moveAction);
+            turnHandler.setAndDoAction(moveAction);
+            MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
+            GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
+            server.sendToEverybodyRMI(mapAnswer);
+            server.sendToEverybodyRMI(gameBoardAnswer);
         }
         else if(action instanceof CollectInfo){
-            MoveInfo temp0 = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
-            CollectAction collectAction = new CollectAction(temp0, (CollectInfo) action);
+            MoveInfo temp = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
+            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action);
             turnHandler.setAndDoAction(collectAction);
+            this.sendCollectShootAnswers(currentPlayer);
         }
         else if(action instanceof ShootPack){
             ShootAction shootAction = new ShootAction((ShootPack) action);
             turnHandler.setAndDoAction(shootAction);
+            sendCollectShootAnswers(currentPlayer);
         }
-
-
-
         return true;
+    }
+
+
+    public void sendCollectShootAnswers(ConcretePlayer player){
+        MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
+        GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
+        PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getBoard());
+        PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
+        server.sendToEverybodyRMI(mapAnswer);
+        server.sendToEverybodyRMI(gameBoardAnswer);
+        server.sendToEverybodyRMI(playerBoardAnswer);
+        server.sendToEverybodyRMI(playerHandAnswer);
     }
 
     public Game getCurrentGame(){

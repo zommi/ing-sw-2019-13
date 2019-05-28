@@ -3,7 +3,9 @@ package client.weapons;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Cost {
+import java.io.Serializable;
+
+public class Cost implements Serializable {
 
     @JsonProperty
     private int red;
