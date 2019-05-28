@@ -1,5 +1,6 @@
 package server.model.gameboard;
 
+import client.weapons.Cost;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +52,8 @@ public class WeaponDeck {
         for(Weapon weapon : arrayOfWeapons){
             int macro = 0;
             for(MacroEffect macroEffect : weapon.getMacroEffects()){
+                if(macroEffect.getCost()==null)
+                    macroEffect.setCost(new Cost(0,0,0));
                 macroEffect.setNumber(macro);
                 int micro = 0;
                 for(MicroEffect microEffect : macroEffect.getMicroEffects()){
@@ -110,7 +113,7 @@ public class WeaponDeck {
 
     public Weapon getWeapon(String weaponName){
         for(WeaponCard weaponCard : deck){
-            if(weaponCard.getWeapon().getName().equals(weaponName))
+            if(weaponCard.getWeapon().getName().equalsIgnoreCase(weaponName))
                 return weaponCard.getWeapon();
 
         }
