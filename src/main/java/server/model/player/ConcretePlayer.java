@@ -36,6 +36,7 @@ public class ConcretePlayer extends PlayerAbstract {
     public void setCurrentGame(Game game){
         this.currentGame = game;
     }
+
     public void setIfCharacter(boolean choice){
         this.ifCharacter = choice;
     }
@@ -71,6 +72,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public void setPlayerCharacter(Figure figure){
         this.gameCharacter = new GameCharacter(chooseFigure(figure));
+        this.gameCharacter.setConcretePlayer(this);
     }
 
     public GameCharacter getGameCharacter(){
@@ -136,7 +138,7 @@ public class ConcretePlayer extends PlayerAbstract {
      * @return
      */
     public PlayerState getPlayerState() {
-        return null;
+        return this.state;
     }
 
     public SquareAbstract getPosition(){ return this.gameCharacter.getPosition();}
