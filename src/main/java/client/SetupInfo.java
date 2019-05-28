@@ -13,6 +13,8 @@ public class SetupInfo implements Info, Serializable {
 
     private boolean characterSetup;
 
+    private int clientId;
+
     public SetupInfo(int mapChoice, int initialSkulls,
                      String playerName) {
         this.mapChoice = mapChoice;
@@ -24,8 +26,9 @@ public class SetupInfo implements Info, Serializable {
         return characterSetup;
     }
 
-    public SetupInfo(String characterChosen) {
+    public SetupInfo(int clientId, String characterChosen) {
         this.characterChosen = characterChosen;
+        this.clientId = clientId;
         this.characterSetup = true;
     }
 
@@ -45,5 +48,7 @@ public class SetupInfo implements Info, Serializable {
         return characterChosen;
     }
 
-
+    public int getClientId() {
+        return clientId;
+    }
 }

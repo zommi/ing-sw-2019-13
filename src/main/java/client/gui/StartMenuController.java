@@ -3,6 +3,7 @@ package client.gui;
 import client.Connection;
 import client.ConnectionRMI;
 import client.ConnectionSocket;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -71,6 +72,7 @@ public class StartMenuController implements GuiController{
                 new ConnectionSocket(0)
         );
         this.gui.changeStage("map_selection.fxml");
+        this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setModel();
         this.gui.attachToObserver();
     }
@@ -85,18 +87,23 @@ public class StartMenuController implements GuiController{
     }
 
     public void connectGame(MouseEvent mouseEvent) throws RemoteException{
+
         this.gui.setPlayerName(this.nameField.getText());
         this.gui.setConnection(
                 this.connectionBox.getValue().toString().equals("RMI") ?
                         new ConnectionRMI(0) :
                         new ConnectionSocket(0)
         );
+        this.gui.changeStage("loading_screen.fxml");
         this.gui.setModel();
         this.gui.attachToObserver();
         this.gui.getConnection().configure();
+        this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
-        this.gui.setMapIndex(this.gui.getConnection().getMapIndex());
-        this.gui.getConnection().add(this.gui.getPlayerName(),this.gui.getMapIndex(),this.gui.getInitialSkulls());
-        this.gui.changeStage("loading_screen.fxml");
+        String mapName;
+        int initialSkulls;
+        this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
+        this.gui.changeStage("gui.fxml");
     }
+
 }

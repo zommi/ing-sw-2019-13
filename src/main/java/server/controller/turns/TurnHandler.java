@@ -25,7 +25,7 @@ public class TurnHandler {
         currentPlayer.usePowerup(index);
     }
 
-    /* TODO
+    /*
     public void reloadWeapon(List<Weapon> weaponsToReload) throws InvalidMoveException{
         if(this.currentPhase == TurnPhase.END_TURN) {
             for (Weapon w : weaponsToReload) {
@@ -34,6 +34,10 @@ public class TurnHandler {
         } throw new InvalidMoveException();
     }
     */
+
+    public TurnHandler(){
+        this.currentPhase = TurnPhase.FIRST_ACTION;
+    }
 
 
     public TurnPhase getCurrentPhase(){
@@ -50,10 +54,10 @@ public class TurnHandler {
         }
     }
 
-    public void startTurn(PlayerAbstract player){
+    /*public void startTurn(PlayerAbstract player){
         this.currentPlayer = player;
         this.currentPhase = TurnPhase.FIRST_ACTION;
-    }
+    }*/
 
     public void pass(){
         if(currentPhase == TurnPhase.END_TURN){

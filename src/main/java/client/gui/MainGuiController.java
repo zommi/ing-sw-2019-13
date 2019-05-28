@@ -75,7 +75,7 @@ public class MainGuiController implements GuiController{
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
         this.model = gui.getGameModel();
-        GameMap map = model.getMap().getResult();
+        GameMap map = model.getMap();
         int col = 0;
         int row = 0;
         int doorSize = side / 3;

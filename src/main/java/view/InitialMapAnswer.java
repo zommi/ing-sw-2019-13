@@ -1,11 +1,13 @@
 package view;
 
 
-public class InitialMapAnswer implements ServerAnswer {
-    private int numMap;
+import java.io.Serializable;
 
-    public InitialMapAnswer(int numMap){
-        this.numMap = numMap;
+public class InitialMapAnswer implements ServerAnswer, Serializable {
+    int numMap;
+
+    public InitialMapAnswer(int n){
+        this.numMap = n;
     }
 
     public int getNumMap(){

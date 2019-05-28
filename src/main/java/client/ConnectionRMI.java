@@ -2,6 +2,7 @@ package client;
 
 import exceptions.GameAlreadyStartedException;
 import server.GameProxyInterface;
+import server.model.map.GameMap;
 import view.ServerAnswer;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private GameProxyInterface gameProxy;
     private String name = "rmiconnection";
     private String mapChoice;
+    private GameMap map;
     private int initialSkulls;
 
     private boolean error = false;
@@ -46,7 +48,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return null;
     }
 
-    public String getMap(){
+    public GameMap getMap(){
         try{
             return gameProxy.getMap();
         }
@@ -54,7 +56,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             System.out.println("Could not take the map from the server");
             re.printStackTrace();
         }
-        return "No one has chosen yet";
+        return null;
     }
 
     @Override
@@ -286,7 +288,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             }
             System.out.println("The server received your choice of the map...");
             try{
-                this.mapChoice = gameProxy.getMap();
+                this.mapChoice = gameProxy.getNameMap();
             }
             catch(RemoteException e){
                 System.out.println("Remote Exception caught");
@@ -297,20 +299,30 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         //TODO manca la parte in cui salvo le scelte del client!
     }
 
-    @Override
-    public int getMapIndex() {
-        switch (getMap()){
+    public int getMapIndexFromName(String name) {
+        switch (name){
             case "map11.txt":
-                return 1;
+                return 0;
             case "map12.txt":
-                return 2;
+                return 1;
             case "map21.txt":
-                return 3;
+                return 2;
             case "map22.txt":
-                return 4;
+                return 3;
         }
         return  -1;
     }
 
+    @Override
+    public String getMapName() {
+        try{
+            return gameProxy.getMapName();
+        }
+        catch (RemoteException re){
+            System.out.println("Could not take the map name from the server");
+            re.printStackTrace();
+        }
+        return "No one has chosen yet";
+    }
 }
 

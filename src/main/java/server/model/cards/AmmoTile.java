@@ -1,12 +1,13 @@
 package server.model.cards;
 
+import java.io.Serializable;
 import java.util.*;
 import server.model.items.*;
 
 /**
  * 
  */
-public class AmmoTile implements CollectableInterface {
+public class AmmoTile implements CollectableInterface, Serializable {
 
     private List<AmmoCube> content;
     private boolean hasPowerup;

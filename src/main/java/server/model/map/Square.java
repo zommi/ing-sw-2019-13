@@ -4,7 +4,9 @@ import constants.Color;
 import server.model.cards.AmmoTile;
 import server.model.cards.CollectableInterface;
 
-public class Square extends SquareAbstract {
+import java.io.Serializable;
+
+public class Square extends SquareAbstract implements Serializable {
 
     private AmmoTile ammoTile;                          //TODO optional?
 

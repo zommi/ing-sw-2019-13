@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import server.model.gameboard.GameBoard;
+import server.model.map.GameMap;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,13 +27,21 @@ public class UpdaterGUI extends Application implements Updater {
 
     private Stage stage;
 
+    private String stageName;
+
     private Connection connection;
 
     private String playerName;
 
+    private String character;
+
     private int mapIndex;
 
+    private GameMap gameMap;
+
     private int initialSkulls;
+
+    private int playerId;
 
 
     @Override
@@ -61,7 +70,7 @@ public class UpdaterGUI extends Application implements Updater {
         }
 
         if(object.equals("Map initialized")){
-            changeStage("gui.fxml");
+            System.out.println("map received");
         }
 
         if(object.equals("Map")){
@@ -89,6 +98,7 @@ public class UpdaterGUI extends Application implements Updater {
                 controller.addGui(this);
             }
             currentScene = new Scene(sceneMap.get("start_menu.fxml"));
+            this.stageName = "stage_menu.fxml";
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -103,6 +113,7 @@ public class UpdaterGUI extends Application implements Updater {
 
     public void changeStage(String scene){
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        this.stageName = scene;
         currentScene = new Scene(sceneMap.get(scene));
         stage.setScene(currentScene);
         stage.setX((screenBounds.getWidth() - currentScene.getWidth()) / 2);
@@ -120,8 +131,20 @@ public class UpdaterGUI extends Application implements Updater {
         this.mapIndex = mapIndex;
     }
 
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
+    }
+
     public void setInitialSkulls(int initialSkulls) {
         this.initialSkulls = initialSkulls;
+    }
+
+    public void setCharacter(String character) {
+        this.character = character;
+    }
+
+    public String getCharacter() {
+        return character;
     }
 
     public void createGame(){
@@ -152,6 +175,10 @@ public class UpdaterGUI extends Application implements Updater {
         return stage;
     }
 
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -166,5 +193,9 @@ public class UpdaterGUI extends Application implements Updater {
 
     public Connection getConnection(){
         return this.connection;
+    }
+
+    public String getStageName() {
+        return stageName;
     }
 }

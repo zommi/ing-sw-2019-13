@@ -128,6 +128,14 @@ public class Game {
         }
     }
 
+    public PlayerAbstract getPlayerFromId(int id){
+        for(PlayerAbstract player : activePlayers){
+            if(player.getClientID() == id){
+                return player;
+            }
+        }
+        return null;
+    }
 
     public GameBoard getCurrentGameBoard() {
         return currentGameBoard;

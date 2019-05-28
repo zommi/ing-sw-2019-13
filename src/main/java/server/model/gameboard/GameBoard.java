@@ -58,7 +58,7 @@ public class GameBoard {
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
         this.gameCharacterList = new ArrayList<>();
-        //setupGameBoard();
+        setupGameBoard();
 
     }
 

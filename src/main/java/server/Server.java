@@ -4,6 +4,7 @@ import client.ReceiverInterface;
 import server.controller.Controller;
 import server.model.game.Game;
 import view.InitialMapAnswer;
+import view.MapAnswer;
 import view.ServerAnswer;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -46,13 +47,15 @@ public class Server {
             game = controller.getCurrentGame();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
-            ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
+            ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
+                InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
                 ServerAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
+                    temp.get(i).publishMessage(temp0);
                     temp.get(i).publishMessage(mapAnswer);
                     System.out.println("Sent the map to the connection RMI");
                     temp.get(i).publishMessage(temp1);
@@ -105,6 +108,22 @@ public class Server {
         }
     }
 
+    public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
+        try {
+            List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            for (int i = 0; i < temp.size(); i++) {
+                if(temp.get(i).getClientID() == clientID){
+                    temp.get(i).publishMessage(serverAnswer);
+                    System.out.println("Sent an update to the client");
+                    break;
+                }
+            }
+        }
+        catch(RemoteException e){
+            e.printStackTrace();
+        }
+    }
+
     public int getClientIDadded(){
         return this.clientIDadded;
     }
@@ -132,7 +151,7 @@ public class Server {
     }
 
     public void setController(int numMap, int initialSkulls){
-        System.out.println("Test");
+        //System.out.println("Test");
         controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }

@@ -165,7 +165,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         else
         {
             do{
-                mapName = connection.getMap();
+                mapName = connection.getMapName();
                 initialSkulls = connection.getInitialSkulls();
             } while((mapName.equals("No one has chosen yet"))||(initialSkulls == 0));
             System.out.println(">Your friend has chosen the map: " +mapName);

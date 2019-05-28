@@ -6,16 +6,17 @@ import exceptions.NoSuchSquareException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameMap {
+public class GameMap implements Serializable {
 
-    private List<SpawnPoint> spawnPoints;
-    private ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional
-    private List<Room> rooms;
-    private List<Color> roomsToBuild;
+    private List<SpawnPoint> spawnPoints = new ArrayList<>();
+    private ArrayList<ArrayList<SquareAbstract>> squares = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
+    private List<Color> roomsToBuild = new ArrayList<>();
     private boolean valid;
 
 
@@ -285,7 +286,7 @@ public class GameMap {
 
     public GameMap createCopy(GameMap MapToCopy){
         GameMap result = new GameMap();
-        result.squares.addAll(MapToCopy.getSquares());
+        result.squares = MapToCopy.getSquares();
         result.spawnPoints.addAll(MapToCopy.getSpawnPoints());
         result.roomsToBuild = null; //we don't need roomsToBuild
         result.valid = this.valid;
