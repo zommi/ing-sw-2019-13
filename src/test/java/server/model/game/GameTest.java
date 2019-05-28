@@ -16,8 +16,10 @@ class GameTest {
     public void constructorTest(){
         Game testGame = new Game(1,8);
 
-        ConcretePlayer testPlayer1 = new ConcretePlayer("pippo",testGame.getCurrentGameBoard(), Figure.SPROG);
-        ConcretePlayer testPlayer2 = new ConcretePlayer("pluto",testGame.getCurrentGameBoard(), Figure.DESTRUCTOR);
+        ConcretePlayer testPlayer1 = new ConcretePlayer("pippo");
+        testPlayer1.setPlayerCharacter(Figure.SPROG);
+        ConcretePlayer testPlayer2 = new ConcretePlayer("pluto");
+        testPlayer2.setPlayerCharacter(Figure.DESTRUCTOR);
         List<ConcretePlayer> testList = new ArrayList<ConcretePlayer>();
 
         testList.add(testPlayer1);

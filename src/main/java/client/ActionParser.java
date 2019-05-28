@@ -30,7 +30,7 @@ public class ActionParser{
 
     public Info createShootEvent(String weaponChosen){
         Weapon weapon = this.weaponFromString(weaponChosen);
-        ShootParser shootParser = new ShootParser();
+        ShootParser shootParser = new ShootParser(gameModel);
         Info shootInfo = shootParser.getWeaponInput(weapon,input);
         return shootInfo;
     }

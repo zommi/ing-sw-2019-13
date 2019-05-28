@@ -17,7 +17,8 @@ class PlayerBoardTest {
     @Test
     public void drawAmmoTileTest(){
         GameBoard testGameBoard = new GameBoard(4,8);
-        ConcretePlayer testPlayer = new ConcretePlayer("Carlo", testGameBoard,Figure.BANSHEE);
+        ConcretePlayer testPlayer = new ConcretePlayer("Carlo");
+        testPlayer.setPlayerCharacter(Figure.BANSHEE);
 
         PlayerBoard testPlayerBoard = testPlayer.getBoard();
 

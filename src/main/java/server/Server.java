@@ -5,8 +5,6 @@ import server.controller.Controller;
 import server.model.game.Game;
 import view.InitialMapAnswer;
 import view.ServerAnswer;
-
-import java.net.ServerSocket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -92,6 +90,19 @@ public class Server {
             System.out.println("Task started");
         }
         return clientIDadded;
+    }
+
+    public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
+        try {
+            List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            for (int i = 0; i < temp.size(); i++) {
+                temp.get(i).publishMessage(serverAnswer);
+                System.out.println("Sent an update to the client");
+            }
+        }
+        catch(RemoteException e){
+            e.printStackTrace();
+        }
     }
 
     public int getClientIDadded(){

@@ -2,9 +2,10 @@ package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Weapon {
+public class Weapon implements Serializable {
 
     @JsonProperty
     private String name;

@@ -19,8 +19,10 @@ class ShootValidatorTest {
     @Test
     void validate() throws NoSuchSquareException {
         GameBoard testGb = new GameBoard(1,8);
-        PlayerAbstract player1 = new ConcretePlayer("Pippo", testGb, Figure.DESTRUCTOR);
-        PlayerAbstract player2 = new ConcretePlayer("Pluto", testGb, Figure.BANSHEE);
+        PlayerAbstract player1 = new ConcretePlayer("Pippo");
+        player1.setPlayerCharacter(Figure.DESTRUCTOR);
+        PlayerAbstract player2 = new ConcretePlayer("Pluto");
+        player2.setPlayerCharacter(Figure.BANSHEE);
 
         player1.spawn(testGb.getMap().getSquare(0,2));
         player2.spawn(testGb.getMap().getSquare(1,0));

@@ -109,7 +109,7 @@ public class PlayerBoard{
             int token2add = damageTaken >= Constants.MAX_HP ? 2 : 1;
             numberOfDeaths++;
             currentPointValueCursor++;
-            player.getCurrentGameBoard().getTrack().removeSkull(token2add,colorOfAttacker);
+            player.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(token2add,colorOfAttacker);
         } else{
             System.err.println("PLAYER STILL ALIVE");
         }

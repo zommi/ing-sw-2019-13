@@ -7,11 +7,12 @@ import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class WeaponPolicy {
+public class WeaponPolicy implements Serializable {
 
     @JsonProperty
     private String policyName;

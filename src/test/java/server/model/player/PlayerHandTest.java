@@ -9,7 +9,8 @@ class PlayerHandTest {
 
     @Test
     public void testPlayCard(){
-        ConcretePlayer p = new ConcretePlayer("pippo",new GameBoard(2,5), Figure.DESTRUCTOR);
+        ConcretePlayer p = new ConcretePlayer("pippo");
+        p.setPlayerCharacter(Figure.DESTRUCTOR);
         assertEquals(Figure.DESTRUCTOR, p.getGameCharacter().getFigure());
         PlayerHand ph = new PlayerHand(p);
 

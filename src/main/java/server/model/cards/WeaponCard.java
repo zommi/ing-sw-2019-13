@@ -3,10 +3,12 @@ package server.model.cards;
 
 import client.weapons.Weapon;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class WeaponCard implements CollectableInterface, CardInterface {
+public class WeaponCard implements CollectableInterface, CardInterface, Serializable {
 
     private String name;
     private Weapon weapon;

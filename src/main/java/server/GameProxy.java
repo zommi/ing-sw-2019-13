@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
 import exceptions.GameAlreadyStartedException;

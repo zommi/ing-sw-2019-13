@@ -17,8 +17,10 @@ class ConcretePlayerTest {
     @Test
     public void testCreator(){
         GameBoard testGb = new GameBoard(1,8);
-        PlayerAbstract player1 = new ConcretePlayer("Pippo", testGb, Figure.DESTRUCTOR);
-        PlayerAbstract player2 = new ConcretePlayer("Pluto", testGb, Figure.BANSHEE);
+        PlayerAbstract player1 = new ConcretePlayer("Pippo");
+        player1.setPlayerCharacter(Figure.DESTRUCTOR);
+        PlayerAbstract player2 = new ConcretePlayer("Pluto");
+        player2.setPlayerCharacter(Figure.BANSHEE);
 
 
         List<GameCharacter> list1 = new ArrayList<GameCharacter>();
@@ -39,7 +41,8 @@ class ConcretePlayerTest {
     @Test
     public void moveTest(){
         GameBoard testGb = new GameBoard(1,8);
-        PlayerAbstract player1 = new ConcretePlayer("Pippo", testGb, Figure.DESTRUCTOR);
+        PlayerAbstract player1 = new ConcretePlayer("Pippo");
+        player1.setPlayerCharacter(Figure.DESTRUCTOR);
 
         player1.spawn(testGb.getMap().getSpawnPoint(Color.BLUE));
         SquareAbstract currentSquare = testGb.getMap().getSpawnPoint(Color.BLUE);

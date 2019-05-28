@@ -1,5 +1,6 @@
 package client.weapons;
 
+import client.GameModel;
 import client.InputAbstract;
 
 public class ShootParser {
@@ -7,13 +8,18 @@ public class ShootParser {
     private boolean isLimitedActivated;
     private Weapon weapon;
     private InputAbstract input;
+    private GameModel gameModel;
+
+    public ShootParser(GameModel gameModel){
+        this.gameModel = gameModel;
+    }
     private ShootPack shootPack;
 
     public ShootPack getWeaponInput(Weapon weapon, InputAbstract input){
         this.isLimitedActivated = false;
         this.weapon = weapon;
         this.input = input;
-        shootPack = new ShootPack(weapon.getName());
+        shootPack = new ShootPack(weapon.getName(), gameModel);
         switch(weapon.getType()){
             case EXTRA:
                 for(MacroEffect macroEffect : weapon.getMacroEffects()){

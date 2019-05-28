@@ -3,7 +3,7 @@ package view;
 import server.model.map.GameMap;
 
 
-public class MapAnswer {
+public class MapAnswer implements ServerAnswer{
 
     private GameMap result;
 
