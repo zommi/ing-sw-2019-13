@@ -100,23 +100,21 @@ public class WeaponPolicy implements Serializable {
 
     private void generateAllPlayersInRoom(ShootInfo shootInfo, MicroInfo microInfo){
         if(policyType.equals("player") && effectFlag && effectList.equals("room"))
-            for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                if(!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
-                        .getFirstRoom().getCharacters().contains(playerAbstract.getGameCharacter()))
-                    microInfo.getPlayersList().remove(playerAbstract);
-            }
+            microInfo.getPlayersList().removeIf(x -> (!shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
+                    .getFirstRoom().getCharacters().contains(x.getGameCharacter())));
         //not checking if micro is null cause it must have been activated
     }
 
     private void generateDistance(ShootInfo shootInfo, MicroInfo microInfo){
-        if(policyType.equals("player") && attackerFlag){
+        if(policyType.equals("player")){  //removed && attackerFlag
             List<PlayerAbstract> backupList = new ArrayList<>(microInfo.getPlayersList());
 
-            for(PlayerAbstract playerAbstract : backupList){
+            for (Iterator<PlayerAbstract> iterator = backupList.iterator(); iterator.hasNext();) {
+                PlayerAbstract playerAbstract = iterator.next();
                 microInfo.getPlayersList().clear();
                 microInfo.getPlayersList().add(playerAbstract);
-                if(!this.checkDistance(shootInfo, microInfo))
-                    backupList.remove(playerAbstract);
+                if(!this.checkDistance(shootInfo, microInfo) || playerAbstract == shootInfo.getAttacker())
+                    iterator.remove();
 
             }
             microInfo.getPlayersList().clear();
@@ -125,6 +123,7 @@ public class WeaponPolicy implements Serializable {
         else if(policyType.equals("square") && attackerFlag && distance==0){
             microInfo.setSquare(shootInfo.getAttacker().getPosition());
         }
+        //TODO add player no attackerFlag branch
     }
 
     private boolean checkDistance(ShootInfo shootInfo, MicroInfo microInfo){
@@ -224,6 +223,13 @@ public class WeaponPolicy implements Serializable {
         }
         else if(policyType.equals("square")){
             return attackerFlag && shootInfo.getAttacker().getPosition().getVisibleSquares().contains(microInfo.getSquare());
+        }
+        else if(policyType.equals("room") && attackerFlag){
+            for(Room room : microInfo.getRoomsList()){
+                if(!shootInfo.getAttacker().getPosition().getVisibleRooms().contains(room))
+                    return false;
+            }
+            return true;
         }
         else return false;
     }

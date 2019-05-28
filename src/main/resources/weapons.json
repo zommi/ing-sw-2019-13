@@ -456,10 +456,11 @@
             "mandatory" : true,
             "damage" : 1,
             "moveFlag" : true,
+            "maxTargetPlayerSize" : 1,
             "policies" : [
               {
                 "policyName" : "visible",
-                "policyType" : "player",
+                "policyType" : "square",
                 "attackerFlag" : true
               },
               {
@@ -482,7 +483,9 @@
         },
         "microEffects" : [
           {
+            "mandatory" : true,
             "damage" : 3,
+            "maxTargetPlayerSize" : 1,
             "moveFlag" : true,
             "generateSquareFlag" :true,
             "policies" : [
@@ -517,6 +520,7 @@
     },
     "macroEffects": [
       {
+        "mandatory" : true,
         "microEffects" : [
           {
             "mandatory" : true,
@@ -644,7 +648,7 @@
               {
                 "policyName" : "distanceEqual",
                 "policyType" : "noMoveSquare",
-                "distance" : 2,
+                "distance" : 1,
                 "attackerFlag" : true
               },
               {

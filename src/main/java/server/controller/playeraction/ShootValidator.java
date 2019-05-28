@@ -230,10 +230,10 @@ public class ShootValidator {
 
                 //converting no move square
                 for(SquareInfo squareInfo : microPack.getNoMoveSquaresList()){
-                    if(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getRow()) == null)
+                    if(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getCol()) == null)
                         return null;
                     else
-                        nmsList.add(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getRow()));
+                        nmsList.add(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getCol()));
                 }
 
                 //create microInfo

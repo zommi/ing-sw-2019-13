@@ -70,14 +70,14 @@ public class ShootParser {
             isLimitedActivated = true;
 
         //start asking stuff
-        if(microEffect.isMoveFlag()) {
+        if(microEffect.isMoveFlag() && !microEffect.isGenerateSquareFlag()) {
             microPack.setSquare(input.askSquares(1).get(0));
         }
 
         if(microEffect.getMaxTargetPlayerSize() != 0)
             microPack.setPlayersList(input.askPlayers(microEffect.getMaxTargetPlayerSize()));
 
-        if(microEffect.getMaxNmSquareSize() != 0)
+        if(microEffect.getMaxNmSquareSize() != 0 && !microEffect.isGenerateSquareFlag())
             microPack.setNoMoveSquaresList(input.askSquares(microEffect.getMaxNmSquareSize()));
 
         if(microEffect.getMaxTargetRoomSize() != 0)

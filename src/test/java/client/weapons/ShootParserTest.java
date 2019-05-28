@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShootParserTest {
 
     @Test
-    void getWeaponInput() throws FileNotFoundException {
+    void getWeaponInput(){
 
 //        ByteArrayInputStream in = new ByteArrayInputStream(
 //                ("n" + System.lineSeparator() + "0" + System.lineSeparator() + "y" + System.lineSeparator() +
@@ -76,16 +76,16 @@ class ShootParserTest {
 
         player1.spawn(gameBoard.getMap().getSquare(0,0));
         player2.spawn(gameBoard.getMap().getSquare(1,1));
-        player3.spawn(gameBoard.getMap().getSquare(2,2));
-        player4.spawn(gameBoard.getMap().getSquare(1,3));
-        player5.spawn(gameBoard.getMap().getSquare(0,1));
+        player3.spawn(gameBoard.getMap().getSquare(1,0));
+        player4.spawn(gameBoard.getMap().getSquare(1,2));
+        player5.spawn(gameBoard.getMap().getSquare(2,2));
 
 
-        ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("plasma gun"), inputAbstract);
+        /*ShootParser shootParser = new ShootParser(new GameModel());
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("furnace"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
-        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
+        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);*/
 
         assertTrue(bool);
 
