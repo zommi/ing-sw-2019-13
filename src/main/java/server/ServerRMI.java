@@ -41,7 +41,6 @@ public class ServerRMI implements Runnable, ServerInterface {
         this.controller = controller;
     }
 
-    @Override
     public int addClient(ReceiverInterface client){
         return this.server.addClient(client);
     }
