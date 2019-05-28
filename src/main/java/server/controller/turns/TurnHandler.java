@@ -1,6 +1,8 @@
 package server.controller.turns;
 
+import exceptions.WrongGameStateException;
 import server.controller.playeraction.Action;
+import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 
 public class TurnHandler {
@@ -68,6 +70,12 @@ public class TurnHandler {
                 this.currentPhase = TurnPhase.END_TURN;
                 break;
             case END_TURN:
+                try{
+                    ((ConcretePlayer)currentPlayer).getCurrentGame().nextPlayer();
+                }
+                catch(WrongGameStateException e){
+                    e.printStackTrace();
+                }
                 this.currentPhase = TurnPhase.FIRST_ACTION;
                 break;
             default: break;

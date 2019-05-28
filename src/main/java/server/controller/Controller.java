@@ -71,6 +71,7 @@ public class Controller implements MyObserver {
         //TODO initialize currentID and handle the turns.
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
+        //if(currentPlayer.getPlayerState() == )
 
         if (currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED) || currentGame.getCurrentState().equals(GameState.END_GAME)) {
             return false;
@@ -115,9 +116,6 @@ public class Controller implements MyObserver {
         return this.currentGame;
     }
 
-    public void nextPlayer() throws WrongGameStateException {
-        this.currentGame.nextPlayer();
-    }
 
     public void addClientInMap(PlayerAbstract player){
         try{
