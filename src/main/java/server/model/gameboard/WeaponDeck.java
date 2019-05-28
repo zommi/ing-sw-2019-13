@@ -20,6 +20,7 @@ public class WeaponDeck {
      * queue of weapon cards
      */
     private LinkedList<WeaponCard> deck;
+    private LinkedList<WeaponCard> staticDeck;
 
     /**
      * defaul constructor
@@ -66,9 +67,12 @@ public class WeaponDeck {
         }
 
         this.deck = new LinkedList<>();
+        this.staticDeck = new LinkedList<>();
 
         for(int i = 0; i < arrayOfWeapons.length; i++){
             this.deck.push(new WeaponCard(arrayOfWeapons[i]));
+            this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
+
         }
 
         shuffle();
@@ -112,7 +116,7 @@ public class WeaponDeck {
     }
 
     public Weapon getWeapon(String weaponName){
-        for(WeaponCard weaponCard : deck){
+        for(WeaponCard weaponCard : staticDeck){
             if(weaponCard.getWeapon().getName().equalsIgnoreCase(weaponName))
                 return weaponCard.getWeapon();
 

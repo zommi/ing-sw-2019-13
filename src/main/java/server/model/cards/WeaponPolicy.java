@@ -45,14 +45,14 @@ public class WeaponPolicy implements Serializable {
     public boolean isVerified(ShootInfo shootInfo, MicroInfo microInfo){
         switch(this.policyName){
             case "visible": return this.checkVisible(shootInfo, microInfo);
-            case "Invisible": return this.checkInvisible(shootInfo, microInfo);
+            case "invisible": return this.checkInvisible(shootInfo, microInfo);
             case "different": return this.checkDifferent(shootInfo, microInfo);
             case "inList": return this.checkInList(shootInfo, microInfo);
             case "distanceEqual":
             case "distanceGreater":
             case "distanceSmaller": return this.checkDistance(shootInfo, microInfo);
             case "differentSquares": return this.checkDifferentSquares(microInfo);
-
+            case "sameDirection" : return this.checkSameDirection(shootInfo, microInfo);
             default: return false;
         }
     }
@@ -154,9 +154,9 @@ public class WeaponPolicy implements Serializable {
                     square2 = shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
                             .getFirstPlayer().getPosition();
                 else if (effectList.equals("square")) {
-                    square2 = microInfo.getSquare();
+                    square2 = shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex).getSquare();
                 } else if (effectList.equals("noMoveSquare")) {
-                    square2 = microInfo.getFirstNMS();
+                    square2 = shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstNMS();
                 } else return false;
             }
         }
@@ -243,7 +243,7 @@ public class WeaponPolicy implements Serializable {
             }
             return true;
         }
-        return false;
+        else return false;
     }
 
     private boolean checkDifferent(ShootInfo shootInfo, MicroInfo microInfo){

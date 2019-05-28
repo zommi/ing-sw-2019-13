@@ -74,20 +74,20 @@ class ShootParserTest {
         gameBoard.addGameCharacter(player4.getGameCharacter());
         gameBoard.addGameCharacter(player5.getGameCharacter());
 
-        player1.spawn(gameBoard.getMap().getSquare(0,0));
-        player2.spawn(gameBoard.getMap().getSquare(1,1));
-        player3.spawn(gameBoard.getMap().getSquare(1,0));
-        player4.spawn(gameBoard.getMap().getSquare(1,2));
-        player5.spawn(gameBoard.getMap().getSquare(2,2));
+        player1.spawn(gameBoard.getMap().getSquare(1,3));
+        player2.spawn(gameBoard.getMap().getSquare(1,2));
+        player3.spawn(gameBoard.getMap().getSquare(1,2));
+        player4.spawn(gameBoard.getMap().getSquare(1,1));
+        player5.spawn(gameBoard.getMap().getSquare(1,1));
 
 
         /*ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("furnace"), inputAbstract);
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("Grenade Launcher"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
-        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);*/
+        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
 
-        //assertTrue(bool);
+        assertTrue(bool);*/
 
         //System.setIn(System.in);
     }

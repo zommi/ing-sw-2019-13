@@ -667,7 +667,7 @@
     ]
   },
   {
-    "name": "Heatseaker",
+    "name": "Heatseeker",
     "type": "ONEMODE",
     "path" : "/Grafica/cards/Heatseeker.png",
     "buyCost": {
