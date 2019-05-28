@@ -87,7 +87,7 @@ class ShootParserTest {
         ShootValidator shootValidator = new ShootValidator();
         boolean bool = shootValidator.validate(shootPack, gameBoard, player1);*/
 
-        assertTrue(bool);
+        //assertTrue(bool);
 
         //System.setIn(System.in);
     }
