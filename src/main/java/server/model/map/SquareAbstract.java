@@ -6,9 +6,10 @@ import constants.Color;
 import constants.Direction;
 import server.model.player.GameCharacter;
 
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class  SquareAbstract {
+public abstract class  SquareAbstract implements Serializable {
 
     protected List<GameCharacter> charactersList;
 

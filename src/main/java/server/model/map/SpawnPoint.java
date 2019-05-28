@@ -4,13 +4,14 @@ import constants.Color;
 import server.model.cards.CollectableInterface;
 import server.model.cards.WeaponCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  */
-public class SpawnPoint extends SquareAbstract {
+public class SpawnPoint extends SquareAbstract implements Serializable {
 
     private ArrayList<WeaponCard> weaponCards;
 

@@ -1,5 +1,6 @@
 package client;
 
+import server.model.map.GameMap;
 import view.ServerAnswer;
 
 import java.io.Serializable;
@@ -25,7 +26,9 @@ public interface Connection extends Serializable {
 
     public void send(Info action);
 
-    public String getMap();
+    public String getMapName();
+
+    public GameMap getMap();
 
     public void configure();
 
@@ -33,5 +36,6 @@ public interface Connection extends Serializable {
 
     public void add(String playerName, int map, int initialSkulls);
 
-    public int getMapIndex();
+    public int getMapIndexFromName(String name);
+
 }

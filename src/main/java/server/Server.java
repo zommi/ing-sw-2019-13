@@ -46,7 +46,7 @@ public class Server {
             game = controller.getCurrentGame();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
-            ServerAnswer mapAnswer = new InitialMapAnswer(mapChoice);
+            ServerAnswer mapAnswer = new InitialMapAnswer(this.game.getCurrentGameMap());
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
@@ -132,7 +132,7 @@ public class Server {
     }
 
     public void setController(int numMap, int initialSkulls){
-        System.out.println("Test");
+        //System.out.println("Test");
         controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }

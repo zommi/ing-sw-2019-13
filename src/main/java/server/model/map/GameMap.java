@@ -6,11 +6,12 @@ import exceptions.NoSuchSquareException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameMap {
+public class GameMap implements Serializable {
 
     private List<SpawnPoint> spawnPoints;
     private ArrayList<ArrayList<SquareAbstract>> squares;        //TODO contains optional

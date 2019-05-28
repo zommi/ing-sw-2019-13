@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import constants.*;
 import server.model.cards.*;
 
+import java.io.Serializable;
+
 /**
  * 
  */
-public class AmmoCube extends Ownable implements AmmoTileItem {
+public class AmmoCube extends Ownable implements AmmoTileItem, Serializable {
 
     private Color color;
 

@@ -6,6 +6,7 @@ import client.Info;
 import exceptions.WrongGameStateException;
 import server.model.game.Game;
 import server.model.player.ConcretePlayer;
+import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
 import java.io.IOException;
@@ -53,13 +54,16 @@ public class SocketClientHandler extends Thread{
 
     public void processAction(Info info) throws WrongGameStateException {
         if(info instanceof SetupInfo){
-            if(((SetupInfo) info).isCharacterSetup()){
-                //todo add player in addplayercharacter to link them
-            }
             if(this.game == null) {
                 this.game = new Game(((SetupInfo) info).getMapChoice(), ((SetupInfo) info).getInitialSkulls());
             }
-            this.game.addPlayer(new ConcretePlayer(((SetupInfo) info).getPlayerName()));
+            if(((SetupInfo) info).isCharacterSetup()){
+                //dentro setupinfo c'è un metodo che prende un clientId e un personaggio
+                this.game.getPlayerFromId(((SetupInfo) info).getClientId()).
+                        setPlayerCharacter(Figure.fromString(((SetupInfo) info).getCharacterChosen()));
+            } else{
+                this.game.addPlayer(new ConcretePlayer(((SetupInfo) info).getPlayerName()));
+            }
 
         }
     }

@@ -2,12 +2,13 @@ package server.model.map;
 import constants.Color;
 import server.model.player.GameCharacter;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class Room {
+public class Room implements Serializable {
 
     private Color color;
     private List<GameCharacter> charactersList;

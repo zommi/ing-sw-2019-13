@@ -1,5 +1,7 @@
 package client;
 
+import server.model.map.GameMap;
+import server.model.player.Figure;
 import view.ServerAnswer;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ public class ConnectionSocket implements Connection {
     private Socket socket;
     private int clientID;
     private String mapChoice;
+    private GameMap map;
     private GameModel gameModel;
     private int initialSkulls;
     private boolean isConnected;
@@ -36,7 +39,7 @@ public class ConnectionSocket implements Connection {
     }
 
     public void addPlayerCharacter(String name){
-        send(new SetupInfo(name));
+        send(new SetupInfo(clientID,name));
     }
 
     public void startTimer() {
@@ -48,12 +51,22 @@ public class ConnectionSocket implements Connection {
     }
 
     public boolean CharacterChoice(String name){
-        return true;
+        return Figure.fromString(name) != null;
+        //TODO controllare che non sia già preso magari mettendo una lista di character sul gamemodel
     }
 
 
-    public String getMap(){
+    public GameMap getMap(){
+        return this.map;
+    }
+
+    @Override
+    public String getMapName() {
         return this.mapChoice;
+    }
+
+    public String getMapChoice() {
+        return mapChoice;
     }
 
     public int getClientID(){
@@ -112,17 +125,16 @@ public class ConnectionSocket implements Connection {
         send(new SetupInfo(map,initialSkulls,playerName));
     }
 
-    @Override
-    public int getMapIndex() {
-        switch (mapChoice){
+    public int getMapIndexFromName(String name) {
+        switch (name){
             case "map11.txt":
-                return 1;
+                return 0;
             case "map12.txt":
-                return 2;
+                return 1;
             case "map21.txt":
-                return 3;
+                return 2;
             case "map22.txt":
-                return 4;
+                return 3;
         }
         return  -1;
     }

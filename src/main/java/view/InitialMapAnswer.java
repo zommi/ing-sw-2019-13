@@ -1,14 +1,16 @@
 package view;
 
 
-public class InitialMapAnswer implements ServerAnswer {
-    private int numMap;
+import server.model.map.GameMap;
 
-    public InitialMapAnswer(int numMap){
-        this.numMap = numMap;
+public class InitialMapAnswer implements ServerAnswer {
+    private GameMap initialMap;
+
+    public InitialMapAnswer(GameMap map){
+        this.initialMap = map;
     }
 
-    public int getNumMap(){
-        return this.numMap;
+    public GameMap getInitialMap(){
+        return this.initialMap;
     }
 }
