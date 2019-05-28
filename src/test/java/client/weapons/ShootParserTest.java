@@ -31,11 +31,16 @@ class ShootParserTest {
         inputAbstract.setRoomsNames(roomNameList);
 
 
-        PlayerAbstract player1 = new ConcretePlayer("pippo", gameBoard, Figure.DESTRUCTOR);
-        PlayerAbstract player2 = new ConcretePlayer("pluto", gameBoard, Figure.BANSHEE);
-        PlayerAbstract player3 = new ConcretePlayer("topolino", gameBoard, Figure.DOZER);
-        PlayerAbstract player4 = new ConcretePlayer("paperino", gameBoard, Figure.SPROG);
-        PlayerAbstract player5 = new ConcretePlayer("minnie", gameBoard, Figure.VIOLET);
+        PlayerAbstract player1 = new ConcretePlayer("pippo");
+        player1.setPlayerCharacter(Figure.DESTRUCTOR);
+        PlayerAbstract player2 = new ConcretePlayer("pluto");
+        player2.setPlayerCharacter(Figure.BANSHEE);
+        PlayerAbstract player3 = new ConcretePlayer("topolino");
+        player3.setPlayerCharacter(Figure.DOZER);
+        PlayerAbstract player4 = new ConcretePlayer("paperino");
+        player4.setPlayerCharacter(Figure.SPROG);
+        PlayerAbstract player5 = new ConcretePlayer("minnie");
+        player5.setPlayerCharacter(Figure.VIOLET);
 
         playersNamesList.add(player2.getName());
         playersNamesList.add(player3.getName());

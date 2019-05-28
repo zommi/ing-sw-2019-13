@@ -28,7 +28,7 @@ public class Controller implements MyObserver {
 
     //private List<PlayerAbstract> players = new ArrayList<>();
 
-    private int currentID;
+    private int currentID = 0;
 
     private Game currentGame;
 
@@ -46,6 +46,17 @@ public class Controller implements MyObserver {
     public int getCurrentID(){
         return this.currentID;
     }
+
+    public void nextCurrentID(int n){
+        if(currentID == currentGame.getActivePlayers().size() - 1){
+            currentID = 0;
+        }
+        else{
+            this.currentID = currentID + 1;
+        }
+    }
+
+
 
     public String getCurrentCharacter(){
         for(int i = 0; i < currentGame.getActivePlayers().size(); i++){

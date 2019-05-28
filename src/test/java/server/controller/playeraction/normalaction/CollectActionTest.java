@@ -27,7 +27,8 @@ class CollectActionTest {
         GameBoard testGB = new GameBoard(1, 8);
         testGB.setupGameBoard();
 
-        PlayerAbstract testPlayer = new ConcretePlayer("pippo", testGB, Figure.SPROG);
+        PlayerAbstract testPlayer = new ConcretePlayer("pippo");
+        testPlayer.setPlayerCharacter(Figure.SPROG);
         testPlayer.spawn(testGB.getMap().getSpawnPoint(Color.BLUE));
 
         List<Direction> emptyList = new ArrayList<>();

@@ -3,6 +3,7 @@ package server.model.player;
 import client.weapons.Cost;
 import client.weapons.Weapon;
 import server.model.cards.WeaponCard;
+import server.model.game.Game;
 import server.model.items.AmmoCube;
 import server.model.map.*;
 import server.model.gameboard.*;
@@ -19,30 +20,21 @@ public class ConcretePlayer extends PlayerAbstract {
     private GameCharacter gameCharacter;
     private PlayerHand hand;
     private PlayerBoard board;
-    private GameBoard currentGameBoard;
+    private Game currentGame;
     private PlayerState state;
     private int clientID;
     private boolean ifCharacter;
 
-    /**
-     *Creates a player by giving him a name, a unique id, a hand
-     * containing its cards and a playerboard containing his info.
-     * @param name name chosen by a player
-     * @param gameBoard each player moves in the context of the same gameBoard
-     * @param figure each player moves on the gameboard thanks to its gameCharacter and figure
-     */
-    public ConcretePlayer(String name, GameBoard gameBoard, Figure figure) {
-        this.name = name;
-        this.gameCharacter = new GameCharacter(chooseFigure(figure));
-        this.gameCharacter.setConcretePlayer(this);
-        this.hand = new PlayerHand(this);
-        this.board = new PlayerBoard(this);
-        this.currentGameBoard = gameBoard;
-        this.state = PlayerState.NORMAL;
-    }
 
     public ConcretePlayer(String name) {
         this.name = name;
+        this.hand = new PlayerHand(this);
+        this.board = new PlayerBoard(this);
+        this.state = PlayerState.NORMAL;
+    }
+
+    public void setCurrentGame(Game game){
+        this.currentGame = game;
     }
     public void setIfCharacter(boolean choice){
         this.ifCharacter = choice;
@@ -87,7 +79,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     public PlayerBoard getBoard(){return board;}
 
-    public GameBoard getCurrentGameBoard(){return this.currentGameBoard;}
+    public Game getCurrentGame(){return this.currentGame;}
 
 
     /**
@@ -170,7 +162,7 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public void drawPowerup() {
         if(!this.hand.powerupsFull()) {
-            this.hand.addCard(currentGameBoard.getPowerupDeck().draw());
+            this.hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
         }
     }
 
