@@ -29,7 +29,7 @@ public class Controller implements MyObserver {
 
     //private List<PlayerAbstract> players = new ArrayList<>();
 
-    private int currentID = 0;
+    private int currentID;
 
     private Game currentGame;
 
@@ -42,13 +42,14 @@ public class Controller implements MyObserver {
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.server = server;
+        this.currentID = 0;
     }
 
     public int getCurrentID(){
         return this.currentID;
     }
 
-    public void nextCurrentID(int n){
+    public void nextCurrentID(){
         if(currentID == currentGame.getActivePlayers().size() - 1){
             currentID = 0;
         }
@@ -72,6 +73,9 @@ public class Controller implements MyObserver {
         //TODO initialize currentID and handle the turns.
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
+        if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
+            this.nextCurrentID();
+        }
 
         if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) || (currentGame.getCurrentState().equals(GameState.END_GAME))) {
             return false;
@@ -89,18 +93,18 @@ public class Controller implements MyObserver {
             MoveInfo temp = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
             CollectAction collectAction = new CollectAction(temp, (CollectInfo) action);
             turnHandler.setAndDoAction(collectAction);
-            this.sendCollectShootAnswers(currentPlayer);
+            this.sendCollectShootAnswers(currentPlayer, clientID);
         }
         else if(action instanceof ShootPack){
             ShootAction shootAction = new ShootAction((ShootPack) action);
             turnHandler.setAndDoAction(shootAction);
-            sendCollectShootAnswers(currentPlayer);
+            sendCollectShootAnswers(currentPlayer, clientID);
         }
         return true;
     }
 
 
-    public void sendCollectShootAnswers(ConcretePlayer player){
+    public void sendCollectShootAnswers(ConcretePlayer player, int clientID){
         MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
         PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getBoard());
@@ -108,7 +112,7 @@ public class Controller implements MyObserver {
         server.sendToEverybodyRMI(mapAnswer);
         server.sendToEverybodyRMI(gameBoardAnswer);
         server.sendToEverybodyRMI(playerBoardAnswer);
-        server.sendToEverybodyRMI(playerHandAnswer);
+        server.sendToSpecificRMI(playerHandAnswer, clientID);
     }
 
     public Game getCurrentGame(){

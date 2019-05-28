@@ -108,6 +108,22 @@ public class Server {
         }
     }
 
+    public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
+        try {
+            List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            for (int i = 0; i < temp.size(); i++) {
+                if(temp.get(i).getClientID() == clientID){
+                    temp.get(i).publishMessage(serverAnswer);
+                    System.out.println("Sent an update to the client");
+                    break;
+                }
+            }
+        }
+        catch(RemoteException e){
+            e.printStackTrace();
+        }
+    }
+
     public int getClientIDadded(){
         return this.clientIDadded;
     }
