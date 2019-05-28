@@ -8,6 +8,7 @@ import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class WeaponPolicy {
@@ -72,21 +73,13 @@ public class WeaponPolicy {
     }
 
     private void generateSpecificPlayer(ShootInfo shootInfo, MicroInfo microInfo){
+
         if(policyType.equals("player")){
-            if(attackerFlag){
-                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                    if(playerAbstract != shootInfo.getAttacker())
-                        microInfo.getPlayersList().remove(playerAbstract);
-                }
-            }
-            else if(effectFlag && effectList.equals("player")){
-                for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
-                    if(playerAbstract != shootInfo
-                            .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer())
-                        //not checking if micro is null cause it must have been activated
-                        microInfo.getPlayersList().remove(playerAbstract);
-                }
-            }
+            if(attackerFlag)
+                microInfo.getPlayersList().removeIf(x -> (x != shootInfo.getAttacker()));
+            else if(effectFlag && effectList.equals("player"))
+                microInfo.getPlayersList().removeIf(x -> (x != shootInfo
+                        .getActivatedMicro(macroEffectIndex, microEffectIndex).getFirstPlayer()));
         }
     }
 

@@ -257,6 +257,7 @@
     "name": "Plasma Gun",
     "type": "EXTRA",
     "path" : "/Grafica/cards/Plasma_gun.png",
+    "special" : true,
     "buyCost": {
       "yellow" : 1
     },
@@ -342,8 +343,8 @@
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
                 "effectFlag" : true,
-                "macroEffectIndex" : 0,
-                "microEffectIndex" : 1,
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0,
                 "effectList" : "player"
               }
             ]
