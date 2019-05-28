@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.ReceiverInterface;
 
 import java.rmi.AlreadyBoundException;
@@ -9,5 +10,5 @@ public interface ServerInterface{
 
     public void run();
 
-    public int addClient(ReceiverInterface client);
+    public int addClient(Connection client);
 }

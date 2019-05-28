@@ -98,6 +98,9 @@ public class CliInput extends InputAbstract{
         do{
             ask = true;
             while(ask) {
+                for(int i = 0; i<names.size(); i++){
+                    System.out.println(i + ": " + names.get(i));
+                }
                 if(maxTargetPlayerSize != 1 && counter != maxTargetPlayerSize)  //maybe maxTarget check is useless
                     System.out.println("Give me a number [or say 'stop']:\n");
                 else

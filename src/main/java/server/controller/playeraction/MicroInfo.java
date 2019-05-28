@@ -77,4 +77,12 @@ public class MicroInfo implements Serializable, Info {
         //not checking if getMicroEffect==null cause it has already been validated
     }
 
+    public void fakeActuate(ShootInfo shootInfo) {
+        for (PlayerAbstract playerAbstract : playersList) {
+            if (shootInfo.getWeapon()
+                    .getMicroEffect(macroNumber, microNumber).isMoveFlag())
+                playerAbstract.getGameCharacter().move(this.square);
+        }
+        //not checking if getMicroEffect==null cause it has already been validated
+    }
 }

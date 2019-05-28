@@ -44,4 +44,20 @@ public class MicroPack {
     public void setRoomsList(List<String> roomsList) {
         this.roomsList = roomsList;
     }
+
+    public List<String> getPlayersList() {
+        return playersList;
+    }
+
+    public SquareInfo getSquare() {
+        return square;
+    }
+
+    public List<String> getRoomsList() {
+        return roomsList;
+    }
+
+    public List<SquareInfo> getNoMoveSquaresList() {
+        return noMoveSquaresList;
+    }
 }

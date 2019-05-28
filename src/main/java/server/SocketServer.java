@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.ReceiverInterface;
 import server.model.game.Game;
 
@@ -33,7 +34,7 @@ public class SocketServer implements ServerInterface{
 
 
     @Override
-    public int addClient(ReceiverInterface client) {
+    public int addClient(Connection client) {
         return 0;
     }
 

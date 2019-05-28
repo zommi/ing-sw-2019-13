@@ -2,29 +2,24 @@ package client.weapons;
 
 import client.GameModel;
 import client.InputAbstract;
-import client.SquareInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShootParser {
 
     private boolean isLimitedActivated;
     private Weapon weapon;
     private InputAbstract input;
-    private ShoootInfo shoootInfo;
     private GameModel gameModel;
 
     public ShootParser(GameModel gameModel){
         this.gameModel = gameModel;
     }
+    private ShootPack shootPack;
 
-    public ShoootInfo getWeaponInput(Weapon weapon, InputAbstract input){
+    public ShootPack getWeaponInput(Weapon weapon, InputAbstract input){
         this.isLimitedActivated = false;
         this.weapon = weapon;
         this.input = input;
-        shoootInfo = new ShoootInfo(weapon.getName(), gameModel);
-        List<List<MicroPack>> macroList = new ArrayList<>();
+        shootPack = new ShootPack(weapon.getName(), gameModel);
         switch(weapon.getType()){
             case EXTRA:
                 for(MacroEffect macroEffect : weapon.getMacroEffects()){
@@ -44,13 +39,15 @@ public class ShootParser {
             case ONEMODE:
                 manageMacro(weapon.getMacroEffect(0));
                 break;
+            default:
+                //this should never happen (it depends on json file)
         }
-        return shoootInfo;
+        return shootPack;
     }
 
     private void manageMacro(MacroEffect macroEffect){
         MacroPack macroPack = new MacroPack(macroEffect.getNumber());
-        shoootInfo.getActivatedMacros().add(macroPack);
+        shootPack.getActivatedMacros().add(macroPack);
         if(macroEffect.isLimited())
             isLimitedActivated = true;
 
@@ -68,7 +65,7 @@ public class ShootParser {
 
     private void manageMicro(MicroEffect microEffect){
         MicroPack microPack = new MicroPack(microEffect.getMacroNumber(), microEffect.getNumber());
-        shoootInfo.getActivatedMacros().get(microEffect.getMacroNumber()).getActivatedMicros().add(microPack);
+        shootPack.getActivatedMacro(microEffect.getMacroNumber()).getActivatedMicros().add(microPack);
         if(microEffect.isLimited())
             isLimitedActivated = true;
 
@@ -97,7 +94,7 @@ public class ShootParser {
     }
 
     private boolean isMacroActivated(MacroEffect macroEffect){
-        for(MacroPack macroPack : shoootInfo.getActivatedMacros()){
+        for(MacroPack macroPack : shootPack.getActivatedMacros()){
             if (macroPack.getMacroNumber() == macroEffect.getNumber())
                 return true;
         }
@@ -105,7 +102,7 @@ public class ShootParser {
     }
 
     private boolean isMicroActivated(MicroEffect microEffect){
-        for(MacroPack macroPack : shoootInfo.getActivatedMacros()){
+        for(MacroPack macroPack : shootPack.getActivatedMacros()){
             if(macroPack.getMacroNumber() == microEffect.getMacroNumber()){
                 for(MicroPack microPack : macroPack.getActivatedMicros()){
                     if(microPack.getMicroNumber() == microEffect.getNumber()){

@@ -38,7 +38,7 @@ public class ShootInfo implements Serializable, Info {
     public MacroInfo getActivatedMacro(int macro){
         for(MacroInfo macroInfo : activatedMacros)
             if(macroInfo.getMacroNumber() == macro)
-                return activatedMacros.get(macro);
+                return macroInfo;
         return null;
     }
 

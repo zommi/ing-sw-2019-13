@@ -96,7 +96,9 @@ public class UpdaterCLI  implements Updater,Runnable{
             connection = new ConnectionSocket(lastClientID);
             System.out.println("Socket connection was set up");
         }
-        gameModel = connection.getGameModel();  //because the gameModel is instantiated in the connection when it is started. this way both socket and RMI can read it
+        gameModel = connection.getGameModel();
+        //because the gameModel is instantiated in the connection when it is started.
+        // this way both socket and RMI can read it
         gameModel.addObserver(this);
         connection.configure();
         //if(connection.getError() == true)

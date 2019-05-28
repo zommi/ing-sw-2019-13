@@ -3,9 +3,7 @@ package server.controller;
 import client.CollectInfo;
 import client.Info;
 import client.MoveInfo;
-import client.weapons.ShoootInfo;
-import client.weapons.ShootParser;
-import client.weapons.Weapon;
+import client.weapons.ShootPack;
 import exceptions.WrongGameStateException;
 import server.Server;
 import server.controller.playeraction.*;
@@ -13,19 +11,13 @@ import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.controller.turns.TurnHandler;
-import server.controller.turns.TurnPhase;
 import server.model.game.Game;
 import server.model.game.GameState;
-import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Controller implements MyObserver {
 
@@ -85,8 +77,8 @@ public class Controller implements MyObserver {
             CollectAction collectAction = new CollectAction(temp0, (CollectInfo) action);
             turnHandler.setAndDoAction(collectAction);
         }
-        else if(action instanceof ShoootInfo){
-            ShootAction shootAction = new ShootAction((ShoootInfo) action);
+        else if(action instanceof ShootPack){
+            ShootAction shootAction = new ShootAction((ShootPack) action);
             turnHandler.setAndDoAction(shootAction);
         }
 

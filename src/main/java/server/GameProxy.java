@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
 import exceptions.GameAlreadyStartedException;
@@ -77,7 +78,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
+    public void register(Connection client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
         if(serverRMI.getServer().getStartGame() == 1){
             throw new GameAlreadyStartedException();

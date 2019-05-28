@@ -1,18 +1,29 @@
 package server.controller.playeraction;
 
-import client.weapons.Cost;
-import client.weapons.MacroEffect;
-import client.weapons.MicroEffect;
+import client.SquareInfo;
+import client.weapons.*;
 
-import client.weapons.WeaponType;
+import constants.Color;
 import server.model.cards.*;
 import server.model.gameboard.GameBoard;
+import server.model.map.Room;
+import server.model.map.SquareAbstract;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShootValidator {
 
-    public boolean validate(ShootInfo shootInfo, GameBoard gameBoard){
+    private ShootInfo shootInfo;
+
+    public boolean validate(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker){
+
+        shootInfo = convert(shootPack, gameBoard, attacker);
+        if(shootInfo == null)       //if conversion fails
+            return false;
+
        /*
        IMPORTANT:
         uncomment these lines only when instantiating weapon cards and assigning them to players
@@ -152,7 +163,7 @@ public class ShootValidator {
 
                     //fakes micro actuation if weapon is special
                     if (shootInfo.getWeapon().isSpecial()) {
-                        microInfo.actuate(shootInfo);
+                        microInfo.fakeActuate(shootInfo);       //just moves characters, without giving damage
                     }
                 }
             }
@@ -166,5 +177,63 @@ public class ShootValidator {
                 gameBoard.getMap().setValid(true);
             }
         }
+    }
+
+    public ShootInfo convert(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker)  {
+        //must return null if conversion fails
+
+        List<MacroInfo> macroInfos = new ArrayList<>();
+        for(MacroPack macroPack : shootPack.getActivatedMacros()){
+            List<MicroInfo> microInfos = new ArrayList<>();
+            for(MicroPack microPack : macroPack.getActivatedMicros()){
+                List<PlayerAbstract> playerAbstractList = new ArrayList<>();
+                SquareAbstract squareAbstract;
+                List<Room> roomList = new ArrayList<>();
+                List<SquareAbstract> nmsList = new ArrayList<>();
+
+                //converting players
+                for(String string : microPack.getPlayersList()){
+                    if(gameBoard.getPlayer(string) == null)
+                        return null;
+                    else
+                        playerAbstractList.add(gameBoard.getPlayer(string));
+                }
+
+                //converting move square if moveSquare is active
+                squareAbstract = null;
+                if(microPack.getSquare() != null) {
+                    if (gameBoard.getMap().getSquare(microPack.getSquare().getRow(),
+                            microPack.getSquare().getCol()) == null)
+                        return null;
+                    else {
+                        squareAbstract = gameBoard.getMap().getSquare(microPack.getSquare().getRow(),
+                                microPack.getSquare().getCol());
+                    }
+                }
+
+                //converting rooms
+                for(String string : microPack.getRoomsList()){
+                    if(gameBoard.getMap().getRoom(Color.fromString(string)) == null)
+                        return null;
+                    else
+                        roomList.add(gameBoard.getMap().getRoom(Color.fromString(string)));
+                }
+
+                //converting no move square
+                for(SquareInfo squareInfo : microPack.getNoMoveSquaresList()){
+                    if(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getRow()) == null)
+                        return null;
+                    else
+                        nmsList.add(gameBoard.getMap().getSquare(squareInfo.getRow(), squareInfo.getRow()));
+                }
+
+                //create microInfo
+                microInfos.add(new MicroInfo(microPack.getMacroNumber(), microPack.getMicroNumber(),
+                        playerAbstractList, squareAbstract, roomList, nmsList));
+            }
+            macroInfos.add(new MacroInfo(macroPack.getMacroNumber(), microInfos));
+        }
+
+        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos);
     }
 }

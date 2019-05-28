@@ -46,7 +46,7 @@ class CollectActionTest {
 
         //TODO change implementation!
         //MoveInfo correctNormalMove = new MoveInfo(testPlayer, correctNormalList);
-        CollectInfo noChoice = new CollectInfo();
+        CollectInfo noChoice = new CollectInfo(0,0);
 
         //TODO change implementation!
         //CollectAction testAction = new CollectAction(correctNormalMove, noChoice);

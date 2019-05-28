@@ -1,34 +1,25 @@
 package server.controller.playeraction.normalaction;
 
+import client.weapons.ShootPack;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.ShootInfo;
 import server.controller.playeraction.WeaponRulesInterface;
 
 public class ShootAction implements Action {
 
-    private ShootInfo shootInfo;
+    private ShootPack shootPack;
 
     private WeaponRulesInterface weaponRule;
 
-    public ShootAction(ShootInfo shootInfo, WeaponRulesInterface weaponRule){
-        this.shootInfo = shootInfo;
-        this.weaponRule = weaponRule;
+    public ShootAction(ShootPack shootPack){
+        this.shootPack = shootPack;
     }
 
     @Override
     public boolean execute() {
-        return this.shoot();
+        return true;//this.shoot();
     }
 
-    public boolean shoot(){
-        if(this.weaponRule.validate(shootInfo)){
-
-            this.weaponRule.actuate(shootInfo);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
 }

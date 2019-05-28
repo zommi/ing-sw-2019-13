@@ -1,5 +1,6 @@
 package server;
 
+import client.Connection;
 import client.ReceiverInterface;
 import server.controller.Controller;
 import server.model.player.PlayerAbstract;
@@ -41,7 +42,7 @@ public class ServerRMI implements Runnable, ServerInterface {
     }
 
     @Override
-    public int addClient(ReceiverInterface client){
+    public int addClient(Connection client){
         return this.server.addClient(client);
     }
 
