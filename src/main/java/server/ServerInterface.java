@@ -10,5 +10,5 @@ public interface ServerInterface{
 
     public void run();
 
-    public int addClient(Connection client);
+    public int addClient(ReceiverInterface client);
 }

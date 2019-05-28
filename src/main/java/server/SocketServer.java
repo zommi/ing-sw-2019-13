@@ -34,7 +34,7 @@ public class SocketServer implements ServerInterface{
 
 
     @Override
-    public int addClient(Connection client) {
+    public int addClient(ReceiverInterface client) {
         return 0;
     }
 

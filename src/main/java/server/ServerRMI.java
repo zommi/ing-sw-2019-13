@@ -42,7 +42,7 @@ public class ServerRMI implements Runnable, ServerInterface {
     }
 
     @Override
-    public int addClient(Connection client){
+    public int addClient(ReceiverInterface client){
         return this.server.addClient(client);
     }
 

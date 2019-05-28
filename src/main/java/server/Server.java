@@ -75,7 +75,7 @@ public class Server {
 
 
 
-    public int addClient(Connection client){
+    public int addClient(ReceiverInterface client){
         if(listOfClients.size() == 0){
             listOfClients.add(0);
             this.clientIDadded = 0;
