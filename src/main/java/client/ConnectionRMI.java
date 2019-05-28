@@ -176,7 +176,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
     }
 
-    @Override
     public void print() throws RemoteException{
         System.out.println("Test Connection");
     }
@@ -296,6 +295,21 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
 
         //TODO manca la parte in cui salvo le scelte del client!
+    }
+
+    @Override
+    public int getMapIndex() {
+        switch (getMap()){
+            case "map11.txt":
+                return 1;
+            case "map12.txt":
+                return 2;
+            case "map21.txt":
+                return 3;
+            case "map22.txt":
+                return 4;
+        }
+        return  -1;
     }
 
 }

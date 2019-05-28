@@ -62,6 +62,15 @@ class ShootParserTest {
         //boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
 
         //assertTrue(bool);
+        player5.spawn(gameBoard.getMap().getSquare(1,3));
+
+//        ShootParser shootParser = new ShootParser();
+//        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("Zx-2"), inputAbstract);
+//
+//        ShootValidator shootValidator = new ShootValidator();
+//        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
+//
+//        assertTrue(bool);
 
 
     }

@@ -84,6 +84,19 @@ public class StartMenuController implements GuiController{
         this.gui = updaterGUI;
     }
 
-    public void connectGame(MouseEvent mouseEvent) {
+    public void connectGame(MouseEvent mouseEvent) throws RemoteException{
+        this.gui.setPlayerName(this.nameField.getText());
+        this.gui.setConnection(
+                this.connectionBox.getValue().toString().equals("RMI") ?
+                        new ConnectionRMI(0) :
+                        new ConnectionSocket(0)
+        );
+        this.gui.setModel();
+        this.gui.attachToObserver();
+        this.gui.getConnection().configure();
+        this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
+        this.gui.setMapIndex(this.gui.getConnection().getMapIndex());
+        this.gui.getConnection().add(this.gui.getPlayerName(),this.gui.getMapIndex(),this.gui.getInitialSkulls());
+        this.gui.changeStage("loading_screen.fxml");
     }
 }

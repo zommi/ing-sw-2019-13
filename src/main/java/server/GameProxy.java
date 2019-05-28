@@ -103,7 +103,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
         this.clientRMI = clientRMI;
-        clientRMI.print();
+        //clientRMI.print();
         this.addClientRMI(clientRMI);
         System.out.println("I just connected to the client");
     }
@@ -169,9 +169,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean sendMap(int numMap)  throws RemoteException{
         System.out.println("Map choice received");
         this.numMap = numMap;
-        System.out.println("Test 0"); //this works
+        //System.out.println("Test 0"); //this works
         serverRMI.getServer().setMap(numMap); //then the problem is here
-        System.out.println("Test 1"); //this doesn't work
+        //System.out.println("Test 1"); //this doesn't work
         serverRMI.setController(serverRMI.getServer().getController());
         System.out.println("Controller set for serverRMI");
         return true;

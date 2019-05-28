@@ -138,6 +138,15 @@ public class ShootValidator {
                             return false;
                     }
 
+                    //checks if there are duplicates inside player list
+                    for(int i=0; i<microInfo.getPlayersList().size(); i++){
+                        for(int j=i+1; j<microInfo.getPlayersList().size(); j++){
+                            if(microInfo.getPlayersList().get(i).equals(microInfo.getPlayersList().get(j))){
+                                return false;
+                            }
+                        }
+                    }
+
                     //checks every micro policy
                     for (WeaponPolicy weaponPolicy : weaponMicro.getPolicies()) {
                         if (!(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player")) &&

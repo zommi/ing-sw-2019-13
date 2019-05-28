@@ -7,6 +7,7 @@ import server.model.game.Game;
 import view.InitialMapAnswer;
 import view.ServerAnswer;
 
+import java.net.ServerSocket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -52,7 +53,7 @@ public class Server {
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
-                ServerAnswer temp1 = controller.getCurrentGame().getWeaponList();
+                ServerAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(mapAnswer);
@@ -141,7 +142,11 @@ public class Server {
 
 
     public static void main(String[] args) throws RemoteException{
-        Server server = new Server();
-        server.startRMI();
+        Server rmiServer = new Server();
+        SocketServer socketServer = new SocketServer(1337);
+        rmiServer.startRMI();
+        socketServer.start();
     }
+
+
 }
