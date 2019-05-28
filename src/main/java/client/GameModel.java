@@ -57,9 +57,9 @@ public class GameModel extends Observable implements Serializable {
         }
 
         if (answer instanceof InitialMapAnswer) {
-            map = ((InitialMapAnswer) answer).getInitialMap();
+            mapnum = ((InitialMapAnswer) answer).getNumMap();
             setChanged();
-            notifyObservers("Map initialized");
+            notifyObservers("Initialized Map");
         }
 
         if (answer instanceof MapAnswer) {

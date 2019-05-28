@@ -11,6 +11,7 @@ import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.controller.turns.TurnHandler;
+import server.controller.turns.TurnPhase;
 import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.map.GameMap;
@@ -71,12 +72,10 @@ public class Controller implements MyObserver {
         //TODO initialize currentID and handle the turns.
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
-        //if(currentPlayer.getPlayerState() == )
 
-        if (currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED) || currentGame.getCurrentState().equals(GameState.END_GAME)) {
+        if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) || (currentGame.getCurrentState().equals(GameState.END_GAME))) {
             return false;
         }
-
 
         if(action instanceof MoveInfo){
             MoveAction moveAction = new MoveAction((MoveInfo) action);

@@ -1,16 +1,16 @@
 package view;
 
 
-import server.model.map.GameMap;
+import java.io.Serializable;
 
-public class InitialMapAnswer implements ServerAnswer {
-    private GameMap initialMap;
+public class InitialMapAnswer implements ServerAnswer, Serializable {
+    int numMap;
 
-    public InitialMapAnswer(GameMap map){
-        this.initialMap = map;
+    public InitialMapAnswer(int n){
+        this.numMap = n;
     }
 
-    public GameMap getInitialMap(){
-        return this.initialMap;
+    public int getNumMap(){
+        return this.numMap;
     }
 }

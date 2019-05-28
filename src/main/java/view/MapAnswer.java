@@ -2,8 +2,10 @@ package view;
 
 import server.model.map.GameMap;
 
+import java.io.Serializable;
 
-public class MapAnswer implements ServerAnswer{
+
+public class MapAnswer implements ServerAnswer, Serializable {
 
     private GameMap result;
 

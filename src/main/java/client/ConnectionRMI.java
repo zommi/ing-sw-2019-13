@@ -315,7 +315,14 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     @Override
     public String getMapName() {
-        return mapChoice;
+        try{
+            return gameProxy.getMapName();
+        }
+        catch (RemoteException re){
+            System.out.println("Could not take the map name from the server");
+            re.printStackTrace();
+        }
+        return "No one has chosen yet";
     }
 }
 

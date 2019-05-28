@@ -91,7 +91,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
             case 4:
                 return "map22.txt";
             default:
-                return "oupsie-daisy";
+                return "No one has chosen yet";
         }
     }
 
@@ -161,6 +161,20 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 //        else
 //            return "No one has chosen yet";
         return this.map;
+    }
+
+    @Override
+    public String getMapName() throws RemoteException{
+        if(this.numMap == 1)
+            return "map11.txt";
+        else if(this.numMap == 2)
+            return "map12.txt";
+        else if(this.numMap == 3)
+            return "map21.txt";
+        else if(this.numMap == 4)
+            return "map22.txt";
+        else
+            return "No one has chosen yet";
     }
 
     @Override

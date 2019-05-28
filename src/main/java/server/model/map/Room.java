@@ -12,7 +12,7 @@ public class Room implements Serializable {
 
     private Color color;
     private List<GameCharacter> charactersList;
-    private List<SquareAbstract> squareList;
+    private List<SquareAbstract> squareList = new ArrayList<>();
 
     /**
      * Default constructor
