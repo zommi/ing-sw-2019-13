@@ -24,7 +24,7 @@ class GameBoardTest {
         for(Room room : testGB.getMap().getRooms()){
             testList.addAll(room.getSquares());
         }
-        
+
 
         for(SpawnPoint sp : testGB.getMap().getSpawnPoints()){
             assertEquals(Constants.NUMBER_OF_WEAPON_PER_SPAWN_POINT, sp.getWeaponCards().size());

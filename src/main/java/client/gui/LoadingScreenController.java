@@ -2,11 +2,16 @@ package client.gui;
 
 public class LoadingScreenController implements GuiController{
 
-    private UpdaterGUI gui;
+    private MainGui gui;
 
     @Override
-    public void addGui(UpdaterGUI updaterGUI) {
-        this.gui = updaterGUI;
+    public void addGui(MainGui mainGui) {
+        this.gui = mainGui;
+    }
+
+    @Override
+    public void init() {
+
     }
 
 }

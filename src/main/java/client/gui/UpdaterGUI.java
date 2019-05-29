@@ -1,80 +1,41 @@
 package client.gui;
 
-import client.Connection;
 import client.GameModel;
 import client.Updater;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import server.model.gameboard.GameBoard;
-import server.model.map.GameMap;
+import exceptions.GameAlreadyStartedException;
+import exceptions.NotEnoughPlayersException;
+import javafx.application.Platform;
 
-import java.io.File;
-import java.util.HashMap;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Observable;
 
-public class UpdaterGUI extends Application implements Updater {
+public class UpdaterGUI implements Runnable, Updater {
+
+    private MainGui gui;
 
     private GameModel model;
 
-    private HashMap<String, Parent> sceneMap = new HashMap<>();
-
-    private Scene currentScene;
-
-    private Stage stage;
-
-    private String stageName;
-
-    private Connection connection;
-
-    private String playerName;
-
-    private String character;
-
-    private int mapIndex;
-
-    private GameMap gameMap;
-
-    private int initialSkulls;
-
-    private int playerId;
-
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        set();
-        this.stage = primaryStage;
-        run();
-    }
-
-    public void attachToObserver(){
-        this.model.addObserver(this);
-    }
-
-    public void setModel(){
-        this.model = connection.getGameModel();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+    public UpdaterGUI(MainGui gui){
+        this.gui = gui;
     }
 
     @Override
-    public void update(Observable gameModel, Object object){
+    public void update(Observable gameModel, Object object) {
         if(object.equals("GameBoard")){
 
         }
 
         if(object.equals("Map initialized")){
-            System.out.println("map received");
+            System.out.println("Map initialized");
+            this.gui.getCurrentController().init();
         }
 
         if(object.equals("Map")){
-
+            System.out.println("Map received");
+            Platform.runLater(() -> {
+                this.gui.getControllerFromString("gui.fxml").init();
+                this.gui.changeStage("gui.fxml");});
         }
 
         if(object.equals("PlayerBoard")){
@@ -86,116 +47,30 @@ public class UpdaterGUI extends Application implements Updater {
         }
     }
 
-    public void set(){
-        try {
-            File fxmlDir = new File(getClass().getResource("/fxml").toURI());
-            for(File file: fxmlDir.listFiles()) {
-                String[] subDir = file.getPath().split("/");
-                FXMLLoader loader = new FXMLLoader((getClass().getResource(
-                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length - 1])));
-                this.sceneMap.put(file.getName(), loader.load());
-                GuiController controller = loader.getController();
-                controller.addGui(this);
-            }
-            currentScene = new Scene(sceneMap.get("start_menu.fxml"));
-            this.stageName = "stage_menu.fxml";
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    @Override
+    public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
+
     }
 
-    public void run(){
-        stage.setTitle("ADRENALINE.EXE");
-        stage.setScene(currentScene);
-        stage.setResizable(false);
-        stage.show();
+    @Override
+    public void run() {
+
     }
 
-    public void changeStage(String scene){
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-        this.stageName = scene;
-        currentScene = new Scene(sceneMap.get(scene));
-        stage.setScene(currentScene);
-        stage.setX((screenBounds.getWidth() - currentScene.getWidth()) / 2);
-        stage.setY((screenBounds.getHeight() - currentScene.getHeight()) / 2);
-        stage.setResizable(false);
-        stage.show();
+    public void attachToObserver(){
+        this.model.addObserver(this);
     }
 
-    public void setConnection(Connection connection){
-        this.connection = connection;
-    }
-
-
-    public void setMapIndex(int mapIndex) {
-        this.mapIndex = mapIndex;
-    }
-
-    public void setGameMap(GameMap gameMap) {
-        this.gameMap = gameMap;
-    }
-
-    public void setInitialSkulls(int initialSkulls) {
-        this.initialSkulls = initialSkulls;
-    }
-
-    public void setCharacter(String character) {
-        this.character = character;
-    }
-
-    public String getCharacter() {
-        return character;
-    }
-
-    public void createGame(){
-        this.connection.add(this.playerName,this.mapIndex,this.initialSkulls);
-    }
-
-    public void setPlayerName(String name) {
-        this.playerName = name;
+    public void setModel(GameModel gameModel) {
+        this.model = gameModel;
     }
 
     public GameModel getGameModel() {
         return model;
     }
 
-    public GameModel getModel() {
-        return model;
+    public MainGui getGui() {
+        return gui;
     }
 
-    public HashMap<String, Parent> getSceneMap() {
-        return sceneMap;
-    }
-
-    public Scene getCurrentScene() {
-        return currentScene;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public int getMapIndex() {
-        return mapIndex;
-    }
-
-    public int getInitialSkulls() {
-        return initialSkulls;
-    }
-
-    public Connection getConnection(){
-        return this.connection;
-    }
-
-    public String getStageName() {
-        return stageName;
-    }
 }
