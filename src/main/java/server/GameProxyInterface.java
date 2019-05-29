@@ -31,7 +31,7 @@ public interface GameProxyInterface extends Remote {
 
     /*public void startMatch() throws RemoteException;*/
 
-    public boolean addMapPlayer() throws RemoteException;
+    public boolean addMapPlayer(int clientID) throws RemoteException;
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
 
@@ -53,6 +53,6 @@ public interface GameProxyInterface extends Remote {
 
     public boolean sendMap(int numMap) throws RemoteException;
 
-    public PlayerAbstract getPlayer() throws RemoteException;
+    public PlayerAbstract getPlayer(int clientID) throws RemoteException;
 
 }

@@ -213,15 +213,19 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean addMapPlayer() throws RemoteException{
-        serverRMI.addMapClient();
+    public boolean addMapPlayer(int clientID) throws RemoteException{
+        serverRMI.addMapClient(clientID);
         System.out.println("Added the map of the client and of the player");
         return true;
     }
 
     @Override
-    public PlayerAbstract getPlayer() throws RemoteException{
-        return player.get(player.size() - 1);
+    public PlayerAbstract getPlayer(int clientID) throws RemoteException{
+        for(int i = 0; i < player.size(); i++){
+            if(player.get(i).getClientID() == clientID)
+                return player.get(i);
+        }
+        return null;
     }
 
     @Override

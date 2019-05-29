@@ -32,8 +32,8 @@ public class Server {
         return this.startGame;
     }
 
-    public int startMatch(){
-        if(controller.getCurrentGame().getActivePlayers().size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
+    public int startMatch(){ //TODO here we have a problem: what if the player does not choose the character in time?
+        if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
             System.out.println("The game still has less than 3 players");
             listOfClients = null;
             game = null;
@@ -60,11 +60,17 @@ public class Server {
                     System.out.println("Sent the map to the connection RMI");
                     temp.get(i).publishMessage(temp1);
                     System.out.println("Sent the weapon card list to the client RMI");
+                    System.out.println(" " +temp.get(i).getClientID());
+                    System.out.println(" " +controller.getCurrentID());
                     if(temp.get(i).getClientID() == controller.getCurrentID()){
+                        System.out.println("Trying to find the current player to send him his player hand");
                         for(int k = 0; k < controller.getPlayers().size(); k++){
+                            System.out.println(" " +controller.getPlayers().get(k).getClientID());
                             if(controller.getPlayers().get(k).getClientID() == controller.getCurrentID()){
+                                System.out.println("Found him. Now I will send him his player hand");
                                 PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
                                 temp.get(i).publishMessage(playerHandAnswer);
+                                System.out.println("player hand sent");
                             }
                         }
                     }

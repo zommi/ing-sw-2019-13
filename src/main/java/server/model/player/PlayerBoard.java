@@ -5,12 +5,13 @@ import constants.*;
 import exceptions.*;
 import server.model.items.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class PlayerBoard{
+public class PlayerBoard implements Serializable {
     ConcretePlayer player;
 
     private Color[] damage;

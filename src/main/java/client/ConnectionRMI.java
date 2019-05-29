@@ -218,7 +218,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         while (characterNameSet == false) {
             try{
                 characterNameSet = gameProxy.addPlayerCharacter(name, clientID);
-                gameProxy.addMapPlayer();
+                gameProxy.addMapPlayer(clientID);
                 characterNameSet = true;
                 System.out.println("Name sent to to the server!");
             }

@@ -4,12 +4,13 @@ import constants.Constants;
 import server.model.cards.*;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * 
  */
-public class PlayerHand {
+public class PlayerHand implements Serializable {
 
     private ArrayList<WeaponCard> weaponHand;
     private ArrayList<PowerupCard> powerupHand;
