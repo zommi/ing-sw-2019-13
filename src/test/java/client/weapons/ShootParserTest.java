@@ -23,23 +23,7 @@ class ShootParserTest {
     @Test
     void getWeaponInput() throws FileNotFoundException{
 
-//        ByteArrayInputStream in = new ByteArrayInputStream(
-//                ("n" + System.lineSeparator() + "0" + System.lineSeparator() + "y" + System.lineSeparator() +
-//                        "0" + System.lineSeparator() + "2" + System.lineSeparator() + "y" + System.lineSeparator()).getBytes());
-
-        //ByteArrayInputStream in = new ByteArrayInputStream(("n\n0\ny\n0\n2\ny\n").getBytes());
-//        FileInputStream in = new FileInputStream(new File("." + File.separatorChar + "src" +
-//                File.separatorChar + "main" + File.separatorChar + "resources" + "/weaponTest.txt"));
-//        System.setIn(in);
-//        Scanner sc = new Scanner(System.in);
-//        while(sc.hasNextLine()){
-//            System.out.println(sc.nextLine());
-//        }
-
-
-
-
-        File file = new File("./src/main/resources/weaponTest.txt");
+        File file = new File("./src/test/resources/weaponTest.txt");
         InputStream inputStream = new FileInputStream(file);
         System.setIn(inputStream);
 
@@ -53,7 +37,6 @@ class ShootParserTest {
         }
 
         inputAbstract.setRoomsNames(roomNameList);
-
 
         PlayerAbstract player1 = new ConcretePlayer("player1");
         PlayerAbstract player2 = new ConcretePlayer("player2");
@@ -78,21 +61,21 @@ class ShootParserTest {
         gameBoard.addGameCharacter(player4.getGameCharacter());
         gameBoard.addGameCharacter(player5.getGameCharacter());
 
-        player1.spawn(gameBoard.getMap().getSquare(2,1));
-        player2.spawn(gameBoard.getMap().getSquare(2,1));
+        player1.spawn(gameBoard.getMap().getSquare(0,0));
+        player2.spawn(gameBoard.getMap().getSquare(1,1));
         player3.spawn(gameBoard.getMap().getSquare(1,1));
         player4.spawn(gameBoard.getMap().getSquare(1,1));
-        player5.spawn(gameBoard.getMap().getSquare(2,2));
+        player5.spawn(gameBoard.getMap().getSquare(2,1));
 
 
         ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("cyberblade"), inputAbstract);
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
         boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
 
         assertTrue(bool);
 
-        //System.setIn(System.in);
+        System.setIn(System.in);
     }
 }

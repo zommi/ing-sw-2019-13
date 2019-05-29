@@ -48,6 +48,9 @@ public class MicroEffect implements Serializable {
     private boolean generateSquareFlag;
 
     @JsonProperty
+    private boolean generateNMSquareFlag;
+
+    @JsonProperty
     private boolean moveFlag;
 
     private String description;
@@ -132,5 +135,8 @@ public class MicroEffect implements Serializable {
         return this.description;
     }
 
+    public boolean isGenerateNMSquareFlag() {
+        return generateNMSquareFlag;
+    }
 }
 

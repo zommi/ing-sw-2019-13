@@ -77,7 +77,7 @@ public class ShootParser {
         if(microEffect.getMaxTargetPlayerSize() != 0)
             microPack.setPlayersList(input.askPlayers(microEffect.getMaxTargetPlayerSize()));
 
-        if(microEffect.getMaxNmSquareSize() != 0 && !microEffect.isGenerateSquareFlag())
+        if(microEffect.getMaxNmSquareSize() != 0 && !microEffect.isGenerateNMSquareFlag())
             microPack.setNoMoveSquaresList(input.askSquares(microEffect.getMaxNmSquareSize()));
 
         if(microEffect.getMaxTargetRoomSize() != 0)
