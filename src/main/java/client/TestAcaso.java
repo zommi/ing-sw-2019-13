@@ -1,9 +1,10 @@
-package client.weapons;
+package client;
 
 import client.CliInput;
 import client.GameModel;
 import client.InputAbstract;
-import org.junit.jupiter.api.Test;
+import client.weapons.ShootPack;
+import client.weapons.ShootParser;
 import server.controller.playeraction.ShootValidator;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
@@ -11,34 +12,15 @@ import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ShootParserTest {
-
-    @Test
-    void getWeaponInput() throws FileNotFoundException{
-
-//        ByteArrayInputStream in = new ByteArrayInputStream(
-//                ("n" + System.lineSeparator() + "0" + System.lineSeparator() + "y" + System.lineSeparator() +
-//                        "0" + System.lineSeparator() + "2" + System.lineSeparator() + "y" + System.lineSeparator()).getBytes());
-
-        //ByteArrayInputStream in = new ByteArrayInputStream(("n\n0\ny\n0\n2\ny\n").getBytes());
-//        FileInputStream in = new FileInputStream(new File("." + File.separatorChar + "src" +
-//                File.separatorChar + "main" + File.separatorChar + "resources" + "/weaponTest.txt"));
-//        System.setIn(in);
-//        Scanner sc = new Scanner(System.in);
-//        while(sc.hasNextLine()){
-//            System.out.println(sc.nextLine());
-//        }
-
-
-
-
+public class TestAcaso {
+    public static void main(String[] args) throws FileNotFoundException {
         File file = new File("./src/main/resources/weaponTest.txt");
         InputStream inputStream = new FileInputStream(file);
         System.setIn(inputStream);
@@ -80,19 +62,17 @@ class ShootParserTest {
 
         player1.spawn(gameBoard.getMap().getSquare(2,1));
         player2.spawn(gameBoard.getMap().getSquare(2,1));
-        player3.spawn(gameBoard.getMap().getSquare(1,1));
-        player4.spawn(gameBoard.getMap().getSquare(1,1));
+        player3.spawn(gameBoard.getMap().getSquare(2,1));
+        player4.spawn(gameBoard.getMap().getSquare(2,1));
         player5.spawn(gameBoard.getMap().getSquare(2,2));
 
 
         ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("cyberblade"), inputAbstract);
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("sledgehammer"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
         boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
-
-        assertTrue(bool);
-
-        //System.setIn(System.in);
+        if(bool)
+            System.out.println("adsasdfasvkjsrnvlsev");
     }
 }

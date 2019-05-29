@@ -4,6 +4,7 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public abstract class InputAbstract {
