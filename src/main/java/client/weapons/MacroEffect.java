@@ -78,6 +78,10 @@ public class MacroEffect implements Serializable {
         return cost;
     }
 
+    public void setCost(Cost cost) {
+        this.cost = cost;
+    }
+
     public int getMacroEffectIndex() {
         return macroEffectIndex;
     }

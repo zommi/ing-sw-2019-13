@@ -1,5 +1,6 @@
 package server.model.gameboard;
 
+import client.weapons.Cost;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ public class WeaponDeck implements Serializable {
      * queue of weapon cards
      */
     private LinkedList<WeaponCard> deck;
+    private LinkedList<WeaponCard> staticDeck;
 
     /**
      * defaul constructor
@@ -52,6 +54,8 @@ public class WeaponDeck implements Serializable {
         for(Weapon weapon : arrayOfWeapons){
             int macro = 0;
             for(MacroEffect macroEffect : weapon.getMacroEffects()){
+                if(macroEffect.getCost()==null)
+                    macroEffect.setCost(new Cost(0,0,0));
                 macroEffect.setNumber(macro);
                 int micro = 0;
                 for(MicroEffect microEffect : macroEffect.getMicroEffects()){
@@ -64,9 +68,12 @@ public class WeaponDeck implements Serializable {
         }
 
         this.deck = new LinkedList<>();
+        this.staticDeck = new LinkedList<>();
 
         for(int i = 0; i < arrayOfWeapons.length; i++){
             this.deck.push(new WeaponCard(arrayOfWeapons[i]));
+            this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
+
         }
 
         shuffle();
@@ -110,8 +117,8 @@ public class WeaponDeck implements Serializable {
     }
 
     public Weapon getWeapon(String weaponName){
-        for(WeaponCard weaponCard : deck){
-            if(weaponCard.getWeapon().getName().equals(weaponName))
+        for(WeaponCard weaponCard : staticDeck){
+            if(weaponCard.getWeapon().getName().equalsIgnoreCase(weaponName))
                 return weaponCard.getWeapon();
 
         }

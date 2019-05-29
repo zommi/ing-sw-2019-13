@@ -11,6 +11,7 @@
     },
     "macroEffects": [
       {
+
         "mandatory" : true,
         "microEffects" : [
           {
@@ -256,6 +257,7 @@
     "name": "Plasma Gun",
     "type": "EXTRA",
     "path" : "/Grafica/cards/Plasma_gun.png",
+    "special" : true,
     "buyCost": {
       "yellow" : 1
     },
@@ -341,8 +343,8 @@
                 "policyName" : "specificPlayer",
                 "policyType" : "player",
                 "effectFlag" : true,
-                "macroEffectIndex" : 0,
-                "microEffectIndex" : 1,
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0,
                 "effectList" : "player"
               }
             ]
@@ -454,10 +456,11 @@
             "mandatory" : true,
             "damage" : 1,
             "moveFlag" : true,
+            "maxTargetPlayerSize" : 1,
             "policies" : [
               {
                 "policyName" : "visible",
-                "policyType" : "player",
+                "policyType" : "square",
                 "attackerFlag" : true
               },
               {
@@ -480,7 +483,9 @@
         },
         "microEffects" : [
           {
+            "mandatory" : true,
             "damage" : 3,
+            "maxTargetPlayerSize" : 1,
             "moveFlag" : true,
             "generateSquareFlag" :true,
             "policies" : [
@@ -515,6 +520,7 @@
     },
     "macroEffects": [
       {
+        "mandatory" : true,
         "microEffects" : [
           {
             "mandatory" : true,
@@ -642,7 +648,7 @@
               {
                 "policyName" : "distanceEqual",
                 "policyType" : "noMoveSquare",
-                "distance" : 2,
+                "distance" : 1,
                 "attackerFlag" : true
               },
               {
@@ -661,7 +667,7 @@
     ]
   },
   {
-    "name": "Heatseaker",
+    "name": "Heatseeker",
     "type": "ONEMODE",
     "path" : "/Grafica/cards/Heatseeker.png",
     "buyCost": {
@@ -916,6 +922,7 @@
   {
     "name": "Grenade Launcher",
     "type": "EXTRA",
+    "special" : true,
     "path" : "/Grafica/cards/Grenade_launcher.png",
     "buyCost": {},
     "reloadCost": {
@@ -1022,6 +1029,7 @@
     "name": "Rocket Launcher",
     "type": "EXTRA",
     "path" : "/Grafica/cards/Rocket_launcher.png",
+    "special" : true,
     "buyCost": {
       "red" : 1
     },
@@ -1217,6 +1225,7 @@
       {
         "microEffects" : [
           {
+            "mandatory" : true,
             "damage" : 2,
             "maxTargetPlayerSize" : 2,
             "policies" : [
@@ -1234,6 +1243,7 @@
   {
     "name": "Cyberblade",
     "type": "EXTRA",
+    "special" : true,
     "path" : "/Grafica/cards/Cyberblade.png",
     "buyCost": {
       "red" : 1
@@ -1328,8 +1338,8 @@
                 "policyType" : "player",
                 "effectFlag" : true,
                 "effectList" : "player",
-                "macroEffectIndex" : 0,
-                "microEffectIndex" : 1
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0
               }
             ]
           }
@@ -1730,6 +1740,11 @@
                 "policyName" :"distanceSmaller",
                 "policyType" : "square",
                 "distance" : 3,
+                "attackerFlag" : true
+              },
+              {
+                "policyName" : "sameDirection",
+                "policyType" : "square",
                 "attackerFlag" : true
               },
               {
