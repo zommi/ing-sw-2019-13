@@ -231,6 +231,13 @@ public class WeaponPolicy implements Serializable {
             }
             return true;
         }
+        else if(policyType.equals("noMoveSquare") && attackerFlag){
+            for(SquareAbstract squareAbstract : microInfo.getNoMoveSquaresList()){
+                if(!shootInfo.getAttacker().getPosition().getVisibleSquares().contains(squareAbstract))
+                    return false;
+            }
+            return true;
+        }
         else return false;
     }
 
