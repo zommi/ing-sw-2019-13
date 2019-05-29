@@ -3,13 +3,13 @@ package server.model.gameboard;
 import client.weapons.Weapon;
 import constants.Constants;
 import server.model.map.*;
+import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerBoard;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class containing all the different physical elements of a certain game.
@@ -41,7 +41,9 @@ public class GameBoard implements Serializable {
      */
     private AmmoTileDeck ammoTileDeck;
 
-    private List<GameCharacter> gameCharacterList;
+    private Map<Integer, PlayerBoard> mapPlayerBoard;
+
+    private List<GameCharacter> gameCharacterList = new ArrayList<>();
 
     public GameBoard(){
 
@@ -58,9 +60,13 @@ public class GameBoard implements Serializable {
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
-        this.gameCharacterList = new ArrayList<>();
+        mapPlayerBoard = new HashMap<>();
         setupGameBoard();
 
+    }
+
+    public Map getHashMap(){
+        return mapPlayerBoard;
     }
 
     /**
@@ -88,9 +94,13 @@ public class GameBoard implements Serializable {
         }
     }
 
+    public void addPlayerBoard(ConcretePlayer p){
+        mapPlayerBoard.put(p.getClientID(), p.getBoard());
+    }
+
     public GameBoard createCopy(GameBoard gameBoardToCopy){
         GameBoard gameBoard = new GameBoard();
-        gameBoard.gameCharacterList = gameBoardToCopy.gameCharacterList;
+        gameBoard.gameCharacterList.addAll(gameBoardToCopy.gameCharacterList);
         for(int i = 0; i < gameBoard.getGameCharacterList().size(); i++){
             gameBoard.getGameCharacterList().get(i).setPlayer(null);
         }

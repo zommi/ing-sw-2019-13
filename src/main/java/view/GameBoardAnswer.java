@@ -1,6 +1,7 @@
 package view;
 
 import server.model.gameboard.*;
+import server.model.player.PlayerBoard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,5 +30,9 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
     public AmmoTileDeck getWeaponDeck() {
         //TODO
         return null;
+    }
+
+    public PlayerBoardAnswer getPlayerBoard(int clientID){
+        return new PlayerBoardAnswer((PlayerBoard) result.getHashMap().get(clientID));
     }
 }

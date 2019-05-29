@@ -2,6 +2,7 @@ package client;
 
 import client.weapons.Weapon;
 import server.model.map.GameMap;
+import server.model.player.PlayerBoard;
 import view.*;
 
 import java.io.Serializable;
@@ -68,11 +69,11 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Map");
         }
 
-        if (answer instanceof PlayerBoardAnswer) {
+        /*if (answer instanceof PlayerBoardAnswer) {
             playerBoard = (PlayerBoardAnswer) answer;
             setChanged();
             notifyObservers("PlayerBoard");
-        }
+        }*/
 
         if (answer instanceof PlayerHandAnswer) {
             playerHand = (PlayerHandAnswer) answer;
@@ -93,8 +94,8 @@ public class GameModel extends Observable implements Serializable {
         return this.map;
     }
 
-    public PlayerBoardAnswer getPlayerBoard() {
-        return playerBoard;
+    public PlayerBoardAnswer getPlayerBoard(int clientID) {
+        return gameBoard.getPlayerBoard(clientID);
     }
 
     public PlayerHandAnswer getPlayerHand() {

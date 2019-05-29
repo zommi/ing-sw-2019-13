@@ -33,7 +33,7 @@ public class Server {
     }
 
     public int startMatch(){
-        if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
+        if(controller.getCurrentGame().getActivePlayers().size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
             System.out.println("The game still has less than 3 players");
             listOfClients = null;
             game = null;
@@ -60,6 +60,14 @@ public class Server {
                     System.out.println("Sent the map to the connection RMI");
                     temp.get(i).publishMessage(temp1);
                     System.out.println("Sent the weapon card list to the client RMI");
+                    if(temp.get(i).getClientID() == controller.getCurrentID()){
+                        for(int k = 0; k < controller.getPlayers().size(); k++){
+                            if(controller.getPlayers().get(k).getClientID() == controller.getCurrentID()){
+                                PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
+                                temp.get(i).publishMessage(playerHandAnswer);
+                            }
+                        }
+                    }
                 }
             }
             catch(RemoteException e){

@@ -85,6 +85,7 @@ public class Game {
     public void addPlayer(PlayerAbstract player) throws WrongGameStateException {
         if (this.currentState == GameState.SETUP) {
             this.activePlayers.add(player);
+            this.currentGameBoard.addPlayerBoard((ConcretePlayer) player);
         }else throw new WrongGameStateException();
     }
 

@@ -5,6 +5,7 @@ import client.Info;
 import client.ReceiverInterface;
 import exceptions.GameAlreadyStartedException;
 import server.model.map.GameMap;
+import server.model.player.GameCharacter;
 import view.ServerAnswer;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
@@ -142,6 +143,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
             if(player.get(i).getClientID() == ID){
                 this.player.get(i).setPlayerCharacter(Figure.fromString(name));
                 this.player.get(i).setIfCharacter(true);
+                this.serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addGameCharacter(new GameCharacter(Figure.fromString(name)));
             }
             System.out.println("For now I have received client number " +player.get(i).getClientID());
         }

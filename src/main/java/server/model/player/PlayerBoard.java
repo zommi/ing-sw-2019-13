@@ -53,7 +53,7 @@ public class PlayerBoard{
 
     public PlayerBoard createCopy(PlayerBoard playerBoardToCopy){
         PlayerBoard playerBoard = new PlayerBoard();
-        playerBoard.player = playerBoardToCopy.getPlayer();
+        playerBoard.player = null;
         playerBoard.damageTaken = playerBoardToCopy.getDamageTaken();
         playerBoard.damage = playerBoardToCopy.getDamage();
         playerBoard.marks = playerBoardToCopy.getMarks();

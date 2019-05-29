@@ -27,8 +27,6 @@ import java.util.List;
 
 public class Controller implements MyObserver {
 
-    //private List<PlayerAbstract> players = new ArrayList<>();
-
     private int currentID;
 
     private Game currentGame;

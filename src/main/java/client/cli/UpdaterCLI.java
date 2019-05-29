@@ -6,6 +6,7 @@ import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
+import server.model.player.PlayerBoard;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -46,10 +47,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         if(object.equals("Map")){
             System.out.println("New Update of the map");
-        }
-
-        if(object.equals("PlayerBoard")){
-            System.out.println("New Update of the playerboard");
         }
 
         if(object.equals("PlayerHand")){
@@ -261,7 +258,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
                     //try{
                     playerHand = gameModel.getPlayerHand();
-                    playerBoard = gameModel.getPlayerBoard();
+                    playerBoard = gameModel.getPlayerBoard(connection.getClientID());
                     weapons = playerHand.getWeaponHand();
                     System.out.println(">You have the following weapons: ");
                     if ((weapons == null) || (weapons.size() == 0)) {
@@ -346,6 +343,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 else{
                     System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
+                    try{
+                        TimeUnit.SECONDS.sleep(5);
+                    }
+                    catch(InterruptedException e){
+                        System.out.println("Exception while waiting");
+                    }
                 }
             }
             else if(connection.getStartGame() == 0) {

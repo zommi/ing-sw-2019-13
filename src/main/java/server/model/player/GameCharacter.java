@@ -4,12 +4,13 @@ import constants.Color;
 import constants.Constants;
 import server.model.map.SquareAbstract;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * 
  */
-public class GameCharacter {
+public class GameCharacter implements Serializable {
 
 
     private Figure figure;
