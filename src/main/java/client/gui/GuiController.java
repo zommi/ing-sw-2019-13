@@ -2,5 +2,7 @@ package client.gui;
 
 public interface GuiController {
 
-    public void addGui(UpdaterGUI updaterGUI);
+    public void addGui(MainGui mainGui);
+
+    void init();
 }

@@ -5,6 +5,7 @@ import constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 import exceptions.ReadJsonErrorException;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  */
-public class PowerupDeck {
+public class PowerupDeck implements Serializable {
 
     /**
      * deck of cards that can be drawn

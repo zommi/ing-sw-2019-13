@@ -6,6 +6,7 @@ import server.model.map.*;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Class containing all the different physical elements of a certain game.
  */
-public class GameBoard {
+public class GameBoard implements Serializable {
 
     /**
      * reference to the game map
@@ -89,7 +90,10 @@ public class GameBoard {
 
     public GameBoard createCopy(GameBoard gameBoardToCopy){
         GameBoard gameBoard = new GameBoard();
-        gameBoard.gameCharacterList = null;
+        gameBoard.gameCharacterList = gameBoardToCopy.gameCharacterList;
+        for(int i = 0; i < gameBoard.getGameCharacterList().size(); i++){
+            gameBoard.getGameCharacterList().get(i).setPlayer(null);
+        }
         gameBoard.gameMap = gameBoardToCopy.gameMap.createCopy(gameBoardToCopy.gameMap);
         gameBoard.track = gameBoardToCopy.track.createCopy(gameBoardToCopy.track);
         //gameBoard.weaponDeck =

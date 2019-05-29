@@ -14,16 +14,21 @@ public class MapSelectionController implements GuiController {
     @FXML
     private ChoiceBox skullBox;
 
-    private UpdaterGUI gui;
+    private MainGui gui;
 
 
     @Override
-    public void addGui(UpdaterGUI updaterGUI) {
-        this.gui = updaterGUI;
+    public void addGui(MainGui mainGui) {
+        this.gui = mainGui;
+    }
+
+    @Override
+    public void init() {
+        this.skullBox.getItems().addAll(5,6,7,8);
     }
 
     public void initialize(){
-        this.skullBox.getItems().addAll(5,6,7,8);
+        init();
     }
 
     @FXML
@@ -35,12 +40,12 @@ public class MapSelectionController implements GuiController {
                     break;
                 }
             }
+            this.gui.changeStage("loading_screen.fxml");
             this.gui.setInitialSkulls((int)skullBox.getValue());
             this.gui.getConnection().configure();
             this.gui.getConnection().add(this.gui.getPlayerName(),this.gui.getMapIndex(),this.gui.getInitialSkulls());
             this.gui.setPlayerId(this.gui.getConnection().getClientID());
             this.gui.getConnection().addPlayerCharacter(this.gui.getCharacter());
-            this.gui.changeStage("loading_screen.fxml");
         }
     }
 

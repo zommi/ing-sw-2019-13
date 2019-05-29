@@ -1,16 +1,10 @@
 package client.gui;
 
-import client.Connection;
 import client.ConnectionRMI;
 import client.ConnectionSocket;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import server.model.player.Figure;
 
 import java.rmi.RemoteException;
 
@@ -54,13 +48,12 @@ public class StartMenuController implements GuiController{
     @FXML
     private ChoiceBox characterBox;
 
-    private UpdaterGUI gui;
+    private MainGui gui;
 
 
     @FXML
     public void initialize(){
-        connectionBox.getItems().addAll("RMI","SOCKET");
-        characterBox.getItems().addAll("DESTRUCTOR","VIOLET","BANSHEE","DOZER","SPROG");
+        init();
     }
 
     @FXML
@@ -77,13 +70,19 @@ public class StartMenuController implements GuiController{
         this.gui.attachToObserver();
     }
 
-    public void setGui(UpdaterGUI updaterGUI) {
-        this.gui = updaterGUI;
+    public void setGui(MainGui mainGui) {
+        this.gui = mainGui;
     }
 
     @Override
-    public void addGui(UpdaterGUI updaterGUI) {
-        this.gui = updaterGUI;
+    public void addGui(MainGui mainGui) {
+        this.gui = mainGui;
+    }
+
+    @Override
+    public void init() {
+        connectionBox.getItems().addAll("RMI","SOCKET");
+        characterBox.getItems().addAll("DESTRUCTOR","VIOLET","BANSHEE","DOZER","SPROG");
     }
 
     public void connectGame(MouseEvent mouseEvent) throws RemoteException{
@@ -103,7 +102,8 @@ public class StartMenuController implements GuiController{
         String mapName;
         int initialSkulls;
         this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
-        this.gui.changeStage("gui.fxml");
+
     }
+
 
 }

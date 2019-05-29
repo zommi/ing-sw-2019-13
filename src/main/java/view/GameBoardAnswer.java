@@ -2,10 +2,11 @@ package view;
 
 import server.model.gameboard.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameBoardAnswer implements ServerAnswer {
+public class GameBoardAnswer implements ServerAnswer, Serializable {
 
     private GameBoard result;
 

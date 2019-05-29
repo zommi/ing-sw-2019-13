@@ -2,6 +2,7 @@ package client;
 
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
+import server.controller.playeraction.Action;
 import server.model.cards.WeaponCard;
 
 import java.util.List;
@@ -13,9 +14,12 @@ public class ActionParser{
     private List<WeaponCard> weaponList;
     private InputAbstract input;
 
-    public ActionParser(GameModel gameModel){
-        this.gameModel = gameModel;
+    public ActionParser(){
         input = new CliInput();
+    }
+
+    public void addGameModel(GameModel gameModel){
+        this.gameModel = gameModel;
         weaponList = gameModel.getWeaponList().getList();
     }
 
