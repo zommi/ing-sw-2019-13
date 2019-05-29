@@ -1041,10 +1041,10 @@
         "cost" : {
           "blue" : 1
         },
+        "limited" : true,
         "microEffects" : [
           {
             "moveFlag" : true,
-            "limited" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1074,6 +1074,7 @@
           {
             "damage" : 2,
             "mandatory" : true,
+            "generateNMSquareFlag" : true,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
@@ -1086,6 +1087,14 @@
                 "policyType" : "player",
                 "distance" : 0,
                 "attackerFlag" : true
+              },
+              {
+                "policyName" : "specificSquare",
+                "policyType" : "noMoveSquare",
+                "effectFlag" : true,
+                "effectList" : "player",
+                "macroEffectIndex" : 1,
+                "microEffectIndex" : 0
               }
             ]
           },
@@ -1118,10 +1127,11 @@
         "cost" : {
           "blue" : 1
         },
+        "limited" : true,
         "microEffects" : [
           {
             "moveFlag" : true,
-            "limited" : true,
+            "mandatory" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1175,7 +1185,7 @@
                 "policyType" : "player",
                 "distance" : 0,
                 "effectFlag" : true,
-                "effectList" : "player",
+                "effectList" : "noMoveSquare",
                 "macroEffectIndex" : 1,
                 "microEffectIndex" : 0
               },

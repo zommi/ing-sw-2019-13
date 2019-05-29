@@ -8,7 +8,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -20,11 +19,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
 import server.model.map.SquareAbstract;
-import view.MapAnswer;
 
 public class MainGuiController implements GuiController{
 
@@ -52,10 +49,9 @@ public class MainGuiController implements GuiController{
 
     private int weaponHandSize = 0;
 
-    private UpdaterGUI gui;
+    private MainGui gui;
 
     private int side = 175;
-    
 
     @FXML
     void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
@@ -69,8 +65,6 @@ public class MainGuiController implements GuiController{
         cardToAdd.setOnMousePressed(null);
         this.weaponHand.add(cardToAdd,weaponHandSize,0);
         weaponHandSize++;
-
-
     }
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
@@ -98,6 +92,7 @@ public class MainGuiController implements GuiController{
             if (!currentSquare.isSpawnPoint()){
                 GuiSquare square = new GuiSquare(side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
                 square.setCursor(Cursor.HAND);
+                square.setOnMousePressed(e -> drawAmmoTile(square));
                 mapGridPane.add(
                         square,
                         currentSquare.getCol()*2,
@@ -173,6 +168,10 @@ public class MainGuiController implements GuiController{
         }
     }
 
+    private void drawAmmoTile(GuiSquare square) {
+        square.drawAmmo();
+    }
+
     private void showWeapons(GuiSpawnPoint spawnPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("WEAPONS AVAILABLE");
@@ -203,7 +202,17 @@ public class MainGuiController implements GuiController{
     }
 
     @Override
-    public void addGui(UpdaterGUI updaterGUI) {
-        this.gui = updaterGUI;
+    public void addGui(MainGui mainGui) {
+        this.gui = mainGui;
+    }
+
+    @Override
+    public void init(){
+        try {
+            initializeMap();
+        } catch (NoSuchSquareException e) {
+            e.printStackTrace();
+            System.out.println("ERROR IN INITIALIZATION");
+        }
     }
 }

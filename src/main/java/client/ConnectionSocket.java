@@ -4,9 +4,7 @@ import server.model.map.GameMap;
 import server.model.player.Figure;
 import view.ServerAnswer;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ConnectionSocket implements Connection {
@@ -23,6 +21,7 @@ public class ConnectionSocket implements Connection {
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+
 
     private static final String SERVER_ADDRESS  = "localhost";
     private static final int REGISTRATION_PORT = 1337;

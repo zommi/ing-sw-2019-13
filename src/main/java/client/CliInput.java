@@ -4,36 +4,38 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CliInput extends InputAbstract{
+    private Scanner scanner;
+
+    public CliInput() {
+        scanner = new Scanner(System.in);
+    }
+
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
-        Scanner in = new Scanner(System.in);
-
         System.out.println("Do you wanna activate this macro effect?\n"
                 + macroEffect + "[y to activate]\n");
-
-        String s = in.nextLine();
-
+        String s = scanner.nextLine();
         return s.equals("y");
-
     }
 
     @Override
     public boolean getChoice(MicroEffect microEffect) {
-        Scanner in = new Scanner(System.in);
         System.out.println("Do you wanna activate this micro effect?\n"
                 + microEffect + "[y to activate]\n");
-        String s = in.nextLine();
+        String s = scanner.nextLine();
         return s.equals("y");
     }
 
     @Override
     public List<SquareInfo> askSquares(int maxSquares) {
-        Scanner in = new Scanner(System.in);
         String rowString;
         String colString;
         boolean ask;
@@ -49,7 +51,7 @@ public class CliInput extends InputAbstract{
                     System.out.println("Give me the row: [or say 'stop']\n");
                 else
                     System.out.println("Give me the row: \n");
-                rowString = in.nextLine();
+                rowString = scanner.nextLine();
 
                 if (rowString.equals("stop") && maxSquares != 1 && counter != maxSquares) {
                     exit = true;
@@ -58,7 +60,7 @@ public class CliInput extends InputAbstract{
                 else{
                     try{
                         System.out.println("Give me the column:\n");
-                        colString = in.nextLine();
+                        colString = scanner.nextLine();
                         row = Integer.parseInt(rowString);
                         col = Integer.parseInt(colString);
                         list.add(new SquareInfo(row, col));
@@ -88,7 +90,6 @@ public class CliInput extends InputAbstract{
 
     private List<String> askPlayersOrRooms(int maxTargetPlayerSize, boolean players) {
         List<String> names = players ? playersNames : roomsNames;
-        Scanner in = new Scanner(System.in);
         String choice;
         boolean ask;
         boolean exit = false;
@@ -105,7 +106,7 @@ public class CliInput extends InputAbstract{
                     System.out.println("Give me a number [or say 'stop']:\n");
                 else
                     System.out.println("Give me a number:\n");
-                choice = in.nextLine();
+                choice = scanner.nextLine();
                 if (choice.equals("stop") && maxTargetPlayerSize != 1 && counter != maxTargetPlayerSize) {
                     exit = true;
                     break;
@@ -115,6 +116,7 @@ public class CliInput extends InputAbstract{
                        number = Integer.parseInt(choice);
                        if(number < names.size()){
                            list.add(names.get(number));
+                           System.out.println("You chose " + number + ": " + names.get(number));
                            ask = false;
                        }
                        else{
@@ -134,17 +136,16 @@ public class CliInput extends InputAbstract{
     }
 
     @Override
-    public MacroEffect chooseOneMacro(Weapon weapon) {
+    public MacroEffect chooseOneMacro(Weapon weapon){
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
             System.out.println(macroEffect.getNumber() + ": " + macroEffect);
         }
-        Scanner in = new Scanner(System.in);
         String s;
         int i = 0;
         boolean ask = true;
         while(ask) {
             System.out.println("Choose a number\n");
-            s = in.nextLine();
+            s = scanner.nextLine();
             try {
                 i = Integer.parseInt(s);
                 if(i < weapon.getMacroEffects().size())

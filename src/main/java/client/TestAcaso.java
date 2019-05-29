@@ -1,9 +1,10 @@
-package client.weapons;
+package client;
 
 import client.CliInput;
 import client.GameModel;
 import client.InputAbstract;
-import org.junit.jupiter.api.Test;
+import client.weapons.ShootPack;
+import client.weapons.ShootParser;
 import server.controller.playeraction.ShootValidator;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
@@ -11,19 +12,16 @@ import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ShootParserTest {
-
-    @Test
-    void getWeaponInput() throws FileNotFoundException{
-
-        File file = new File("./src/test/resources/weaponTest.txt");
+public class TestAcaso {
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("./src/main/resources/weaponTest.txt");
         InputStream inputStream = new FileInputStream(file);
         System.setIn(inputStream);
 
@@ -37,6 +35,7 @@ class ShootParserTest {
         }
 
         inputAbstract.setRoomsNames(roomNameList);
+
 
         PlayerAbstract player1 = new ConcretePlayer("player1");
         PlayerAbstract player2 = new ConcretePlayer("player2");
@@ -61,21 +60,19 @@ class ShootParserTest {
         gameBoard.addGameCharacter(player4.getGameCharacter());
         gameBoard.addGameCharacter(player5.getGameCharacter());
 
-        player1.spawn(gameBoard.getMap().getSquare(0,0));
-        player2.spawn(gameBoard.getMap().getSquare(1,1));
-        player3.spawn(gameBoard.getMap().getSquare(1,1));
-        player4.spawn(gameBoard.getMap().getSquare(1,1));
-        player5.spawn(gameBoard.getMap().getSquare(2,1));
+        player1.spawn(gameBoard.getMap().getSquare(2,1));
+        player2.spawn(gameBoard.getMap().getSquare(2,1));
+        player3.spawn(gameBoard.getMap().getSquare(2,1));
+        player4.spawn(gameBoard.getMap().getSquare(2,1));
+        player5.spawn(gameBoard.getMap().getSquare(2,2));
 
 
         ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("sledgehammer"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
         boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
-
-        assertTrue(bool);
-
-        System.setIn(System.in);
+        if(bool)
+            System.out.println("adsasdfasvkjsrnvlsev");
     }
 }

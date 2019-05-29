@@ -151,6 +151,7 @@ public class ShootValidator {
                     for (WeaponPolicy weaponPolicy : weaponMicro.getPolicies()) {
                         if (!(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player")) &&
                                 !(weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")) &&
+                                !(weaponMicro.isGenerateNMSquareFlag() && weaponPolicy.getPolicyType().equals("noMoveSquare")) &&
                                 !weaponPolicy.isVerified(shootInfo, microInfo))
                             return false;
                     }
@@ -165,7 +166,8 @@ public class ShootValidator {
                     }
                     for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
                         if(weaponMicro.isGeneratePlayerFlag() && weaponPolicy.getPolicyType().equals("player") ||
-                                weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")){
+                                weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square") ||
+                                (weaponMicro.isGenerateNMSquareFlag() && weaponPolicy.getPolicyType().equals("noMoveSquare"))){
                             weaponPolicy.generate(shootInfo, microInfo);
                         }
                     }

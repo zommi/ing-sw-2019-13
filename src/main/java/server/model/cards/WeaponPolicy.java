@@ -96,6 +96,14 @@ public class WeaponPolicy implements Serializable {
                 //not checking if micro is null cause it must have been activated
             }
         }
+        else if(policyType.equals("noMoveSquare")){
+            if(effectFlag){
+                if(effectList.equals("player")){
+                    microInfo.getNoMoveSquaresList().add(shootInfo.getActivatedMicro(macroEffectIndex, microEffectIndex)
+                            .getFirstPlayer().getPosition());       //assumes that noMoveSquareList is empty
+                }
+            }
+        }
     }
 
     private void generateAllPlayersInRoom(ShootInfo shootInfo, MicroInfo microInfo){
