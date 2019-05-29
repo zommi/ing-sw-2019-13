@@ -10,10 +10,11 @@ import constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 
-public class WeaponDeck {
+public class WeaponDeck implements Serializable {
 
     /**
      * queue of weapon cards

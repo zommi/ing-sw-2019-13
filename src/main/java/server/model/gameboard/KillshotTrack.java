@@ -2,10 +2,12 @@ package server.model.gameboard;
 
 import constants.Color;
 
+import java.io.Serializable;
+
 /**
  * 
  */
-public class KillshotTrack {
+public class KillshotTrack implements Serializable {
 
     /**
      * int containing the number of skulls remaining in a given game

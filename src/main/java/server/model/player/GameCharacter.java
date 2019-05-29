@@ -30,6 +30,10 @@ public class GameCharacter {
         setTaken(f);
     }
 
+    public void setPlayer(ConcretePlayer concretePlayer){
+        this.concretePlayer = concretePlayer;
+    }
+
     public GameCharacter CharacterCreateCopy(GameCharacter gameCharacterToCopy){
         GameCharacter gameCharacter = new GameCharacter();
         gameCharacter.position = gameCharacterToCopy.getPosition();

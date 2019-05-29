@@ -36,6 +36,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the gameboard");
         }
 
+        if(object.equals("Weapons list")){
+            System.out.println("New Update of the weapons");
+        }
+
         if(object.equals("Map initialized")){
             System.out.println("New Update of the map number");
         }
@@ -243,13 +247,18 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("Exception caught");
             return;
         }
+        ActionParser actionParser = new ActionParser();
 
-        ActionParser actionParser = new ActionParser(gameModel);
-        actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
+
 
         while (alwaysTrue) {
+            System.out.println("entering the alwaysTrue cicle");
             if (connection.getStartGame() == 1) { //the game can start
+                actionParser.addGameModel(gameModel);
+                actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
+                System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if (connection.getClientID() == connection.getCurrentID()) {
+                    System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
                     //try{
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard();

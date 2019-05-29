@@ -60,6 +60,13 @@ public class Game {
             this.weaponList.add(temp);
             //System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
         }
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < currentGameMap.getSpawnPoints().size(); j++){
+                WeaponCard temp1 = currentGameMap.getSpawnPoints().get(j).getWeaponCards().get(i);
+                this.weaponList.add(temp1);
+            }
+        }
+
     }
 
     public ListOfWeaponsAnswer getWeaponList(){

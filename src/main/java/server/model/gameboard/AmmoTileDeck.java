@@ -10,12 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Class used to manage ammotiles
  */
-public class AmmoTileDeck {
+public class AmmoTileDeck implements Serializable {
 
 
     LinkedList<AmmoTile> deck = new LinkedList<>();
