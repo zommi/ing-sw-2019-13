@@ -22,6 +22,7 @@ public class PlayerBoard implements Serializable {
     private int currentPointValueCursor;
     private int numberOfDeaths;
 
+
     //0 red, 1 blue, 2 yellow
     private int[] ammo = {1,1,1};
 
@@ -30,6 +31,7 @@ public class PlayerBoard implements Serializable {
     private static final int RED_CUBES_INDEX = Color.RED.getIndex();
     private static final int BLUE_CUBES_INDEX = Color.BLUE.getIndex();
     private static final int YELLOW_CUBES_INDEX = Color.YELLOW.getIndex();
+
     /**
      * Default constructor
      */
@@ -61,6 +63,10 @@ public class PlayerBoard implements Serializable {
         playerBoard.numberOfDeaths = playerBoardToCopy.getNumberOfDeaths();
         playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
         playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
+        playerBoard.ammo = new int[3];
+        playerBoard.ammo[0] = ammo[RED_CUBES_INDEX];
+        playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
+        playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
         return playerBoard;
     }
 

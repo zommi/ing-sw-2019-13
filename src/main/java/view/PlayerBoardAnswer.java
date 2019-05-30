@@ -15,15 +15,12 @@ public class PlayerBoardAnswer implements ServerAnswer{
     }
 
     public int getRedAmmo(){
-        //TODO
-        return 0;
+        return result.getRedAmmo();
     }
     public int getBlueAmmo(){
-        //TODO
-        return 0;
+        return result.getBlueAmmo();
     }
     public int getYellowAmmo(){
-        //TODO
-        return 0;
+        return result.getYellowAmmo();
     }
 }
