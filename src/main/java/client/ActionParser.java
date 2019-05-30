@@ -1,8 +1,10 @@
 package client;
 
+import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
-import server.controller.playeraction.Action;
+import server.model.cards.Powerup;
+import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
 
 import java.util.List;
@@ -13,6 +15,7 @@ public class ActionParser{
     private GameModel gameModel;
     private List<WeaponCard> weaponList;
     private InputAbstract input;
+    private List<PowerupCard> powerUpList;
 
     public ActionParser(){
         input = new CliInput();
@@ -29,7 +32,7 @@ public class ActionParser{
 
     public Info createMoveEvent(int coordinatex, int coordinatey) {
         Info moveInfo = new MoveInfo(coordinatex, coordinatey);
-        return null;
+        return moveInfo;
     }
 
     public Info createShootEvent(String weaponChosen){
@@ -54,11 +57,30 @@ public class ActionParser{
     }
 
 
-    public static Info createCollectEvent(int collectDecision) {
-        return null;
+    public Info createCollectEvent(int collectDecision) {
+        Info collectInfo = new CollectInfo(collectDecision);
+        return collectInfo;
     }
 
-    public static Info createPowerUpEvent(String PowerUp) {
+    public Info createPowerUpEvent(String powerUpChosen) {
+        Powerup powerUp = this.PowerUpFromString(powerUpChosen);
+        PowerUpParser powerUpParser = new PowerUpParser(gameModel);
+        Info powerUpInfo = powerUpParser.getPowerUpInput(powerUp,input);
+        return powerUpInfo;
+    }
+
+
+    public Powerup PowerUpFromString(String name){
+        for(int i = 0; i < powerUpList.size(); i++){
+            if(name.equalsIgnoreCase(powerUpList.get(i).getName())){
+                return powerUpList.get(i).getPowerUp();
+            }
+        }
+        System.out.println("ERROR: THE POWERUP DOES NOT EXIST");
+        System.out.println("Insert a new one: ");
+        Scanner myObj = new Scanner(System.in);
+        String read = myObj.nextLine();
+        PowerUpFromString(read);
         return null;
     }
 }

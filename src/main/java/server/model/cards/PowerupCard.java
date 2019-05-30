@@ -19,6 +19,10 @@ public class PowerupCard implements CardInterface, AmmoTileItem {
         this.powerupDeck = powerupDeck;
     }
 
+    public Powerup getPowerUp(){
+        return this.powerup;
+    }
+
     public Color useAsAmmoCube() { //This method returns a color. Then the player will modify his attributes.
         return(color);
     }

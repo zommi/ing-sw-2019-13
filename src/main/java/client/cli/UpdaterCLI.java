@@ -322,7 +322,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 collectChosen = true;
                             }
                         } while (!collectChosen);
-                        Info action = ActionParser.createCollectEvent(collectDecision);
+                        Info action = actionParser.createCollectEvent(collectDecision);
                         connection.send(action);
                     } else if (read.toUpperCase().equals("USE POWERUP")) {
                         do {
@@ -330,7 +330,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             read = myObj.nextLine();
                         }
                         while ((read.equals("")) || ((!read.toUpperCase().equals("TELEPORTER")) && (!read.toUpperCase().equals("NEWTON")) && (!read.toUpperCase().equals("TARGETING SCOPE")) && (!read.toUpperCase().equals("TAGBACK GRANADE"))));
-                        Info action = ActionParser.createPowerUpEvent(read.toUpperCase());
+                        Info action = actionParser.createPowerUpEvent(read.toUpperCase());
                         connection.send(action);
                     } else {
                         System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");

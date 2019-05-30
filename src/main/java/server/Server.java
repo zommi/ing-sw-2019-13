@@ -84,8 +84,7 @@ public class Server {
 
             startGame = 1;
             System.out.println("The game is starting");
-
-            return 1;
+            return 1; //not useful
         }
     }
 
