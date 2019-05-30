@@ -313,6 +313,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         read = myObj.nextLine();
                         Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
                         connection.send(action1);
+                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(myObj.nextLine())));
                     }
 
 
@@ -395,11 +396,11 @@ public class UpdaterCLI  implements Updater,Runnable{
     public boolean playerToSpaw(){
         ArrayList<ArrayList<SquareAbstract>> temp = gameModel.getMap().getResult().getSquares();
         for(int s = 0; s < temp.size(); s++) { //se non c'è il player insomma
-            System.out.println("Checking if the player has to spaw 0");
+            //System.out.println("Checking if the player has to spaw 0");
             for(int u = 0; u < temp.get(s).size(); u++){
-                System.out.println("Checking if the player has to spaw 1");
+                //System.out.println("Checking if the player has to spaw 1");
                 for(int t = 0; t < temp.get(s).get(u).getCharacters().size(); t++){
-                    System.out.println("Checking if the player has to spaw 2");
+                    //System.out.println("Checking if the player has to spaw 2");
                     if(temp.get(s).get(u).getCharacters().get(t).getFigure().fromFigure().equals(connection.getCurrentCharacter())){
                         return false; //not to spaw
                     }

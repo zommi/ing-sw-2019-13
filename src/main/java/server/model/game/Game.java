@@ -81,7 +81,7 @@ public class Game {
     }
 
 
-    public void addPlayer(PlayerAbstract player) throws WrongGameStateException {
+    public void addPlayer(PlayerAbstract player) throws WrongGameStateException { //TODO pay attention this throws an exception if the client insert the name after the start of the game
         if (this.currentState == GameState.SETUP) {
             this.activePlayers.add(player);
             this.currentGameBoard.addPlayerBoard((ConcretePlayer) player);
