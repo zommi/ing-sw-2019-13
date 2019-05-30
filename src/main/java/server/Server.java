@@ -50,7 +50,7 @@ public class Server {
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
-                ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
+                //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
@@ -58,8 +58,8 @@ public class Server {
                     temp.get(i).publishMessage(gameBoardAnswer);
                     temp.get(i).publishMessage(mapAnswer);
                     System.out.println("Sent the map to the connection RMI");
-                    temp.get(i).publishMessage(temp1);
-                    System.out.println("Sent the weapon card list to the client RMI");
+                    //temp.get(i).publishMessage(temp1);
+                    //System.out.println("Sent the weapon card list to the client RMI");
                     System.out.println(" " +temp.get(i).getClientID());
                     System.out.println(" " +controller.getCurrentID());
                     if(temp.get(i).getClientID() == controller.getCurrentID()){
