@@ -33,12 +33,15 @@ public class AmmoTileType {
      */
     private int numberOfCards;
 
+    private String path;
+
     AmmoTileType(){
         this.redCubes = 0;
         this.blueCubes = 0;
         this.yellowCubes = 0;
         this.powerup = false;
         this.numberOfCards = 0;
+        this.path = "";
     }
 
     public int getBlueCubes() {
@@ -59,6 +62,10 @@ public class AmmoTileType {
 
     public boolean hasPowerup() {
         return powerup;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     @Override

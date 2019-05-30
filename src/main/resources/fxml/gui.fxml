@@ -59,9 +59,9 @@
        <GridPane fx:id="powerupHand" hgap="3.0" layoutX="430.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="570.0">
            <columnConstraints>
-               <ColumnConstraints prefWidth="143.0" />
-               <ColumnConstraints prefWidth="143.0" />
-               <ColumnConstraints prefWidth="143.0" />
+               <ColumnConstraints prefWidth="143.3" />
+               <ColumnConstraints prefWidth="143.4" />
+               <ColumnConstraints prefWidth="143.3" />
            </columnConstraints>
            <rowConstraints>
                <RowConstraints prefHeight="230.0" />
@@ -96,9 +96,20 @@
             <RowConstraints prefHeight="76.0"/>
         </rowConstraints>
          <children>
-             <Button onMousePressed="#initializeMap" prefHeight="76.0" prefWidth="340.0" text="LOAD MAP"  GridPane.rowIndex="0"/>
+             <GridPane GridPane.rowIndex="0">
+                 <columnConstraints>
+                     <ColumnConstraints prefWidth="113.0"/>
+                     <ColumnConstraints prefWidth="113.0"/>
+                     <ColumnConstraints prefWidth="113.0"/>
+                 </columnConstraints>
+                 <children>
+                     <Button prefHeight="76.0" prefWidth="113.0" text="MOVE" GridPane.columnIndex="0" onMousePressed="#enableMove"/>
+                     <Button prefHeight="76.0" prefWidth="113.0" text="COLLECT" GridPane.columnIndex="1"/>
+                     <Button prefHeight="76.0" prefWidth="113.0" text="SHOOT" GridPane.columnIndex="2"/>
+                 </children>
+             </GridPane>
              <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD" GridPane.rowIndex="1" />
-            <Button prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOARD" GridPane.rowIndex="2" />
+            <Button prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2" mnemonicParsing="true"/>
          </children>
       </GridPane>
    </children>

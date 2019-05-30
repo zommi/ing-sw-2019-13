@@ -12,6 +12,7 @@ public abstract class InputAbstract {
     List<String> roomsNames;
 
     public abstract boolean getChoice(MacroEffect macroEffect);
+
     public abstract MacroEffect chooseOneMacro(Weapon weapon);
 
     public abstract boolean getChoice(MicroEffect microEffect);

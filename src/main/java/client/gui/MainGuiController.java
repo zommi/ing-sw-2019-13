@@ -1,6 +1,8 @@
 package client.gui;
 
 import client.GameModel;
+import client.MoveInfo;
+import constants.Color;
 import constants.Direction;
 import exceptions.NoSuchSquareException;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
+import server.model.map.Square;
 import server.model.map.SquareAbstract;
 
 public class MainGuiController implements GuiController{
@@ -53,18 +57,24 @@ public class MainGuiController implements GuiController{
 
     private int side = 175;
 
-    @FXML
-    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
-        if(weaponHandSize == 3) return;
-        GuiWeaponCard cardToAdd = weaponCard;
+    private List<GuiSquare> squares = new ArrayList<>();
 
-        cardToAdd.setCursor(Cursor.HAND);
-        cardToAdd.setFitWidth(weaponHand.getWidth()/3);
-        cardToAdd.setFitHeight(weaponHand.getHeight());
+    private List<GuiSpawnPoint> spawnPoints = new ArrayList<>();
 
-        cardToAdd.setOnMousePressed(null);
-        this.weaponHand.add(cardToAdd,weaponHandSize,0);
-        weaponHandSize++;
+    private List<GuiTile> tiles = new ArrayList<>();
+
+    private GuiCharacter myCharacter;
+
+    @Override
+    public void init(){
+        try {
+            initializeMap();
+
+            enableSpawn();
+        } catch (NoSuchSquareException e) {
+            e.printStackTrace();
+            System.out.println("ERROR DURING INITIALIZATION");
+        }
     }
 
     public void initializeMap() throws NoSuchSquareException { //NOSONAR
@@ -90,21 +100,28 @@ public class MainGuiController implements GuiController{
             if(currentSquare == null) break;
 
             if (!currentSquare.isSpawnPoint()){
-                GuiSquare square = new GuiSquare(side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
+                Square squareConverted = (Square) currentSquare;
+                GuiSquare square = new GuiSquare(currentSquare.getCol(),currentSquare.getRow(),
+                        side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
                 square.setCursor(Cursor.HAND);
-                square.setOnMousePressed(e -> drawAmmoTile(square));
+                square.setAmmo(new GuiAmmoTile(squareConverted.getAmmoTile().getPath()));
+                squares.add(square);
+                tiles.add(square);
                 mapGridPane.add(
                         square,
                         currentSquare.getCol()*2,
                         currentSquare.getRow()*2);
             } else {
-                GuiSpawnPoint spawnPoint = new GuiSpawnPoint(side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
+                GuiSpawnPoint spawnPoint = new GuiSpawnPoint(currentSquare.getCol(),currentSquare.getRow(),
+                        side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
+                spawnPoints.add(spawnPoint);
+                tiles.add(spawnPoint);
                 spawnPoint.setCursor(Cursor.HAND);
                 mapGridPane.add(
                         spawnPoint,
                         currentSquare.getCol()*2,
                         currentSquare.getRow()*2);
-                spawnPoint.setOnMousePressed(e -> showWeapons(spawnPoint));
+                //spawnPoint.setOnMousePressed(e -> showWeapons(spawnPoint));
                 spawnPoint.setCardsOnSpawnPoint((SpawnPoint) currentSquare);
             }
 
@@ -168,8 +185,19 @@ public class MainGuiController implements GuiController{
         }
     }
 
-    private void drawAmmoTile(GuiSquare square) {
-        square.drawAmmo();
+
+    @FXML
+    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
+        if(weaponHandSize == 3) return;
+        GuiWeaponCard cardToAdd = weaponCard;
+
+        cardToAdd.setCursor(Cursor.HAND);
+        cardToAdd.setFitWidth(weaponHand.getWidth()/3);
+        cardToAdd.setFitHeight(weaponHand.getHeight());
+
+        cardToAdd.setOnMousePressed(null);
+        this.weaponHand.add(cardToAdd,weaponHandSize,0);
+        weaponHandSize++;
     }
 
     private void showWeapons(GuiSpawnPoint spawnPoint) {
@@ -201,18 +229,36 @@ public class MainGuiController implements GuiController{
         alert.showAndWait();
     }
 
+    public void enableMove(){
+        for(GuiTile tile : tiles){
+            tile.setOnMousePressed(e -> {
+                myCharacter.setPosition(tile);
+                this.gui.getConnection().send(new MoveInfo(tile.getX(),tile.getY()));
+                disableMouseEvent();
+            });
+        }
+    }
+
+    private void disableMouseEvent() {
+        for(GuiTile tile : tiles){
+            tile.setOnMousePressed(null);
+        }
+    }
+
     @Override
     public void addGui(MainGui mainGui) {
         this.gui = mainGui;
     }
 
-    @Override
-    public void init(){
-        try {
-            initializeMap();
-        } catch (NoSuchSquareException e) {
-            e.printStackTrace();
-            System.out.println("ERROR IN INITIALIZATION");
+    private void enableSpawn() {
+        for(GuiSpawnPoint sp : spawnPoints){
+            sp.setOnMousePressed(e -> spawn(sp, Color.PURPLE));
         }
+    }
+
+    private void spawn(GuiSpawnPoint sp, Color color) {
+        this.myCharacter = new GuiCharacter(sp,color);
+
+        disableMouseEvent();
     }
 }

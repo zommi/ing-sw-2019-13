@@ -20,8 +20,9 @@ public class GuiSpawnPoint extends GuiTile {
 
     List<String> cardsOnSpawnPoint;
 
-    public GuiSpawnPoint(int height, int width, Paint paint){
-        super(height,width,paint);
+
+    public GuiSpawnPoint(int x, int y,int height, int width, Paint paint){
+        super(x,y,height,width,paint);
         Rectangle overlay = new Rectangle(height / 1.5 , width / 1.5 , Paint.valueOf("#000000"));
         overlay.setStroke(Paint.valueOf("#000000"));
         overlay.setFill(Paint.valueOf("#00000000"));

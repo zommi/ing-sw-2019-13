@@ -207,6 +207,11 @@ public class ConcretePlayer extends PlayerAbstract {
         this.board.addMarks(marks, color);
     }
 
+    @Override
+    public void setPosition(SquareAbstract square) {
+        this.gameCharacter.setPosition(square);
+    }
+
 }
 
 

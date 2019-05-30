@@ -54,7 +54,7 @@ public class AmmoTileDeck implements Serializable {
         for(int i = 0; i < arrayOfTiles.length ; i++){
             for(int j = 0; j < arrayOfTiles[i].getNumberOfCards(); j++){
                 this.deck.push(new AmmoTile(createListFromType(arrayOfTiles[i]),
-                        arrayOfTiles[i].hasPowerup()));
+                        arrayOfTiles[i].hasPowerup(),arrayOfTiles[i].getPath()));
             }
         }
         shuffle();

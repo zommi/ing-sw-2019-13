@@ -104,4 +104,6 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract void addDamage(int damage, Color color);
 
     public abstract void addMarks(int marks, Color color);
+
+    public abstract void setPosition(SquareAbstract square);
 }

@@ -11,10 +11,18 @@ public class AmmoTile implements CollectableInterface, Serializable {
 
     private List<AmmoCube> content;
     private boolean hasPowerup;
+    private String path;
 
     public AmmoTile(List<AmmoCube> content, boolean hasPoweurup) {
         this.content = content;
         this.hasPowerup = hasPoweurup;
+        this.path = "";
+    }
+
+    public AmmoTile(List<AmmoCube> content, boolean hasPoweurup, String path) {
+        this.content = content;
+        this.hasPowerup = hasPoweurup;
+        this.path = path;
     }
 
     public List<AmmoCube> getContent() {
@@ -31,6 +39,10 @@ public class AmmoTile implements CollectableInterface, Serializable {
         for(AmmoCube cube : content) stringToReturn+= cube.toString() + '\n';
         if(hasPowerup) stringToReturn += "has powerup\n";
         return stringToReturn;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     @Override

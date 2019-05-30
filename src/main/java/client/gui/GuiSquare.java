@@ -6,21 +6,20 @@ import javafx.scene.paint.Paint;
 
 public class GuiSquare extends GuiTile {
 
-    private Label ammoLabel;
+    private final double X_OFFSET = 5.0;
+    private final double Y_OFFSET = 5.0;
 
 
-    public GuiSquare(int height, int width, Paint paint) {
-        super(height, width, paint);
-        ammoLabel = new Label("AMMO");
-        ammoLabel.setAlignment(Pos.CENTER);
-        this.getChildren().add(ammoLabel);
+    public GuiSquare(int x, int y, int height, int width, Paint paint) {
+        super(x, y, height, width, paint);
     }
 
-    public void drawAmmo(){
-        this.ammoLabel.setDisable(true);
+    public void setAmmo(GuiAmmoTile ammo){
+        this.getChildren().add(ammo);
+        ammo.setX(this.getLayoutX() + X_OFFSET);
+        ammo.setY(this.getLayoutY() + Y_OFFSET);
+        ammo.setFitWidth(getSide() / 3);
+        ammo.setFitHeight(getSide() / 3);
     }
 
-    public void restoreAmmo(){
-        this.ammoLabel.setDisable(false);
-    }
 }

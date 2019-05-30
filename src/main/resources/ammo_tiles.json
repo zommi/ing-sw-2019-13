@@ -4,83 +4,95 @@
     "blueCubes" : "0",
     "yellowCubes" : "0",
     "powerup" : true,
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "Grafica/ammo/AD_ammo_0421.png"
   },
   {
     "redCubes" : "0",
     "blueCubes" : "2",
     "yellowCubes" : "0",
     "powerup" : true,
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "Grafica/ammo/AD_ammo_0422.png"
   },
   {
     "redCubes" : "0",
     "blueCubes" : "0",
     "yellowCubes" : "2",
     "powerup" : true,
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "Grafica/ammo/AD_ammo_0423.png"
   },
   {
     "redCubes" : "0",
     "blueCubes" : "1",
     "yellowCubes" : "1",
     "powerup" : true,
-    "numberOfCards" : "4"
+    "numberOfCards" : "4",
+    "path" : "Grafica/ammo/AD_ammo_0424.png"
   },
   {
     "redCubes" : "1",
     "blueCubes" : "0",
     "yellowCubes" : "1",
     "powerup" : true,
-    "numberOfCards" : "4"
+    "numberOfCards" : "4",
+    "path" : "Grafica/ammo/AD_ammo_0423.png"
   },
   {
     "redCubes" : "1",
     "blueCubes" : "1",
     "yellowCubes" : "0",
     "powerup" : true,
-    "numberOfCards" : "4"
+    "numberOfCards" : "4",
+    "path" : "Grafica/ammo/AD_ammo_0425.png"
   },
   {
     "redCubes" : "1",
     "blueCubes" : "0",
     "yellowCubes" : "2",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_045.png"
   },
   {
     "redCubes" : "2",
     "blueCubes" : "0",
     "yellowCubes" : "1",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_049.png"
   },
   {
     "redCubes" : "1",
     "blueCubes" : "2",
     "yellowCubes" : "0",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_0410.png"
   },
   {
     "redCubes" : "2",
     "blueCubes" : "1",
     "yellowCubes" : "0",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_047.png"
   },
   {
     "redCubes" : "0",
     "blueCubes" : "2",
     "yellowCubes" : "1",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_048.png"
   },
   {
     "redCubes" : "0",
     "blueCubes" : "1",
     "yellowCubes" : "2",
     "powerup" : false,
-    "numberOfCards" : "3"
+    "numberOfCards" : "3",
+    "path" : "Grafica/ammo/AD_ammo_046.png"
   }
 ]

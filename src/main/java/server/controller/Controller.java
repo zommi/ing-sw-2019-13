@@ -92,7 +92,7 @@ public class Controller implements MyObserver {
         }
 
         if(action instanceof MoveInfo){
-            MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer);
+            MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer, currentMap);
             turnHandler.setAndDoAction(moveAction);
             MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
             GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());

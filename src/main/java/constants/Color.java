@@ -7,7 +7,7 @@ public enum Color {
     GREEN("g",3, "#00ff00", "#298c2c"),
     WHITE("w",4, "#ffffff", "e5e3e3"),
     PURPLE("p",5, "#b600ff", "#791c89"),
-    GREY("g",6, "#6d6d6d", "#614c4c"),
+    GREY("e",6, "#6d6d6d", "#614c4c"),
     UNDEFINED("u",7, "#000000", "#000000");
 
     private int index;
