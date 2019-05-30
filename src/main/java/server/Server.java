@@ -1,6 +1,7 @@
 package server;
 
 import client.ReceiverInterface;
+import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
 import view.*;
@@ -83,6 +84,13 @@ public class Server {
 
             startGame = 1;
             System.out.println("The game is starting");
+            try{
+                game.nextState();
+            }
+            catch(WrongGameStateException e){
+                e.printStackTrace();
+            }
+            System.out.println("We are in the game state: " +game.getCurrentState());
             return 1; //not useful
         }
     }

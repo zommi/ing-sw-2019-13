@@ -16,10 +16,10 @@ public class MoveAction implements Action {
     private MoveValidator validator;
     private MoveActuator actuator;
 
-    public MoveAction(MoveInfo info){
+    public MoveAction(MoveInfo info, PlayerAbstract player){
         //(TODO change implementation!
         //this.moves = info.getMoves();
-        //this.player = info.getPlayer();
+        this.player = player;
         this.validator = new MoveValidator();
         this.actuator = new MoveActuator();
     }

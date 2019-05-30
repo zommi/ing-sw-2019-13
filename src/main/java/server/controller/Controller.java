@@ -1,8 +1,6 @@
 package server.controller;
 
-import client.CollectInfo;
-import client.Info;
-import client.MoveInfo;
+import client.*;
 import client.weapons.ShootPack;
 import exceptions.WrongGameStateException;
 import server.Server;
@@ -71,6 +69,7 @@ public class Controller implements MyObserver {
         //TODO initialize currentID and handle the turns.
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
+        System.out.println("We are in the game state: " +currentGame.getCurrentState());
         if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
             this.nextCurrentID();
         }
@@ -79,8 +78,21 @@ public class Controller implements MyObserver {
             return false;
         }
 
+        if(action instanceof DrawInfo){
+            DrawAction drawAction = new DrawAction(currentPlayer, currentGame);
+            turnHandler.setAndDoAction(drawAction);
+            server.sendToSpecificRMI(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
+            System.out.println("sending the playerhand to the clientID: " +currentID);
+        }
+
+        if(action instanceof SpawnInfo){
+            SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, currentPlayer, currentGame.getCurrentGameBoard());
+            turnHandler.setAndDoAction(spawnAction);
+            server.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+        }
+
         if(action instanceof MoveInfo){
-            MoveAction moveAction = new MoveAction((MoveInfo) action);
+            MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer);
             turnHandler.setAndDoAction(moveAction);
             MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
             GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
@@ -89,20 +101,20 @@ public class Controller implements MyObserver {
         }
         else if(action instanceof CollectInfo){
             MoveInfo temp = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
-            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action);
+            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer);
             turnHandler.setAndDoAction(collectAction);
-            this.sendCollectShootAnswers(currentPlayer, clientID);
+            this.sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
         else if(action instanceof ShootPack){
-            ShootAction shootAction = new ShootAction((ShootPack) action);
+            ShootAction shootAction = new ShootAction((ShootPack) action); // TODO add player
             turnHandler.setAndDoAction(shootAction);
-            sendCollectShootAnswers(currentPlayer, clientID);
+            sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
         return true;
     }
 
 
-    public void sendCollectShootAnswers(ConcretePlayer player, int clientID){
+    public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
         MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
         PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getBoard());

@@ -122,7 +122,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     public void send(Info action){
         try{
-            boolean serverAnswer = game.makeAction(this.clientID, action);
+            game.makeAction(this.clientID, action); //TODO WHY BOOLEAN?
         }
         catch(RemoteException re){
             System.out.println("Could not make the action");

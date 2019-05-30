@@ -36,10 +36,10 @@ public class CollectAction implements Action {
      */
     private int weaponChoice;
 
-    public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo){
+    public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo, PlayerAbstract player){
         //TODO change implementation!
         //this.moves = moveInfo.getMoves();
-        //this.player = moveInfo.getPlayer();
+        this.player = player;
         this.weaponChoice = collectInfo.getChoice();
         this.validator = new CollectValidator();
         this.actuator = new CollectActuator();

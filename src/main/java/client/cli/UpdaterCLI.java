@@ -6,14 +6,13 @@ import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
+import server.model.map.SquareAbstract;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.List;
-import java.util.Scanner;  // Import the Scanner class
-import java.util.Observable;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -136,10 +135,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println(">You have chosen to use: "+initialSkulls+" initial skulls" );
             do {
                 System.out.println(">Choose the map you want to use:");
-                System.out.println("Piccola (1)");
-                System.out.println("Media (2)");
-                System.out.println("Grande (3)");
-                System.out.println("Gigante (4)");
+                System.out.println("Little (1)");
+                System.out.println("Normal (2)");
+                System.out.println("Big (3)");
+                System.out.println("Huge (4)");
                 read = myObj.nextLine();
                 if (read.equals("1")) {
                     mapName = "map11.txt";
@@ -249,13 +248,12 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         while (alwaysTrue) {
             System.out.println("entering the alwaysTrue cicle");
-            if (connection.getStartGame() == 1) { //the game can start
+            if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel);
                 actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if (connection.getClientID() == connection.getCurrentID()) {
                     System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
-                    //try{
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard(connection.getClientID());
                     weapons = playerHand.getWeaponHand();
@@ -269,7 +267,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
 
                     powerups = playerHand.getPowerupHand();
-                    System.out.println(">You have the following puwerups: ");
+                    System.out.println(">You have the following powerups: ");
                     if ((powerups == null) || (powerups.size() == 0)) {
                         System.out.println(">You have no powerups!");
                     } else {
@@ -289,6 +287,35 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
                     }
 
+
+                    if(this.playerToSpaw()){
+                        DrawInfo action = new DrawInfo();
+                        System.out.println("Sending the action of spawning to the server");
+                        connection.send(action);//TODO is it istant as an action?
+                        playerHand = gameModel.getPlayerHand();
+                        powerups = playerHand.getPowerupHand();
+                        System.out.println(">You have the following powerups: ");
+                        while ((powerups == null) || (powerups.size() == 0)) {
+                            System.out.println(">You have no powerups. There's a problem as you should have draw them");
+                            playerHand = gameModel.getPlayerHand();
+                            powerups = playerHand.getPowerupHand();
+                            try{
+                                TimeUnit.SECONDS.sleep(5);
+                            }
+                            catch(InterruptedException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        for (int i = 0; i < powerups.size(); i++) {
+                            System.out.println("> " + powerups.get(i).getName() +" (" +i +")");
+                        }
+                        System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
+                        read = myObj.nextLine();
+                        Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
+                        connection.send(action1);
+                    }
+
+
                     System.out.println(">Write a command: ");
                     read = myObj.nextLine();
                     if (read.toUpperCase().equals("MOVE")) {
@@ -301,7 +328,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     } else if (read.toUpperCase().equals("SHOOT")) {
                         System.out.println(">Choose the name of the weapon: ");
                         String weaponChosen = myObj.nextLine();
-                        //TODO look if the name of the weapon exixts
                         Info action = actionParser.createShootEvent(weaponChosen);
                         connection.send(action);
                     } else if (read.toUpperCase().equals("COLLECT")) {
@@ -364,6 +390,23 @@ public class UpdaterCLI  implements Updater,Runnable{
                 return;
             }
         }
+    }
+
+    public boolean playerToSpaw(){
+        ArrayList<ArrayList<SquareAbstract>> temp = gameModel.getMap().getResult().getSquares();
+        for(int s = 0; s < temp.size(); s++) { //se non c'è il player insomma
+            System.out.println("Checking if the player has to spaw 0");
+            for(int u = 0; u < temp.get(s).size(); u++){
+                System.out.println("Checking if the player has to spaw 1");
+                for(int t = 0; t < temp.get(s).get(u).getCharacters().size(); t++){
+                    System.out.println("Checking if the player has to spaw 2");
+                    if(temp.get(s).get(u).getCharacters().get(t).getFigure().fromFigure().equals(connection.getCurrentCharacter())){
+                        return false; //not to spaw
+                    }
+                }
+            }
+        }
+        return true; //to spaw
     }
 
     public static void main(String[] args) {

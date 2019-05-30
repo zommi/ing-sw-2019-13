@@ -1,7 +1,10 @@
 package server.controller.turns;
 
+import client.CollectInfo;
+import client.MoveInfo;
 import exceptions.WrongGameStateException;
 import server.controller.playeraction.Action;
+import server.controller.playeraction.ShootInfo;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 
@@ -50,7 +53,8 @@ public class TurnHandler {
             this.action = action;
             //if returns false then disconnects the player
             this.action.execute();
-            nextPhase();
+            if(action instanceof ShootInfo || action instanceof CollectInfo || action instanceof MoveInfo) //if it is a draw or a spawn it is not counted as an action
+                nextPhase();
         }
     }
 

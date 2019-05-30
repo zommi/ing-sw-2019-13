@@ -5,11 +5,8 @@ import client.Info;
 import client.ReceiverInterface;
 import exceptions.GameAlreadyStartedException;
 import server.model.map.GameMap;
-import server.model.player.GameCharacter;
+import server.model.player.*;
 import view.ServerAnswer;
-import server.model.player.ConcretePlayer;
-import server.model.player.Figure;
-import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -131,6 +128,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
         PlayerAbstract playerToAdd = new ConcretePlayer(name);
+        playerToAdd.setState(PlayerState.TOBESPAWNED);
         playerToAdd.setIfCharacter(false);
         ((ConcretePlayer) playerToAdd).setClientID(clientID);
         player.add(playerToAdd);

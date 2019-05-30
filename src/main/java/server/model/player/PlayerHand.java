@@ -21,7 +21,6 @@ public class PlayerHand implements Serializable {
      */
 
     public PlayerHand(){
-
     }
 
     public PlayerHand(ConcretePlayer p) {
@@ -39,8 +38,12 @@ public class PlayerHand implements Serializable {
         return (ArrayList<WeaponCard>) weaponHand.clone();  //cloning for server answers
     }
 
+    public void removePowerUpCard(PowerupCard powerupCard){
+        this.powerupHand.remove(powerupCard);
+    }
+
     public List<PowerupCard> getPowerupHand() {
-        return (ArrayList<PowerupCard>) powerupHand.clone();    //cloning for server answers
+        return powerupHand;    //cloning for server answers
     }
 
     public PlayerHand createCopy(PlayerHand playerHandToCopy){
@@ -89,7 +92,8 @@ public class PlayerHand implements Serializable {
     public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
 
     public void addCard(PowerupCard draw) {
-        if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)this.powerupHand.add(draw);
+        if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)
+            this.powerupHand.add(draw);
     }
 
 }

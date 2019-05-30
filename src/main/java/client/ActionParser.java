@@ -4,6 +4,8 @@ import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
 import server.model.cards.Powerup;
+import server.model.cards.PowerupCard;
+
 import java.util.Scanner;
 
 public class ActionParser{
@@ -75,6 +77,11 @@ public class ActionParser{
         String read = myObj.nextLine();
         powerUpFromString(read);
         return null;
+    }
+
+    public Info createSpawEvent(PowerupCard powerupCard){
+        SpawnInfo spawnInfo = new SpawnInfo(powerupCard);
+        return spawnInfo;
     }
 }
 

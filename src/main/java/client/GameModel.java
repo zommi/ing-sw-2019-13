@@ -14,7 +14,7 @@ public class GameModel extends Observable implements Serializable {
 
 
     private GameBoardAnswer gameBoard;
-    private GameMap map;
+    private MapAnswer map;
     private int mapnum;
     private PlayerBoardAnswer playerBoard;
     private PlayerHandAnswer playerHand;
@@ -64,7 +64,7 @@ public class GameModel extends Observable implements Serializable {
         }
 
         if (answer instanceof MapAnswer) {
-            map = ((MapAnswer) answer).getResult();
+            map = ((MapAnswer) answer);
             setChanged();
             notifyObservers("Map");
         }
@@ -90,7 +90,7 @@ public class GameModel extends Observable implements Serializable {
 
 
 
-    public GameMap getMap(){
+    public MapAnswer getMap(){
         return this.map;
     }
 
