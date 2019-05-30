@@ -20,13 +20,11 @@ public class PlayerHandAnswer implements ServerAnswer {
     }
 
     public ArrayList<WeaponCard> getWeaponHand(){
-        //TODO
-        return null;
+        return (ArrayList<WeaponCard>) playerHand.getWeaponHand();
     }
 
     public ArrayList<PowerupCard> getPowerupHand(){
-        //TODO
-        return null;
+        return (ArrayList<PowerupCard>) playerHand.getPowerupHand();
     }
 
 }

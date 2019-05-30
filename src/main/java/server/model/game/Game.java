@@ -66,7 +66,6 @@ public class Game {
                 this.weaponList.add(temp1);
             }
         }
-
     }
 
     public ListOfWeaponsAnswer getWeaponList(){

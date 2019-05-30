@@ -4,18 +4,12 @@ import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
 import server.model.cards.Powerup;
-import server.model.cards.PowerupCard;
-import server.model.cards.WeaponCard;
-
-import java.util.List;
 import java.util.Scanner;
 
 public class ActionParser{
 
     private GameModel gameModel;
-    private List<WeaponCard> weaponList;
     private InputAbstract input;
-    private List<PowerupCard> powerUpList;
 
     public ActionParser(){
         input = new CliInput();
@@ -23,7 +17,6 @@ public class ActionParser{
 
     public void addGameModel(GameModel gameModel){
         this.gameModel = gameModel;
-        weaponList = gameModel.getWeaponList().getList();
     }
 
     public InputAbstract getInput(){
@@ -43,12 +36,12 @@ public class ActionParser{
     }
 
     public Weapon weaponFromString(String name){
-        for(int i = 0; i < weaponList.size(); i++){
-            if(name.equalsIgnoreCase(weaponList.get(i).getName())){
-                return weaponList.get(i).getWeapon();
+        for(int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++){
+            if(name.equalsIgnoreCase(gameModel.getPlayerHand().getWeaponHand().get(i).getName())){
+                return gameModel.getPlayerHand().getWeaponHand().get(i).getWeapon();
             }
         }
-        System.out.println("ERROR: THE WEAPON DOES NOT EXIST");
+        System.out.println("ERROR: THE WEAPON DOES NOT EXIST OR YOU DON'T HAVE IT");
         System.out.println("Insert a new one: ");
         Scanner myObj = new Scanner(System.in);
         String read = myObj.nextLine();
@@ -63,24 +56,24 @@ public class ActionParser{
     }
 
     public Info createPowerUpEvent(String powerUpChosen) {
-        Powerup powerUp = this.PowerUpFromString(powerUpChosen);
+        Powerup powerUp = this.powerUpFromString(powerUpChosen);
         PowerUpParser powerUpParser = new PowerUpParser(gameModel);
         Info powerUpInfo = powerUpParser.getPowerUpInput(powerUp,input);
         return powerUpInfo;
     }
 
 
-    public Powerup PowerUpFromString(String name){
-        for(int i = 0; i < powerUpList.size(); i++){
-            if(name.equalsIgnoreCase(powerUpList.get(i).getName())){
-                return powerUpList.get(i).getPowerUp();
+    public Powerup powerUpFromString(String name){
+        for(int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++){
+            if(name.equalsIgnoreCase(gameModel.getPlayerHand().getPowerupHand().get(i).getName())){
+                return gameModel.getPlayerHand().getPowerupHand().get(i).getPowerUp();
             }
         }
-        System.out.println("ERROR: THE POWERUP DOES NOT EXIST");
+        System.out.println("ERROR: THE POWERUP DOES NOT EXIST OR YOU DON'T HAVE IT");
         System.out.println("Insert a new one: ");
         Scanner myObj = new Scanner(System.in);
         String read = myObj.nextLine();
-        PowerUpFromString(read);
+        powerUpFromString(read);
         return null;
     }
 }

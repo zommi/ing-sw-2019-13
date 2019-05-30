@@ -5,8 +5,10 @@ import exceptions.InvalidMoveException;
 import server.model.gameboard.*;
 import server.model.items.AmmoTileItem;
 
+import java.io.Serializable;
 
-public class PowerupCard implements CardInterface, AmmoTileItem {
+
+public class PowerupCard implements CardInterface, AmmoTileItem, Serializable {
 
     private Color color;
     private Powerup powerup;
