@@ -5,6 +5,7 @@ import server.model.player.PlayerBoard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameBoardAnswer implements ServerAnswer, Serializable {
@@ -33,6 +34,6 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
     }
 
     public PlayerBoardAnswer getPlayerBoard(int clientID){
-        return new PlayerBoardAnswer((PlayerBoard) result.getHashMap().get(clientID));
+        return (new PlayerBoardAnswer((PlayerBoard) (result.getHashMap()).get(clientID)));
     }
 }

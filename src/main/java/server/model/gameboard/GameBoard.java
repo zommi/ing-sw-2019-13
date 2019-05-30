@@ -7,6 +7,8 @@ import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
+import java.util.HashMap;
+
 
 import java.io.Serializable;
 import java.util.*;
@@ -41,7 +43,7 @@ public class GameBoard implements Serializable {
      */
     private AmmoTileDeck ammoTileDeck;
 
-    private Map<Integer, PlayerBoard> mapPlayerBoard;
+    private Map<Integer,PlayerBoard> mapPlayerBoard;
 
     private List<GameCharacter> gameCharacterList = new ArrayList<>();
 
@@ -60,13 +62,13 @@ public class GameBoard implements Serializable {
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
-        mapPlayerBoard = new HashMap<>();
+        this.mapPlayerBoard = new HashMap<>();
         setupGameBoard();
 
     }
 
     public Map getHashMap(){
-        return mapPlayerBoard;
+        return this.mapPlayerBoard;
     }
 
     /**
@@ -95,17 +97,20 @@ public class GameBoard implements Serializable {
     }
 
     public void addPlayerBoard(ConcretePlayer p){
-        mapPlayerBoard.put(p.getClientID(), p.getBoard());
+        this.mapPlayerBoard.put(p.getClientID(), p.getBoard());
     }
 
     public GameBoard createCopy(GameBoard gameBoardToCopy){
         GameBoard gameBoard = new GameBoard();
-        gameBoard.gameCharacterList.addAll(gameBoardToCopy.gameCharacterList);
+        gameBoard.gameCharacterList.addAll(gameBoardToCopy.getGameCharacterList());
         for(int i = 0; i < gameBoard.getGameCharacterList().size(); i++){
             gameBoard.getGameCharacterList().get(i).setPlayer(null);
         }
-        gameBoard.gameMap = gameBoardToCopy.gameMap.createCopy(gameBoardToCopy.gameMap);
-        gameBoard.track = gameBoardToCopy.track.createCopy(gameBoardToCopy.track);
+        gameBoard.gameMap = gameBoardToCopy.getMap().createCopy(gameBoardToCopy.getMap());
+        gameBoard.track = gameBoardToCopy.getTrack().createCopy(gameBoardToCopy.getTrack());
+        gameBoard.mapPlayerBoard = new HashMap<>(gameBoardToCopy.getHashMap());
+        /*for (Map.Entry<Integer,PlayerBoard> entry : (gameBoardToCopy.getHashMap()).entrySet()){
+            gameBoard.mapPlayerBoard.put(entry.getKey(), entry.getValue());*/
         //gameBoard.weaponDeck =
         //gameBoard.powerupDeck =
         //gameBoard.ammoTileDeck =

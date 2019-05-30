@@ -14,6 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
 
@@ -51,7 +52,7 @@ public class Server {
                 InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
                 ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
-                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(game.getCurrentGameBoard());
+                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(temp0);

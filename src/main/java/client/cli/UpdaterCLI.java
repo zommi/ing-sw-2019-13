@@ -6,7 +6,6 @@ import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
-import server.model.player.PlayerBoard;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
