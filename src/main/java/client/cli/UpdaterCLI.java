@@ -6,7 +6,6 @@ import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
 import server.model.cards.WeaponCard;
-import server.model.map.SquareAbstract;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -33,6 +32,10 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void update(Observable obs, Object object){
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
+        }
+
+        if(object.equals("Spawn")){
+            System.out.println("New update of spawn");
         }
 
         if(object.equals("Weapons list")){
@@ -287,8 +290,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
                     }
 
-
-                    if(this.playerToSpaw()){
+                    //this.playerToSpaw()
+                    if(gameModel.getToSpawn()){
+                        System.out.println("Creating the action of drawing");
                         DrawInfo action = new DrawInfo();
                         System.out.println("Sending the action of spawning to the server");
                         connection.send(action);//TODO is it istant as an action?
@@ -312,8 +316,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
                         read = myObj.nextLine();
                         Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
+                        System.out.println(">Sending your choice to the server: ");
                         connection.send(action1);
-                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(myObj.nextLine())));
+                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)));
                     }
 
 
@@ -393,14 +398,14 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-    public boolean playerToSpaw(){
+    /*public boolean playerToSpaw(){
         ArrayList<ArrayList<SquareAbstract>> temp = gameModel.getMap().getResult().getSquares();
         for(int s = 0; s < temp.size(); s++) { //se non c'è il player insomma
-            //System.out.println("Checking if the player has to spaw 0");
+            System.out.println("Checking if the player has to spaw 0");
             for(int u = 0; u < temp.get(s).size(); u++){
-                //System.out.println("Checking if the player has to spaw 1");
+                System.out.println("Checking if the player has to spaw 1");
                 for(int t = 0; t < temp.get(s).get(u).getCharacters().size(); t++){
-                    //System.out.println("Checking if the player has to spaw 2");
+                    System.out.println("Checking if the player has to spaw 2");
                     if(temp.get(s).get(u).getCharacters().get(t).getFigure().fromFigure().equals(connection.getCurrentCharacter())){
                         return false; //not to spaw
                     }
@@ -408,7 +413,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
         return true; //to spaw
-    }
+    }*/
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();

@@ -9,10 +9,7 @@ import view.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,11 +50,13 @@ public class Server {
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
                 //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
+                SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(temp0);
                     temp.get(i).publishMessage(gameBoardAnswer);
                     temp.get(i).publishMessage(mapAnswer);
+                    temp.get(i).publishMessage(setSpawnAnswer);
                     System.out.println("Sent the map to the connection RMI");
                     //temp.get(i).publishMessage(temp1);
                     //System.out.println("Sent the weapon card list to the client RMI");

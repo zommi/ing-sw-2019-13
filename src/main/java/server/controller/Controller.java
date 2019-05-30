@@ -16,10 +16,7 @@ import server.model.map.GameMap;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
-import view.GameBoardAnswer;
-import view.MapAnswer;
-import view.PlayerBoardAnswer;
-import view.PlayerHandAnswer;
+import view.*;
 
 import java.util.List;
 
@@ -89,6 +86,7 @@ public class Controller implements MyObserver {
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, currentPlayer, currentGame.getCurrentGameBoard());
             turnHandler.setAndDoAction(spawnAction);
             server.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+            server.sendToSpecificRMI(new SetSpawnAnswer(false), currentID);
         }
 
         if(action instanceof MoveInfo){

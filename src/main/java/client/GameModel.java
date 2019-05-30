@@ -22,9 +22,15 @@ public class GameModel extends Observable implements Serializable {
     private int clientID;
     private static int lastClientID = 0;
     private ListOfWeaponsAnswer weaponList;
+    public boolean toSpawn;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
+        toSpawn = true;
+    }
+
+    public void setToSpawn(boolean decision){
+        toSpawn = decision;
     }
 
     public List<String> getPlayersNames(){
@@ -74,6 +80,11 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("PlayerBoard");
         }*/
+        if (answer instanceof SetSpawnAnswer) {
+            setToSpawn(((SetSpawnAnswer) answer).getResult());
+            setChanged();
+            notifyObservers("Spawn");
+        }
 
         if (answer instanceof PlayerHandAnswer) {
             playerHand = (PlayerHandAnswer) answer;
@@ -88,6 +99,9 @@ public class GameModel extends Observable implements Serializable {
         }
     }
 
+    public boolean getToSpawn(){
+        return this.toSpawn;
+    }
 
 
     public MapAnswer getMap(){
