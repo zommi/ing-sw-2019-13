@@ -92,6 +92,10 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("PlayerHand");
         }
 
+        if(answer instanceof  ChangeCurrentPlayerAnswer) {
+            notifyObservers("Change player");
+        }
+
         if(answer instanceof ListOfWeaponsAnswer) {
             weaponList = (ListOfWeaponsAnswer) answer;
             setChanged();
