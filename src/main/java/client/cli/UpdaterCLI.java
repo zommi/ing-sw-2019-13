@@ -56,6 +56,12 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+
+
+
+
+
+
     @Override
     public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
@@ -223,22 +229,21 @@ public class UpdaterCLI  implements Updater,Runnable{
     }*/
 
 
+
+
+
+
+
+
     @Override
     public void run(){
-        String read;
         PlayerHandAnswer playerHand;
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerupCard> powerups;
-        int collectDecision = 0;
-        boolean collectChosen = false;
-        boolean powerupChosen = false;
         int ammoRED;
         int ammoBLUE;
         int ammoYELLOW;
-        int coordinatex;
-        int coordinatey;
-        Scanner myObj = new Scanner(System.in);
         try {
             this.set();
         }
@@ -269,7 +274,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("> " + weapons.get(i).getName());
                         }
                     }
-
                     powerups = playerHand.getPowerupHand();
                     System.out.println(">You have the following powerups: ");
                     if ((powerups == null) || (powerups.size() == 0)) {
@@ -290,113 +294,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                         ammoYELLOW = playerBoard.getYellowAmmo();
                         System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
                     }
-
-                    //this.playerToSpaw()
                     if(gameModel.getToSpawn()){
-                        System.out.println("Creating the action of drawing");
-                        DrawInfo action = new DrawInfo();
-                        System.out.println("Sending the action of spawning to the server");
-                        connection.send(action);//TODO is it istant as an action?
-                        playerHand = gameModel.getPlayerHand();
-                        powerups = playerHand.getPowerupHand();
-                        System.out.println(">You have the following powerups: ");
-                        while ((powerups == null) || (powerups.size() == 0)) {
-                            System.out.println(">You have no powerups. There's a problem as you should have draw them");
-                            playerHand = gameModel.getPlayerHand();
-                            powerups = playerHand.getPowerupHand();
-                            try{
-                                TimeUnit.SECONDS.sleep(5);
-                            }
-                            catch(InterruptedException e){
-                                e.printStackTrace();
-                            }
-                        }
-                        for (int i = 0; i < powerups.size(); i++) {
-                            System.out.println("> " + powerups.get(i).getName() +" (" +i +")");
-                        }
-                        System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
-                        read = myObj.nextLine();
-                        Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
-                        System.out.println(">Sending your choice to the server: ");
-                        connection.send(action1);
-                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)).getColor());
+                        this.spaw(weapons, powerups, playerHand, actionParser);
                     }
-
-
-                    System.out.println(">Write a command: ");
-                    read = myObj.nextLine();
-                    int result = -1;
-                    coordinatex = 0;
-                    coordinatey = 0;
-                    if (read.toUpperCase().equals("MOVE")) {
-                        System.out.println(">Choose the coordinate x you want to move to: ");
-                        coordinatex = Integer.parseInt(myObj.nextLine());
-                        System.out.println(">Choose the coordinate y you want to move to: ");
-                        coordinatey = Integer.parseInt(myObj.nextLine());
-                        Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
-                        connection.send(action);
-                    } else if (read.toUpperCase().equals("SHOOT")) {
-                        System.out.println(">Choose the name of the weapon: ");
-                        String weaponChosen = myObj.nextLine();
-                        Info action = actionParser.createShootEvent(weaponChosen);
-                        connection.send(action);
-                    } else if (read.toUpperCase().equals("COLLECT")) {
-                        do {
-                            System.out.println(">Choose what you want to collect: ");
-                            System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                            System.out.println("Ammo (2)"); //3 is to collect ammo
-                            read = myObj.nextLine();
-                            if (read.equals("1")) {
-                                collectDecision = 1;
-                                collectChosen = true;
-                            } else if (read.equals("2")) {
-                                collectDecision = 2;
-                                collectChosen = true;
-                            }
-                        } while (!collectChosen);
-                        do {
-                            System.out.println(">Do you want to move before collecting? ");
-                            System.out.println("Yes (1)"); //1 move
-                            System.out.println("No (2)"); //2 not move
-                            result = Integer.parseInt(myObj.nextLine());
-                        } while ((result != 1) && (result != 2));
-                        if(result == 1){
-                            System.out.println(">Choose the coordinate x you want to move to: ");
-                            coordinatex = Integer.parseInt(myObj.nextLine());
-                            System.out.println(">Choose the coordinate y you want to move to: ");
-                            coordinatey = Integer.parseInt(myObj.nextLine());
-                        }
-                        if(collectDecision == 1){ //he has chosen to collect a weapon
-                            do {
-                                System.out.println(">Choose which weapon you want to collect ");
-                                System.out.println("(0)"); //1 is to collect weapon
-                                System.out.println("(1)"); //2 is to collect powerup
-                                System.out.println("(2)"); //3 is to collect ammo
-                                result = Integer.parseInt(myObj.nextLine());
-                            } while ((result != 0) && (result != 1) && (result != 2));
-                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
-                            connection.send(action);
-                        }
-                        else if(collectDecision == 2) {
-                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
-                            connection.send(action);
-                        }
-                    }
-                    else if (read.toUpperCase().equals("USE POWERUP")) {
-                        do {
-                            System.out.println(">Choose what powerup you want to use: ");
-                            read = myObj.nextLine();
-                        }
-                        while ((read.equals("")) || ((!read.toUpperCase().equals("TELEPORTER")) && (!read.toUpperCase().equals("NEWTON")) && (!read.toUpperCase().equals("TARGETING SCOPE")) && (!read.toUpperCase().equals("TAGBACK GRANADE"))));
-                        Info action = actionParser.createPowerUpEvent(read.toUpperCase());
-                        connection.send(action);
-                    } else {
-                        System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
-                    }
-                    //}
-                    //catch (CommandIsNotValidException e) {
-                    //    System.out.println(">The command written is not valid");
-                    //}
+                    this.startInput(actionParser);
                 }
                 else{
                     System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
@@ -424,22 +325,124 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-    /*public boolean playerToSpaw(){
-        ArrayList<ArrayList<SquareAbstract>> temp = gameModel.getMap().getResult().getSquares();
-        for(int s = 0; s < temp.size(); s++) { //se non c'è il player insomma
-            System.out.println("Checking if the player has to spaw 0");
-            for(int u = 0; u < temp.get(s).size(); u++){
-                System.out.println("Checking if the player has to spaw 1");
-                for(int t = 0; t < temp.get(s).get(u).getCharacters().size(); t++){
-                    System.out.println("Checking if the player has to spaw 2");
-                    if(temp.get(s).get(u).getCharacters().get(t).getFigure().fromFigure().equals(connection.getCurrentCharacter())){
-                        return false; //not to spaw
-                    }
-                }
+
+
+
+
+
+    public void spaw(List<WeaponCard> weapons, List<PowerupCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
+        String read;
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Creating the action of drawing");
+        DrawInfo action = new DrawInfo();
+        System.out.println("Sending the action of spawning to the server");
+        connection.send(action);//TODO is it istant as an action?
+        playerHand = gameModel.getPlayerHand();
+        powerups = playerHand.getPowerupHand();
+        System.out.println(">You have the following powerups: ");
+        while ((powerups == null) || (powerups.size() == 0)) {
+            System.out.println(">You have no powerups. There's a problem as you should have draw them");
+            playerHand = gameModel.getPlayerHand();
+            powerups = playerHand.getPowerupHand();
+            try{
+                TimeUnit.SECONDS.sleep(5);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
             }
         }
-        return true; //to spaw
-    }*/
+        for (int i = 0; i < powerups.size(); i++) {
+            System.out.println("> " + powerups.get(i).getName() +" (" +i +")");
+        }
+        System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
+        read = myObj.nextLine();
+        Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
+        System.out.println(">Sending your choice to the server: ");
+        connection.send(action1);
+        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)).getColor());
+    }
+
+
+
+
+
+    public void startInput(ActionParser actionParser){
+        String read;
+        int coordinatex = 0;
+        int coordinatey = 0;
+        Scanner myObj = new Scanner(System.in);
+        int collectDecision = 0;
+        boolean collectChosen = false;
+        boolean powerupChosen = false;
+        System.out.println(">Write a command: ");
+        read = myObj.nextLine();
+        int result = -1;
+        if (read.toUpperCase().equals("MOVE")) {
+            System.out.println(">Choose the coordinate x you want to move to: ");
+            coordinatex = Integer.parseInt(myObj.nextLine());
+            System.out.println(">Choose the coordinate y you want to move to: ");
+            coordinatey = Integer.parseInt(myObj.nextLine());
+            Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
+            connection.send(action);
+        } else if (read.toUpperCase().equals("SHOOT")) {
+            System.out.println(">Choose the name of the weapon: ");
+            String weaponChosen = myObj.nextLine();
+            Info action = actionParser.createShootEvent(weaponChosen);
+            connection.send(action);
+        } else if (read.toUpperCase().equals("COLLECT")) {
+            do {
+                System.out.println(">Choose what you want to collect: ");
+                System.out.println("Weapon Card (1)"); //1 is to collect weapon
+                System.out.println("Ammo (2)"); //3 is to collect ammo
+                read = myObj.nextLine();
+                if (read.equals("1")) {
+                    collectDecision = 1;
+                    collectChosen = true;
+                } else if (read.equals("2")) {
+                    collectDecision = 2;
+                    collectChosen = true;
+                }
+            } while (!collectChosen);
+            do {
+                System.out.println(">Do you want to move before collecting? ");
+                System.out.println("Yes (1)"); //1 move
+                System.out.println("No (2)"); //2 not move
+                result = Integer.parseInt(myObj.nextLine());
+            } while ((result != 1) && (result != 2));
+            if(result == 1){
+                System.out.println(">Choose the coordinate x you want to move to: ");
+                coordinatex = Integer.parseInt(myObj.nextLine());
+                System.out.println(">Choose the coordinate y you want to move to: ");
+                coordinatey = Integer.parseInt(myObj.nextLine());
+            }
+            if(collectDecision == 1){ //he has chosen to collect a weapon
+                do {
+                    System.out.println(">Choose which weapon you want to collect ");
+                    System.out.println("(0)"); //1 is to collect weapon
+                    System.out.println("(1)"); //2 is to collect powerup
+                    System.out.println("(2)"); //3 is to collect ammo
+                    result = Integer.parseInt(myObj.nextLine());
+                } while ((result != 0) && (result != 1) && (result != 2));
+                Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
+                connection.send(action);
+            }
+            else if(collectDecision == 2) {
+                Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
+                connection.send(action);
+            }
+        }
+        else if (read.toUpperCase().equals("USE POWERUP")) {
+            do {
+                System.out.println(">Choose what powerup you want to use: ");
+                read = myObj.nextLine();
+            }
+            while ((read.equals("")) || ((!read.toUpperCase().equals("TELEPORTER")) && (!read.toUpperCase().equals("NEWTON")) && (!read.toUpperCase().equals("TARGETING SCOPE")) && (!read.toUpperCase().equals("TAGBACK GRANADE"))));
+            Info action = actionParser.createPowerUpEvent(read.toUpperCase());
+            connection.send(action);
+        } else {
+            System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
+        }
+    }
 
     public static void main(String[] args) {
         ExecutorService exec = Executors.newCachedThreadPool();

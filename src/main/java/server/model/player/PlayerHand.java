@@ -39,7 +39,10 @@ public class PlayerHand implements Serializable {
     }
 
     public void removePowerUpCard(PowerupCard powerupCard){
-        this.powerupHand.remove(powerupCard);
+        for(int i = 0; i < powerupHand.size(); i++){
+            if((powerupHand.get(i).getColor() == powerupCard.getColor())&&(powerupHand.get(i).getName().equals(powerupCard.getName())))
+                this.powerupHand.remove(i);
+        }
     }
 
     public List<PowerupCard> getPowerupHand() {
