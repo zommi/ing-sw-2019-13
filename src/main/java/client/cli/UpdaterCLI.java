@@ -356,10 +356,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                         } while (!collectChosen);
                         do {
                             System.out.println(">Do you want to move before collecting? ");
-                            System.out.println("Yes (1)"); //1 is to collect weapon
-                            System.out.println("No (2)"); //3 is to collect ammo
+                            System.out.println("Yes (1)"); //1 move
+                            System.out.println("No (2)"); //2 not move
                             result = Integer.parseInt(myObj.nextLine());
-                        } while ((result != 1) || (result != 2));
+                        } while ((result != 1) && (result != 2));
                         if(result == 1){
                             System.out.println(">Choose the coordinate x you want to move to: ");
                             coordinatex = Integer.parseInt(myObj.nextLine());
@@ -373,7 +373,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 System.out.println("(1)"); //2 is to collect powerup
                                 System.out.println("(2)"); //3 is to collect ammo
                                 result = Integer.parseInt(myObj.nextLine());
-                            } while ((result != 0) || (result != 1) || (result != 2));
+                            } while ((result != 0) && (result != 1) && (result != 2));
                             Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
                             connection.send(action);
                         }
