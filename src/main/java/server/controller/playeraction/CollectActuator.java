@@ -4,6 +4,7 @@ import constants.Constants;
 import constants.Direction;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
+import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
@@ -12,16 +13,14 @@ public class CollectActuator {
 
     public CollectActuator(){}
 
-    public void actuate(PlayerAbstract playerPlaying, List<Direction> movements, int choice){
-        for(Direction dir : movements){
-            playerPlaying.move(dir);
-        }
+    public void actuate(PlayerAbstract player, SquareAbstract square, int choice){
+        player.setPosition(square);
         if(choice == Constants.NO_CHOICE){
-            Square square =  (Square)playerPlaying.getPosition();
-            playerPlaying.collect(square);
+            Square squarePlayer =  (Square)player.getPosition();
+            player.collect(squarePlayer);
         }else {
-            SpawnPoint spawnPoint = (SpawnPoint) playerPlaying.getPosition();
-            playerPlaying.collect(spawnPoint, choice);
+            SpawnPoint spawnPoint = (SpawnPoint) player.getPosition();
+            player.collect(spawnPoint, choice);
         }
     }
 }

@@ -52,8 +52,8 @@ public class ActionParser{
     }
 
 
-    public Info createCollectEvent(int collectDecision) {
-        Info collectInfo = new CollectInfo(collectDecision);
+    public Info createCollectEvent(int x, int y, int collectDecision) {
+        Info collectInfo = new CollectInfo(x, y, collectDecision);
         return collectInfo;
     }
 

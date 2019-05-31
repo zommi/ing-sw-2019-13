@@ -4,6 +4,7 @@ import client.CollectInfo;
 import client.MoveInfo;
 import constants.*;
 import server.controller.playeraction.*;
+import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
 import java.util.List;
@@ -35,10 +36,13 @@ public class CollectAction implements Action {
      * to collect an ammo tile
      */
     private int weaponChoice;
+    private MoveInfo moveInfo;
+    private GameMap map;
 
-    public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo, PlayerAbstract player){
+    public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo, PlayerAbstract player, GameMap currentMap){
         //TODO change implementation!
-        //this.moves = moveInfo.getMoves();
+        this.moveInfo = moveInfo;
+        this.map = currentMap;
         this.player = player;
         this.weaponChoice = collectInfo.getChoice();
         this.validator = new CollectValidator();
@@ -52,8 +56,8 @@ public class CollectAction implements Action {
     }
 
     public boolean collect(){
-        if(validator.validate(player,moves,weaponChoice)) {
-            actuator.actuate(player,moves,weaponChoice);
+        if(validator.validate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()),weaponChoice)) {
+            actuator.actuate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()) ,weaponChoice);
             return true;
         }else {
             return false;

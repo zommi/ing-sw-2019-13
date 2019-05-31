@@ -63,12 +63,29 @@ public class Controller implements MyObserver {
 
     public boolean makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
-        //TODO initialize currentID and handle the turns.
+        turnHandler.setController(this);
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
+        turnHandler.setCurrentPlayer(currentPlayer);
 
         System.out.println("We are in the game state: " +currentGame.getCurrentState());
         if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
             this.nextCurrentID();
+        }
+
+        //TODO if(finalfrenzy)
+        //{
+        //    currentGame.nextState();
+        //}
+
+
+        if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){
+            System.out.println("The game is finished, the winner is...");
+            try{
+                currentGame.nextState();
+            }
+            catch(WrongGameStateException e){
+                e.printStackTrace();
+            }
         }
 
         if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) || (currentGame.getCurrentState().equals(GameState.END_GAME))) {
@@ -99,7 +116,7 @@ public class Controller implements MyObserver {
         }
         else if(action instanceof CollectInfo){
             MoveInfo temp = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
-            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer);
+            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer, currentMap);
             turnHandler.setAndDoAction(collectAction);
             this.sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
@@ -111,6 +128,11 @@ public class Controller implements MyObserver {
         return true;
     }
 
+
+    public void sendChangeCurrentPlayer(){
+        ChangeCurrentPlayerAnswer changeAnswer = new ChangeCurrentPlayerAnswer();
+        server.sendToEverybodyRMI(changeAnswer);
+    }
 
     public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
         MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());

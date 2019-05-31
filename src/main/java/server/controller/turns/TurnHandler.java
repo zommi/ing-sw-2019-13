@@ -3,10 +3,13 @@ package server.controller.turns;
 import client.CollectInfo;
 import client.MoveInfo;
 import exceptions.WrongGameStateException;
+import server.Server;
+import server.controller.Controller;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.ShootInfo;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
+import view.ChangeCurrentPlayerAnswer;
 
 public class TurnHandler {
 
@@ -14,18 +17,20 @@ public class TurnHandler {
 
     private TurnPhase currentPhase;
 
+    private Controller controller;
+
     private Action action;
 
     public void setCurrentPlayer(PlayerAbstract currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
-    public PlayerAbstract getCurrentPlayer() {
-        return currentPlayer;
-    }
-
     public void playPowerup(int index){
         currentPlayer.usePowerup(index);
+    }
+
+    public void setController(Controller controller){
+        this.controller = controller;
     }
 
     /*
@@ -42,7 +47,6 @@ public class TurnHandler {
         this.currentPhase = TurnPhase.FIRST_ACTION;
     }
 
-
     public TurnPhase getCurrentPhase(){
         return this.currentPhase;
     }
@@ -53,15 +57,10 @@ public class TurnHandler {
             this.action = action;
             //if returns false then disconnects the player
             this.action.execute();
-            if(action instanceof ShootInfo || action instanceof CollectInfo || action instanceof MoveInfo) //if it is a draw or a spawn it is not counted as an action
+            if((action instanceof ShootInfo) || (action instanceof CollectInfo) || (action instanceof MoveInfo)) //if it is a draw or a spawn it is not counted as an action
                 nextPhase();
         }
     }
-
-    /*public void startTurn(PlayerAbstract player){
-        this.currentPlayer = player;
-        this.currentPhase = TurnPhase.FIRST_ACTION;
-    }*/
 
     public void pass(){
         if(currentPhase == TurnPhase.END_TURN){
@@ -80,6 +79,7 @@ public class TurnHandler {
             case END_TURN:
                 try{
                     ((ConcretePlayer)currentPlayer).getCurrentGame().nextPlayer();
+                    controller.sendChangeCurrentPlayer();
                 }
                 catch(WrongGameStateException e){
                     e.printStackTrace();

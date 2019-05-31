@@ -15,24 +15,24 @@ public class CollectValidator {
     public CollectValidator() {
     }
 
-    public boolean validate(PlayerAbstract playerToValidate, List<Direction> movements, int choice) {
+    public boolean validate(PlayerAbstract player, SquareAbstract square, int choice) {
         //checks that the number of steps the player takes is allowed by the rules of the game:
         //max 2 movements if the player has more than 2 damages,
         // max 1 movement if the player has less than 2 damages
-        if ((playerToValidate.currentState() != PlayerState.NORMAL
-                && movements.size() > Constants.MAX_NUMBER_OF_ADRENALINE_MOVEMENTS)
-            || (playerToValidate.currentState() == PlayerState.NORMAL
-                && movements.size() > Constants.MAX_NUMBER_OF_NORMAL_MOVEMENTS)) {
+        if ((player.currentState() != PlayerState.NORMAL
+                && square.distance(player.getPosition()) > Constants.MAX_NUMBER_OF_ADRENALINE_MOVEMENTS)
+            || (player.currentState() == PlayerState.NORMAL
+                && square.distance(player.getPosition()) > Constants.MAX_NUMBER_OF_NORMAL_MOVEMENTS)) {
             return false;
         }
 
 
         //checks that all the movements are allowed
-        SquareAbstract squareTemp = playerToValidate.getPosition();
-        for (Direction dir : movements) {
-            if(squareTemp.getNearFromDir(dir) == null) return false;
-            squareTemp = squareTemp.getNearFromDir(dir);
-        }
+        SquareAbstract squareTemp = player.getPosition();
+        //for (Direction dir : movements) { //TODO Change
+        //    if(squareTemp.getNearFromDir(dir) == null) return false;
+        //    squareTemp = squareTemp.getNearFromDir(dir);
+        //}
 
 
         //checks that the choice parameter and the type of squareTemp are coherent

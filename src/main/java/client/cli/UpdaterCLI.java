@@ -2,6 +2,7 @@ package client.cli;
 
 
 import client.*;
+import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerupCard;
@@ -324,6 +325,9 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     System.out.println(">Write a command: ");
                     read = myObj.nextLine();
+                    int result = -1;
+                    coordinatex = 0;
+                    coordinatey = 0;
                     if (read.toUpperCase().equals("MOVE")) {
                         System.out.println(">Choose the coordinate x you want to move to: ");
                         coordinatex = Integer.parseInt(myObj.nextLine());
@@ -340,8 +344,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         do {
                             System.out.println(">Choose what you want to collect: ");
                             System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                            System.out.println("PowerUp Card (2)"); //2 is to collect powerup
-                            System.out.println("Ammo (3)"); //3 is to collect ammo
+                            System.out.println("Ammo (2)"); //3 is to collect ammo
                             read = myObj.nextLine();
                             if (read.equals("1")) {
                                 collectDecision = 1;
@@ -349,14 +352,37 @@ public class UpdaterCLI  implements Updater,Runnable{
                             } else if (read.equals("2")) {
                                 collectDecision = 2;
                                 collectChosen = true;
-                            } else if (read.equals("3")) {
-                                collectDecision = 3;
-                                collectChosen = true;
                             }
                         } while (!collectChosen);
-                        Info action = actionParser.createCollectEvent(collectDecision);
-                        connection.send(action);
-                    } else if (read.toUpperCase().equals("USE POWERUP")) {
+                        do {
+                            System.out.println(">Do you want to move before collecting? ");
+                            System.out.println("Yes (1)"); //1 is to collect weapon
+                            System.out.println("No (2)"); //3 is to collect ammo
+                            result = Integer.parseInt(myObj.nextLine());
+                        } while ((result != 1) || (result != 2));
+                        if(result == 1){
+                            System.out.println(">Choose the coordinate x you want to move to: ");
+                            coordinatex = Integer.parseInt(myObj.nextLine());
+                            System.out.println(">Choose the coordinate y you want to move to: ");
+                            coordinatey = Integer.parseInt(myObj.nextLine());
+                        }
+                        if(collectDecision == 1){ //he has chosen to collect a weapon
+                            do {
+                                System.out.println(">Choose which weapon you want to collect ");
+                                System.out.println("(0)"); //1 is to collect weapon
+                                System.out.println("(1)"); //2 is to collect powerup
+                                System.out.println("(2)"); //3 is to collect ammo
+                                result = Integer.parseInt(myObj.nextLine());
+                            } while ((result != 0) || (result != 1) || (result != 2));
+                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
+                            connection.send(action);
+                        }
+                        else if(collectDecision == 2) {
+                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
+                            connection.send(action);
+                        }
+                    }
+                    else if (read.toUpperCase().equals("USE POWERUP")) {
                         do {
                             System.out.println(">Choose what powerup you want to use: ");
                             read = myObj.nextLine();

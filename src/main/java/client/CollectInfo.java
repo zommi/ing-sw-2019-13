@@ -19,7 +19,7 @@ public class CollectInfo implements Serializable, Info {
      * constructor used if the player doesn't specify a choice. It is used
      * when the player wants to collect an ammo tile
      */
-    public CollectInfo(int x, int y){
+    public CollectInfo(int x, int y, int choice){
         this.choice = Constants.NO_CHOICE;
         this.x = x;
         this.y = y;
@@ -31,15 +31,6 @@ public class CollectInfo implements Serializable, Info {
 
     public int getCoordinateY(){
         return this.y;
-    }
-
-    /**
-     * constructor used if the player specifies a choice,
-     * it is used when the the player wants to collect a weapon from a spawn point
-     * @param choice
-     */
-    public CollectInfo(int choice){
-        this.choice = choice;
     }
 
     public int getChoice() {

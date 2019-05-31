@@ -47,7 +47,7 @@ class CollectActionTest {
 
         //TODO change implementation!
         //MoveInfo correctNormalMove = new MoveInfo(testPlayer, correctNormalList);
-        CollectInfo noChoice = new CollectInfo(0,0);
+        //CollectInfo noChoice = new CollectInfo(0,0);
 
         //TODO change implementation!
         //CollectAction testAction = new CollectAction(correctNormalMove, noChoice);
@@ -68,7 +68,7 @@ class CollectActionTest {
 
         //TODO change implementation!
         //MoveInfo correctAdrenalineMoveAndCollect = new MoveInfo(testPlayer,correctAdrenalineList);
-        CollectInfo collectSecondItem = new CollectInfo(1);
+        //CollectInfo collectSecondItem = new CollectInfo(1);
         //TODO
         //testAction = new CollectAction(correctAdrenalineMoveAndCollect, collectSecondItem);
 

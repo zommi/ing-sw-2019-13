@@ -105,11 +105,17 @@ public class Game {
     }
 
     public void nextPlayer() throws WrongGameStateException{
-        if(this.currentState == GameState.NORMAL_TURN
-                || this.currentState == GameState.FINAL_FRENZY) {
-            if (currentPlayerIndex < this.activePlayers.size() - 1) this.currentPlayerIndex++;
-            else this.currentPlayerIndex = 0;
-        }else throw new WrongGameStateException();
+        if((this.currentState == GameState.NORMAL_TURN)
+                || (this.currentState == GameState.FINAL_FRENZY)) {
+            if (currentPlayerIndex < this.activePlayers.size() - 1) {
+                this.currentPlayerIndex++;
+            }
+            else {
+                this.currentPlayerIndex = 0;
+            }
+        }else {
+            throw new WrongGameStateException();
+        }
     }
 
 
