@@ -319,7 +319,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
                         System.out.println(">Sending your choice to the server: ");
                         connection.send(action1);
-                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)));
+                        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)).getColor());
                     }
 
 

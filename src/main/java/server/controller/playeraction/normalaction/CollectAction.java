@@ -60,6 +60,7 @@ public class CollectAction implements Action {
             actuator.actuate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()) ,weaponChoice);
             return true;
         }else {
+            System.out.println("You can't collect");
             return false;
         }
     }
