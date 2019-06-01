@@ -1,13 +1,9 @@
 package server.model.cards;
 
-import server.model.items.*;
-import constants.*;
-
 import java.io.Serializable;
-import java.util.*;
 
 
-public class TargetingScope extends Powerup implements Serializable {
+public class TargetingScope extends PowerUp implements Serializable {
 
 
 

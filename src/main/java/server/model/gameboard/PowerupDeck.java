@@ -19,12 +19,12 @@ public class PowerupDeck implements Serializable {
     /**
      * deck of cards that can be drawn
      */
-    private LinkedList<PowerupCard> deck;
+    private LinkedList<PowerUpCard> deck;
 
     /**
      * stack of discarded cards
      */
-    private List<PowerupCard> discardedCards;
+    private List<PowerUpCard> discardedCards;
 
 
     /**
@@ -48,23 +48,23 @@ public class PowerupDeck implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(Constants.PATH_TO_POWERUP_JSON);
 
-        Powerup[] arrayOfPowerups = new Powerup[0];
+        PowerUp[] arrayOfPowerUps = new PowerUp[0];
 
         try {
-            arrayOfPowerups = mapper.readValue(file, Powerup[].class);
+            arrayOfPowerUps = mapper.readValue(file, PowerUp[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(arrayOfPowerups.length == 0) throw new ReadJsonErrorException();
+        if(arrayOfPowerUps.length == 0) throw new ReadJsonErrorException();
 
         this.deck = new LinkedList<>();
         try {
-            for (int i = 0; i < arrayOfPowerups.length; i++) {
-                for (int j = 0; j < arrayOfPowerups[i].getNumberOfCards(); j++) {
-                    this.deck.push(new PowerupCard(
-                            arrayOfPowerups[i].getValue(),
-                            getPoweupFromIndex(arrayOfPowerups[i].getIndex()),
+            for (int i = 0; i < arrayOfPowerUps.length; i++) {
+                for (int j = 0; j < arrayOfPowerUps[i].getNumberOfCards(); j++) {
+                    this.deck.push(new PowerUpCard(
+                            arrayOfPowerUps[i].getValue(),
+                            getPoweupFromIndex(arrayOfPowerUps[i].getIndex()),
                             this
                     ));
                 }
@@ -81,7 +81,7 @@ public class PowerupDeck implements Serializable {
      * @param index int between 0 and 3 that corresponds to a powerup
      * @return a new powerup
      */
-    private Powerup getPoweupFromIndex(int index) {
+    private PowerUp getPoweupFromIndex(int index) {
         switch (index){
             case 0: return new TargetingScope();
             case 1: return new Newton();
@@ -118,7 +118,7 @@ public class PowerupDeck implements Serializable {
      * when a card is used it is put in the discarded pile
      * @param card reference to the card to discard
      */
-    public void discardCard(PowerupCard card) {
+    public void discardCard(PowerUpCard card) {
         this.discardedCards.add(card);
     }
 
@@ -126,27 +126,27 @@ public class PowerupDeck implements Serializable {
      *
      * @return the first card on the deck
      */
-    public PowerupCard draw(){
+    public PowerUpCard draw(){
         if(this.deck.isEmpty())restore();
         return this.deck.pop();
     }
 
-    public List<PowerupCard> getDeck() {
+    public List<PowerUpCard> getDeck() {
         return deck;
     }
 
-    public List<PowerupCard> getDiscardedCards() {
+    public List<PowerUpCard> getDiscardedCards() {
         return discardedCards;
     }
 
     @Override
     public String toString() {
         String stringToReturn = "cards in deck:\n";
-        for(PowerupCard card : deck){
+        for(PowerUpCard card : deck){
             stringToReturn += card.getName() + '(' + card.getColor() + ')' + '\n';
         }
         stringToReturn += "cards discarded:\n";
-        for(PowerupCard card : discardedCards){
+        for(PowerUpCard card : discardedCards){
             stringToReturn += card.getName() + '(' + card.getColor() + ')' + '\n';
         }
         return stringToReturn;

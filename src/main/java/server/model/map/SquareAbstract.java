@@ -216,14 +216,6 @@ public abstract class  SquareAbstract implements Serializable {
 
     public abstract boolean isEmpty();
 
-    public List<SquareAbstract> getUpToTwoMovementsSquares(){
-        return null;
-    }
-    public List<GameCharacter> getAtLeastTwoMovementCharacters() {
-        return null;
-    }
-
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

@@ -1,12 +1,11 @@
 package server.model.cards;
 
 import java.io.Serializable;
-import java.util.Scanner;
 
 /**
  * 
  */
-public class Teleporter extends Powerup implements Serializable {
+public class Teleporter extends PowerUp implements Serializable {
 
 
     //This one does not affect the opponents, it only affects the character that is using it.

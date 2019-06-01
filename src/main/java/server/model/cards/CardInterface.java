@@ -5,12 +5,10 @@ import server.model.items.*;
 
 public interface CardInterface extends ItemInterface {
 
-    public void draw();
+    void draw();
 
-    public void getEffect();
+    String getName();
 
-    public String getName();
-
-    public void discard();
+    void discard();
 
 }

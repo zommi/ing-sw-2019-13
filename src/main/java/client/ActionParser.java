@@ -3,8 +3,8 @@ package client;
 import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
-import server.model.cards.Powerup;
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUp;
+import server.model.cards.PowerUpCard;
 
 import java.util.Scanner;
 
@@ -58,14 +58,14 @@ public class ActionParser{
     }
 
     public Info createPowerUpEvent(String powerUpChosen) {
-        Powerup powerUp = this.powerUpFromString(powerUpChosen);
+        PowerUp powerUp = this.powerUpFromString(powerUpChosen);
         PowerUpParser powerUpParser = new PowerUpParser(gameModel);
         Info powerUpInfo = powerUpParser.getPowerUpInput(powerUp,input);
         return powerUpInfo;
     }
 
 
-    public Powerup powerUpFromString(String name){
+    public PowerUp powerUpFromString(String name){
         for(int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++){
             if(name.equalsIgnoreCase(gameModel.getPlayerHand().getPowerupHand().get(i).getName())){
                 return gameModel.getPlayerHand().getPowerupHand().get(i).getPowerUp();
@@ -79,7 +79,7 @@ public class ActionParser{
         return null;
     }
 
-    public Info createSpawEvent(PowerupCard powerupCard){
+    public Info createSpawEvent(PowerUpCard powerupCard){
         SpawnInfo spawnInfo = new SpawnInfo(powerupCard);
         return spawnInfo;
     }

@@ -5,7 +5,7 @@ import client.*;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
@@ -240,7 +240,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerHandAnswer playerHand;
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
-        List<PowerupCard> powerups;
+        List<PowerUpCard> powerups;
         int ammoRED;
         int ammoBLUE;
         int ammoYELLOW;
@@ -330,7 +330,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-    public void spaw(List<WeaponCard> weapons, List<PowerupCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
+    public void spaw(List<WeaponCard> weapons, List<PowerUpCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
         String read;
         Scanner myObj = new Scanner(System.in);
         System.out.println("Creating the action of drawing");

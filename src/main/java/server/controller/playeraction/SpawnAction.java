@@ -1,23 +1,23 @@
 package server.controller.playeraction;
 import client.SpawnInfo;
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUpCard;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 
 public class SpawnAction implements Action {
 
     PlayerAbstract player;
-    PowerupCard powerupCardToDiscard;
+    PowerUpCard powerUpCardToDiscard;
     GameBoard gameBoard;
 
     public SpawnAction(SpawnInfo spawnInfo, PlayerAbstract player, GameBoard gameBoard){
         this.player = player;
-        this.powerupCardToDiscard = spawnInfo.getPowerupCard();
+        this.powerUpCardToDiscard = spawnInfo.getPowerupCard();
         this.gameBoard = gameBoard;
     }
     public boolean execute(){
-        player.spawn(gameBoard.getMap().getSpawnPoint(powerupCardToDiscard.getColor())); //a spawn
-        player.getHand().removePowerUpCard(powerupCardToDiscard);
+        player.spawn(gameBoard.getMap().getSpawnPoint(powerUpCardToDiscard.getColor())); //a spawn
+        player.getHand().removePowerUpCard(powerUpCardToDiscard);
         return true;
     }
 }

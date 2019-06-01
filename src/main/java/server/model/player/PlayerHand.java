@@ -13,7 +13,7 @@ import java.util.*;
 public class PlayerHand implements Serializable {
 
     private ArrayList<WeaponCard> weaponHand;
-    private ArrayList<PowerupCard> powerupHand;
+    private ArrayList<PowerUpCard> powerupHand;
     private ConcretePlayer player;
 
     /**
@@ -38,14 +38,14 @@ public class PlayerHand implements Serializable {
         return (ArrayList<WeaponCard>) weaponHand.clone();  //cloning for server answers
     }
 
-    public void removePowerUpCard(PowerupCard powerupCard){
+    public void removePowerUpCard(PowerUpCard powerupCard){
         for(int i = 0; i < powerupHand.size(); i++){
             if((powerupHand.get(i).getColor() == powerupCard.getColor())&&(powerupHand.get(i).getName().equals(powerupCard.getName())))
                 this.powerupHand.remove(i);
         }
     }
 
-    public List<PowerupCard> getPowerupHand() {
+    public List<PowerUpCard> getPowerupHand() {
         return powerupHand;    //cloning for server answers
     }
 
@@ -53,7 +53,7 @@ public class PlayerHand implements Serializable {
         PlayerHand playerHand = new PlayerHand();
         playerHand.player = playerHandToCopy.getPlayer();
         playerHand.weaponHand = (ArrayList<WeaponCard>) playerHandToCopy.getWeaponHand();
-        playerHand.powerupHand = (ArrayList<PowerupCard>) playerHandToCopy.getPowerupHand();
+        playerHand.powerupHand = (ArrayList<PowerUpCard>) playerHandToCopy.getPowerupHand();
         return playerHand;
     }
 
@@ -94,7 +94,7 @@ public class PlayerHand implements Serializable {
 
     public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
 
-    public void addCard(PowerupCard draw) {
+    public void addCard(PowerUpCard draw) {
         if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)
             this.powerupHand.add(draw);
     }
