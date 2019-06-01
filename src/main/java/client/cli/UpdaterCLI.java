@@ -295,7 +295,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
                     }
                     if(gameModel.getToSpawn()){
-                        this.spaw(weapons, powerups, playerHand, actionParser);
+                        this.spawn(weapons, powerups, playerHand, actionParser);
                     }
                     this.startInput(actionParser);
                 }
@@ -330,7 +330,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-    public void spaw(List<WeaponCard> weapons, List<PowerupCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
+    public void spawn(List<WeaponCard> weapons, List<PowerupCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
         String read;
         Scanner myObj = new Scanner(System.in);
         System.out.println("Creating the action of drawing");

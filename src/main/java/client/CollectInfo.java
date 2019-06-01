@@ -20,7 +20,7 @@ public class CollectInfo implements Serializable, Info {
      * when the player wants to collect an ammo tile
      */
     public CollectInfo(int x, int y, int choice){
-        this.choice = Constants.NO_CHOICE;
+        this.choice = choice;
         this.x = x;
         this.y = y;
     }
