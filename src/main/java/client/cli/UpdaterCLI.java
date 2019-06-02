@@ -5,8 +5,9 @@ import client.*;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
+import server.model.map.SpawnPoint;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -240,7 +241,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerHandAnswer playerHand;
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
-        List<PowerupCard> powerups;
+        List<PowerUpCard> powerups;
         int ammoRED;
         int ammoBLUE;
         int ammoYELLOW;
@@ -295,9 +296,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
                     }
                     if(gameModel.getToSpawn()){
-                        this.spawn(weapons, powerups, playerHand, actionParser);
+                        powerups = this.spawn(powerups, playerHand, actionParser);
                     }
-                    this.startInput(actionParser);
+                    this.startInput(actionParser, powerups);
                 }
                 else{
                     System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
@@ -327,10 +328,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-
-
-
-    public void spawn(List<WeaponCard> weapons, List<PowerupCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
+    public List<PowerUpCard> spawn(List<PowerUpCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
         String read;
         Scanner myObj = new Scanner(System.in);
         System.out.println("Creating the action of drawing");
@@ -360,13 +358,14 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
         System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)).getColor());
+        return powerups;
     }
 
 
 
 
 
-    public void startInput(ActionParser actionParser){
+    public void startInput(ActionParser actionParser, List<PowerUpCard> powerups){
         String read;
         int coordinatex = 0;
         int coordinatey = 0;
@@ -409,22 +408,33 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println("No (2)"); //2 not move
                 result = Integer.parseInt(myObj.nextLine());
             } while ((result != 1) && (result != 2));
+            coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getX();
+            coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getY();
             if(result == 1){
                 System.out.println(">Choose the coordinate x you want to move to: ");
                 coordinatex = Integer.parseInt(myObj.nextLine());
                 System.out.println(">Choose the coordinate y you want to move to: ");
                 coordinatey = Integer.parseInt(myObj.nextLine());
             }
+
+
             if(collectDecision == 1){ //he has chosen to collect a weapon
                 do {
-                    System.out.println(">Choose which weapon you want to collect ");
-                    System.out.println("(0)"); //1 is to collect weapon
-                    System.out.println("(1)"); //2 is to collect powerup
-                    System.out.println("(2)"); //3 is to collect ammo
-                    result = Integer.parseInt(myObj.nextLine());
+                    if(gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint)
+                    {
+                        System.out.println(">Choose which weapon you want to collect ");
+                        System.out.println("(0)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(0)); //1 is to collect weapon
+                        System.out.println("(1)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(1)); //2 is to collect powerup
+                        System.out.println("(2)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(2)); //3 is to collect ammo
+                        result = Integer.parseInt(myObj.nextLine());
+                        Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
+                        connection.send(action);
+                    }
+                    else{
+                        System.out.println("This is not a spawn point, you can't collect weapons");
+                        break;
+                    }
                 } while ((result != 0) && (result != 1) && (result != 2));
-                Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
-                connection.send(action);
             }
             else if(collectDecision == 2) {
                 Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);

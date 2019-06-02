@@ -18,6 +18,8 @@ import java.util.ArrayList;
  */
 public abstract class PlayerAbstract implements Serializable {
 
+    private PlayerAbstract justDamagedBy;
+
     /**
      * @return
      */
@@ -106,4 +108,8 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract void addMarks(int marks, Color color);
 
     public abstract void setPosition(SquareAbstract square);
+
+    public PlayerAbstract getJustDamagedBy() {
+        return justDamagedBy;
+    }
 }

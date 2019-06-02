@@ -2,7 +2,7 @@ package client.powerups;
 
 import client.GameModel;
 import client.InputAbstract;
-import server.model.cards.Powerup;
+import server.model.cards.PowerUp;
 
 public class PowerUpParser {
 
@@ -10,7 +10,7 @@ public class PowerUpParser {
         //TODO
     }
 
-    public PowerUpInfo getPowerUpInput(Powerup powerup, InputAbstract input){
+    public PowerUpPack getPowerUpInput(PowerUp powerup, InputAbstract input){
         //TODO
         return null;
     }

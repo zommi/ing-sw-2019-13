@@ -4,6 +4,7 @@ import client.CliInput;
 import client.GameModel;
 import client.InputAbstract;
 import org.junit.jupiter.api.Test;
+import server.controller.playeraction.ShootInfo;
 import server.controller.playeraction.ShootValidator;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
@@ -72,9 +73,9 @@ class ShootParserTest {
         ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
-        boolean bool = shootValidator.validate(shootPack, gameBoard, player1);
+        ShootInfo shootInfo = shootValidator.validate(shootPack, gameBoard, player1);
 
-        assertTrue(bool);
+        assertNotNull(shootInfo);
 
         System.setIn(System.in);
     }

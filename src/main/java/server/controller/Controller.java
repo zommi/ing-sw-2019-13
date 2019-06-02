@@ -1,6 +1,7 @@
 package server.controller;
 
 import client.*;
+import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
 import exceptions.WrongGameStateException;
 import server.Server;
@@ -12,6 +13,7 @@ import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
 import server.model.game.Game;
 import server.model.game.GameState;
+import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
@@ -90,6 +92,11 @@ public class Controller implements MyObserver {
 
         if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) || (currentGame.getCurrentState().equals(GameState.END_GAME))) {
             return false;
+        }
+
+        if(action instanceof PowerUpPack){
+            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame.getCurrentGameBoard(), currentPlayer);
+            turnHandler.setAndDoAction(powerUpAction);
         }
 
         if(action instanceof DrawInfo){

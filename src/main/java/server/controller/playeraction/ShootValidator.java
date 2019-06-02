@@ -16,13 +16,11 @@ import java.util.List;
 
 public class ShootValidator {
 
-    private ShootInfo shootInfo;
+    public ShootInfo validate(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker){
 
-    public boolean validate(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker){
-
-        shootInfo = convert(shootPack, gameBoard, attacker);
+        ShootInfo shootInfo = convert(shootPack, gameBoard, attacker);
         if(shootInfo == null)       //if conversion fails
-            return false;
+            return null;
 
        /*
        IMPORTANT:
@@ -51,23 +49,23 @@ public class ShootValidator {
         try {
             //checks if macros order is correct and there are no duplicates
             if (shootInfo.getActivatedMacros().isEmpty())
-                return false;
+                return null;
             for (int i = 0; i < shootInfo.getActivatedMacros().size() - 1; i++) {
                 if (shootInfo.getActivatedMacros().get(i).getMacroNumber() >= shootInfo.getActivatedMacros().get(i + 1).getMacroNumber())
-                    return false;
+                    return null;
             }
 
             //checks if macros are activated correctly, accordingly to weapon type
             if (shootInfo.getWeapon().getType() != WeaponType.EXTRA) {
                 if (shootInfo.getActivatedMacros().size() > 1)   //we know size is not zero
-                    return false;
+                    return null;
 
             } else {
                 //checks if all mandatory macros are activated(extra type weapon base effect)
                 for (int i = 0; i < shootInfo.getWeapon().getMacroEffects().size(); i++) {
                     if (shootInfo.getWeapon().getMacroEffects().get(i).isMandatory() &&
                             shootInfo.getActivatedMacro(i) == null)
-                        return false;
+                        return null;
                 }
             }
 
@@ -78,33 +76,33 @@ public class ShootValidator {
             for (MacroInfo macroInfo : shootInfo.getActivatedMacros()) {
                 //weapon must have this macro
                 if(shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber()) == null)
-                    return false;
+                    return null;
                 else
                     weaponMacro = shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber());
 
                 //player should have enough ammo
                 totalCost = totalCost.sum(weaponMacro.getCost());
                 if (!shootInfo.getAttacker().canPay(totalCost))
-                    return false;
+                    return null;
 
                 //checks if macro depends on the activation of another macro
                 if (weaponMacro.isConditional() &&
                         shootInfo.getActivatedMacro(weaponMacro.getMacroEffectIndex()) == null)
-                    return false;
+                    return null;
 
                 //checks if micros order is correct and there are no duplicates
                 if (macroInfo.getActivatedMicros().isEmpty())
-                    return false;
+                    return null;
                 for (int i = 0; i < macroInfo.getActivatedMicros().size() - 1; i++) {
                     if (macroInfo.getActivatedMicros().get(i).getMicroNumber() >= macroInfo.getActivatedMicros().get(i + 1).getMicroNumber())
-                        return false;
+                        return null;
                 }
 
                 //checks if all mandatory micros are activated
                 for (int i = 0; i < weaponMacro.getMicroEffects().size(); i++) {
                     if (weaponMacro.getMicroEffects().get(i).isMandatory() &&
                             shootInfo.getActivatedMicro(macroInfo.getMacroNumber(), i) == null)
-                        return false;
+                        return null;
                 }
 
                 //now every activated micro for that specific macro is processed
@@ -112,13 +110,13 @@ public class ShootValidator {
                     //weapon must have the couple macro-micro
                     MicroEffect weaponMicro;
                     if(weaponMacro.getMicroEffect(microInfo.getMicroNumber()) == null)
-                        return false;
+                        return null;
                     else
                         weaponMicro = weaponMacro.getMicroEffect(microInfo.getMicroNumber());
 
                     //checks if micro is limited
                     if (weaponMicro.isLimited() && limitedActivated)
-                        return false;
+                        return null;
                     else if (weaponMicro.isLimited())
                         limitedActivated = true;
 
@@ -126,23 +124,23 @@ public class ShootValidator {
                     if (weaponMicro.isConditional() &&
                             shootInfo.getActivatedMicro(weaponMicro.getMacroEffectIndex(),
                                     weaponMicro.getMicroEffectIndex()) == null)
-                        return false;
+                        return null;
 
                     //checks if input dimensions are ok
                     if (!shootInfo.areDimensionsOk(microInfo, weaponMicro))
-                        return false;
+                        return null;
 
                     //checks if attacker is inside player list
                     for (PlayerAbstract playerAbstract : microInfo.getPlayersList()) {
                         if (playerAbstract.equals(shootInfo.getAttacker()))
-                            return false;
+                            return null;
                     }
 
                     //checks if there are duplicates inside player list
                     for(int i=0; i<microInfo.getPlayersList().size(); i++){
                         for(int j=i+1; j<microInfo.getPlayersList().size(); j++){
                             if(microInfo.getPlayersList().get(i).equals(microInfo.getPlayersList().get(j))){
-                                return false;
+                                return null;
                             }
                         }
                     }
@@ -153,7 +151,7 @@ public class ShootValidator {
                                 !(weaponMicro.isGenerateSquareFlag() && weaponPolicy.getPolicyType().equals("square")) &&
                                 !(weaponMicro.isGenerateNMSquareFlag() && weaponPolicy.getPolicyType().equals("noMoveSquare")) &&
                                 !weaponPolicy.isVerified(shootInfo, microInfo))
-                            return false;
+                            return null;
                     }
 
                     //start player/square targets generation
@@ -178,7 +176,7 @@ public class ShootValidator {
                     }
                 }
             }
-            return true;
+            return shootInfo;
 
         } finally {
             if (shootInfo.getWeapon().isSpecial()) {

@@ -23,4 +23,10 @@ public class PlayerBoardAnswer implements ServerAnswer{
     public int getYellowAmmo(){
         return result.getYellowAmmo();
     }
+    public int getX(){
+        return result.getX();
+    }
+    public int getY(){
+        return result.getY();
+    }
 }

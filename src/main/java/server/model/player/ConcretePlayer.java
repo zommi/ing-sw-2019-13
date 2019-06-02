@@ -6,7 +6,6 @@ import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.items.AmmoCube;
 import server.model.map.*;
-import server.model.gameboard.*;
 import constants.*;
 
 import java.util.*;
@@ -149,6 +148,7 @@ public class ConcretePlayer extends PlayerAbstract {
      */
     public void spawn(SquareAbstract sp){
         gameCharacter.spawn(sp);
+        board.spawn(getPosition().getRow(), getPosition().getCol());
     }
 
 
@@ -210,8 +210,13 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public void setPosition(SquareAbstract square) {
         this.gameCharacter.setPosition(square);
+        this.board.setPosition(square.getRow(), square.getCol());
     }
 
+    @Override
+    public PlayerAbstract getJustDamagedBy() {
+        return super.getJustDamagedBy();
+    }
 }
 
 

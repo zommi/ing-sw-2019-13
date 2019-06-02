@@ -1,6 +1,8 @@
 package client;
 
-public class SquareInfo {
+import java.io.Serializable;
+
+public class SquareInfo  implements Serializable {
     private int row;
     private int col;
 

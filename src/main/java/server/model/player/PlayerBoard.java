@@ -21,6 +21,8 @@ public class PlayerBoard implements Serializable {
     private int[] pointValue;
     private int currentPointValueCursor;
     private int numberOfDeaths;
+    private int x;
+    private int y;
 
 
     //0 red, 1 blue, 2 yellow
@@ -64,6 +66,8 @@ public class PlayerBoard implements Serializable {
         playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
         playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
         playerBoard.ammo = new int[3];
+        playerBoard.x = playerBoardToCopy.getX();
+        playerBoard.y = playerBoardToCopy.getY();
         playerBoard.ammo[0] = ammo[RED_CUBES_INDEX];
         playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
         playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
@@ -110,6 +114,23 @@ public class PlayerBoard implements Serializable {
         return ammo[YELLOW_CUBES_INDEX];
     }
 
+    public void spawn(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX(){
+        return this.x;
+    }
+
+    public int getY(){
+        return this.y;
+    }
     //TODO add easter egg when someone dies 7 times in the same game and make him win.
     public void addSkull(Color colorOfAttacker) {
         if(damageTaken > Constants.DEATH_THRESHOLD){

@@ -1,16 +1,16 @@
 package client;
 
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUpCard;
 
 public class SpawnInfo implements Info {
 
-    PowerupCard powerupCard;
+    PowerUpCard powerupCard;
 
-    public SpawnInfo(PowerupCard powerupCard){
+    public SpawnInfo(PowerUpCard powerupCard){
         this.powerupCard = powerupCard;
     }
 
-    public PowerupCard getPowerupCard() {
+    public PowerUpCard getPowerupCard() {
         return powerupCard;
     }
 }

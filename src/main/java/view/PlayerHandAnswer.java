@@ -1,6 +1,6 @@
 package view;
 
-import server.model.cards.PowerupCard;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerHand;
 
@@ -23,8 +23,8 @@ public class PlayerHandAnswer implements ServerAnswer {
         return (ArrayList<WeaponCard>) playerHand.getWeaponHand();
     }
 
-    public ArrayList<PowerupCard> getPowerupHand(){
-        return (ArrayList<PowerupCard>) playerHand.getPowerupHand();
+    public ArrayList<PowerUpCard> getPowerupHand(){
+        return (ArrayList<PowerUpCard>) playerHand.getPowerupHand();
     }
 
 }

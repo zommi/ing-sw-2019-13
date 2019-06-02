@@ -5,7 +5,7 @@ import constants.Color;
 import exceptions.InvalidMoveException;
 import server.model.items.AmmoCube;
 
-public class Powerup {
+public class PowerUp {
 
     private int index;
 
@@ -16,7 +16,7 @@ public class Powerup {
     private int numberOfCards;
 
 
-    Powerup(){
+    PowerUp(){
         this.index = -1;
         this.name = "UNDEFINED";
         this.value = Color.UNDEFINED;
@@ -37,5 +37,13 @@ public class Powerup {
 
     public int getIndex() {
         return this.index;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof PowerUp))
+            return false;
+        PowerUp powerUp2 = (PowerUp) obj;
+        return name.equals(powerUp2.getName());
     }
 }
