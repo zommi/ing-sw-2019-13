@@ -3,72 +3,84 @@
     "index" : "0",
     "name" : "Targeting Scope",
     "value" : "RED",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "0",
     "name" : "Targeting Scope",
     "value" : "BLUE",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "0",
     "name" : "Targeting Scope",
     "value" : "YELLOW",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "RED",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "BLUE",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "YELLOW",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
   },
   {
     "index" : "2",
     "name" : "Teleporter",
     "value" : "RED",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_0212.png"
   },
   {
     "index" : "2",
     "name" : "Teleporter",
     "value" : "BLUE",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_011.png"
   },
   {
     "index" : "2",
     "name" : "Teleporter",
     "value" : "YELLOW",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_0213.png"
   },
   {
     "index" : "3",
     "name" : "Tagback Grenade",
     "value" : "RED",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_023.png"
   },
   {
     "index" : "3",
     "name" : "Tagback Grenade",
     "value" : "BLUE",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_022.png"
   },
   {
     "index" : "3",
     "name" : "Tagback Grenade",
     "value" : "YELLOW",
-    "numberOfCards" : "2"
+    "numberOfCards" : "2",
+    "path" : "/Grafica/cards/AD_powerups_IT_024.png"
   }
 ]

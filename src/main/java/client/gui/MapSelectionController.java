@@ -1,6 +1,8 @@
 package client.gui;
 
+import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -14,17 +16,33 @@ public class MapSelectionController implements GuiController {
     @FXML
     private ChoiceBox skullBox;
 
-    private MainGui gui;
+    private UpdaterGui gui;
 
 
     @Override
-    public void addGui(MainGui mainGui) {
-        this.gui = mainGui;
+    public void addGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 
     @Override
     public void init() {
         this.skullBox.getItems().addAll(5,6,7,8);
+    }
+
+    @Override
+    public void enableAll() {
+        for(Node map : mapGridPane.getChildren()){
+            map.setDisable(false);
+        }
+        this.skullBox.setDisable(false);
+    }
+
+    @Override
+    public void disableAll() {
+        for(Node map : mapGridPane.getChildren()){
+            map.setDisable(true);
+        }
+        this.skullBox.setDisable(true);
     }
 
     public void initialize(){

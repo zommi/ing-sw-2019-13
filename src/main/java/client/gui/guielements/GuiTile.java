@@ -1,4 +1,4 @@
-package client.gui;
+package client.gui.guielements;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;

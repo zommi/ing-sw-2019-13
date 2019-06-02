@@ -1,16 +1,27 @@
 package client.gui;
 
-public class LoadingScreenController implements GuiController{
+import client.gui.guielements.GuiController;
 
-    private MainGui gui;
+public class LoadingScreenController implements GuiController {
+
+    private UpdaterGui gui;
 
     @Override
-    public void addGui(MainGui mainGui) {
-        this.gui = mainGui;
+    public void addGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 
     @Override
     public void init() {
+
+    }
+
+    @Override
+    public void enableAll() {
+    }
+
+    @Override
+    public void disableAll() {
 
     }
 

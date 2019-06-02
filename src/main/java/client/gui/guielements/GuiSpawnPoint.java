@@ -1,13 +1,6 @@
-package client.gui;
+package client.gui.guielements;
 
-import javafx.event.Event;
-import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import constants.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import server.model.cards.WeaponCard;
@@ -20,9 +13,12 @@ public class GuiSpawnPoint extends GuiTile {
 
     List<String> cardsOnSpawnPoint;
 
+    private Color color;
 
-    public GuiSpawnPoint(int x, int y,int height, int width, Paint paint){
-        super(x,y,height,width,paint);
+
+    public GuiSpawnPoint(int x, int y,int height, int width, Color color){
+        super(x,y,height,width,Paint.valueOf(color.getSpHexValue()));
+        this.color = color;
         Rectangle overlay = new Rectangle(height / 1.5 , width / 1.5 , Paint.valueOf("#000000"));
         overlay.setStroke(Paint.valueOf("#000000"));
         overlay.setFill(Paint.valueOf("#00000000"));
@@ -40,6 +36,10 @@ public class GuiSpawnPoint extends GuiTile {
         for(int i = 0; i < 3; i++){
             cardsOnSpawnPoint.add(cards.get(i).getPath());
         }
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public void restore(String card, int index){

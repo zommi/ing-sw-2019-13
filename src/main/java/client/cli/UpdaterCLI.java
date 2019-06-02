@@ -340,7 +340,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         playerHand = gameModel.getPlayerHand();
         powerups = playerHand.getPowerupHand();
         System.out.println(">You have the following powerups: ");
-        while ((powerups == null) || (powerups.size() == 0)) {
+        while ((powerups == null) || (powerups.isEmpty())) {
             System.out.println(">You have no powerups. There's a problem as you should have draw them");
             playerHand = gameModel.getPlayerHand();
             powerups = playerHand.getPowerupHand();

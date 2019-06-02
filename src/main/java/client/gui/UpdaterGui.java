@@ -2,19 +2,26 @@ package client.gui;
 
 import client.Connection;
 import client.GameModel;
+import client.Updater;
+import client.gui.guielements.GuiController;
+import exceptions.GameAlreadyStartedException;
+import exceptions.NotEnoughPlayersException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import server.model.map.GameMap;
 
 import java.io.File;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Observable;
 
-public class MainGui extends Application {
+public class UpdaterGui extends Application implements Updater {
 
 
     private HashMap<String, Parent> sceneMap = new HashMap<>();
@@ -41,8 +48,9 @@ public class MainGui extends Application {
 
     private int playerId;
 
-    private UpdaterGUI updater;
+    boolean mapInitialized;
 
+    private GameModel model;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -50,9 +58,6 @@ public class MainGui extends Application {
         this.stage = primaryStage;
         run();
     }
-
-
-
 
     public static void main(String[] args) {
         launch(args);
@@ -73,8 +78,6 @@ public class MainGui extends Application {
             }
             currentScene = new Scene(sceneMap.get("start_menu.fxml"));
             this.stageName = "stage_menu.fxml";
-            this.updater = new UpdaterGUI(this);
-            new Thread(this.updater).start();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -103,12 +106,58 @@ public class MainGui extends Application {
         stage.setResizable(false);
     }
 
+    @Override
+    public void update(Observable gameModel, Object object) {
+        if(object.equals("GameBoard")){
+
+        }
+
+        if(object.equals("Change player")){
+            System.out.println("Player changed");
+            handleTurn();
+        }
+
+
+        if(object.equals("Map") && !mapInitialized){
+            System.out.println("Game initialised");
+            Platform.runLater(() -> {
+                getControllerFromString("gui.fxml").init();
+                changeStage("gui.fxml");
+                mapInitialized = true;
+            });
+            handleTurn();
+        }
+
+        if(object.equals("PlayerBoard")){
+
+        }
+
+        if(object.equals("PlayerHand")){
+            System.out.println("Hand Updated");
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController) currentController;
+                controllerConverted.updateHand();
+            });
+        }
+    }
+
+
+    public void handleTurn(){
+        Platform.runLater(() -> {
+            if(getConnection().getClientID() == getConnection().getCurrentID()){
+                this.currentController.enableAll();
+            } else {
+                this.currentController.disableAll();
+            }
+        });
+    }
+
     public void setConnection(Connection connection){
         this.connection = connection;
     }
 
     public void setModel(){
-        this.updater.setModel(connection.getGameModel());
+        this.model = connection.getGameModel();
     }
 
     public void setMapIndex(int mapIndex) {
@@ -172,14 +221,15 @@ public class MainGui extends Application {
     }
 
     public GameModel getGameModel(){
-        return this.updater.getGameModel();
+        return this.model;
     }
 
     public void attachToObserver() {
-        this.updater.attachToObserver();
+        this.model.addObserver(this);
     }
 
     public GuiController getControllerFromString(String name){
         return this.controllerMap.get(name);
     }
+
 }

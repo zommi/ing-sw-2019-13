@@ -1,7 +1,5 @@
-package client.gui;
+package client.gui.guielements;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 
 public class GuiSquare extends GuiTile {

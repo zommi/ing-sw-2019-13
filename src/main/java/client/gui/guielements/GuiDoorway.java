@@ -1,4 +1,4 @@
-package client.gui;
+package client.gui.guielements;
 
 import constants.Color;
 import javafx.scene.paint.Paint;
