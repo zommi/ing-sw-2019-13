@@ -40,7 +40,6 @@ public class CollectAction implements Action {
     private GameMap map;
 
     public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo, PlayerAbstract player, GameMap currentMap){
-        //TODO change implementation!
         this.moveInfo = moveInfo;
         this.map = currentMap;
         this.player = player;

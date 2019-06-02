@@ -128,7 +128,7 @@ public class Controller implements MyObserver {
             this.sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
         else if(action instanceof ShootPack){
-            ShootAction shootAction = new ShootAction((ShootPack) action); // TODO add player
+            ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame.getCurrentGameBoard()); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
         }

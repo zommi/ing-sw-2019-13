@@ -3,6 +3,8 @@ package server.model.map;
 import constants.Color;
 import server.model.cards.CollectableInterface;
 import server.model.cards.WeaponCard;
+import server.model.gameboard.AmmoTileDeck;
+import server.model.gameboard.WeaponDeck;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +33,14 @@ public class SpawnPoint extends SquareAbstract implements Serializable {
     }
 
     public void removeItem(CollectableInterface itemToRemove){
-        weaponCards.remove((WeaponCard)itemToRemove);
+        CollectableInterface temp = null;
+        for(int i = 0; i < weaponCards.size(); i++){
+            if(weaponCards.get(i).getName() == ((WeaponCard)itemToRemove).getName()){
+                temp = weaponCards.get(i);
+            }
+        }
+        weaponCards.remove((WeaponCard) temp);
+        addItem(WeaponDeck.draw());
     }
 
     @Override

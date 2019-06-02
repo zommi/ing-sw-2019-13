@@ -19,7 +19,7 @@ import java.util.*;
 public class AmmoTileDeck implements Serializable {
 
 
-    LinkedList<AmmoTile> deck = new LinkedList<>();
+    static LinkedList<AmmoTile> deck = new LinkedList<>();
 
     /**
      * Default constructor using initializeDeck to create the list of tiles
@@ -53,7 +53,7 @@ public class AmmoTileDeck implements Serializable {
 
         for(int i = 0; i < arrayOfTiles.length ; i++){
             for(int j = 0; j < arrayOfTiles[i].getNumberOfCards(); j++){
-                this.deck.push(new AmmoTile(createListFromType(arrayOfTiles[i]),
+                deck.push(new AmmoTile(createListFromType(arrayOfTiles[i]),
                         arrayOfTiles[i].hasPowerup(),arrayOfTiles[i].getPath()));
             }
         }
@@ -64,8 +64,8 @@ public class AmmoTileDeck implements Serializable {
      * Pops the first element of the queue containg the ammotiles
      * @return Returns the AmmoTile popped.
      */
-    public AmmoTile draw(){
-        return this.deck.pop();
+    public static AmmoTile draw(){
+        return deck.pop();
     }
 
     /**
@@ -95,7 +95,7 @@ public class AmmoTileDeck implements Serializable {
      * Shuffles the deck
      */
     public void shuffle(){
-        Collections.shuffle(this.deck);
+        Collections.shuffle(deck);
     }
 
     @Override

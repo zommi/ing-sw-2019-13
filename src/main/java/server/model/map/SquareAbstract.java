@@ -4,6 +4,7 @@ import exceptions.NotAlignedException;
 import server.model.cards.CollectableInterface;
 import constants.Color;
 import constants.Direction;
+import server.model.gameboard.AmmoTileDeck;
 import server.model.player.GameCharacter;
 
 import java.io.Serializable;
