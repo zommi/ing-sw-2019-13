@@ -70,9 +70,8 @@ public class Controller implements MyObserver {
         turnHandler.setCurrentPlayer(currentPlayer);
 
         System.out.println("We are in the game state: " +currentGame.getCurrentState());
-        if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
-            this.nextCurrentID();
-        }
+        System.out.println("We are in the action number: " +turnHandler.getCurrentPhase());
+
 
         //TODO if(finalfrenzy)
         //{
@@ -131,6 +130,14 @@ public class Controller implements MyObserver {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame.getCurrentGameBoard()); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
+        }
+
+
+        if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
+            this.nextCurrentID();
+            System.out.println("Number of actions ended " +turnHandler.getCurrentPhase());
+            ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
+            server.sendToEverybodyRMI(change);
         }
         return true;
     }

@@ -36,6 +36,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the gameboard");
         }
 
+        if(object.equals("Change player")){
+            System.out.println("Next player");
+        }
+
         if(object.equals("Spawn")){
             System.out.println("New update of spawn");
         }

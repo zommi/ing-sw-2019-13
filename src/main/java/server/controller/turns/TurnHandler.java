@@ -7,6 +7,9 @@ import server.Server;
 import server.controller.Controller;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.ShootInfo;
+import server.controller.playeraction.normalaction.CollectAction;
+import server.controller.playeraction.normalaction.MoveAction;
+import server.controller.playeraction.normalaction.ShootAction;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 import view.ChangeCurrentPlayerAnswer;
@@ -57,7 +60,7 @@ public class TurnHandler {
             this.action = action;
             //if returns false then disconnects the player
             this.action.execute();
-            if((action instanceof ShootInfo) || (action instanceof CollectInfo) || (action instanceof MoveInfo)) //if it is a draw or a spawn it is not counted as an action
+            if((action instanceof ShootAction) || (action instanceof CollectAction) || (action instanceof MoveAction)) //if it is a draw or a spawn it is not counted as an action
                 nextPhase();
         }
     }
