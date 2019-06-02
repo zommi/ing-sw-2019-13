@@ -62,15 +62,17 @@ public class Server {
                     //System.out.println("Sent the weapon card list to the client RMI");
                     System.out.println(" " +temp.get(i).getClientID());
                     System.out.println(" " +controller.getCurrentID());
-                    if(temp.get(i).getClientID() == controller.getCurrentID()){
-                        System.out.println("Trying to find the current player to send him his player hand");
-                        for(int k = 0; k < controller.getPlayers().size(); k++){
-                            System.out.println(" " +controller.getPlayers().get(k).getClientID());
-                            if(controller.getPlayers().get(k).getClientID() == controller.getCurrentID()){
-                                System.out.println("Found him. Now I will send him his player hand");
-                                PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
+                    System.out.println("Sending the players their player hands");
+                    System.out.println(" " +controller.getPlayers().get(i).getClientID());
+                    for(int k = 0; k < controller.getPlayers().size(); k++){
+                        if(controller.getPlayers().get(k).getClientID() == temp.get(i).getClientID()){
+                            PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
+                            try{
                                 temp.get(i).publishMessage(playerHandAnswer);
                                 System.out.println("player hand sent");
+                            }
+                            catch(RemoteException e){
+                                e.printStackTrace();
                             }
                         }
                     }

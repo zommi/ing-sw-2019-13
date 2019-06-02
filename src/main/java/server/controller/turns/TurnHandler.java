@@ -81,7 +81,8 @@ public class TurnHandler {
                 break;
             case END_TURN:
                 try{
-                    ((ConcretePlayer)currentPlayer).getCurrentGame().nextPlayer();
+                    controller.getCurrentGame().nextPlayer();
+                    System.out.println("changed player in game");
                     controller.sendChangeCurrentPlayer();
                 }
                 catch(WrongGameStateException e){

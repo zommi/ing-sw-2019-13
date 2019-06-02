@@ -134,6 +134,9 @@ public class Controller implements MyObserver {
 
 
         if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
+            System.out.println("We are in the end turn");
+            turnHandler.nextPhase();
+            System.out.println("Turning next phase");
             this.nextCurrentID();
             System.out.println("Number of actions ended " +turnHandler.getCurrentPhase());
             ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
