@@ -121,7 +121,7 @@ public class Server {
             List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
             for (int i = 0; i < temp.size(); i++) {
                 temp.get(i).publishMessage(serverAnswer);
-                System.out.println("Sent an update to the client");
+                System.out.println("Sent an update to the clients");
             }
         }
         catch(RemoteException e){
@@ -135,7 +135,7 @@ public class Server {
             for (int i = 0; i < temp.size(); i++) {
                 if(temp.get(i).getClientID() == clientID){
                     temp.get(i).publishMessage(serverAnswer);
-                    System.out.println("Sent an update to the client");
+                    System.out.println("Sent an update to a client");
                     break;
                 }
             }

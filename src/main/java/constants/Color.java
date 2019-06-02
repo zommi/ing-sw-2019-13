@@ -1,5 +1,7 @@
 package constants;
 
+import server.model.game.Game;
+
 public enum Color {
     RED("r",0, "#ff0000", "#af2b2b"),
     BLUE("b",1, "#0000ff", "#2b4daf"),
@@ -37,6 +39,23 @@ public enum Color {
             if(c.index == index) return c;
         }
         return null;
+    }
+
+    public static Color fromCharacter(String name){
+        switch (name){
+            case  "DESTRUCTOR":
+                return YELLOW;
+            case "BANSHEE" :
+                return BLUE;
+            case  "VIOLET":
+                return PURPLE;
+            case "DOZER" :
+                return GREY;
+            case  "SPROG":
+                return GREEN;
+            default:
+                return UNDEFINED;
+        }
     }
 
     @Override

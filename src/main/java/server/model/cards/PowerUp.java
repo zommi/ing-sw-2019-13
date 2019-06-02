@@ -15,6 +15,8 @@ public class PowerUp {
 
     private int numberOfCards;
 
+    private String path;
+
 
     PowerUp(){
         this.index = -1;
@@ -45,5 +47,9 @@ public class PowerUp {
             return false;
         PowerUp powerUp2 = (PowerUp) obj;
         return name.equals(powerUp2.getName());
+    }
+
+    public String getPath() {
+        return path;
     }
 }

@@ -65,6 +65,7 @@ public class PowerupDeck implements Serializable {
                     this.deck.push(new PowerUpCard(
                             arrayOfPowerUps[i].getValue(),
                             getPoweupFromIndex(arrayOfPowerUps[i].getIndex()),
+                            arrayOfPowerUps[i].getPath(),
                             this
                     ));
                 }

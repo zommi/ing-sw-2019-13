@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <?import java.net.URL?>
+<?import javafx.scene.control.TextArea?>
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MainGuiController">
     <stylesheets>
@@ -24,8 +25,12 @@
             <StackPane fx:id="mapStackPane" prefHeight="570.0" prefWidth="860.0" styleClass="maingui-scrollpane-background" />
          </content>
       </ScrollPane>
+       <!-- text logger -->
        <ScrollPane layoutX="860.0" prefHeight="570.0" prefWidth="340.0" AnchorPane.bottomAnchor="230.0"
                    AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <content>
+               <TextArea fx:id="textLogger" prefHeight="Infinity" prefWidth="570.0"/>
+           </content>
        </ScrollPane>
       <GridPane fx:id="weaponHand" hgap="3.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="770.0" AnchorPane.topAnchor="570.0">
@@ -85,7 +90,7 @@
            </children>
        </GridPane>
        <!-- button gridpane -->
-      <GridPane layoutX="860.0" layoutY="570.0" prefHeight="230.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0"
+      <GridPane fx:id="buttonGrid" layoutX="860.0" layoutY="570.0" prefHeight="230.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="570.0">
         <columnConstraints>
           <ColumnConstraints prefWidth="340.0" />
@@ -103,13 +108,15 @@
                      <ColumnConstraints prefWidth="113.0"/>
                  </columnConstraints>
                  <children>
-                     <Button prefHeight="76.0" prefWidth="113.0" text="MOVE" GridPane.columnIndex="0" onMousePressed="#enableMove"/>
+                     <Button prefHeight="76.0" prefWidth="113.0" text="MOVE" GridPane.columnIndex="0"
+                             onMousePressed="#enableMove"/>
                      <Button prefHeight="76.0" prefWidth="113.0" text="COLLECT" GridPane.columnIndex="1"/>
                      <Button prefHeight="76.0" prefWidth="113.0" text="SHOOT" GridPane.columnIndex="2"/>
                  </children>
              </GridPane>
              <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD" GridPane.rowIndex="1" />
-            <Button prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2" mnemonicParsing="true"/>
+            <Button prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2"
+                    onMousePressed="#showScoreboard"/>
          </children>
       </GridPane>
    </children>

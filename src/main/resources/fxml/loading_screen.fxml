@@ -16,7 +16,7 @@
                 <Image url="@../startmenuimage.png" />
             </image>
         </ImageView>
-        <ProgressBar prefWidth="400.0" prefHeight="50.0" StackPane.alignment="BOTTOM_CENTER" >
+        <ProgressBar prefWidth="400.0" prefHeight="50.0" StackPane.alignment="BOTTOM_CENTER">
         </ProgressBar>
         <Label text="LOADING..." StackPane.alignment="CENTER" styleClass="loading-screen-label" >
         </Label>

@@ -2,13 +2,14 @@ package client.gui;
 
 import client.ConnectionRMI;
 import client.ConnectionSocket;
+import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.rmi.RemoteException;
 
-public class StartMenuController implements GuiController{
+public class StartMenuController implements GuiController {
 
     /*
     @FXML
@@ -48,7 +49,7 @@ public class StartMenuController implements GuiController{
     @FXML
     private ChoiceBox characterBox;
 
-    private MainGui gui;
+    private UpdaterGui gui;
 
 
     @FXML
@@ -70,13 +71,13 @@ public class StartMenuController implements GuiController{
         this.gui.attachToObserver();
     }
 
-    public void setGui(MainGui mainGui) {
-        this.gui = mainGui;
+    public void setGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 
     @Override
-    public void addGui(MainGui mainGui) {
-        this.gui = mainGui;
+    public void addGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 
     @Override
@@ -105,5 +106,13 @@ public class StartMenuController implements GuiController{
 
     }
 
+    @Override
+    public void enableAll() {
+    }
+
+    @Override
+    public void disableAll() {
+
+    }
 
 }

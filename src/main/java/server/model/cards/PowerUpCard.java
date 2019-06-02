@@ -12,12 +12,14 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
     private Color color;
     private PowerUp powerUp;
     private PowerupDeck powerupDeck;
+    private String path;
 
 
-    public PowerUpCard(Color color, PowerUp powerUp, PowerupDeck powerupDeck) {
+    public PowerUpCard(Color color, PowerUp powerUp, String path, PowerupDeck powerupDeck) {
         this.color = color;
         this.powerUp = powerUp;
         this.powerupDeck = powerupDeck;
+        this.path = path;
     }
 
     public PowerUp getPowerUp() {
@@ -52,6 +54,10 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
 
         return (color == card2.getColor() && powerUp.getName().equals(card2.getPowerUp().getName()));
 
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public void play(){};

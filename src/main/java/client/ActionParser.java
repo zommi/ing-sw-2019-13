@@ -26,15 +26,13 @@ public class ActionParser{
     }
 
     public Info createMoveEvent(int coordinatex, int coordinatey) {
-        Info moveInfo = new MoveInfo(coordinatex, coordinatey);
-        return moveInfo;
+        return new MoveInfo(coordinatex, coordinatey);
     }
 
     public Info createShootEvent(String weaponChosen){
         Weapon weapon = this.weaponFromString(weaponChosen);
         ShootParser shootParser = new ShootParser(gameModel);
-        Info shootInfo = shootParser.getWeaponInput(weapon,input);
-        return shootInfo;
+        return shootParser.getWeaponInput(weapon,input);
     }
 
     public Weapon weaponFromString(String name){
@@ -53,15 +51,13 @@ public class ActionParser{
 
 
     public Info createCollectEvent(int x, int y, int collectDecision) {
-        Info collectInfo = new CollectInfo(x, y, collectDecision);
-        return collectInfo;
+        return new CollectInfo(x, y, collectDecision);
     }
 
     public Info createPowerUpEvent(String powerUpChosen) {
         PowerUp powerUp = this.powerUpFromString(powerUpChosen);
         PowerUpParser powerUpParser = new PowerUpParser(gameModel);
-        Info powerUpInfo = powerUpParser.getPowerUpInput(powerUp,input);
-        return powerUpInfo;
+        return powerUpParser.getPowerUpInput(powerUp,input);
     }
 
 
@@ -80,8 +76,7 @@ public class ActionParser{
     }
 
     public Info createSpawEvent(PowerUpCard powerupCard){
-        SpawnInfo spawnInfo = new SpawnInfo(powerupCard);
-        return spawnInfo;
+        return new SpawnInfo(powerupCard);
     }
 }
 

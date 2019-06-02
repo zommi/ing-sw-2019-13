@@ -93,6 +93,7 @@ public class GameModel extends Observable implements Serializable {
         }
 
         if(answer instanceof  ChangeCurrentPlayerAnswer) {
+            setChanged();
             notifyObservers("Change player");
         }
 
