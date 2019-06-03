@@ -23,6 +23,9 @@ public class PlayerBoardAnswer implements ServerAnswer{
     public int getYellowAmmo(){
         return result.getYellowAmmo();
     }
+    public String getCharacterName(){
+        return result.getCharacterName();
+    }
     public int getRow(){
         return result.getRow();
     }

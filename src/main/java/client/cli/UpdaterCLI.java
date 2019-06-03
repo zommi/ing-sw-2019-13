@@ -377,6 +377,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         int collectDecision = 0;
         boolean collectChosen = false;
         boolean powerupChosen = false;
+        printPlayerBoard(gameModel.getPlayerBoard(gameModel.getClientID()));
         System.out.println(">Write a command: ");
         read = myObj.nextLine();
         int result = -1;
@@ -457,6 +458,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         } else {
             System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
         }
+    }
+
+    public void printPlayerBoard(PlayerBoardAnswer p){
+        System.out.println("You currently have: " +p.getResult().getDamageTaken() +" damage tokens");
     }
 
     public static void main(String[] args) {

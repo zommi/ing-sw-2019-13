@@ -23,6 +23,7 @@ public class PlayerBoard implements Serializable {
     private int numberOfDeaths;
     private int row;
     private int col;
+    private String characterName;
 
 
     //0 red, 1 blue, 2 yellow
@@ -50,6 +51,7 @@ public class PlayerBoard implements Serializable {
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
+        this.characterName = p.getCharacterName();
     }
 
     private void setDamage(int i, Color color) {
@@ -66,12 +68,17 @@ public class PlayerBoard implements Serializable {
         playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
         playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
         playerBoard.ammo = new int[3];
+        playerBoard.characterName = playerBoardToCopy.getCharacterName();
         playerBoard.row = playerBoardToCopy.getRow();
         playerBoard.col = playerBoardToCopy.getCol();
         playerBoard.ammo[0] = ammo[RED_CUBES_INDEX];
         playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
         playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
         return playerBoard;
+    }
+
+    public String getCharacterName(){
+        return this.characterName;
     }
 
     public ConcretePlayer getPlayer() {
