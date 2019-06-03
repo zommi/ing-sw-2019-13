@@ -13,7 +13,8 @@
       {
 
         "mandatory" : true,
-        "microEffects" : [
+        "description" : "Deal 2 damage and 1 mark to 1 target you can see.",
+"microEffects" : [
           {
             "mandatory" : true,
             "damage" : 2,
@@ -33,7 +34,8 @@
         "cost" : {
           "red" : 1
         },
-        "microEffects" : [
+        "description" : "Deal 1 mark to a different target you can see.",
+"microEffects" : [
           {
             "mandatory" : true,
             "marks" : 1,
@@ -72,6 +74,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Choose 1 or 2 targets you can see and deal 1 damage to each.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -90,6 +93,7 @@
         "cost" : {
           "yellow" : 1
         },
+        "description" : "Deal 1 additional damage to one of those targets.",
         "microEffects" : [
           {
             "damage" : 1,
@@ -121,6 +125,7 @@
           "blue" : 1
         },
         "atLeastOneActiveFlag" : true,
+        "description" : "Deal 1 additional damage to the other of those targets and/or deal 1 damage to a different target you can see.",
         "microEffects" : [
           {
             "maxTargetPlayerSize" : 1,
@@ -181,6 +186,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Deal 2 damage to 1 target you can see.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -200,6 +206,7 @@
         "cost" : {
           "blue" : 1
         },
+        "description" : "Deal 1 damage to a second target that your first target can see.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -225,6 +232,7 @@
         "conditional" : true,
         "macroEffectIndex" : 1,
         "microEffectIndex" : 0,
+        "description" : "Deal 2 damage to a third target that your second target can see. You cannot use this effect unless you first use the chain reaction.",
         "microEffects" : [
           {
             "mandatory" :true,
@@ -268,6 +276,7 @@
     "macroEffects": [
       {
         "limited" : true,
+        "description" : "Move 1 or 2 squares. This effect can be used either before or after the basic effect.",
         "microEffects" : [
           {
             "moveFlag" : true,
@@ -291,6 +300,7 @@
       },
       {
         "mandatory"  : true,
+        "description" : "Deal 2 damage to 1 target you can see.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -308,6 +318,7 @@
       },
       {
         "limited" : true,
+        "description" : "Move 1 or 2 squares. This effect can be used either before or after the basic effect.",
         "microEffects" : [
           {
             "moveFlag" : true,
@@ -333,6 +344,7 @@
         "cost" : {
           "blue" : 1
         },
+        "description" : "Deal 1 additional damage to your target.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -368,6 +380,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Deal 3 damage and 1 mark to 1 target you can see. Your target must be at least 2 moves away from you.",
         "microEffects" : [
           {
             "damage" : 3,
@@ -402,6 +415,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Deal 1 damage to every other player on your square.",
         "microEffects" : [
           {
             "damage" : 1,
@@ -423,6 +437,7 @@
           "red" : 1,
           "blue" : 1
         },
+        "description" : "Deal 2 damage to every other player on your square.",
         "microEffects" : [
           {
             "damage": 2,
@@ -451,6 +466,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Move a target 0, 1, or 2 squares to a square you can see, and give it 1 damage.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -481,6 +497,7 @@
           "red" : 1,
           "yellow" : 1
         },
+        "description" : "Choose a target 0, 1, or 2 moves away from you. Move the target to your square and deal 3 damage to it.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -521,6 +538,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Choose a square you can see, but not your square. Call it \"the vortex\". Choose a target on the vortex or 1 move away from it. Move it onto the vortex and give it 2 damage.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -555,6 +573,7 @@
         "cost" : {
           "red" : 1
         },
+        "description" : "Choose up to 2 other targets on the vortex or 1 move away from it. Move them onto the vortex and give them each 1 damage.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -607,6 +626,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Choose a room you can see, but not the room you are in. Deal 1 damage to everyone in that room.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -637,6 +657,7 @@
         ]
       },
       {
+        "description" : "Choose a square exactly one move away. Deal 1 damage and 1 mark to everyone on that square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -681,6 +702,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Choose 1 target you cannot see and deal 3 damage to it.",
         "microEffects" : [
           {
             "damage" : 3,
@@ -711,6 +733,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Deal 1 damage to 1 target you can see at least 1 move away. Then give 1 mark to that target and everyone else on that square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -752,6 +775,7 @@
         "cost" : {
           "red" : 1
         },
+        "description" : "Deal 1 damage to 1 target you can see at least 1 move away. Then give 2 marks to that target and everyone else on that square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -802,6 +826,7 @@
     "macroEffects": [
       {
         "atLeastOneActiveFlag" : true,
+        "description" : "Choose a square 1 move away and possibly a second square 1 more move away in the same direction. On each square, you may choose 1 target and give it 1 damage.",
         "microEffects" : [
           {
             "damage" : 1,
@@ -852,6 +877,7 @@
           "yellow" : 2
         },
         "atLeastOneActiveFlag" : true,
+        "description" : "Choose 2 squares as above. Deal 2 damage to everyone on the first square and 1 damage to everyone on the second square.",
         "microEffects" : [
           {
             "damage" : 2,
@@ -931,6 +957,7 @@
     "macroEffects": [
       {
         "mandatory" : true,
+        "description" : "Deal 1 damage to 1 target you can see. Then you may move the target 1 square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -974,6 +1001,7 @@
         "cost" : {
           "red" : 1
         },
+        "description" : "Deal 1 damage to every player on a square you can see. You can use this before or after the basic effect's move.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1042,6 +1070,7 @@
           "blue" : 1
         },
         "limited" : true,
+        "description" : "Move 1 or 2 squares. This effect can be used either before or after the basic effect.",
         "microEffects" : [
           {
             "moveFlag" : true,
@@ -1070,6 +1099,7 @@
       },
       {
         "mandatory" : true,
+        "description" : "Deal 2 damage to 1 target you can see that is not on your square. Then you may move the target 1 square.",
         "microEffects" : [
           {
             "damage" : 2,
@@ -1128,6 +1158,7 @@
           "blue" : 1
         },
         "limited" : true,
+        "description" : "Move 1 or 2 squares. This effect can be used either before or after the basic effect.",
         "microEffects" : [
           {
             "moveFlag" : true,
@@ -1159,6 +1190,7 @@
         "cost" : {
           "yellow" : 1
         },
+        "description" : "During the basic effect, deal 1 damage to every player on your target's original square – including the target, even if you move it.",
         "microEffects" : [
           {
             "damage" : 1,
@@ -1217,6 +1249,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Choose a cardinal direction and 1 target in that direction. Deal 3 damage to it.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1233,6 +1266,7 @@
         ]
       },
       {
+        "description" : "Choose a cardinal direction and 1 or 2 targets in that direction. Deal 2 damage to each.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1265,6 +1299,7 @@
     "macroEffects": [
       {
         "limited" : true,
+        "description" : "Move 1 square before or after the basic effect.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1288,6 +1323,7 @@
       },
       {
         "mandatory" : true,
+        "description" : "Deal 2 damage to 1 target on your square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1306,6 +1342,7 @@
       },
       {
         "limited" : true,
+        "description" : "Move 1 square before or after the basic effect.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1331,6 +1368,7 @@
         "cost" : {
           "yellow" : 1
         },
+        "description" : "Deal 2 damage to a different target on your square. The shadowstep may be used before or after this effect.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1357,6 +1395,7 @@
       },
       {
         "limited" : true,
+        "description" : "Move 1 square before or after the basic effect.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1396,6 +1435,7 @@
         "cost" : {
 
         },
+        "description" : "Deal 1 damage and 2 marks to 1 target you can see.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1416,6 +1456,7 @@
         "cost" : {
 
         },
+        "description" : "Choose up to 3 targets you can see and deal 1 mark to each.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1445,6 +1486,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Deal 3 damage to 1 target on your square. If you want, you may then move the target 1 square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1482,6 +1524,7 @@
         ]
       },
       {
+        "description" : "Deal 2 damage to 1 target on any square exactly one move away.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1513,6 +1556,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Choose 1 target on any square exactly 1 move away. Move onto that square and give the target 1 damage and 2 marks.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1555,6 +1599,7 @@
         "cost" : {
           "blue" : 1
         },
+        "description" : "Choose a square exactly 1 move away. Move onto that square. You may deal 2 damage to 1 target there. If you want, you may move 1 more square in that same direction (but only if it is a legal move). You may deal 2 damage to 1 target there, as well.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1656,6 +1701,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Choose up to 3 targets on different squares, each exactly 1 move away. Deal 1 damage to each target.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1680,6 +1726,7 @@
         "cost" : {
           "yellow" : 1
         },
+        "description" : "Deal 1 damage to all targets that are exactly 1 move away.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1708,6 +1755,7 @@
     },
     "macroEffects": [
       {
+        "description" : "Deal 2 damage to 1 target on your square.",
         "microEffects" : [
           {
             "mandatory" : true,
@@ -1728,6 +1776,7 @@
         "cost" : {
           "red" : 1
         },
+        "description" : "Deal 3 damage to 1 target on your square, then move that target 0, 1, or 2 squares in one direction.",
         "microEffects" : [
           {
             "mandatory" : true,
