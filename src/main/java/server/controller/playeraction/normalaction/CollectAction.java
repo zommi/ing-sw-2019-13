@@ -59,8 +59,8 @@ public class CollectAction implements Action {
     }
 
     public boolean collect(){
-        if(validator.validate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()),weaponChoice)) {
-            actuator.actuate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()) ,weaponChoice, controller);
+        if(validator.validate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()),weaponChoice)) {
+            actuator.actuate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()) ,weaponChoice, controller);
             return true;
         }else {
             System.out.println("You can't collect");

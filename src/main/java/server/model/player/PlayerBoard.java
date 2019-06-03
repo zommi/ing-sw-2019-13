@@ -21,8 +21,8 @@ public class PlayerBoard implements Serializable {
     private int[] pointValue;
     private int currentPointValueCursor;
     private int numberOfDeaths;
-    private int x;
-    private int y;
+    private int row;
+    private int col;
 
 
     //0 red, 1 blue, 2 yellow
@@ -66,8 +66,8 @@ public class PlayerBoard implements Serializable {
         playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
         playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
         playerBoard.ammo = new int[3];
-        playerBoard.x = playerBoardToCopy.getX();
-        playerBoard.y = playerBoardToCopy.getY();
+        playerBoard.row = playerBoardToCopy.getRow();
+        playerBoard.col = playerBoardToCopy.getCol();
         playerBoard.ammo[0] = ammo[RED_CUBES_INDEX];
         playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
         playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
@@ -114,22 +114,22 @@ public class PlayerBoard implements Serializable {
         return ammo[YELLOW_CUBES_INDEX];
     }
 
-    public void spawn(int x, int y){
-        this.x = x;
-        this.y = y;
+    public void spawn(int row, int col){
+        this.row = row;
+        this.col = col;
     }
 
-    public void setPosition(int x, int y){
-        this.x = x;
-        this.y = y;
+    public void setPosition(int row, int col){
+        this.row = row;
+        this.col = col;
     }
 
-    public int getX(){
-        return this.x;
+    public int getRow(){
+        return this.row;
     }
 
-    public int getY(){
-        return this.y;
+    public int getCol(){
+        return this.col;
     }
     //TODO add easter egg when someone dies 7 times in the same game and make him win.
     public void addSkull(Color colorOfAttacker) {

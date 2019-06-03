@@ -131,7 +131,7 @@ public class Controller implements MyObserver {
             server.sendToEverybodyRMI(gameBoardAnswer);
         }
         else if(action instanceof CollectInfo){
-            MoveInfo temp = new MoveInfo(((CollectInfo)action).getCoordinateX(),((CollectInfo)action).getCoordinateY());
+            MoveInfo temp = new MoveInfo(((CollectInfo)action).getRow(),((CollectInfo)action).getCol());
             CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer, currentMap);
             turnHandler.setAndDoAction(collectAction);
             this.sendCollectShootAnswersRMI(currentPlayer, clientID);

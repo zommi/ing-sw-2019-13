@@ -381,9 +381,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         read = myObj.nextLine();
         int result = -1;
         if (read.toUpperCase().equals("MOVE")) {
-            System.out.println(">Choose the coordinate x you want to move to: ");
+            System.out.println(">You are in the position: raw " +gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " +gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
+            System.out.println(">Choose the row you want to move to: ");
             coordinatex = Integer.parseInt(myObj.nextLine());
-            System.out.println(">Choose the coordinate y you want to move to: ");
+            System.out.println(">Choose the col you want to move to: ");
             coordinatey = Integer.parseInt(myObj.nextLine());
             Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
             connection.send(action);
@@ -412,12 +413,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println("No (2)"); //2 not move
                 result = Integer.parseInt(myObj.nextLine());
             } while ((result != 1) && (result != 2));
-            coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getX();
-            coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getY();
+            coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getRow();
+            coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getCol();
             if(result == 1){
-                System.out.println(">Choose the coordinate x you want to move to: ");
+                System.out.println(">Choose the row you want to move to: ");
                 coordinatex = Integer.parseInt(myObj.nextLine());
-                System.out.println(">Choose the coordinate y you want to move to: ");
+                System.out.println(">Choose the col you want to move to: ");
                 coordinatey = Integer.parseInt(myObj.nextLine());
             }
 

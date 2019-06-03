@@ -3,19 +3,19 @@ import java.io.Serializable;
 
 public class MoveInfo implements Serializable, Info {
 
-    private int coordinateX;
-    private int coordinateY;
+    private int row;
+    private int col;
 
-    public MoveInfo(int x, int y){
-        this.coordinateX = x;
-        this.coordinateY = y;
+    public MoveInfo(int row, int col){
+        this.row = row;
+        this.col = col;
     }
 
-    public int getCoordinateX() {
-        return coordinateX;
+    public int getRow() {
+        return row;
     }
 
-    public int getCoordinateY() {
-        return coordinateY;
+    public int getCol() {
+        return col;
     }
 }

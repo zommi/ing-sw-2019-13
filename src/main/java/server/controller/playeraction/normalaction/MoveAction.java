@@ -21,7 +21,7 @@ public class MoveAction implements Action {
     private MoveActuator actuator;
 
     public MoveAction(MoveInfo info, PlayerAbstract player, GameMap map){
-        this.destination = map.getSquare(info.getCoordinateY(),info.getCoordinateX());
+        this.destination = map.getSquare(info.getRow(),info.getCol());
         this.map = map;
         this.player = player;
         this.validator = new MoveValidator();
