@@ -1,5 +1,6 @@
 package server.controller.playeraction;
 
+import server.controller.Controller;
 import server.model.game.Game;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
@@ -14,11 +15,11 @@ public class DrawAction implements Action {
         this.game = game;
     }
 
-    public boolean execute(){
+    public boolean execute(Controller controller){
         (this.player).getHand().addCard(this.game.getPowerupDeck().draw());
         if(player.getPlayerState().equals(PlayerState.TOBESPAWNED)){
             player.setState(PlayerState.NORMAL);
-            execute();
+            execute(controller);
         }
         return true;
     }

@@ -1,6 +1,7 @@
 package server.controller.playeraction.normalaction;
 
 import client.weapons.ShootPack;
+import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
@@ -21,11 +22,11 @@ public class ShootAction implements Action {
     }
 
     @Override
-    public boolean execute() {
-        return this.shoot();
+    public boolean execute(Controller controller) {
+        return this.shoot(controller);
     }
 
-    public boolean shoot(){
+    public boolean shoot(Controller controller){
         ShootInfo shootInfo = validator.validate(shootPack, gameBoard, player);
         if(shootInfo != null) {
             actuator.actuate(shootInfo);

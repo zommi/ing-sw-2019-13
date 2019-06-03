@@ -3,6 +3,7 @@ package server.controller.playeraction.normalaction;
 import client.CollectInfo;
 import client.MoveInfo;
 import constants.*;
+import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
@@ -15,6 +16,8 @@ public class CollectAction implements Action {
      * (it can be empty if the player doesn't want to move)
      */
     private List<Direction> moves;
+
+    private Controller controller;
 
     /**
      * reference to the player that is doing the action
@@ -50,13 +53,14 @@ public class CollectAction implements Action {
 
 
     @Override
-    public boolean execute() {
+    public boolean execute(Controller controller) {
+        this.controller = controller;
         return this.collect();
     }
 
     public boolean collect(){
         if(validator.validate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()),weaponChoice)) {
-            actuator.actuate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()) ,weaponChoice);
+            actuator.actuate(player, map.getSquare(moveInfo.getCoordinateX(), moveInfo.getCoordinateY()) ,weaponChoice, controller);
             return true;
         }else {
             System.out.println("You can't collect");

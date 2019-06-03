@@ -2,6 +2,8 @@ package server.model.gameboard;
 
 import client.weapons.Weapon;
 import constants.Constants;
+import server.model.cards.AmmoTile;
+import server.model.cards.WeaponCard;
 import server.model.map.*;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
@@ -65,6 +67,14 @@ public class GameBoard implements Serializable {
         this.mapPlayerBoard = new HashMap<>();
         setupGameBoard();
 
+    }
+
+    public AmmoTile drawAmmo(){
+        return this.ammoTileDeck.draw();
+    }
+
+    public WeaponCard drawWeapon(){
+        return this.weaponDeck.draw();
     }
 
     public Map getHashMap(){

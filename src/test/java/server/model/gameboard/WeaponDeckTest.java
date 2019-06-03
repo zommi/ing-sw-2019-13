@@ -1,6 +1,9 @@
 package server.model.gameboard;
 
 import constants.*;
+import server.Server;
+import server.ServerRMI;
+import server.controller.Controller;
 import server.model.cards.WeaponCard;
 import server.model.map.*;
 import org.junit.jupiter.api.Test;
@@ -21,6 +24,8 @@ class WeaponDeckTest {
     public void drawTest(){
         WeaponDeck testDeck = new WeaponDeck();
         GameMap testGameMap = new GameMap(1);
+        Server server = null;
+        Controller controller = new Controller(1,8,server);
 
         System.out.println(testDeck);
 
@@ -33,7 +38,7 @@ class WeaponDeckTest {
         testGameMap.getSpawnPoint(Color.BLUE).addItem(testDeck.draw());
         assertEquals(testGameMap.getSpawnPoint(Color.BLUE).getWeaponCards().get(0).getName(),firstCard.getName());
 
-        testGameMap.getSpawnPoint(Color.BLUE).removeItem(firstCard);
+        testGameMap.getSpawnPoint(Color.BLUE).removeItem(firstCard, controller);
 
         System.out.println(testDeck);
 

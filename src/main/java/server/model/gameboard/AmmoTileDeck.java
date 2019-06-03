@@ -19,7 +19,7 @@ import java.util.*;
 public class AmmoTileDeck implements Serializable {
 
 
-    static LinkedList<AmmoTile> deck = new LinkedList<>();
+    LinkedList<AmmoTile> deck = new LinkedList<>();
 
     /**
      * Default constructor using initializeDeck to create the list of tiles
@@ -53,7 +53,7 @@ public class AmmoTileDeck implements Serializable {
 
         for(int i = 0; i < arrayOfTiles.length ; i++){
             for(int j = 0; j < arrayOfTiles[i].getNumberOfCards(); j++){
-                deck.push(new AmmoTile(createListFromType(arrayOfTiles[i]),
+                this.deck.push(new AmmoTile(createListFromType(arrayOfTiles[i]),
                         arrayOfTiles[i].hasPowerup(),arrayOfTiles[i].getPath()));
             }
         }
@@ -64,8 +64,8 @@ public class AmmoTileDeck implements Serializable {
      * Pops the first element of the queue containg the ammotiles
      * @return Returns the AmmoTile popped.
      */
-    public static AmmoTile draw(){
-        return deck.pop();
+    public AmmoTile draw(){
+        return this.deck.pop();
     }
 
     /**
@@ -88,22 +88,22 @@ public class AmmoTileDeck implements Serializable {
      * @return the reference to the deck.
      */
     public LinkedList<AmmoTile> getDeck() {
-        return deck;
+        return this.deck;
     }
 
     /**
      * Shuffles the deck
      */
     public void shuffle(){
-        Collections.shuffle(deck);
+        Collections.shuffle(this.deck);
     }
 
     @Override
     public String toString() {
-        int sizeOfDeck = deck.size();
+        int sizeOfDeck = this.deck.size();
         String stringToReturn = "";
         for(int i = 0; i < sizeOfDeck; i++){
-            stringToReturn += deck.get(i).toString() + '\n';
+            stringToReturn += this.deck.get(i).toString() + '\n';
         }
         return stringToReturn;
     }

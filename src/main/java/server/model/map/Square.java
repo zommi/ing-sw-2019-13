@@ -1,6 +1,7 @@
 package server.model.map;
 
 import constants.Color;
+import server.controller.Controller;
 import server.model.cards.AmmoTile;
 import server.model.cards.CollectableInterface;
 import server.model.gameboard.AmmoTileDeck;
@@ -23,9 +24,9 @@ public class Square extends SquareAbstract implements Serializable {
         this.ammoTile = (AmmoTile)itemToAdd;
     }
 
-    public void removeItem(CollectableInterface itemToRemove){
+    public void removeItem(CollectableInterface itemToRemove, Controller controller){
         ammoTile = null;
-        addItem(AmmoTileDeck.draw());
+        addItem(controller.drawAmmo());
     }
 
     @Override

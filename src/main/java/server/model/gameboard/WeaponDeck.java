@@ -20,8 +20,8 @@ public class WeaponDeck implements Serializable {
     /**
      * queue of weapon cards
      */
-    static private LinkedList<WeaponCard> deck;
-    static private LinkedList<WeaponCard> staticDeck;
+    private LinkedList<WeaponCard> deck;
+    private LinkedList<WeaponCard> staticDeck;
 
     /**
      * defaul constructor
@@ -37,7 +37,7 @@ public class WeaponDeck implements Serializable {
     /**
      * initializes the deck by creating all the different cards
      */
-    private static void initializeDeck() throws ReadJsonErrorException {
+    private void initializeDeck() throws ReadJsonErrorException {
          ObjectMapper mapper = new ObjectMapper();
         File file = new File(Constants.PATH_TO_WEAPONS_JSON);
 
@@ -67,36 +67,36 @@ public class WeaponDeck implements Serializable {
             }
         }
 
-        deck = new LinkedList<>();
-        staticDeck = new LinkedList<>();
+        this.deck = new LinkedList<>();
+        this.staticDeck = new LinkedList<>();
 
         for(int i = 0; i < arrayOfWeapons.length; i++){
-            deck.push(new WeaponCard(arrayOfWeapons[i]));
-            staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
+            this.deck.push(new WeaponCard(arrayOfWeapons[i]));
+            this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
 
         }
 
-        shuffle();
+        this.shuffle();
     }
 
 
     public int getSize() {
-        return deck.size();
+        return this.deck.size();
     }
 
     /**
      *
      * @return the first card in the deck
      */
-    public static WeaponCard draw() {
-        return deck.pop();
+    public WeaponCard draw() {
+        return this.deck.pop();
     }
 
     /**
      * shuffles the deck
      */
-    public static void shuffle() {
-        Collections.shuffle(deck);
+    public void shuffle() {
+        Collections.shuffle(this.deck);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class WeaponDeck implements Serializable {
      * @return the first card in the queue without removing it
      */
     public WeaponCard getTop(){
-        return deck.get(0);
+        return this.deck.get(0);
     }
 
     public Weapon getWeapon(String weaponName){
@@ -126,7 +126,7 @@ public class WeaponDeck implements Serializable {
     }
 
     public WeaponCard getWeaponFromIndex(int index) {
-        return deck.get(index);
+        return this.deck.get(index);
     }
 
 }

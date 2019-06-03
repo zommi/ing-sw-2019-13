@@ -11,6 +11,8 @@ import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
+import server.model.cards.AmmoTile;
+import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.gameboard.GameBoard;
@@ -38,6 +40,14 @@ public class Controller implements MyObserver {
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.server = server;
         this.currentID = 0;
+    }
+
+    public WeaponCard drawWeapon(){
+        return this.currentGame.drawWeapon();
+    }
+
+    public AmmoTile drawAmmo(){
+        return this.currentGame.drawAmmo();
     }
 
     public int getCurrentID(){

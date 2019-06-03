@@ -1,6 +1,7 @@
 package server.model.player;
 
 import constants.Constants;
+import server.controller.Controller;
 import server.model.cards.*;
 
 
@@ -80,14 +81,14 @@ public class PlayerHand implements Serializable {
         //i just need to add the weapon the player decides to discard
     }
 
-    public void addCard(WeaponCard cardToAdd, WeaponCard cardToLeave){
+    public void addCard(WeaponCard cardToAdd, WeaponCard cardToLeave, Controller controller){
         this.weaponHand.add(cardToAdd);
         this.weaponHand.remove(cardToLeave);
         //TODO add swap on gameboard if size == 3
         //note that on spawnpoints there is a list of the weapons currently available
         //i just need to add the weapon the player decides to discard
         this.player.getGameCharacter().getPosition().addItem(cardToLeave);
-        this.player.getGameCharacter().getPosition().removeItem(cardToAdd);
+        this.player.getGameCharacter().getPosition().removeItem(cardToAdd, controller);
     }
 
     public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_NUMBER_OF_CARDS;}

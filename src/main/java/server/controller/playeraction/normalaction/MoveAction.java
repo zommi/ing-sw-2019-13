@@ -1,6 +1,7 @@
 package server.controller.playeraction.normalaction;
 
 import constants.*;
+import server.controller.Controller;
 import server.controller.playeraction.Action;
 import server.controller.playeraction.MoveActuator;
 import client.MoveInfo;
@@ -28,11 +29,11 @@ public class MoveAction implements Action {
     }
 
 
-    public boolean execute(){
-        return this.move();
+    public boolean execute(Controller controller){
+        return this.move(controller);
     }
 
-    private boolean move() {
+    private boolean move(Controller controller) {
         if(validator.validate(player,destination)){
             actuator.actuate(player,destination);
             return true;

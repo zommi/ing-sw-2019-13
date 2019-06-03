@@ -1,6 +1,7 @@
 package server.controller.playeraction;
 
 import client.powerups.PowerUpPack;
+import server.controller.Controller;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 
@@ -22,12 +23,12 @@ public class PowerUpAction implements Action {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(Controller controller) {
         //TODO
-        return this.usePowerUp();
+        return this.usePowerUp(controller);
     }
 
-    public boolean usePowerUp(){
+    public boolean usePowerUp(Controller controller){
         PowerUpInfo powerUpInfo = validator.validate(powerUpPack, gameBoard, player);
         if(powerUpInfo != null) {
             actuator.actuate(powerUpInfo);

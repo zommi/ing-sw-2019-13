@@ -4,6 +4,7 @@ import client.weapons.Weapon;
 import exceptions.*;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
+import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.gameboard.*;
 import server.model.player.*;
@@ -68,6 +69,13 @@ public class Game {
         }
     }
 
+    public AmmoTile drawAmmo(){
+        return this.currentGameBoard.drawAmmo();
+    }
+
+    public WeaponCard drawWeapon(){
+        return this.currentGameBoard.drawWeapon();
+    }
     public ListOfWeaponsAnswer getWeaponList(){
         return this.weaponList;
     }

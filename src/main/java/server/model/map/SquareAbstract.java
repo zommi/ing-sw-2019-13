@@ -1,6 +1,7 @@
 package server.model.map;
 
 import exceptions.NotAlignedException;
+import server.controller.Controller;
 import server.model.cards.CollectableInterface;
 import constants.Color;
 import constants.Direction;
@@ -211,7 +212,7 @@ public abstract class  SquareAbstract implements Serializable {
 
     }
 
-    public abstract void removeItem(CollectableInterface itemToAdd);
+    public abstract void removeItem(CollectableInterface itemToAdd, Controller controller);
 
     public abstract void addItem(CollectableInterface itemToLeave);
 
