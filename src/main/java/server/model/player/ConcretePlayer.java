@@ -19,7 +19,7 @@ public class ConcretePlayer extends PlayerAbstract {
     private GameCharacter gameCharacter;
     private PlayerHand hand;
     private PlayerBoard board;
-    private Game currentGame;
+    private transient Game currentGame;
     private PlayerState state;
     private int clientID;
     private boolean ifCharacter;
@@ -72,6 +72,7 @@ public class ConcretePlayer extends PlayerAbstract {
     public void setPlayerCharacter(Figure figure){
         this.gameCharacter = new GameCharacter(chooseFigure(figure));
         this.gameCharacter.setConcretePlayer(this);
+        this.board.setCharacterName(figure.toString());
     }
 
     public GameCharacter getGameCharacter(){

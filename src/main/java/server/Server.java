@@ -4,6 +4,7 @@ import client.ReceiverInterface;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
+import server.model.gameboard.GameBoard;
 import view.*;
 
 import java.rmi.RemoteException;
@@ -49,7 +50,8 @@ public class Server {
                 InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
                 List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
                 //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
-                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
+                GameBoard currentGameBoard = controller.getCurrentGame().getCurrentGameBoard();
+                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
                 SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
                 for(int i = 0; i < temp.size(); i++){
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());

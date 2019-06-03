@@ -11,6 +11,7 @@ import server.model.player.*;
 import server.model.map.*;
 import view.ListOfWeaponsAnswer;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**

@@ -2,6 +2,7 @@ package client.cli;
 
 
 import client.*;
+import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
@@ -461,7 +462,13 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     public void printPlayerBoard(PlayerBoardAnswer p){
+        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.RED) +" red marks tokens");
+        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.BLUE) +" blue marks tokens");
+        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.YELLOW) +" yellow marks tokens");
         System.out.println("You currently have: " +p.getResult().getDamageTaken() +" damage tokens");
+        System.out.println("You currently have: " +p.getResult().getDamage().toString() +" damage tokens");
+
+
     }
 
     public static void main(String[] args) {

@@ -179,6 +179,7 @@ public class Controller implements MyObserver {
 
     public void addClientInMap(PlayerAbstract player){
         try{
+            ((ConcretePlayer)player).setCurrentGame(currentGame);
             this.currentGame.addPlayer(player);
         }
         catch(WrongGameStateException e){

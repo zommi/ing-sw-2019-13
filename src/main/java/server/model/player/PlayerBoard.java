@@ -51,7 +51,6 @@ public class PlayerBoard implements Serializable {
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
-        this.characterName = p.getCharacterName();
     }
 
     private void setDamage(int i, Color color) {
@@ -75,6 +74,10 @@ public class PlayerBoard implements Serializable {
         playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
         playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
         return playerBoard;
+    }
+
+    public void setCharacterName(String string){
+        this.characterName = string;
     }
 
     public String getCharacterName(){
