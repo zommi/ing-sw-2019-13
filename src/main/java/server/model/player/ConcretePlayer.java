@@ -24,6 +24,8 @@ public class ConcretePlayer extends PlayerAbstract {
     private int clientID;
     private boolean ifCharacter;
 
+    //added after createCopy
+    private PlayerAbstract justDamagedBy;       //TODO check create copy
 
     public ConcretePlayer(String name) {
         this.name = name;
@@ -216,7 +218,17 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public PlayerAbstract getJustDamagedBy() {
-        return super.getJustDamagedBy();
+        return justDamagedBy;
+    }
+
+    @Override
+    public void pay(Cost cost) {
+        for(int i = 1; i<=cost.getBlue(); i++)
+            board.decreaseAmmo(Color.BLUE);
+        for(int i = 1; i<=cost.getRed(); i++)
+            board.decreaseAmmo(Color.RED);
+        for(int i = 1; i<=cost.getYellow(); i++)
+            board.decreaseAmmo(Color.YELLOW);
     }
 }
 

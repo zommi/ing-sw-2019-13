@@ -56,4 +56,16 @@ public class Cost implements Serializable {
         //TODO
         return "";
     }
+
+    public int getBlue() {
+        return blue;
+    }
+
+    public int getRed() {
+        return red;
+    }
+
+    public int getYellow() {
+        return yellow;
+    }
 }

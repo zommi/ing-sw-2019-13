@@ -17,9 +17,6 @@ import java.util.ArrayList;
  *
  */
 public abstract class PlayerAbstract implements Serializable {
-
-    private PlayerAbstract justDamagedBy;
-
     /**
      * @return
      */
@@ -109,7 +106,7 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void setPosition(SquareAbstract square);
 
-    public PlayerAbstract getJustDamagedBy() {
-        return justDamagedBy;
-    }
+    public  abstract PlayerAbstract getJustDamagedBy();
+
+    public abstract void pay(Cost cost);
 }

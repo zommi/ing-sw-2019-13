@@ -230,4 +230,15 @@ public class PlayerBoard implements Serializable {
         }
         return true;
     }
+
+    public void decreaseAmmo(Color color){
+        int index = 0;
+        switch(color){
+            case RED: index = RED_CUBES_INDEX; break;
+            case BLUE: index = BLUE_CUBES_INDEX; break;
+            case YELLOW: index = YELLOW_CUBES_INDEX; break;
+            default: //this should never happen
+        }
+        ammo[index]--;
+    }
 }
