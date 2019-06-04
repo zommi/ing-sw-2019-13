@@ -68,6 +68,8 @@ class ShootParserTest {
         player4.spawn(gameBoard.getMap().getSquare(1,1));
         player5.spawn(gameBoard.getMap().getSquare(2,1));
 
+        //gameBoard.getMap().printOnCLI();
+
 
         ShootParser shootParser = new ShootParser(new GameModel());
         ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);

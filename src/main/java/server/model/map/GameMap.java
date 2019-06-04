@@ -14,7 +14,10 @@ import java.util.*;
 public class GameMap implements Serializable, Iterable<SquareAbstract> {
 
     private static final int SQ_DIM = 4;
+    private static final int SQ_X = 9;  //must be even
+    private static final int SQ_Y = 5;  //must be even
     private static final int FRAME_OFFSET = 1;
+    public static final String ANSI_RESET = "\u001B[0m";
 
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
     private ArrayList<ArrayList<SquareAbstract>> squares = new ArrayList<>();
@@ -223,8 +226,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
      * @return a list of the spawn points
      */
     public List<SpawnPoint> getSpawnPoints(){
-        ArrayList<SpawnPoint> returnedList = (ArrayList<SpawnPoint>) spawnPoints;
-        return (ArrayList<SpawnPoint>) returnedList.clone();
+        return spawnPoints;
     }
 
     /**
@@ -379,43 +381,95 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
     }
 
     public void printOnCLI(){
-        String[][] grid = new String[numRow *SQ_DIM + 2*FRAME_OFFSET][numCol *SQ_DIM + 2*FRAME_OFFSET];
-        fillEmpy(grid);
+        String[][] grid = new String[numRow *SQ_Y + 2*FRAME_OFFSET][numCol *SQ_X + 2*FRAME_OFFSET];
+        fillEmpty(grid);
+        printSquares(grid);
         plot(grid);
-
+        System.out.println();
     }
 
-    private void fillEmpy(String[][] grid) {
+    private void fillEmpty(String[][] grid) {
 
         grid[0][0] = "╔";
-        for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
+        for (int c = 1; c < numCol *SQ_X + 2*FRAME_OFFSET - 1; c++) {
             grid[0][c] = "═";
         }
 
-        grid[0][numCol *SQ_DIM + 2*FRAME_OFFSET - 1] = "╗";
+        grid[0][numCol *SQ_X + 2*FRAME_OFFSET - 1] = "╗";
 
-        for (int r = 1; r < numRow *SQ_DIM + 2*FRAME_OFFSET - 1; r++) {
+        for (int r = 1; r < numRow *SQ_Y + 2*FRAME_OFFSET - 1; r++) {
             grid[r][0] = "║";
-            for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
+            for (int c = 1; c < numCol *SQ_X + 2*FRAME_OFFSET - 1; c++) {
                 grid[r][c] = " ";
             }
-            grid[r][numCol *SQ_DIM + 2*FRAME_OFFSET -1] = "║";
+            grid[r][numCol *SQ_X + 2*FRAME_OFFSET -1] = "║";
         }
 
-        grid[numRow *SQ_DIM + 2*FRAME_OFFSET - 1][0] = "╚";
-        for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
-            grid[numRow *SQ_DIM + 2*FRAME_OFFSET - 1][c] = "═";
+        grid[numRow *SQ_Y + 2*FRAME_OFFSET - 1][0] = "╚";
+        for (int c = 1; c < numCol *SQ_X + 2*FRAME_OFFSET - 1; c++) {
+            grid[numRow *SQ_Y + 2*FRAME_OFFSET - 1][c] = "═";
         }
 
-        grid[numRow *SQ_DIM +2*FRAME_OFFSET- 1][numCol *SQ_DIM +2*FRAME_OFFSET - 1] = "╝";
+        grid[numRow *SQ_Y +2*FRAME_OFFSET- 1][numCol *SQ_X +2*FRAME_OFFSET - 1] = "╝";
 
     }
 
-    final void plot(String[][] grid) {
-        //System.out.print( Color.ANSI_GREEN.escape());
-        for (int r = 0; r < numRow *SQ_DIM + 2*FRAME_OFFSET; r++) {
+    private void printSquares(String[][] grid){
+        Iterator<SquareAbstract> iterator = this.iterator();
+        while(iterator.hasNext()){
+            printSquare(grid, iterator.next());
+        }
+    }
+
+    private void printSquare(String[][] grid, SquareAbstract sq){
+        int baseRow = FRAME_OFFSET + sq.getRow()*SQ_Y;
+        int baseCol = FRAME_OFFSET+sq.getCol()*SQ_X;
+        String color = sq.getColor().getAnsi();
+
+        if(!sq.getCharacters().isEmpty())
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(0).getColor().getAnsi()+"∎"+color;
+        if(sq.getCharacters().size()>1)
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 3] = sq.getCharacters().get(1).getColor().getAnsi()+"∎"+color;
+        if(sq.getCharacters().size()>2)
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 - 1] = sq.getCharacters().get(2).getColor().getAnsi()+"∎"+color;
+        if(sq.getCharacters().size()>3)
+            grid[baseRow + (SQ_Y-2)/2 - 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(3).getColor().getAnsi()+"∎"+color;
+        if(sq.getCharacters().size()>4)
+            grid[baseRow + (SQ_Y-2)/2 + 3][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(4).getColor().getAnsi()+"∎"+color;
+
+        grid[baseRow][baseCol] = color + "╔";
+        grid[baseRow][baseCol + SQ_X - 1] = "╗" + ANSI_RESET;
+        grid[baseRow + SQ_Y - 1][baseCol] = color + "╚";
+        grid[baseRow + SQ_Y - 1][baseCol + SQ_X - 1] = "╝" + ANSI_RESET;
+
+        for(int c = baseCol + 1; c < baseCol + 1 + SQ_X - 2; c++){
+            grid[baseRow][c] = "═";
+            grid[baseRow + SQ_Y - 1][c] = "═";
+        }
+
+        for(int r = baseRow + 1; r < baseRow + 1 + SQ_Y - 2; r++){
+            grid[r][baseCol] = color + "║";
+            grid[r][baseCol + SQ_X - 1] = "║" + ANSI_RESET;
+        }
+
+        if(sq.getnSquare() != null)
+            grid[baseRow][baseCol + (SQ_X-2)/2 + 1] = "╬";
+        if(sq.getsSquare() != null)
+            grid[baseRow + SQ_Y - 1][baseCol + (SQ_X-2)/2 + 1] = "╬";
+        if(sq.getwSquare() != null)
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol] = color + "╬";
+        if(sq.geteSquare() != null)
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + SQ_X - 1] = "╬" + color;
+
+
+
+
+    }
+
+    private void plot(String[][] grid) {
+        for (int r = 0; r < numRow *SQ_Y + 2*FRAME_OFFSET; r++) {
             System.out.println();
-            for (int c = 0; c < numCol *SQ_DIM + 2*FRAME_OFFSET; c++) {
+            for (int c = 0; c < numCol *SQ_X + 2*FRAME_OFFSET; c++) {
                 System.out.print(grid[r][c]);
             }
         }
