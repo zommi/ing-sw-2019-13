@@ -46,12 +46,15 @@ class GameCharacterTest {
 
        /*SquareAbstract square1 = new Square(3,3, 'w');
        SquareAbstract spawnPoint1 = new SpawnPoint(2,1,'R');*/
+       ConcretePlayer player = new ConcretePlayer("pippo");
 
        SquareAbstract square1 = gameMap.getSquare(0,0);               //il punto 3,3 non esiste nella mappa, l'ho cambiato
        SquareAbstract spawnPoint1 = gameMap.getSpawnPoint(Color.RED);
 
 
-       GameCharacter gameCharacter = new GameCharacter(Figure.BANSHEE);
+
+       player.setPlayerCharacter(Figure.BANSHEE);
+       GameCharacter gameCharacter = player.getGameCharacter();
 
        ArrayList<GameCharacter> tester = new ArrayList<>();
        tester.add(gameCharacter);
