@@ -68,7 +68,7 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public String getCharacterName(){
-        return this.gameCharacter.getFigure().fromFigure();
+         return this.gameCharacter.getFigure().fromFigure();
     }
 
     public void setPlayerCharacter(Figure figure){

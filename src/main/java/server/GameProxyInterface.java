@@ -21,6 +21,8 @@ public interface GameProxyInterface extends Remote {
 
     public int getCurrentID() throws RemoteException;
 
+    public int getGrenadeID() throws RemoteException;
+
     public String getNameMap() throws RemoteException;
 
     public GameMap getMap() throws RemoteException;

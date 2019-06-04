@@ -11,7 +11,7 @@ public class ShootPack implements Info {
 
     private String weapon;
     List<MacroPack> activatedMacros;
-    GameModel gameModel;
+    transient GameModel gameModel;
 
 
 

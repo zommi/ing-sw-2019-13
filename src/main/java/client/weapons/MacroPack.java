@@ -1,9 +1,10 @@
 package client.weapons;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MacroPack {
+public class MacroPack implements Serializable {
     private int macroNumber;
     private List<MicroPack> activatedMicros;
 

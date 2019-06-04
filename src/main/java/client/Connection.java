@@ -14,6 +14,8 @@ public interface Connection extends Serializable {
 
     public int getCurrentID();
 
+    public int getGrenadeID();
+
     public String getCurrentCharacter();
 
     public int getStartGame();

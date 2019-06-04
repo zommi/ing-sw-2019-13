@@ -17,7 +17,7 @@ public class CollectActuator {
     public CollectActuator(){}
 
     public void actuate(PlayerAbstract player, SquareAbstract square, int choice, Controller controller){
-        player.setPosition(square);
+        player.getGameCharacter().move(square);
         CollectableInterface card;
         if(choice == Constants.NO_CHOICE){
             Square squarePlayer =  (Square)player.getPosition();

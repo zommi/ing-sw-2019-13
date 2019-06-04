@@ -208,7 +208,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         } while ((characterName.equals("")) || (!connection.CharacterChoice(characterName)));
 
         System.out.println("Name is: " +characterName.toUpperCase());
-        connection.addPlayerCharacter(characterName);
+        connection.addPlayerCharacter(characterName); //TODO
 
         /*if(gameModel.getClientID() == 0){
             System.out.println("Waiting 30 seconds for the others to join the game");
@@ -257,7 +257,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("Exception caught");
             return;
         }
-        ActionParser actionParser = new ActionParser();
+        ActionParser actionParser = new ActionParser(this);
 
 
 
@@ -267,7 +267,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 actionParser.addGameModel(gameModel);
                 actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
-                if (connection.getClientID() == connection.getCurrentID()) {
+                if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
                     System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard(connection.getClientID());
@@ -304,6 +304,21 @@ public class UpdaterCLI  implements Updater,Runnable{
                         powerups = this.spawn(powerups, playerHand, actionParser);
                     }
                     this.startInput(actionParser, powerups);
+                }
+                else if(connection.getGrenadeID() != -1){
+                    if(connection.getClientID() != connection.getGrenadeID()){
+                        System.out.println("There is somebody that has a tagback grenade. Checking if he wants to use it");
+                    }
+                    else { //we are exactly in the player that has the current turn to use the tagback
+                        Scanner myObj = new Scanner(System.in);
+                        System.out.println("You have been shot. You can use the tagback grenade to give him 1 mark. Do you want to use it?");
+                        System.out.println("Yes (1)");
+                        System.out.println("No (2)");
+                        String read = myObj.nextLine();
+                        if(Integer.parseInt(read) == 1){
+                            actionParser.createPowerUpEvent("Tagback Grenade");
+                        }
+                    }
                 }
                 else{
                     System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
@@ -458,6 +473,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             connection.send(action);
         } else {
             System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
+            startInput(actionParser, powerups);
         }
     }
 

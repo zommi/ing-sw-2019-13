@@ -1,10 +1,9 @@
 package client.gui;
 
-import client.DrawInfo;
-import client.GameModel;
-import client.MoveInfo;
+import client.*;
 import client.gui.guielements.*;
 import constants.Color;
+import constants.Constants;
 import constants.Direction;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -20,16 +19,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.ObjectOutputStream;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
+import server.controller.playeraction.normalaction.CollectAction;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
+import server.model.player.PlayerAbstract;
+import server.model.player.PlayerBoard;
+import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
 
@@ -61,6 +64,8 @@ public class MainGuiController implements GuiController {
 
     private UpdaterGui gui;
 
+    private ActionParser actionParser;
+
     private int side = 175;
 
     private List<GuiSquare> squares = new ArrayList<>();
@@ -69,20 +74,21 @@ public class MainGuiController implements GuiController {
 
     private List<GuiTile> tiles = new ArrayList<>();
 
+    private List<GuiTile> tilesToUpdate = new ArrayList<>();
+
     private GuiCharacter myCharacter;
 
+    private Map<Integer,GuiCharacter> idClientGuiCharacterMap = new HashMap<>();
     @Override
     public void init(){
         log = "Game started! \n";
         initializeMap();
-        if (this.gui.getConnection().getCurrentID() == this.gui.getConnection().getClientID()){
-            spawn();
-        }
+        this.actionParser = gui.getActionParser();
         textLogger.setText(log);
         this.textLogger.setEditable(false);
     }
 
-    private void spawn() {
+    public void spawn() {
         logText("Choose a powerup and Spawn in that color! \n");
         DrawInfo action = new DrawInfo();
         this.gui.getConnection().send(action);
@@ -125,6 +131,7 @@ public class MainGuiController implements GuiController {
     private void initializeMap() { //NOSONAR
         this.model = gui.getGameModel();
         GameMap map = model.getMap().getResult();
+        //currentSquare = getMap.getIterator().next()
         int col = 0;
         int row = 0;
         int doorSize = side / 3;
@@ -146,18 +153,19 @@ public class MainGuiController implements GuiController {
 
             if (!currentSquare.isSpawnPoint()){
                 Square squareConverted = (Square) currentSquare;
-                GuiSquare square = new GuiSquare(currentSquare.getCol(),currentSquare.getRow(),
+                GuiSquare square = new GuiSquare(currentSquare.getRow(),currentSquare.getCol(),
                         side,side,Paint.valueOf(currentSquare.getColor().getSpHexValue()));
                 square.setCursor(Cursor.HAND);
                 square.setAmmo(new GuiAmmoTile(squareConverted.getAmmoTile().getPath()));
                 squares.add(square);
                 tiles.add(square);
+                square.setSquare((Square) currentSquare);
                 mapGridPane.add(
                         square,
                         currentSquare.getCol()*2,
                         currentSquare.getRow()*2);
             } else {
-                GuiSpawnPoint spawnPoint = new GuiSpawnPoint(currentSquare.getCol(),currentSquare.getRow(),
+                GuiSpawnPoint spawnPoint = new GuiSpawnPoint(currentSquare.getRow(),currentSquare.getCol(),
                         side,side,currentSquare.getColor());
                 spawnPoints.add(spawnPoint);
                 tiles.add(spawnPoint);
@@ -168,6 +176,7 @@ public class MainGuiController implements GuiController {
                         currentSquare.getRow()*2);
                 //spawnPoint.setOnMousePressed(e -> showWeapons(spawnPoint));
                 spawnPoint.setCardsOnSpawnPoint((SpawnPoint) currentSquare);
+                spawnPoint.setSpawnPoint((SpawnPoint) currentSquare);
             }
 
             for(Direction dir : Direction.values()){
@@ -232,7 +241,7 @@ public class MainGuiController implements GuiController {
 
 
     @FXML
-    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard) {
+    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiSpawnPoint sp) {
         if(weaponHandSize == 3) return;
         GuiWeaponCard cardToAdd = weaponCard;
 
@@ -241,7 +250,9 @@ public class MainGuiController implements GuiController {
         cardToAdd.setFitHeight(weaponHand.getHeight());
 
         cardToAdd.setOnMousePressed(null);
-        this.weaponHand.add(cardToAdd,weaponHandSize,0);
+        //this.weaponHand.add(cardToAdd,weaponHandSize,0);
+        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex());
+        this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
 
@@ -250,18 +261,14 @@ public class MainGuiController implements GuiController {
         alert.setTitle("WEAPONS AVAILABLE");
 
         GridPane cards = new GridPane();
-        for(int i = 0; i < 3; i ++){
+        for(int i = 0; i < spawnPoint.getCardsOnSpawnPoint().size(); i ++){
             GuiWeaponCard weapon = new GuiWeaponCard(
                     getClass().getResource(spawnPoint.getCardsOnSpawnPoint().get(i)).toExternalForm(),
                     i);
             weapon.setOnMousePressed(e -> {
                 if(weaponHandSize < 3){
-                    drawWeapon(e,weapon);
-                    // ask server to draw card
-                    // String cardToDraw = model.getGameBoard().getWeaponDeck().draw().getPath();
+                    drawWeapon(e,weapon,spawnPoint);
                     spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
-                    // add the card draw to the spawnpoint
-                    // spawnPoint.restore(cardToDraw,weapon.getIndex());
                     alert.close();
                 }
             });
@@ -276,12 +283,36 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableMove(){
-        for(GuiTile tile : tiles){
-            tile.setOnMousePressed(e -> {
-                myCharacter.setPosition(tile);
-                this.gui.getConnection().send(new MoveInfo(tile.getX(),tile.getY()));
-                disableMouseEvent();
-            });
+        if(!this.model.getToSpawn()) {
+            for (GuiTile tile : tiles) {
+                tile.setOnMousePressed(e -> {
+                    Info moveInfo = this.actionParser.createMoveEvent(tile.getRow(), tile.getCol());
+                    this.gui.getConnection().send(moveInfo);
+                    disableMouseEvent();
+                });
+            }
+        }else{
+            logText("You first need to spawn!\n");
+        }
+    }
+
+    public void enableCollect(MouseEvent mouseEvent) {
+        if(!this.model.getToSpawn()) {
+            for (GuiSquare square : squares) {
+                square.setOnMousePressed(e -> {
+                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE);
+                    this.gui.getConnection().send(collectInfo);
+                    this.tilesToUpdate.add(square);
+                });
+            }
+            for (GuiSpawnPoint sp : spawnPoints) {
+                sp.setOnMousePressed(e -> {
+                    showWeapons(sp);
+                    this.tilesToUpdate.add(sp);
+                });
+            }
+        } else {
+            logText("You first need to spawn!\n");
         }
     }
 
@@ -297,15 +328,18 @@ public class MainGuiController implements GuiController {
     }
 
 
-    private void setSpawn(Color color) {
+    private void setSpawn(PowerUpCard card) {
         for(GuiSpawnPoint spawnPoint : this.spawnPoints){
-            if(color == spawnPoint.getColor()){
+            if(card.getColor() == spawnPoint.getColor()){
                 this.myCharacter = new GuiCharacter(spawnPoint,Color.fromCharacter(this.gui.getCharacter()));
+                this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(),myCharacter);
                 this.gui.getGameModel().setToSpawn(false);
                 disableMouseEvent();
                 break;
             }
         }
+        Info spawn = this.actionParser.createSpawEvent(card);
+        this.gui.getConnection().send(spawn);
     }
 
     public void showScoreboard(MouseEvent mouseEvent) {
@@ -319,12 +353,13 @@ public class MainGuiController implements GuiController {
         alert.showAndWait();
     }
 
-    public void logText(String string){
+    private void logText(String string){
         log += string;
         this.textLogger.setText(log);
     }
 
     public void updateHand() {
+        emptyHand();
         int i = 0;
         GuiWeaponCard cardToAdd;
         GuiPowerupCard powerupCard;
@@ -334,14 +369,16 @@ public class MainGuiController implements GuiController {
                     getClass().getResource(card.getPath()).toExternalForm(),
                     i);
             this.weaponHand.add(cardToAdd,i,0);
+            cardToAdd.setCursor(Cursor.HAND);
+            cardToAdd.setFitWidth(weaponHand.getWidth()/3);
+            cardToAdd.setFitHeight(weaponHand.getHeight());
             i++;
         }
         i = 0;
         for(PowerUpCard card : this.model.getPlayerHand().getPowerupHand()){
             powerupCard = new GuiPowerupCard(
-                    card.getName(),
-                    card.getColor(),
                     getClass().getResource(card.getPath()).toExternalForm(),
+                    card,
                     i);
             powerupCard.setCursor(Cursor.HAND);
             powerupCard.setFitWidth(powerupHand.getWidth()/3);
@@ -350,15 +387,15 @@ public class MainGuiController implements GuiController {
             int finalI = i;
             powerupCard.setOnMousePressed(e -> {
                 GuiPowerupCard defaultCard = new GuiPowerupCard(
-                        "default",
-                        Color.UNDEFINED,
                         getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(),
                         finalI);
                 defaultCard.setOnMousePressed(null);
-                defaultCard.setCursor(Cursor.NONE);
+                defaultCard.setCursor(Cursor.DEFAULT);
                 defaultCard.setFitWidth(powerupHand.getWidth()/3);
                 defaultCard.setFitHeight(powerupHand.getHeight());
-                setSpawn(card.getColor());
+                if(this.model.getToSpawn()){
+                    setSpawn(card);
+                }
                 powerupHand.add(defaultCard, finalI, 0);
                 enablePowerup();
             });
@@ -367,9 +404,78 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    private void emptyHand() {
+        this.weaponHand.getChildren().removeAll();
+        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+            GuiWeaponCard weaponCard = new GuiWeaponCard(getClass().getResource("/Grafica/cards/AD_weapons_IT_0225.png").toExternalForm(),i);
+            weaponCard.setFitWidth(weaponHand.getWidth()/3);
+            weaponCard.setFitHeight(weaponHand.getHeight());
+            this.weaponHand.add(weaponCard, i, 0);
+        }
+
+        this.powerupHand.getChildren().removeAll();
+        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+            GuiPowerupCard powerupCard = new GuiPowerupCard(
+                    getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(), i);
+            powerupCard.setFitWidth(powerupHand.getWidth()/3);
+            powerupCard.setFitHeight(powerupHand.getHeight());
+            this.powerupHand.add(powerupCard, i, 0);
+        }
+    }
+
     private void enablePowerup() {
         for(Node card : powerupHand.getChildren()){
             card.setOnMousePressed(null);
         }
     }
+
+    //metodo che gestisce la visualizzazione di giocatori e ammotile
+    public void updateGameboard() {
+        if(this.model != null) {
+            //update position of players
+            for (int i = 0; i < this.model.getPlayersNames().size(); i++) {
+                if (this.idClientGuiCharacterMap.get((Object) i) == null) {
+                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i)));
+                } else {
+                    this.idClientGuiCharacterMap.get(i).setPosition(getTile(
+                            this.model.getPlayerBoard(i).getRow(),
+                            this.model.getPlayerBoard(i).getCol()
+                            ));
+                }
+            }
+
+
+        }
+    }
+
+    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard) {
+        for(GuiSpawnPoint sp : spawnPoints){
+            if(sp.getCol() == playerBoard.getCol() && sp.getRow() == playerBoard.getRow()){
+                return new GuiCharacter(sp,Color.fromCharacter(playerBoard.getCharacterName()));
+            }
+        }
+        return null;
+    }
+
+    public boolean noSpawned(){
+        return this. myCharacter == null || this.myCharacter.getPosition() == null;
+    }
+
+    public GuiTile getTile(int row, int col){
+        for(GuiTile tile : tiles){
+            if(tile.getCol() == col && tile.getRow() == row){
+                return tile;
+            }
+        }
+        return null;
+    }
+
+
+    public void restoreSquares() {
+        for (GuiTile tile : tiles) {
+            tile.setSquare(this.model.getMap().getResult().getSquare(tile.getRow(),tile.getCol()));
+            tile.restore();
+        }
+    }
+
 }

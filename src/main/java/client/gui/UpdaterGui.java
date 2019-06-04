@@ -1,5 +1,6 @@
 package client.gui;
 
+import client.ActionParser;
 import client.Connection;
 import client.GameModel;
 import client.Updater;
@@ -20,6 +21,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.concurrent.TimeUnit;
 
 public class UpdaterGui extends Application implements Updater {
 
@@ -50,7 +52,11 @@ public class UpdaterGui extends Application implements Updater {
 
     boolean mapInitialized;
 
+    boolean handInitialized;
+
     private GameModel model;
+
+    private ActionParser actionParser;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -78,6 +84,7 @@ public class UpdaterGui extends Application implements Updater {
             }
             currentScene = new Scene(sceneMap.get("start_menu.fxml"));
             this.stageName = "stage_menu.fxml";
+            this.actionParser = new ActionParser(this);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -86,7 +93,6 @@ public class UpdaterGui extends Application implements Updater {
     public void run(){
         stage.setTitle("ADRENALINE.EXE");
         stage.setScene(currentScene);
-        format();
         stage.show();
     }
 
@@ -109,11 +115,18 @@ public class UpdaterGui extends Application implements Updater {
     @Override
     public void update(Observable gameModel, Object object) {
         if(object.equals("GameBoard")){
-
+            System.out.println("gameboard updated");
+            Platform.runLater(() -> {
+                ((MainGuiController)getControllerFromString("gui.fxml")).updateGameboard();
+            });
         }
 
         if(object.equals("Change player")){
             System.out.println("Player changed");
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController) currentController;
+                controllerConverted.restoreSquares();
+            });
             handleTurn();
         }
 
@@ -128,11 +141,16 @@ public class UpdaterGui extends Application implements Updater {
             handleTurn();
         }
 
-        if(object.equals("PlayerBoard")){
+        if(object.equals("Map") && mapInitialized){
 
         }
 
-        if(object.equals("PlayerHand")){
+        if(object.equals("PlayerHand") && !handInitialized && !mapInitialized){
+            System.out.println("Hand initilized");
+            this.handInitialized = true;
+        }
+
+        if(object.equals("PlayerHand") && handInitialized && mapInitialized){
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
                 MainGuiController controllerConverted = (MainGuiController) currentController;
@@ -144,8 +162,16 @@ public class UpdaterGui extends Application implements Updater {
 
     public void handleTurn(){
         Platform.runLater(() -> {
+            try{
+                TimeUnit.MILLISECONDS.sleep(10);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.currentController.enableAll();
+                if (this.model.getToSpawn()){
+                    ((MainGuiController)this.currentController).spawn();
+                }
             } else {
                 this.currentController.disableAll();
             }
@@ -230,6 +256,10 @@ public class UpdaterGui extends Application implements Updater {
 
     public GuiController getControllerFromString(String name){
         return this.controllerMap.get(name);
+    }
+
+    public ActionParser getActionParser() {
+        return actionParser;
     }
 
 }

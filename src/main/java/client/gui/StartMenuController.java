@@ -100,10 +100,8 @@ public class StartMenuController implements GuiController {
         this.gui.getConnection().configure();
         this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
-        String mapName;
-        int initialSkulls;
         this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
-
+        this.gui.getConnection().addPlayerCharacter((String)this.characterBox.getValue());
     }
 
     @Override

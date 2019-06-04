@@ -2,6 +2,7 @@ package client.gui.guielements;
 
 import constants.Color;
 import javafx.scene.image.ImageView;
+import server.model.cards.PowerUpCard;
 
 public class GuiPowerupCard extends ImageView {
 
@@ -11,12 +12,24 @@ public class GuiPowerupCard extends ImageView {
 
     private String name;
 
-    public GuiPowerupCard(String name, Color color,String path, int index){
+    private PowerUpCard card;
+
+    public GuiPowerupCard(String path,PowerUpCard card, int index){
         super(path);
-        this.color = color;
-        this.name = name;
+        this.color = card.getColor();
+        this.name = card.getName();
+        this.card = card;
         this.index = index;
     }
+
+    public GuiPowerupCard(String path, int index){
+        super(path);
+        this.color = Color.UNDEFINED;
+        this.name = "default";
+        this.card = null;
+        this.index = index;
+    }
+
 
 
     public int getIndex() {
@@ -29,5 +42,9 @@ public class GuiPowerupCard extends ImageView {
 
     public String getName() {
         return name;
+    }
+
+    public PowerUpCard getCard() {
+        return card;
     }
 }
