@@ -292,13 +292,13 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     if (playerBoard != null) { //these checks are used when the clients still do not have any update, at the start of the match
                         ammoRED = playerBoard.getRedAmmo();
-                        System.out.println(">You have %d red ammos:" + ammoRED);
+                        System.out.println(">Red ammos:" + ammoRED);
 
                         ammoBLUE = playerBoard.getBlueAmmo();
-                        System.out.println(">You have %d blue ammos:" + ammoBLUE);
+                        System.out.println(">Blue ammos:" + ammoBLUE);
 
                         ammoYELLOW = playerBoard.getYellowAmmo();
-                        System.out.println(">You have %d yellow ammos:" + ammoYELLOW);
+                        System.out.println(">Yellow ammos:" + ammoYELLOW);
                     }
                     if(gameModel.getToSpawn()){
                         powerups = this.spawn(powerups, playerHand, actionParser);
@@ -466,7 +466,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.BLUE) +" blue marks tokens");
         System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.YELLOW) +" yellow marks tokens");
         System.out.println("You currently have: " +p.getResult().getDamageTaken() +" damage tokens");
-        System.out.println("You currently have: " +p.getResult().getDamage().toString() +" damage tokens");
+        for(int i = 0; (i < p.getResult().getDamage().length) && (p.getResult().getDamage()[i] != null); i++){
+            System.out.println("You currently have a " +(p.getResult().getDamage())[i].toString() +" damage token");
+        }
 
 
     }

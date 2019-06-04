@@ -149,8 +149,8 @@ public class Controller implements MyObserver {
             System.out.println("Turning next phase");
             this.nextCurrentID();
             System.out.println("Number of actions ended " +turnHandler.getCurrentPhase());
-            ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
-            server.sendToEverybodyRMI(change);
+            //ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
+            //server.sendToEverybodyRMI(change);
         }
         return true;
     }
