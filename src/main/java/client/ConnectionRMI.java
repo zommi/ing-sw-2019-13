@@ -85,12 +85,23 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
+    public int getGrenadeID(){
+        try{
+            return gameProxy.getGrenadeID();
+        }
+        catch(RemoteException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
     public int getCurrentID(){
         try{
             return gameProxy.getCurrentID();
         }
         catch(RemoteException e){
-            System.out.println("Exception caught");
+            e.printStackTrace();
         }
         return 0;
     }
@@ -122,10 +133,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     public void send(Info action){
         try{
-            game.makeAction(this.clientID, action); //TODO WHY BOOLEAN?
+            game.makeAction(this.clientID, action);
         }
         catch(RemoteException re){
             System.out.println("Could not make the action");
+            re.printStackTrace();
         }
     }
 

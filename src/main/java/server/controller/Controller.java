@@ -4,6 +4,7 @@ import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
 import exceptions.WrongGameStateException;
+import server.MyTimerTask;
 import server.Server;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
@@ -12,6 +13,7 @@ import server.controller.playeraction.normalaction.ShootAction;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
@@ -19,14 +21,19 @@ import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerHand;
 import server.model.player.PlayerState;
 import view.*;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller implements MyObserver {
 
     private int currentID;
+
+    private int grenadeID;
 
     private Game currentGame;
 
@@ -40,6 +47,7 @@ public class Controller implements MyObserver {
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.server = server;
         this.currentID = 0;
+        this.grenadeID = -1;
     }
 
     public WeaponCard drawWeapon(){
@@ -52,6 +60,10 @@ public class Controller implements MyObserver {
 
     public int getCurrentID(){
         return this.currentID;
+    }
+
+    public int getGrenadeID(){
+        return this.grenadeID;
     }
 
     public void nextCurrentID(){
@@ -140,6 +152,21 @@ public class Controller implements MyObserver {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame.getCurrentGameBoard()); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
+            //TODO check if the target has a powerup
+            List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
+            List<PowerUpCard> handTemp = currentPlayer.getJustDamagedBy().getHand().getPowerupHand();
+            for(int i = 0; i < listOfPlayers.size(); i++){
+                for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
+                    if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
+                        grenadeID = currentPlayer.getJustDamagedBy().getClientID();
+                        TimerTask timerTask = new MyTimerTask(server);
+                        Timer timer = new Timer(true);
+                        timer.schedule(timerTask, 0);
+                        System.out.println("waiting for the other player to do the action");
+                        grenadeID = -1;
+                    }
+                }
+            }
         }
 
 

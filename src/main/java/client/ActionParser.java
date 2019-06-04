@@ -50,8 +50,8 @@ public class ActionParser{
     }
 
 
-    public Info createCollectEvent(int x, int y, int collectDecision) {
-        return new CollectInfo(x, y, collectDecision);
+    public Info createCollectEvent(int raw, int col, int collectDecision) {
+        return new CollectInfo(raw, col, collectDecision);
     }
 
     public Info createPowerUpEvent(String powerUpChosen) {

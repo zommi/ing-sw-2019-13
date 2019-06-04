@@ -2,10 +2,11 @@ package client.weapons;
 
 import client.SquareInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MicroPack {
+public class MicroPack implements Serializable {
     private int macroNumber;
     private int microNumber;
     private List<String> playersList;

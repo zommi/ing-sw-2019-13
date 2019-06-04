@@ -78,6 +78,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public int getGrenadeID(){
+        return this.serverRMI.getServer().getController().getGrenadeID();
+    }
+
+    @Override
     public String getNameMap() throws RemoteException {
         switch (numMap){
             case 1:

@@ -76,9 +76,18 @@ public class ConnectionSocket implements Connection {
         return null;
     }
 
+    @Override
     public int getCurrentID(){
+        //TODO
         return 0;
     }
+
+    @Override
+    public int getGrenadeID(){
+        //TODO
+        return 0;
+    }
+
 
     @Override
     public int getStartGame(){
