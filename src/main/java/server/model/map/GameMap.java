@@ -7,17 +7,23 @@ import exceptions.NoSuchSquareException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class GameMap implements Serializable {
+
+
+public class GameMap implements Serializable, Iterable<SquareAbstract> {
+
+    private static final int SQ_DIM = 4;
+    private static final int FRAME_OFFSET = 1;
 
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
     private ArrayList<ArrayList<SquareAbstract>> squares = new ArrayList<>();
     private List<Room> rooms = new ArrayList<>();
     private List<Color> roomsToBuild = new ArrayList<>();
     private boolean valid;
+    //add to copy
+    private int numRow;
+    private int numCol;
 
 
 
@@ -31,6 +37,8 @@ public class GameMap implements Serializable {
      *               It could go from 1 to 4.
      */
     public GameMap(int mapNum) {
+        numRow = 0;
+        numCol = 0;
         valid = true;
         String path;
         switch(mapNum) {
@@ -138,8 +146,9 @@ public class GameMap implements Serializable {
         roomsToBuild = new ArrayList<>();
         squares = new ArrayList<>();
         spawnPoints = new ArrayList<>();
-        for(String s : readInput){
-            squares.add(new ArrayList<>());
+        for(int i = 0; i<readInput.size(); i++){
+            if(i%2 == 0)
+                squares.add(new ArrayList<>());
         }
 
         int row = 0;
@@ -167,6 +176,11 @@ public class GameMap implements Serializable {
                 else if(c==' ' && row%2==0 && col%2==0){
                     squares.get(row/2).add(null);
                 }
+                //update max
+                if(row/2 + 1> numRow)
+                    numRow = row/2 + 1;
+                if(col/2 + 1> numCol)
+                    numCol = col/2 + 1;
                 col++;
             }
             row++;
@@ -306,6 +320,105 @@ public class GameMap implements Serializable {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    @Override
+    public Iterator<SquareAbstract> iterator() {
+        return new MapIterator();
+    }
+
+    private class MapIterator implements Iterator<SquareAbstract>{
+        SquareAbstract currentSquare;
+        boolean notFirstTime;
+
+        @Override
+        public boolean hasNext() {
+            if(!notFirstTime)
+                return true;        //assuming a map has at least one square
+            if(squares.get(currentSquare.getRow()).size() > currentSquare.getCol() + 1 )
+                return true;
+            return (squares.size() - 1 != currentSquare.getRow());
+        }
+
+        @Override
+        public SquareAbstract next() throws NoSuchElementException {
+            if(!hasNext())
+                throw new NoSuchElementException();
+            else{
+                if(notFirstTime) {
+                    if (currentSquare.getCol() != squares.get(currentSquare.getRow()).size() - 1) {
+                        for (int i = currentSquare.getCol() + 1; ; i++) {
+                            if (getSquare(currentSquare.getRow(), i) != null) {
+                                currentSquare = getSquare(currentSquare.getRow(), i);
+                                return currentSquare;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; ; i++) {
+                            if (getSquare(currentSquare.getRow() + 1, i) != null) {
+                                currentSquare = getSquare(currentSquare.getRow() + 1, i);
+                                return currentSquare;
+                            }
+                        }
+                    }
+                }
+                else{
+                    notFirstTime = true;
+                    for(SquareAbstract squareAbstract : squares.get(0)){
+                        if(squareAbstract != null) {
+                            currentSquare = squareAbstract;
+                            return currentSquare;
+                        }
+                    }
+                    //this should never happen, assuming the first line has at least one square
+                    return null;
+                }
+
+            }
+        }
+    }
+
+    public void printOnCLI(){
+        String[][] grid = new String[numRow *SQ_DIM + 2*FRAME_OFFSET][numCol *SQ_DIM + 2*FRAME_OFFSET];
+        fillEmpy(grid);
+        plot(grid);
+
+    }
+
+    private void fillEmpy(String[][] grid) {
+
+        grid[0][0] = "╔";
+        for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
+            grid[0][c] = "═";
+        }
+
+        grid[0][numCol *SQ_DIM + 2*FRAME_OFFSET - 1] = "╗";
+
+        for (int r = 1; r < numRow *SQ_DIM + 2*FRAME_OFFSET - 1; r++) {
+            grid[r][0] = "║";
+            for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
+                grid[r][c] = " ";
+            }
+            grid[r][numCol *SQ_DIM + 2*FRAME_OFFSET -1] = "║";
+        }
+
+        grid[numRow *SQ_DIM + 2*FRAME_OFFSET - 1][0] = "╚";
+        for (int c = 1; c < numCol *SQ_DIM + 2*FRAME_OFFSET - 1; c++) {
+            grid[numRow *SQ_DIM + 2*FRAME_OFFSET - 1][c] = "═";
+        }
+
+        grid[numRow *SQ_DIM +2*FRAME_OFFSET- 1][numCol *SQ_DIM +2*FRAME_OFFSET - 1] = "╝";
+
+    }
+
+    final void plot(String[][] grid) {
+        //System.out.print( Color.ANSI_GREEN.escape());
+        for (int r = 0; r < numRow *SQ_DIM + 2*FRAME_OFFSET; r++) {
+            System.out.println();
+            for (int c = 0; c < numCol *SQ_DIM + 2*FRAME_OFFSET; c++) {
+                System.out.print(grid[r][c]);
+            }
+        }
     }
 
 }

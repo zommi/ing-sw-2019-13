@@ -53,8 +53,7 @@ public class Cost implements Serializable {
     }
 
     public String toString(){
-        //TODO
-        return "";
+        return red + "red, " + blue + "blue, " + yellow + "yellow";
     }
 
     public int getBlue() {

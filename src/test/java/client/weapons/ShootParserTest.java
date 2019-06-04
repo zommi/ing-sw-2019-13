@@ -79,4 +79,6 @@ class ShootParserTest {
 
         System.setIn(System.in);
     }
+
+
 }

@@ -5,6 +5,7 @@ import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,5 +68,25 @@ class GameMapTest {
         assertTrue(gameMap.getSquaresWithSameCol(gameMap.getSquare(1,1)).contains(gameMap.getSquare(0,1)));
         assertTrue(gameMap.getSquaresWithSameCol(gameMap.getSquare(1,1)).contains(gameMap.getSquare(2,1)));
         assertFalse(gameMap.getSquaresWithSameRow(gameMap.getSquare(1,1)).contains(gameMap.getSquare(0,0)));
+    }
+
+    @Test
+    void testMapIterator(){
+        GameMap map = new GameMap(1);
+        Iterator<SquareAbstract> iterator = map.iterator();
+        SquareAbstract current = null;
+        for(int i = 1; i<=9; i++){
+            current = iterator.next();
+        }
+        assertTrue(current == map.getSquare(2,2));
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    void printOnCli(){
+        GameMap gameMap = new GameMap(1);
+        gameMap.printOnCLI();
     }
 }
