@@ -6,8 +6,8 @@ import server.model.map.SquareAbstract;
 
 public class GuiSquare extends GuiTile {
 
-    private final double X_OFFSET = 10.0;
-    private final double Y_OFFSET = 10.0;
+    private final double X_OFFSET = 5.0;
+    private final double Y_OFFSET = 5.0;
     private GuiAmmoTile ammo;
     private Square square;
 
@@ -19,8 +19,6 @@ public class GuiSquare extends GuiTile {
     public void setAmmo(GuiAmmoTile ammoToAdd){
         this.ammo = ammoToAdd;
         this.getChildren().add(ammoToAdd);
-        ammoToAdd.setX(this.getLayoutX() + X_OFFSET);
-        ammoToAdd.setY(this.getLayoutY() + Y_OFFSET);
         ammoToAdd.setFitWidth(getSide() / 3);
         ammoToAdd.setFitHeight(getSide() / 3);
     }
@@ -42,8 +40,6 @@ public class GuiSquare extends GuiTile {
         removeAmmo();
         GuiAmmoTile ammoToRestore = new GuiAmmoTile(this.square.getAmmoTile().getPath());
         this.ammo = ammoToRestore;
-        ammoToRestore.setX(this.getLayoutX() + X_OFFSET);
-        ammoToRestore.setY(this.getLayoutY() + Y_OFFSET);
         ammoToRestore.setFitWidth(getSide() / 3);
         ammoToRestore.setFitHeight(getSide() / 3);
         this.getChildren().add(ammoToRestore);

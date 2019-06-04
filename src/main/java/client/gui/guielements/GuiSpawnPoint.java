@@ -64,4 +64,8 @@ public class GuiSpawnPoint extends GuiTile {
     public void setSquare(SquareAbstract square) {
         this.spawnPoint = (SpawnPoint) square;
     }
+
+    public SpawnPoint getSpawnPoint() {
+        return spawnPoint;
+    }
 }

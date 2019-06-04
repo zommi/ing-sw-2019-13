@@ -74,7 +74,7 @@ public class MainGuiController implements GuiController {
 
     private List<GuiTile> tiles = new ArrayList<>();
 
-    private GuiTile tileToUpdate;
+    private List<GuiTile> tilesToUpdate = new ArrayList<>();
 
     private GuiCharacter myCharacter;
 
@@ -302,13 +302,13 @@ public class MainGuiController implements GuiController {
                 square.setOnMousePressed(e -> {
                     Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE);
                     this.gui.getConnection().send(collectInfo);
-                    this.tileToUpdate = square;
+                    this.tilesToUpdate.add(square);
                 });
             }
             for (GuiSpawnPoint sp : spawnPoints) {
                 sp.setOnMousePressed(e -> {
                     showWeapons(sp);
-                    this.tileToUpdate = sp;
+                    this.tilesToUpdate.add(sp);
                 });
             }
         } else {
@@ -444,11 +444,7 @@ public class MainGuiController implements GuiController {
                 }
             }
 
-            if(tileToUpdate != null){
-                tileToUpdate.setSquare(this.model.getMap().getResult().getSquare(tileToUpdate.getRow(),tileToUpdate.getCol()));
-                tileToUpdate.restore();
-                tileToUpdate = null;
-            }
+
         }
     }
 
@@ -475,5 +471,11 @@ public class MainGuiController implements GuiController {
     }
 
 
+    public void restoreSquares() {
+        for (GuiTile tile : tiles) {
+            tile.setSquare(this.model.getMap().getResult().getSquare(tile.getRow(),tile.getCol()));
+            tile.restore();
+        }
+    }
 
 }

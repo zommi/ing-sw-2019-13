@@ -123,6 +123,10 @@ public class UpdaterGui extends Application implements Updater {
 
         if(object.equals("Change player")){
             System.out.println("Player changed");
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController) currentController;
+                controllerConverted.restoreSquares();
+            });
             handleTurn();
         }
 

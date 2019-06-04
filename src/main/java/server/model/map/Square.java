@@ -26,7 +26,8 @@ public class Square extends SquareAbstract implements Serializable {
 
     public void removeItem(CollectableInterface itemToRemove, Controller controller){
         ammoTile = null;
-        addItem(controller.drawAmmo());
+        controller.addSquareToUpdate(this);
+        //addItem(controller.drawAmmo());
     }
 
     @Override

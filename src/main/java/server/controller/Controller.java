@@ -19,12 +19,16 @@ import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
+import server.model.map.SpawnPoint;
+import server.model.map.Square;
+import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerHand;
 import server.model.player.PlayerState;
 import view.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,6 +45,7 @@ public class Controller {
 
     private Server server;
 
+    private List<SquareAbstract> squaresToUpdate;
 
     public Controller(int mapChoice, int initialSkulls, Server server){
         this.currentGame = new Game(mapChoice, initialSkulls);
@@ -48,6 +53,7 @@ public class Controller {
         this.server = server;
         this.currentID = 0;
         this.grenadeID = -1;
+        this.squaresToUpdate = new ArrayList<>();
     }
 
     public WeaponCard drawWeapon(){
@@ -199,6 +205,10 @@ public class Controller {
         server.sendToSpecificRMI(playerHandAnswer, clientID);
     }
 
+    public void sendSquaresRestored(){
+        server.sendToEverybodyRMI(new MapAnswer(this.currentGame.getCurrentGameMap()));
+    }
+
     public Game getCurrentGame(){
         return this.currentGame;
     }
@@ -219,4 +229,18 @@ public class Controller {
         return currentGame.getActivePlayers();
     }
 
+    public void addSquareToUpdate(SquareAbstract square) {
+        this.squaresToUpdate.add(square);
+    }
+
+    public void restoreSquares() {
+        for(SquareAbstract square : this.squaresToUpdate){
+            if(square instanceof Square){
+                square.addItem(drawAmmo());
+            } else {
+                square.addItem(drawWeapon());
+            }
+        }
+        squaresToUpdate.clear();
+    }
 }

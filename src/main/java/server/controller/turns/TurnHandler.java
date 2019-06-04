@@ -86,6 +86,9 @@ public class TurnHandler {
                 break;
             case END_TURN:
                 try{
+                    System.out.println("restored squares");
+                    controller.restoreSquares();
+                    controller.sendSquaresRestored();
                     controller.getCurrentGame().nextPlayer();
                     System.out.println("changed player in game");
                     controller.sendChangeCurrentPlayer();

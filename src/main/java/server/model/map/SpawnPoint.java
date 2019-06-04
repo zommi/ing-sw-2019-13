@@ -34,14 +34,15 @@ public class SpawnPoint extends SquareAbstract implements Serializable {
     }
 
     public void removeItem(CollectableInterface itemToRemove, Controller controller){
-        CollectableInterface temp = null;
+        WeaponCard temp = null;
         for(int i = 0; i < weaponCards.size(); i++){
-            if(weaponCards.get(i).getName() == ((WeaponCard)itemToRemove).getName()){
+            if(weaponCards.get(i).getName().equals(((WeaponCard)itemToRemove).getName())){
                 temp = weaponCards.get(i);
             }
         }
-        weaponCards.remove((WeaponCard) temp);
-        addItem(controller.drawWeapon());
+        weaponCards.remove(temp);
+        controller.addSquareToUpdate(this);
+        //addItem(controller.drawWeapon());
     }
 
     @Override
