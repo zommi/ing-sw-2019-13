@@ -3,6 +3,7 @@ package server.model.map;
 import constants.Color;
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
+import server.model.cards.AmmoTile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -83,4 +84,11 @@ class GameMapTest {
         iterator.next();
         assertFalse(iterator.hasNext());
     }
+
+    /*@Test
+    void printOnCli(){
+        GameMap gameMap = new GameMap(1);
+        gameMap.getSquare(1,1).addItem(new AmmoTile(null, false));
+        gameMap.printOnCLI();
+    }*/
 }

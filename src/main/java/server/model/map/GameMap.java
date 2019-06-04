@@ -426,6 +426,12 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
         int baseCol = FRAME_OFFSET+sq.getCol()*SQ_X;
         String color = sq.getColor().getAnsi();
 
+        if(sq instanceof SpawnPoint)
+            grid[baseRow+1][baseCol+1] = "S";
+
+        if(sq instanceof Square && ((Square) sq).getAmmoTile()!= null)
+            grid[baseRow + SQ_Y - 2][baseCol + SQ_X - 2] = "A";
+
         if(!sq.getCharacters().isEmpty())
             grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(0).getColor().getAnsi()+"∎"+color;
         if(sq.getCharacters().size()>1)
