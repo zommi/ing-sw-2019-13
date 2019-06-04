@@ -30,4 +30,8 @@ public class GuiCharacter extends Circle {
         setCenterY(tile.getLayoutY() + tile.getSide());
         setRadius(tile.getSide()/6.0);
     }
+
+    public GuiTile getPosition() {
+        return position;
+    }
 }

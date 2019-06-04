@@ -12,6 +12,6 @@ public class MoveActuator {
     public MoveActuator(){}
 
     public void actuate(PlayerAbstract player, SquareAbstract square){
-        player.setPosition(square);
+        player.getGameCharacter().move(square);
     }
 }

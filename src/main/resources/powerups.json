@@ -4,42 +4,42 @@
     "name" : "Targeting Scope",
     "value" : "RED",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_026.png"
   },
   {
     "index" : "0",
     "name" : "Targeting Scope",
     "value" : "BLUE",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_025.png"
   },
   {
     "index" : "0",
     "name" : "Targeting Scope",
     "value" : "YELLOW",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_027.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "RED",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_029.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "BLUE",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_028.png"
   },
   {
     "index" : "1",
     "name" : "Newton",
     "value" : "YELLOW",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_010.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_0210.png"
   },
   {
     "index" : "2",
@@ -53,7 +53,7 @@
     "name" : "Teleporter",
     "value" : "BLUE",
     "numberOfCards" : "2",
-    "path" : "/Grafica/cards/AD_powerups_IT_011.png"
+    "path" : "/Grafica/cards/AD_powerups_IT_0211.png"
   },
   {
     "index" : "2",

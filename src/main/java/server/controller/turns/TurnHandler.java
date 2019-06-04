@@ -58,10 +58,15 @@ public class TurnHandler {
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION) {
             this.action = action;
-            //if returns false then disconnects the player
-            this.action.execute(controller);
-            if((action instanceof ShootAction) || (action instanceof CollectAction) || (action instanceof MoveAction)) //if it is a draw or a spawn it is not counted as an action
+            boolean actionValid = this.action.execute(controller);
+            if(actionValid &&
+                    (action instanceof ShootAction) ||
+                    (action instanceof CollectAction) ||
+                    (action instanceof MoveAction)) {//if it is a draw or a spawn it is not counted as an action
                 nextPhase();
+            } else {
+                //mandare al client messaggio di errore
+            }
         }
     }
 

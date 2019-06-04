@@ -5,6 +5,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import server.model.cards.WeaponCard;
 import server.model.map.SpawnPoint;
+import server.model.map.SquareAbstract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class GuiSpawnPoint extends GuiTile {
 
     private Color color;
 
+    private SpawnPoint spawnPoint;
 
     public GuiSpawnPoint(int x, int y,int height, int width, Color color){
         super(x,y,height,width,Paint.valueOf(color.getSpHexValue()));
@@ -31,6 +33,10 @@ public class GuiSpawnPoint extends GuiTile {
         return cardsOnSpawnPoint;
     }
 
+    public void setSpawnPoint(SpawnPoint spawnPoint) {
+        this.spawnPoint = spawnPoint;
+    }
+
     public void setCardsOnSpawnPoint(SpawnPoint sp) {
         List<WeaponCard> cards = sp.getWeaponCards();
         for(int i = 0; i < 3; i++){
@@ -44,5 +50,18 @@ public class GuiSpawnPoint extends GuiTile {
 
     public void restore(String card, int index){
         this.cardsOnSpawnPoint.add(index,card);
+    }
+
+    @Override
+    public void restore() {
+        this.cardsOnSpawnPoint.clear();
+        for(int i = 0; i < this.spawnPoint.getWeaponCards().size(); i++){
+            this.cardsOnSpawnPoint.add(this.spawnPoint.getWeaponCards().get(i).getPath());
+        }
+    }
+
+    @Override
+    public void setSquare(SquareAbstract square) {
+        this.spawnPoint = (SpawnPoint) square;
     }
 }

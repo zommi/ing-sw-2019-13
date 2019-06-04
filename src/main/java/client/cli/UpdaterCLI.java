@@ -257,7 +257,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("Exception caught");
             return;
         }
-        ActionParser actionParser = new ActionParser();
+        ActionParser actionParser = new ActionParser(this);
 
 
 

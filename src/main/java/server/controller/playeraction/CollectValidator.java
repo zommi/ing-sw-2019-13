@@ -28,21 +28,16 @@ public class CollectValidator {
 
 
         //checks that all the movements are allowed
-        SquareAbstract squareTemp = player.getPosition();
-        //for (Direction dir : movements) { //TODO Change
-        //    if(squareTemp.getNearFromDir(dir) == null) return false;
-        //    squareTemp = squareTemp.getNearFromDir(dir);
-        //}
 
 
         //checks that the choice parameter and the type of squareTemp are coherent
         //moreover if squareTemp is a spawn point it check that the choice is inside the boundaries
         //of the list
         //finally it is checks that the square is not empty.
-        return ((squareTemp instanceof Square && choice == Constants.NO_CHOICE)
-                || (squareTemp instanceof SpawnPoint && choice != Constants.NO_CHOICE
-                        && ((SpawnPoint) squareTemp).getWeaponCards().size() > choice))
-                && !squareTemp.isEmpty();
+        return ((square instanceof Square && choice == Constants.NO_CHOICE)
+                || (square instanceof SpawnPoint && choice != Constants.NO_CHOICE
+                        && ((SpawnPoint) square).getWeaponCards().size() > choice))
+                && !square.isEmpty();
     }
 
 }

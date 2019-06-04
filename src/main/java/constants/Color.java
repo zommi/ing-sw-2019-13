@@ -42,7 +42,7 @@ public enum Color {
     }
 
     public static Color fromCharacter(String name){
-        switch (name){
+        switch (name.toUpperCase()){
             case  "DESTRUCTOR":
                 return YELLOW;
             case "BANSHEE" :

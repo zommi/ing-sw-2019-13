@@ -3,14 +3,16 @@ package client.gui.guielements;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import server.model.map.Square;
+import server.model.map.SquareAbstract;
 
-public class GuiTile extends StackPane {
+public abstract class GuiTile extends StackPane {
 
     private int side;
 
-    private int x;
+    private int col;
 
-    private int y;
+    private int row;
 
     public GuiTile(int height, int width, Paint paint){
         super();
@@ -19,10 +21,10 @@ public class GuiTile extends StackPane {
     }
 
 
-    public GuiTile(int x, int y, int height, int width, Paint paint){
+    public GuiTile(int row, int col, int height, int width, Paint paint){
         super();
-        this.x = x;
-        this.y = y;
+        this.col = col;
+        this.row = row;
         this.side = height;
         this.getChildren().add(new Rectangle(height,width,paint));
     }
@@ -31,11 +33,15 @@ public class GuiTile extends StackPane {
         return side;
     }
 
-    public int getY() {
-        return this.y;
+    public int getCol() {
+        return this.col;
     }
 
-    public int getX() {
-        return this.x;
+    public int getRow() {
+        return this.row;
     }
+
+    public abstract void restore();
+
+    public abstract void setSquare(SquareAbstract square);
 }

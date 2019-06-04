@@ -59,7 +59,7 @@ public class CollectAction implements Action {
     }
 
     public boolean collect(){
-        if(validator.validate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()),weaponChoice)) {
+        if(validator.validate(player, map.getSquare(moveInfo.getRow(),moveInfo.getCol()),weaponChoice)) {
             actuator.actuate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()) ,weaponChoice, controller);
             return true;
         }else {

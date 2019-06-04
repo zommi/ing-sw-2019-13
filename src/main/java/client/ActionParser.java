@@ -1,5 +1,6 @@
 package client;
 
+import client.cli.UpdaterCLI;
 import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
 import client.weapons.Weapon;
@@ -13,8 +14,12 @@ public class ActionParser{
     private GameModel gameModel;
     private InputAbstract input;
 
-    public ActionParser(){
-        input = new CliInput();
+    public ActionParser(Updater updater){
+        if(updater instanceof UpdaterCLI) {
+            input = new CliInput();
+        } else{
+            input = new GuiInput();
+        }
     }
 
     public void addGameModel(GameModel gameModel){
@@ -50,8 +55,8 @@ public class ActionParser{
     }
 
 
-    public Info createCollectEvent(int raw, int col, int collectDecision) {
-        return new CollectInfo(raw, col, collectDecision);
+    public Info createCollectEvent(int row, int col, int collectDecision) {
+        return new CollectInfo(row, col, collectDecision);
     }
 
     public Info createPowerUpEvent(String powerUpChosen) {

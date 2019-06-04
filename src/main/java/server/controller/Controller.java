@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Controller implements MyObserver {
+public class Controller {
 
     private int currentID;
 
@@ -217,12 +217,6 @@ public class Controller implements MyObserver {
 
     public List<PlayerAbstract> getPlayers(){
         return currentGame.getActivePlayers();
-    }
-
-    public void update(){}
-
-    public void startGame(){
-
     }
 
 }
