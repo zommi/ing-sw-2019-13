@@ -83,4 +83,10 @@ class GameMapTest {
         iterator.next();
         assertFalse(iterator.hasNext());
     }
+
+    @Test
+    void printOnCli(){
+        GameMap gameMap = new GameMap(1);
+        gameMap.printOnCLI();
+    }
 }
