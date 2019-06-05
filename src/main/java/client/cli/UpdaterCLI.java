@@ -463,9 +463,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                     if(gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint)
                     {
                         System.out.println(">Choose which weapon you want to collect ");
-                        System.out.println("(0)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(0)); //1 is to collect weapon
-                        System.out.println("(1)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(1)); //2 is to collect powerup
-                        System.out.println("(2)" +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(2)); //3 is to collect ammo
+                        for(int i = 0; i < ((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().size(); i++) { //1 is to collect weapon
+                            System.out.println("" +i +" " +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(i)); //1 is to collect weapon
+                        }
                         result = Integer.parseInt(myObj.nextLine());
                         Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
                         connection.send(action);
