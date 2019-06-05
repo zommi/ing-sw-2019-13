@@ -282,7 +282,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 for(String string : gameModel.getPlayersNames())
                     if(!string.equals(name))
                         pNames.add(string);
-                actionParser.getInput().setPlayersNames(pNames);
+                actionParser.setPlayersNames(pNames);
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
