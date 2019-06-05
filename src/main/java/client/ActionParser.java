@@ -41,8 +41,7 @@ public class ActionParser{
         return new MoveInfo(coordinatex, coordinatey);
     }
 
-    public Info createShootEvent(String weaponChosen){
-        Weapon weapon = this.weaponFromString(weaponChosen);
+    public Info createShootEvent(Weapon weapon){
         ShootParser shootParser = new ShootParser(gameModel);
         return shootParser.getWeaponInput(weapon,input);
     }
