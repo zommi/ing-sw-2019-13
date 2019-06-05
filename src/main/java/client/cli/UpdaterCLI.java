@@ -26,6 +26,10 @@ public class UpdaterCLI  implements Updater,Runnable{
     private boolean alwaysTrue = true;
 
     private GameModel gameModel;
+
+    private static final int MIN_SKULL = 5;
+    private static final int MAX_SKULL = 8;
+
     public UpdaterCLI(){
         super();
     }
@@ -55,6 +59,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         if(object.equals("Map")){
             System.out.println("New Update of the map");
+            gameModel.getMap().getResult().printOnCLI();
         }
 
         if(object.equals("PlayerHand")){
@@ -119,61 +124,53 @@ public class UpdaterCLI  implements Updater,Runnable{
         //if(connection.getError() == true)
         //    throw new GameAlreadyStartedException();
 
-
+        int mapNumber = 0;
         if(gameModel.getClientID() == 0) {//only if it is the first client!
             do{
-                System.out.println(">Choose the number of initial skulls you want to put on the killshot track: ");
-                System.out.println("5 (1)");
-                System.out.println("6 (2)");
-                System.out.println("7 (3)");
-                System.out.println("8 (4)");
-                read = myObj.nextLine();
-                if (read.equals("1")) {
-                    initialSkulls = 5;
-                    initialSkullsChosen = true;
-                } else if (read.equals("2")) {
-                    initialSkulls = 6;
-                    initialSkullsChosen = true;
-                } else if (read.equals("3")) {
-                    initialSkulls = 7;
-                    initialSkullsChosen = true;
-                }
-                else if (read.equals("4")) {
-                    initialSkulls = 8;
-                    initialSkullsChosen = true;
-                }
-                else {
-                    System.out.println(">HEY! You have to choose between the options given!" );
-                    initialSkulls = 0;
+                String stringChoice = "";
+                int choice;
+                System.out.println(">Choose the number of skulls (MIN: " +
+                        MIN_SKULL + ", MAX: " + MAX_SKULL + "): ");
+                try{
+                    stringChoice = myObj.nextLine();
+                    choice = Integer.parseInt(stringChoice);
+                    if(choice < MIN_SKULL || choice > MAX_SKULL)
+                        System.out.println("Please insert a valid number.");
+                    else {
+                        initialSkullsChosen = true;
+                        initialSkulls = choice;
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Please insert a valid number.");
                 }
             } while(!initialSkullsChosen);
 
-            System.out.println(">You have chosen to use: "+initialSkulls+" initial skulls" );
+
+
+            System.out.println(">You chose "+initialSkulls+" initial skulls!" );
+            System.out.println(">Now choose the map you want to play with:" );
+            String[] mapNames = {"Little", "Normal", "Big", "Huge"};
+            List<String> mnList = Arrays.asList(mapNames);
+            int choice;
+            String stringChoice = "";
             do {
-                System.out.println(">Choose the map you want to use:");
-                System.out.println("Little (1)");
-                System.out.println("Normal (2)");
-                System.out.println("Big (3)");
-                System.out.println("Huge (4)");
-                read = myObj.nextLine();
-                if (read.equals("1")) {
-                    mapName = "map11.txt";
-                    mapChosen = true;
-                } else if (read.equals("2")) {
-                    mapName = "map12.txt";
-                    mapChosen = true;
-                } else if (read.equals("3")) {
-                    mapName = "map21.txt";
-                    mapChosen = true;
+                for(int i = 0; i< mnList.size(); i++){
+                    System.out.println(mnList.get(i) + " (" + (i+1) + ")");
                 }
-                else if (read.equals("4")) {
-                    mapName = "map22.txt";
-                    mapChosen = true;
+                try {
+                    stringChoice =  myObj.nextLine();
+                    choice = Integer.parseInt(stringChoice);
+                    if(choice <mnList.size() && choice > 0){
+                        mapChosen = true;
+                        mapNumber = choice;
+                    }
+                    else{
+                        System.out.println("Error: insert a valid number!");
+                    }
+                } catch(NumberFormatException e){
+                    System.out.println("Error: insert a valid number");
                 }
-                else{
-                    System.out.println(">HEY! You have to choose between the options given!" );
-                    mapName = "No one has chosen yet";
-                }
+
             } while (!mapChosen);
             System.out.println(">You have chosen the map: " +mapName);
         }
@@ -187,20 +184,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);
         }
 
-
-        int mapNumber = 0;
-        if (mapName.equals("map11.txt")) {
-            mapNumber = 1;
-        } else if (mapName.equals("map12.txt")) {
-            mapNumber = 2;
-        } else if (mapName.equals("map21.txt")) {
-            mapNumber = 3;
-        }
-        else if(mapName.equals("map22.txt")){
-            mapNumber = 4;
-        }
         connection.add(playerName, mapNumber, initialSkulls);
-
 
         String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
         List<String> cnList = Arrays.asList(characterNames);
@@ -210,14 +194,14 @@ public class UpdaterCLI  implements Updater,Runnable{
         characterName = "";
 
         do{
-            System.out.println(">Insert your character name:");
+            System.out.println(">Choose your character:");
             for(int i = 0; i< cnList.size(); i++){
-                System.out.println(cnList.get(i) + " (" + i + ")");
+                System.out.println(cnList.get(i) + " (" + (i+1) + ")");
             }
             try {
                 stringChoice =  myObj.nextLine();
-                choice = Integer.parseInt(stringChoice);
-                if(choice < cnList.size()){
+                choice = Integer.parseInt(stringChoice) - 1;
+                if(choice < cnList.size() && choice >= 0){
                     set = true;
                     characterName = cnList.get(choice);
                 }

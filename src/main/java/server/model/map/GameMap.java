@@ -307,6 +307,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
         result.roomsToBuild = null; //we don't need roomsToBuild
         result.valid = this.valid;
         result.numRow = numRow;
+        result.numCol = numCol;
         for(int i = 0; i < MapToCopy.rooms.size(); i++){
             result.rooms.add(MapToCopy.rooms.get(i).roomCreateCopy(MapToCopy.getRooms().get(i)));
         }
