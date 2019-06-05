@@ -392,6 +392,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
         read = myObj.nextLine();
+        while(Integer.parseInt(read) >= 2){
+            System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
+            read = myObj.nextLine();
+        }
         Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
