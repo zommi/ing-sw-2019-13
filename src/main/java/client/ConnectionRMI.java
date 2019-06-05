@@ -135,7 +135,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         try{
             game.makeAction(this.clientID, action);
         }
-        catch(RemoteException re){
+        catch(Exception re){
             System.out.println("Could not make the action");
             re.printStackTrace();
         }
