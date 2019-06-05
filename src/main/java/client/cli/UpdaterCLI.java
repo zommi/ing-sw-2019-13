@@ -424,9 +424,28 @@ public class UpdaterCLI  implements Updater,Runnable{
             Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
             connection.send(action);
         } else if (read.toUpperCase().equals("SHOOT")) {
-            System.out.println(">Choose the name of the weapon: ");
-            String weaponChosen = myObj.nextLine();
-            Info action = actionParser.createShootEvent(weaponChosen);
+            boolean ask = false;
+            String strChoice = "";
+            int choice = 0;
+            while(!ask) {
+                System.out.println(">Choose the name of the weapon: ");
+                for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                    System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
+                }
+                try{
+                    strChoice = myObj.nextLine();
+                    choice = Integer.parseInt(strChoice) - 1;
+                    if(choice>=0 && choice<gameModel.getPlayerHand().getWeaponHand().size()) {
+                        ask = true;
+                        //TODO set weapon
+                    }
+                    else
+                        System.out.println("Please insert a valid number.");
+                }catch (NumberFormatException e){
+                    System.out.println("Please insert a valid number.");
+                }
+            }
+            Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
             connection.send(action);
         } else if (read.toUpperCase().equals("COLLECT")) {
             do {
