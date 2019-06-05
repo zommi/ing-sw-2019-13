@@ -31,6 +31,7 @@ public class ActionParser{
             if(!string.equals(name))
                 pNames.add(string);
         setPlayersNames(pNames);
+        //TODO initialize rooms
     }
 
     public InputAbstract getInput(){

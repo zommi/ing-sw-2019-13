@@ -158,6 +158,7 @@ public class Controller {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame.getCurrentGameBoard()); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
+            System.out.println("ciao");
             //TODO check if the target has a powerup
             List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
             List<PowerUpCard> handTemp = currentPlayer.getJustDamagedBy().getHand().getPowerupHand();
