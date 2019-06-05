@@ -202,10 +202,32 @@ public class UpdaterCLI  implements Updater,Runnable{
         connection.add(playerName, mapNumber, initialSkulls);
 
 
+        String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
+        List<String> cnList = Arrays.asList(characterNames);
+        int choice;
+        boolean set = false;
+        String stringChoice;
+        characterName = "";
+
         do{
             System.out.println(">Insert your character name:");
-            characterName = myObj.nextLine();
-        } while ((characterName.equals("")) || (!connection.CharacterChoice(characterName)));
+            for(int i = 0; i< cnList.size(); i++){
+                System.out.println(cnList.get(i) + " (" + i + ")");
+            }
+            try {
+                stringChoice =  myObj.nextLine();
+                choice = Integer.parseInt(stringChoice);
+                if(choice < cnList.size()){
+                    set = true;
+                    characterName = cnList.get(choice);
+                }
+                else{
+                    System.out.println("Error: insert a valid number!");
+                }
+            } catch(NumberFormatException e){
+                System.out.println("Error: insert a valid number");
+            }
+        } while (!set || (!connection.CharacterChoice(characterName)));
 
         System.out.println("Name is: " +characterName.toUpperCase());
         connection.addPlayerCharacter(characterName); //TODO
