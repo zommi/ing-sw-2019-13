@@ -3,9 +3,11 @@ package client.weapons;
 import client.CliInput;
 import client.GameModel;
 import client.InputAbstract;
+import exceptions.WrongGameStateException;
 import org.junit.jupiter.api.Test;
 import server.controller.playeraction.ShootInfo;
 import server.controller.playeraction.ShootValidator;
+import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
 import server.model.player.ConcretePlayer;
@@ -22,13 +24,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShootParserTest {
 
     @Test
-    void getWeaponInput() throws FileNotFoundException{
+    void getWeaponInput() throws FileNotFoundException, WrongGameStateException {
 
         File file = new File("./src/test/resources/weaponTest.txt");
         InputStream inputStream = new FileInputStream(file);
         System.setIn(inputStream);
 
-        GameBoard gameBoard = new GameBoard(1,8);
+        Game game = new Game(1,5);
+        GameBoard gameBoard = game.getCurrentGameBoard();
         InputAbstract inputAbstract = new CliInput();
         List<String> playersNamesList = new ArrayList<>();
 
@@ -56,11 +59,20 @@ class ShootParserTest {
         playersNamesList.add(player5.getName());
         inputAbstract.setPlayersNames(playersNamesList);
 
-        gameBoard.addGameCharacter(player1.getGameCharacter());
+        for(PlayerAbstract playerAbstract : game.getActivePlayers())
+            System.out.println(playerAbstract.getName());
+
+        /*gameBoard.addGameCharacter(player1.getGameCharacter());
         gameBoard.addGameCharacter(player2.getGameCharacter());
         gameBoard.addGameCharacter(player3.getGameCharacter());
         gameBoard.addGameCharacter(player4.getGameCharacter());
-        gameBoard.addGameCharacter(player5.getGameCharacter());
+        gameBoard.addGameCharacter(player5.getGameCharacter());*/
+
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+        game.addPlayer(player3);
+        game.addPlayer(player4);
+        game.addPlayer(player5);
 
         player1.spawn(gameBoard.getMap().getSquare(0,0));
         player2.spawn(gameBoard.getMap().getSquare(1,1));
@@ -75,7 +87,7 @@ class ShootParserTest {
         ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);
 
         ShootValidator shootValidator = new ShootValidator();
-        ShootInfo shootInfo = shootValidator.validate(shootPack, gameBoard, player1);
+        ShootInfo shootInfo = shootValidator.validate(shootPack, game, player1);
 
         assertNotNull(shootInfo);
 

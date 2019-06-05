@@ -33,17 +33,17 @@ public class GameBoard implements Serializable {
     /**
      * reference to the weapon deck
      */
-    private WeaponDeck weaponDeck;
+    private transient WeaponDeck weaponDeck;
 
     /**
      * reference to the powerups deck
      */
-    private PowerupDeck powerupDeck;
+    private transient PowerupDeck powerupDeck;
 
     /**
      * reference to the AmmoTile deck
      */
-    private AmmoTileDeck ammoTileDeck;
+    private transient AmmoTileDeck ammoTileDeck;
 
     private Map<Integer,PlayerBoard> mapPlayerBoard;
 
@@ -110,24 +110,6 @@ public class GameBoard implements Serializable {
         this.mapPlayerBoard.put(p.getClientID(), p.getBoard());
     }
 
-    public GameBoard createCopy(GameBoard gameBoardToCopy){
-        GameBoard gameBoard = new GameBoard();
-        gameBoard.gameCharacterList.addAll(gameBoardToCopy.getGameCharacterList());
-        for(int i = 0; i < gameBoard.getGameCharacterList().size(); i++){
-            gameBoard.getGameCharacterList().get(i).setPlayer(null);
-        }
-        gameBoard.gameMap = gameBoardToCopy.getMap().createCopy(gameBoardToCopy.getMap());
-        gameBoard.track = gameBoardToCopy.getTrack().createCopy(gameBoardToCopy.getTrack());
-        gameBoard.mapPlayerBoard = new HashMap<>(gameBoardToCopy.getHashMap());
-        /*for (Map.Entry<Integer,PlayerBoard> entry : (gameBoardToCopy.getHashMap()).entrySet()){
-            gameBoard.mapPlayerBoard.put(entry.getKey(), entry.getValue());*/
-        //gameBoard.weaponDeck =
-        //gameBoard.powerupDeck =
-        //gameBoard.ammoTileDeck =
-        return gameBoard;
-
-    }
-
     public KillshotTrack getTrack() {
         return this.track;
     }
@@ -158,13 +140,5 @@ public class GameBoard implements Serializable {
 
     public Weapon getWeapon(String name){       //TODO
         return weaponDeck.getWeapon(name);
-    }
-
-    public PlayerAbstract getPlayer(String string) {        //TODO
-        for(GameCharacter gameCharacter : gameCharacterList){
-            if(gameCharacter.getConcretePlayer().getName().equalsIgnoreCase(string))
-                return gameCharacter.getConcretePlayer();
-        }
-        return null;
     }
 }

@@ -3,13 +3,14 @@ package server.controller.playeraction;
 import client.powerups.PowerUpPack;
 import client.weapons.Cost;
 import server.model.cards.PowerUpCard;
+import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
 public class PowerUpValidator {
-    public PowerUpInfo validate(PowerUpPack powerUpPack, GameBoard gameBoard, PlayerAbstract attacker){
-        PowerUpInfo powerUpInfo = convert(powerUpPack, gameBoard, attacker);
+    public PowerUpInfo validate(PowerUpPack powerUpPack, Game game, PlayerAbstract attacker){
+        PowerUpInfo powerUpInfo = convert(powerUpPack, game, attacker);
         if(powerUpInfo == null)
             return null;
 
@@ -74,7 +75,8 @@ public class PowerUpValidator {
 
     }
 
-    public PowerUpInfo convert(PowerUpPack powerUpPack, GameBoard gameBoard, PlayerAbstract attacker){
+    public PowerUpInfo convert(PowerUpPack powerUpPack, Game game, PlayerAbstract attacker){
+        GameBoard gameBoard = game.getCurrentGameBoard();
         SquareAbstract square = null;
         PlayerAbstract target = null;
 
@@ -83,8 +85,8 @@ public class PowerUpValidator {
             square = gameBoard.getMap().getSquare(powerUpPack.getSquareInfo().getRow(),
                     powerUpPack.getSquareInfo().getCol());
 
-        if(powerUpPack.getTarget() != null && gameBoard.getPlayer(powerUpPack.getTarget()) != null)
-            target = gameBoard.getPlayer(powerUpPack.getTarget());
+        if(powerUpPack.getTarget() != null && game.getPlayer(powerUpPack.getTarget()) != null)
+            target = game.getPlayer(powerUpPack.getTarget());
 
         return new PowerUpInfo(attacker, powerUpPack.getPowerupCard(), square, target, powerUpPack.getCubeColor());
     }

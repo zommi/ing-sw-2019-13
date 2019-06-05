@@ -122,7 +122,7 @@ public class Controller {
         }
 
         if(action instanceof PowerUpPack){
-            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame.getCurrentGameBoard(), currentPlayer);
+            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);
             turnHandler.setAndDoAction(powerUpAction);
         }
 
@@ -155,7 +155,7 @@ public class Controller {
             this.sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
         else if(action instanceof ShootPack){
-            ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame.getCurrentGameBoard()); // TODO add player
+            ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
             System.out.println("ciao");

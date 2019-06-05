@@ -5,6 +5,7 @@ import client.weapons.*;
 
 import constants.Color;
 import server.model.cards.*;
+import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
@@ -16,9 +17,10 @@ import java.util.List;
 
 public class ShootValidator {
 
-    public ShootInfo validate(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker){
+    public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
+        GameBoard gameBoard = game.getCurrentGameBoard();
 
-        ShootInfo shootInfo = convert(shootPack, gameBoard, attacker);
+        ShootInfo shootInfo = convert(shootPack, game, attacker);
         if(shootInfo == null)       //if conversion fails
             return null;
 
@@ -40,8 +42,8 @@ public class ShootValidator {
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
             gameBoard.getMap().setValid(false);
-            for(GameCharacter gameCharacter : gameBoard.getGameCharacterList()){
-                gameCharacter.setOldPosition();
+            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+                playerAbstract.getGameCharacter().setOldPosition();
             }
         }
 
@@ -158,8 +160,8 @@ public class ShootValidator {
                     if(weaponMicro.isGeneratePlayerFlag()){
                         //adds all active players to playerList and then removes those who don't meet
                         //  policy requirements
-                        for(GameCharacter gameCharacter : gameBoard.getGameCharacterList()){
-                            microInfo.getPlayersList().add(gameCharacter.getConcretePlayer());
+                        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+                            microInfo.getPlayersList().add(playerAbstract);
                         }
                     }
                     for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
@@ -180,17 +182,17 @@ public class ShootValidator {
 
         } finally {
             if (shootInfo.getWeapon().isSpecial()) {
-                for (GameCharacter gameCharacter : gameBoard.getGameCharacterList()) {
-                    gameCharacter.move(gameCharacter.getOldPosition());
+                for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
+                    playerAbstract.getGameCharacter().move(playerAbstract.getGameCharacter().getOldPosition());
                 }
                 gameBoard.getMap().setValid(true);
             }
         }
     }
 
-    public ShootInfo convert(ShootPack shootPack, GameBoard gameBoard, PlayerAbstract attacker)  {
+    public ShootInfo convert(ShootPack shootPack, Game game, PlayerAbstract attacker)  {
         //must return null if conversion fails
-
+        GameBoard gameBoard = game.getCurrentGameBoard();
         List<MacroInfo> macroInfos = new ArrayList<>();
         for(MacroPack macroPack : shootPack.getActivatedMacros()){
             List<MicroInfo> microInfos = new ArrayList<>();
@@ -202,10 +204,10 @@ public class ShootValidator {
 
                 //converting players
                 for(String string : microPack.getPlayersList()){
-                    if(gameBoard.getPlayer(string) == null)
+                    if(game.getPlayer(string) == null)
                         return null;
                     else
-                        playerAbstractList.add(gameBoard.getPlayer(string));
+                        playerAbstractList.add(game.getPlayer(string));
                 }
 
                 //converting move square if moveSquare is active

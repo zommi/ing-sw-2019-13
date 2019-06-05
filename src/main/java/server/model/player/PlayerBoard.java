@@ -57,25 +57,6 @@ public class PlayerBoard implements Serializable {
         this.damage[i] = color;
     }
 
-    public PlayerBoard createCopy(PlayerBoard playerBoardToCopy){
-        PlayerBoard playerBoard = new PlayerBoard();
-        playerBoard.player = null;
-        playerBoard.damageTaken = playerBoardToCopy.getDamageTaken();
-        playerBoard.damage = playerBoardToCopy.getDamage();
-        playerBoard.marks = playerBoardToCopy.getMarks();
-        playerBoard.numberOfDeaths = playerBoardToCopy.getNumberOfDeaths();
-        playerBoard.pointValue = playerBoardToCopy.getPointValueArray();
-        playerBoard.currentPointValueCursor = playerBoardToCopy.getCurrentPointValueCursor();
-        playerBoard.ammo = new int[3];
-        playerBoard.characterName = playerBoardToCopy.getCharacterName();
-        playerBoard.row = playerBoardToCopy.getRow();
-        playerBoard.col = playerBoardToCopy.getCol();
-        playerBoard.ammo[0] = ammo[RED_CUBES_INDEX];
-        playerBoard.ammo[1] = ammo[BLUE_CUBES_INDEX];
-        playerBoard.ammo[2] = ammo[YELLOW_CUBES_INDEX];
-        return playerBoard;
-    }
-
     public void setCharacterName(String string){
         this.characterName = string;
     }

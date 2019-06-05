@@ -13,7 +13,7 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
     private GameBoard result;
 
     public GameBoardAnswer(GameBoard gameBoard){
-        result = gameBoard.createCopy(gameBoard);
+        result = gameBoard;
     }
 
     public GameBoard getResult() {

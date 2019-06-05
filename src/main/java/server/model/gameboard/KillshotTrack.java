@@ -37,14 +37,6 @@ public class KillshotTrack implements Serializable {
         this.damageTokens = new Color[initialSkull];
     }
 
-    public KillshotTrack createCopy(KillshotTrack killshotTrackToCopy){
-        KillshotTrack killshotTrack = new KillshotTrack();
-        killshotTrack.remainingSkulls = killshotTrackToCopy.getRemainingSkulls();
-        killshotTrack.damageTokens = killshotTrackToCopy.getDamageTokens();
-        killshotTrack.multiciplityToken = killshotTrackToCopy.getMulticiplityToken();
-        return killshotTrack;
-    }
-
     /**
      *
      * @return the value of remainingSulls

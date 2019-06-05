@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfWeaponsAnswer implements ServerAnswer, Serializable {
-    List<WeaponCard> list;
+    private List<WeaponCard> list;
 
     public ListOfWeaponsAnswer(){
         this.list = new ArrayList<>();

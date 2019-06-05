@@ -15,7 +15,7 @@ public class PlayerHand implements Serializable {
 
     private ArrayList<WeaponCard> weaponHand;
     private ArrayList<PowerUpCard> powerupHand;
-    private ConcretePlayer player;
+    private transient ConcretePlayer player;
 
     /**
      *
@@ -48,14 +48,6 @@ public class PlayerHand implements Serializable {
 
     public List<PowerUpCard> getPowerupHand() {
         return powerupHand;    //cloning for server answers
-    }
-
-    public PlayerHand createCopy(PlayerHand playerHandToCopy){
-        PlayerHand playerHand = new PlayerHand();
-        playerHand.player = playerHandToCopy.getPlayer();
-        playerHand.weaponHand = (ArrayList<WeaponCard>) playerHandToCopy.getWeaponHand();
-        playerHand.powerupHand = (ArrayList<PowerUpCard>) playerHandToCopy.getPowerupHand();
-        return playerHand;
     }
 
     /*

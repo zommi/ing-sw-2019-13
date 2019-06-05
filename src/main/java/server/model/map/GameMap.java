@@ -300,20 +300,6 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
         return squareList;
     }
 
-    public GameMap createCopy(GameMap MapToCopy){
-        GameMap result = new GameMap();
-        result.squares = MapToCopy.getSquares();
-        result.spawnPoints.addAll(MapToCopy.getSpawnPoints());
-        result.roomsToBuild = null; //we don't need roomsToBuild
-        result.valid = this.valid;
-        result.numRow = numRow;
-        result.numCol = numCol;
-        for(int i = 0; i < MapToCopy.rooms.size(); i++){
-            result.rooms.add(MapToCopy.rooms.get(i).roomCreateCopy(MapToCopy.getRooms().get(i)));
-        }
-        return result;
-    }
-
     public ArrayList<ArrayList<SquareAbstract>> getSquares() {
         return squares;
     }

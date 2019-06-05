@@ -31,18 +31,6 @@ public class GameCharacter implements Serializable {
         setTaken(f);
     }
 
-    public void setPlayer(ConcretePlayer concretePlayer){
-        this.concretePlayer = concretePlayer;
-    }
-
-    public GameCharacter CharacterCreateCopy(GameCharacter gameCharacterToCopy){
-        GameCharacter gameCharacter = new GameCharacter();
-        gameCharacter.position = gameCharacterToCopy.getPosition();
-        gameCharacter.oldPosition = gameCharacterToCopy.getOldPosition();
-        gameCharacter.concretePlayer = null;
-        return gameCharacter;
-    }
-
     public static void initialize(){
         for(int i = 0; i < Constants.NUM_FIGURES; i++) figureChosen[i]=false;
     }

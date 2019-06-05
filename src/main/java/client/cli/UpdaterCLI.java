@@ -287,20 +287,20 @@ public class UpdaterCLI  implements Updater,Runnable{
                     playerBoard = gameModel.getPlayerBoard(connection.getClientID());
                     weapons = playerHand.getWeaponHand();
                     System.out.println(">You have the following weapons: ");
-                    if ((weapons == null) || (weapons.size() == 0)) {
+                    if ((weapons == null) || (weapons.isEmpty())) {
                         System.out.println(">You have no weapons!");
                     } else {
-                        for (int i = 0; i < weapons.size(); i++) {
-                            System.out.println("> " + weapons.get(i).getName());
+                        for (WeaponCard weaponCard : weapons) {
+                            System.out.println("> " + weaponCard.getName());
                         }
                     }
                     powerups = playerHand.getPowerupHand();
                     System.out.println(">You have the following powerups: ");
-                    if ((powerups == null) || (powerups.size() == 0)) {
+                    if ((powerups == null) || (powerups.isEmpty())) {
                         System.out.println(">You have no powerups!");
                     } else {
-                        for (int i = 0; i < powerups.size(); i++) {
-                            System.out.println("> " + powerups.get(i).getName());
+                        for (PowerUpCard powerUpCard : powerups) {
+                            System.out.println("> " + powerUpCard);
                         }
                     }
 
@@ -384,7 +384,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
         for (int i = 0; i < powerups.size(); i++) {
-            System.out.println("> " + powerups.get(i).getName() +" (" +i +")");
+            System.out.println("> " + powerups.get(i) + " (" +i +")");
         }
         System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
         read = myObj.nextLine();

@@ -4,7 +4,7 @@ import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerHand;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerHandAnswer implements ServerAnswer {
@@ -12,19 +12,19 @@ public class PlayerHandAnswer implements ServerAnswer {
     private PlayerHand playerHand;
 
     public PlayerHandAnswer(PlayerHand p){
-        this.playerHand = p.createCopy(p);
+        this.playerHand = p;
     }
 
     public PlayerHand getplayerHand() {
         return this.playerHand;
     }
 
-    public ArrayList<WeaponCard> getWeaponHand(){
-        return (ArrayList<WeaponCard>) playerHand.getWeaponHand();
+    public List<WeaponCard> getWeaponHand(){
+        return playerHand.getWeaponHand();
     }
 
-    public ArrayList<PowerUpCard> getPowerupHand(){
-        return (ArrayList<PowerUpCard>) playerHand.getPowerupHand();
+    public List<PowerUpCard> getPowerupHand(){
+        return playerHand.getPowerupHand();
     }
 
 }

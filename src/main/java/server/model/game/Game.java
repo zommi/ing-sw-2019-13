@@ -194,4 +194,12 @@ public class Game {
     public AmmoTileDeck getAmmoTileDeck() {
         return ammoTileDeck;
     }
+
+    public PlayerAbstract getPlayer(String string) {
+        for(PlayerAbstract playerAbstract : activePlayers){
+            if(playerAbstract.getName().equalsIgnoreCase(string))
+                return playerAbstract;
+        }
+        return null;
+    }
 }

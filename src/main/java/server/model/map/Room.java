@@ -28,18 +28,6 @@ public class Room implements Serializable {
         squareList = new ArrayList<>();
     }
 
-    public Room roomCreateCopy(Room roomToCopy) {
-        Room room = new Room();
-        room.color = roomToCopy.getColor();
-        room.squareList.addAll(roomToCopy.getSquares());
-        room.charactersList = new ArrayList<>();
-        for(int i = 0; i < roomToCopy.charactersList.size(); i++){
-            room.charactersList.add(roomToCopy.charactersList.get(i).CharacterCreateCopy(roomToCopy.getCharacters().get(i)));
-        }
-        return room;
-    }
-
-
     public Color getColor() {
         return color;
     }

@@ -17,7 +17,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     private String name;
     private GameCharacter gameCharacter;
-    private PlayerHand hand;
+    private transient PlayerHand hand;
     private PlayerBoard board;
     private transient Game currentGame;
     private PlayerState state;
