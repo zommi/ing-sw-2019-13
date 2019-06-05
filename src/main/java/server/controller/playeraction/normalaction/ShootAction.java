@@ -12,8 +12,6 @@ public class ShootAction implements Action {
 
     private PlayerAbstract player;
     private GameBoard gameBoard;
-    private ShootValidator validator;
-    private ShootActuator actuator;
 
     public ShootAction(ShootPack shootPack, PlayerAbstract player, GameBoard gameBoard){
         this.shootPack = shootPack;
@@ -23,13 +21,15 @@ public class ShootAction implements Action {
 
     @Override
     public boolean execute(Controller controller) {
-        return this.shoot(controller);
+        return this.shoot();
     }
 
-    public boolean shoot(Controller controller){
-        ShootInfo shootInfo = validator.validate(shootPack, gameBoard, player);
+    public boolean shoot(){
+        ShootValidator shootValidator = new ShootValidator();
+        ShootActuator shootActuator = new ShootActuator();
+        ShootInfo shootInfo = shootValidator.validate(shootPack, gameBoard, player);
         if(shootInfo != null) {
-            actuator.actuate(shootInfo);
+            shootActuator.actuate(shootInfo);
             return true;
         }
         else

@@ -117,7 +117,8 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("GameBoard")){
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
-                MainGuiController controllerConverted = (MainGuiController) currentController;
+                //MainGuiController controllerConverted = (MainGuiController) currentController;
+                MainGuiController controllerConverted = (MainGuiController) getControllerFromString("gui.fxml");
                 controllerConverted.restoreSquares();
                 controllerConverted.updateGameboard();
             });
