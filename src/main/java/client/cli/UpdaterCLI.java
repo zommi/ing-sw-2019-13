@@ -30,6 +30,9 @@ public class UpdaterCLI  implements Updater,Runnable{
     private static final int MIN_SKULL = 5;
     private static final int MAX_SKULL = 8;
 
+    private String name;
+    private String characterName;
+
     public UpdaterCLI(){
         super();
     }
@@ -89,10 +92,11 @@ public class UpdaterCLI  implements Updater,Runnable{
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
         do{
-            System.out.println(">Insert your player name:");
+            System.out.println(">Insert your name:");
             playerName = myObj.nextLine();
         } while (playerName.equals(""));
 
+        this.name = playerName;
         System.out.println("Name is: " +playerName);
 
         do {
@@ -204,6 +208,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 if(choice < cnList.size() && choice >= 0){
                     set = true;
                     characterName = cnList.get(choice);
+                    this.characterName = characterName;
                 }
                 else{
                     System.out.println("Error: insert a valid number!");
@@ -271,7 +276,14 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("entering the alwaysTrue cicle");
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel);
-                actionParser.getInput().setPlayersNames(gameModel.getPlayersNames());
+
+                //excluding my name from player names list and setting input
+                List<String> pNames = new ArrayList<>();
+                for(String string : gameModel.getPlayersNames())
+                    if(!string.equals(name))
+                        pNames.add(string);
+                actionParser.getInput().setPlayersNames(pNames);
+
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
                     System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
@@ -404,7 +416,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         read = myObj.nextLine();
         int result = -1;
         if (read.toUpperCase().equals("MOVE")) {
-            System.out.println(">You are in the position: raw " +gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " +gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
+            System.out.println(">You are in the position: row " +gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " +gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
             System.out.println(">Choose the row you want to move to: ");
             coordinatex = Integer.parseInt(myObj.nextLine());
             System.out.println(">Choose the col you want to move to: ");
