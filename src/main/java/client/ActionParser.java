@@ -7,6 +7,7 @@ import client.weapons.Weapon;
 import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,8 +24,13 @@ public class ActionParser{
         }
     }
 
-    public void addGameModel(GameModel gameModel){
+    public void addGameModel(GameModel gameModel, String name){
         this.gameModel = gameModel;
+        List<String> pNames = new ArrayList<>();
+        for(String string : gameModel.getPlayersNames())
+            if(!string.equals(name))
+                pNames.add(string);
+        setPlayersNames(pNames);
     }
 
     public InputAbstract getInput(){

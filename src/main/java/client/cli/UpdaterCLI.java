@@ -275,14 +275,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         while (alwaysTrue) {
             System.out.println("entering the alwaysTrue cicle");
             if (connection.getStartGame() == 1) {
-                actionParser.addGameModel(gameModel);
+                actionParser.addGameModel(gameModel, name);
 
                 //excluding my name from player names list and setting input
-                List<String> pNames = new ArrayList<>();
-                for(String string : gameModel.getPlayersNames())
-                    if(!string.equals(name))
-                        pNames.add(string);
-                actionParser.setPlayersNames(pNames);
+
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
