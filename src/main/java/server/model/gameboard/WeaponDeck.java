@@ -29,7 +29,7 @@ public class WeaponDeck implements Serializable {
     public WeaponDeck() {
         try {
             initializeDeck();
-        } catch (/*ReadJsonErrorException|*/Exception e) {
+        } catch (ReadJsonErrorException e) {
             e.printStackTrace();
         }
     }

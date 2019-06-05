@@ -282,7 +282,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 for(String string : gameModel.getPlayersNames())
                     if(!string.equals(name))
                         pNames.add(string);
-                actionParser.getInput().setPlayersNames(pNames);
+                actionParser.setPlayersNames(pNames);
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
@@ -392,6 +392,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
         read = myObj.nextLine();
+        while(Integer.parseInt(read) >= 2){
+            System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
+            read = myObj.nextLine();
+        }
         Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);

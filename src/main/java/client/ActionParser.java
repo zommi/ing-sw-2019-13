@@ -7,6 +7,7 @@ import client.weapons.Weapon;
 import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ActionParser{
@@ -53,6 +54,9 @@ public class ActionParser{
         return null;
     }
 
+    public void setPlayersNames(List<String> names){
+        this.input.setPlayersNames(names);
+    }
 
     public Info createCollectEvent(int row, int col, int collectDecision) {
         return new CollectInfo(row, col, collectDecision);
