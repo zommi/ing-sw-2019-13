@@ -18,8 +18,8 @@ public class SpawnPoint extends SquareAbstract implements Serializable {
 
     private ArrayList<WeaponCard> weaponCards;
 
-    protected SpawnPoint(int x, int y, Color color, GameMap gameMap) {
-        super(x,y,color,gameMap);
+    protected SpawnPoint(int x, int y, Color color) {
+        super(x,y,color);
 
         weaponCards = new ArrayList<>();
     }

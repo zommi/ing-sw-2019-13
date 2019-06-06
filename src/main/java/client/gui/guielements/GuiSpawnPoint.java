@@ -12,14 +12,14 @@ import java.util.List;
 
 public class GuiSpawnPoint extends GuiTile {
 
-    List<String> cardsOnSpawnPoint;
+    List<WeaponCard> cardsOnSpawnPoint;
 
     private Color color;
 
     private SpawnPoint spawnPoint;
 
     public GuiSpawnPoint(int x, int y,int height, int width, Color color){
-        super(x,y,height,width,Paint.valueOf(color.getSpHexValue()));
+        super(x,y,height,width,Paint.valueOf(color.getTileColor()));
         this.color = color;
         Rectangle overlay = new Rectangle(height / 1.5 , width / 1.5 , Paint.valueOf("#000000"));
         overlay.setStroke(Paint.valueOf("#000000"));
@@ -29,7 +29,7 @@ public class GuiSpawnPoint extends GuiTile {
         cardsOnSpawnPoint = new ArrayList<>();
     }
 
-    public List<String> getCardsOnSpawnPoint() {
+    public List<WeaponCard> getCardsOnSpawnPoint() {
         return cardsOnSpawnPoint;
     }
 
@@ -40,7 +40,7 @@ public class GuiSpawnPoint extends GuiTile {
     public void setCardsOnSpawnPoint(SpawnPoint sp) {
         List<WeaponCard> cards = sp.getWeaponCards();
         for(int i = 0; i < 3; i++){
-            cardsOnSpawnPoint.add(cards.get(i).getPath());
+            cardsOnSpawnPoint.add(cards.get(i));
         }
     }
 
@@ -48,15 +48,12 @@ public class GuiSpawnPoint extends GuiTile {
         return color;
     }
 
-    public void restore(String card, int index){
-        this.cardsOnSpawnPoint.add(index,card);
-    }
 
     @Override
     public void restore() {
         this.cardsOnSpawnPoint.clear();
         for(int i = 0; i < this.spawnPoint.getWeaponCards().size(); i++){
-            this.cardsOnSpawnPoint.add(this.spawnPoint.getWeaponCards().get(i).getPath());
+            this.cardsOnSpawnPoint.add(this.spawnPoint.getWeaponCards().get(i));
         }
     }
 

@@ -27,12 +27,6 @@ public abstract class  SquareAbstract implements Serializable {
 
     protected Room room;
 
-    protected GameMap gameMap;
-
-    public GameMap getGameMap(){
-        return gameMap;
-    }
-
     /**
      * Returns the room to which this square belongs.
      * @return the room to which this square belongs
@@ -63,13 +57,11 @@ public abstract class  SquareAbstract implements Serializable {
      * @param col column of the square
      * @param color color of the square
      */
-    protected SquareAbstract(int row, int col, Color color, GameMap gameMap) {
+    protected SquareAbstract(int row, int col, Color color) {
         this.row = row;
         this.col = col;
 
         this.color = color;
-
-        this.gameMap = gameMap;
 
         //new character list
         this.charactersList= new ArrayList<>();
@@ -241,7 +233,7 @@ public abstract class  SquareAbstract implements Serializable {
 
         //square used to divide different groups of squares.
         //all squares in the same group are at the same distance
-        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED,gameMap);
+        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED);
 
         //initialization of variables
         LinkedList<SquareAbstract> queue = new LinkedList<>();
@@ -282,7 +274,7 @@ public abstract class  SquareAbstract implements Serializable {
     }
 
     public List<SquareAbstract> getSquaresAtDistance(int distance){
-        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED,gameMap);
+        final SquareAbstract impossibleSquare = new Square(-1,-1,Color.UNDEFINED);
 
         //initialization of variables
         LinkedList<SquareAbstract> queue = new LinkedList<>();

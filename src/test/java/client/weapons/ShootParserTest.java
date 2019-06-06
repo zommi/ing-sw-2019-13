@@ -47,9 +47,9 @@ class ShootParserTest {
         PlayerAbstract player3 = new ConcretePlayer("player3");
         PlayerAbstract player4 = new ConcretePlayer("player4");
         PlayerAbstract player5 = new ConcretePlayer("player5");
-        player1.setPlayerCharacter(Figure.DESTRUCTOR);
+        player1.setPlayerCharacter(Figure.DOZER);
         player2.setPlayerCharacter(Figure.BANSHEE);
-        player3.setPlayerCharacter(Figure.DOZER);
+        player3.setPlayerCharacter(Figure.DESTRUCTOR);
         player4.setPlayerCharacter(Figure.SPROG);
         player5.setPlayerCharacter(Figure.VIOLET);
 
@@ -80,7 +80,7 @@ class ShootParserTest {
         player4.spawn(gameBoard.getMap().getSquare(1,1));
         player5.spawn(gameBoard.getMap().getSquare(2,1));
 
-        //gameBoard.getMap().printOnCLI();
+        gameBoard.getMap().printOnCLI();
 
 
         ShootParser shootParser = new ShootParser(new GameModel(), inputAbstract);

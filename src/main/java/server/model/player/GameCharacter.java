@@ -86,7 +86,7 @@ public class GameCharacter implements Serializable {
      */
     public void move(SquareAbstract sq) {
         getPosition().removeCharacter(this);
-        this.concretePlayer.getBoard().setPosition(sq.getRow(), sq.getCol());
+        this.concretePlayer.getPlayerBoard().setPosition(sq.getRow(), sq.getCol());
         this.position = sq;
         sq.addCharacter(this);
     }

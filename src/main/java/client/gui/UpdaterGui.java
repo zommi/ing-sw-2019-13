@@ -62,6 +62,7 @@ public class UpdaterGui extends Application implements Updater {
     public void start(Stage primaryStage) throws Exception{
         set();
         this.stage = primaryStage;
+        this.stage.setResizable(false);
         run();
     }
 
@@ -117,9 +118,8 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("GameBoard")){
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
-                //MainGuiController controllerConverted = (MainGuiController) currentController;
-                MainGuiController controllerConverted = (MainGuiController) getControllerFromString("gui.fxml");
-                controllerConverted.restoreSquares();
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
+                //controllerConverted.restoreSquares();
                 controllerConverted.updateGameboard();
             });
         }
@@ -172,6 +172,7 @@ public class UpdaterGui extends Application implements Updater {
             }
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.currentController.enableAll();
+                ((MainGuiController)currentController).restoreSquares();
                 if (this.model.getToSpawn()){
                     ((MainGuiController)this.currentController).spawn();
                 }

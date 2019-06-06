@@ -60,9 +60,9 @@ public class TurnHandler {
             this.action = action;
             boolean actionValid = this.action.execute(controller);
             if(actionValid &&
-                    (action instanceof ShootAction) ||
+                    ((action instanceof ShootAction) ||
                     (action instanceof CollectAction) ||
-                    (action instanceof MoveAction)) {//if it is a draw or a spawn it is not counted as an action
+                    (action instanceof MoveAction))) {//if it is a draw or a spawn it is not counted as an action
                 nextPhase();
             } else {
                 //mandare al client messaggio di errore

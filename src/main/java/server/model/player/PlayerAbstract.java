@@ -80,7 +80,7 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void usePowerup(int powerupIndex);
 
-    public abstract PlayerBoard getBoard();
+    public abstract PlayerBoard getPlayerBoard();
 
     public abstract Color getColor();
 

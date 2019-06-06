@@ -1,14 +1,20 @@
 package client;
 
+import client.gui.MainGuiController;
+import client.gui.UpdaterGui;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
+import javafx.application.Platform;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GuiInput extends InputAbstract {
 
     //mettere un riferimento al maingui controller
+    private MainGuiController guiController;
 
     //quando premo sulla carta devo passare la wapon a al shootparser e chiamare geat weapon input,
     //il get weapon input in base all'arma chiama metodi di input abstract. devo organizzare sta classe
@@ -16,33 +22,39 @@ public class GuiInput extends InputAbstract {
     //dentro inputabstract ci sono delle liste di giocatori che sono quelli che devo far scegliere al giocatore.
     //si potrebbero mettere i nomi dentro a dei bottoni.
 
+    public GuiInput(Updater updater){
+        UpdaterGui updaterGui = (UpdaterGui) updater;
+        this.guiController = (MainGuiController)((UpdaterGui) updater).getControllerFromString("gui.fxml");
+    }
+
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
-        return false;
+        return this.guiController.askMacro(macroEffect);
     }
 
     @Override
     public MacroEffect chooseOneMacro(Weapon weapon) {
-        return null;
+        return this.guiController.chooseOneMacro(weapon);
     }
 
     @Override
     public boolean getChoice(MicroEffect microEffect) {
-        return false;
+        return this.guiController.askMicro(microEffect);
+
     }
 
     @Override
     public List<SquareInfo> askSquares(int maxSquares) {
-        return null;
+        return this.guiController.askSquares(maxSquares);
     }
 
     @Override
     public List<String> askPlayers(int maxTargetPlayerSize) {
-        return null;
+        return this.guiController.askPlayersOrRooms(maxTargetPlayerSize,playersNames,roomsNames,true);
     }
 
     @Override
     public List<String> askRooms(int maxTargetRoomSize) {
-        return null;
+        return this.guiController.askPlayersOrRooms(maxTargetRoomSize,playersNames,roomsNames,false);
     }
 }

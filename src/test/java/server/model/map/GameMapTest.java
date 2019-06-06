@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameMapTest {
 
     @Test
-    public void isMapConstructorOk() throws NoSuchSquareException {
+    public void isMapConstructorOk(){
         GameMap gameMap = new GameMap(1);
         List<SpawnPoint> spawnPoints = new ArrayList<>();
-        spawnPoints.add(new SpawnPoint(0,3, Color.BLUE, gameMap));
-        spawnPoints.add(new SpawnPoint(1,0, Color.RED, gameMap));
-        spawnPoints.add(new SpawnPoint(3,4, Color.YELLOW, gameMap));
+        spawnPoints.add(new SpawnPoint(0,3, Color.BLUE));
+        spawnPoints.add(new SpawnPoint(1,0, Color.RED));
+        spawnPoints.add(new SpawnPoint(3,4, Color.YELLOW));
         assertEquals(spawnPoints.get(0).getColor(), gameMap.getSpawnPoints().get(0).getColor());
         assertTrue(gameMap.getSquare(2,3) instanceof SpawnPoint);
         assertEquals(gameMap.getSquare(1,0).getColor(), Color.RED);
@@ -49,13 +49,13 @@ class GameMapTest {
     }
 
     @Test
-    void getSquareFromXY() throws NoSuchSquareException{
+    void getSquareFromXY(){
         GameMap gameMap = new GameMap(1);
         assertTrue(gameMap.getSquare(1,0).getColor() == Color.RED);
     }
 
     @Test
-    void getSquaresWithSameX() throws NoSuchSquareException{
+    void getSquaresWithSameX(){
         GameMap gameMap = new GameMap(1);
         assertTrue(gameMap.getSquaresWithSameRow(gameMap.getSquare(1,2)).contains(gameMap.getSquare(1,0)));
         assertTrue(gameMap.getSquaresWithSameRow(gameMap.getSquare(1,2)).contains(gameMap.getSquare(1,1)));
@@ -64,7 +64,7 @@ class GameMapTest {
     }
 
     @Test
-    void getSquaresWithSameY() throws NoSuchSquareException{
+    void getSquaresWithSameY(){
         GameMap gameMap = new GameMap(1);
         assertTrue(gameMap.getSquaresWithSameCol(gameMap.getSquare(1,1)).contains(gameMap.getSquare(0,1)));
         assertTrue(gameMap.getSquaresWithSameCol(gameMap.getSquare(1,1)).contains(gameMap.getSquare(2,1)));

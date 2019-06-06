@@ -4,11 +4,9 @@ import client.weapons.Weapon;
 import constants.Constants;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
-import server.model.game.Game;
 import server.model.map.*;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
-import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import java.util.HashMap;
 
@@ -130,7 +128,7 @@ public class GameBoard implements Serializable {
     }
 
     public void addPlayerBoard(ConcretePlayer p){
-        this.mapPlayerBoard.put(p.getClientID(), p.getBoard());
+        this.mapPlayerBoard.put(p.getClientID(), p.getPlayerBoard());
     }
 
     public KillshotTrack getTrack() {

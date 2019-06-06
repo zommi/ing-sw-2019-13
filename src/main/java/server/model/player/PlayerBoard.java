@@ -3,6 +3,7 @@ package server.model.player;
 import server.model.cards.AmmoTile;
 import constants.*;
 import exceptions.*;
+import server.model.cards.WeaponCard;
 import server.model.items.*;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class PlayerBoard implements Serializable {
     private int row;
     private int col;
     private String characterName;
+    private List<WeaponCard> unloadedWeapons;
 
 
     //0 red, 1 blue, 2 yellow
@@ -51,6 +53,24 @@ public class PlayerBoard implements Serializable {
         this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
+        unloadedWeapons = new ArrayList<>();
+    }
+
+    public void addUnloadedWeapon(WeaponCard weaponCard){
+        unloadedWeapons.add(weaponCard);
+    }
+
+    public List<WeaponCard> getUnloadedWeapons(){
+        return unloadedWeapons;
+    }
+
+    public void removeUnloadedWeapon(WeaponCard weaponCard){
+        Iterator<WeaponCard> iterator = unloadedWeapons.iterator();
+        while(iterator.hasNext()){
+            WeaponCard weaponCard1 = iterator.next();
+            if(weaponCard1.equals(weaponCard))
+                iterator.remove();
+        }
     }
 
     private void setDamage(int i, Color color) {
