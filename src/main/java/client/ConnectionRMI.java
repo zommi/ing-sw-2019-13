@@ -227,9 +227,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     public void addPlayerCharacter(String name){
         System.out.println("Trying to send the name of your character to the server...");
-        while (characterNameSet == false) {
+        while (!characterNameSet) {
             try{
-                characterNameSet = gameProxy.addPlayerCharacter(name, clientID);
+                characterNameSet = gameProxy.addPlayerCharacter(name.toUpperCase(), clientID);
                 gameProxy.addMapPlayer(clientID);
                 characterNameSet = true;
                 System.out.println("Name sent to to the server!");
@@ -309,20 +309,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
 
         //TODO manca la parte in cui salvo le scelte del client!
-    }
-
-    public int getMapIndexFromName(String name) {
-        switch (name){
-            case "map11.txt":
-                return 0;
-            case "map12.txt":
-                return 1;
-            case "map21.txt":
-                return 2;
-            case "map22.txt":
-                return 3;
-        }
-        return  -1;
     }
 
     @Override

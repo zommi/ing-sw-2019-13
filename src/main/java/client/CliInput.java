@@ -149,7 +149,7 @@ public class CliInput extends InputAbstract{
             s = scanner.nextLine();
             try {
                 i = Integer.parseInt(s) - 1;
-                if(i < weapon.getMacroEffects().size())
+                if(i>=0 && i < weapon.getMacroEffects().size())
                     ask = false;
                 else
                     System.out.println("Choice not valid.");

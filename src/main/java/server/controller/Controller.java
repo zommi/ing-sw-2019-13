@@ -84,9 +84,10 @@ public class Controller {
 
 
     public String getCurrentCharacter(){
-        for(int i = 0; i < currentGame.getActivePlayers().size(); i++){
-            if(currentGame.getActivePlayers().get(i).getClientID() == currentID)
-                return currentGame.getActivePlayers().get(i).getCharacterName();
+        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+            if(playerAbstract.getClientID() == currentID)
+                //return playerAbstract.getName() + ", " + playerAbstract.getCharacterName();
+                return playerAbstract.getCharacterName();
         }
         return "No one is playing";
     }
@@ -158,7 +159,7 @@ public class Controller {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
-            System.out.println("ciao");
+            /*System.out.println("ciao");
             //TODO check if the target has a powerup
             List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
             List<PowerUpCard> handTemp = currentPlayer.getJustDamagedBy().getHand().getPowerupHand();
@@ -173,7 +174,7 @@ public class Controller {
                         grenadeID = -1;
                     }
                 }
-            }
+            }*/
         }
 
 

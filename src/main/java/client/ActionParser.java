@@ -31,14 +31,14 @@ public class ActionParser{
         //initialize players names
         List<String> pNames = new ArrayList<>();
         for(String string : gameModel.getPlayersNames())
-            if(!string.equals(name))
+            if(!string.equalsIgnoreCase(name))
                 pNames.add(string);
         setPlayersNames(pNames);
 
         //initialize rooms names
         List<String> rNames = new ArrayList<>();
         for(Room room : gameModel.getMap().getResult().getRooms())
-            rNames.add(room.getColor().toString());
+            rNames.add(room.getColor().name());
         setRoomsNames(rNames);
     }
 
@@ -70,21 +70,6 @@ public class ActionParser{
     public Info createPowerUpEvent(PowerUp powerUp) {
         PowerUpParser powerUpParser = new PowerUpParser(gameModel);
         return powerUpParser.getPowerUpInput(powerUp,input);
-    }
-
-
-    public PowerUp powerUpFromString(String name){
-        for(int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++){
-            if(name.equalsIgnoreCase(gameModel.getPlayerHand().getPowerupHand().get(i).getName())){
-                return gameModel.getPlayerHand().getPowerupHand().get(i).getPowerUp();
-            }
-        }
-        System.out.println("ERROR: THE POWERUP DOES NOT EXIST OR YOU DON'T HAVE IT");
-        System.out.println("Insert a new one: ");
-        Scanner myObj = new Scanner(System.in);
-        String read = myObj.nextLine();
-        powerUpFromString(read);
-        return null;
     }
 
     public Info createSpawnEvent(PowerUpCard powerupCard){

@@ -31,7 +31,7 @@ public enum Color {
 
     public static Color fromString(String s) {
         for (Color color : Color.values()) {
-            if (color.abbreviation.equalsIgnoreCase(s)) {
+            if (color.abbreviation.equalsIgnoreCase(s) || color.name().equalsIgnoreCase(s)) {
                 return color;
             }
         }

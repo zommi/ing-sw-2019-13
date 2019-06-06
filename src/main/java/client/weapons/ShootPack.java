@@ -11,23 +11,11 @@ public class ShootPack implements Info {
 
     private String weapon;
     List<MacroPack> activatedMacros;
-    transient GameModel gameModel;
 
 
-
-    public ShootPack(String weapon, GameModel gameModel){
+    public ShootPack(String weapon){
         this.weapon = weapon;
         this.activatedMacros = new ArrayList<>();
-        this.gameModel = gameModel;
-    }
-
-    public Weapon getWeaponFromName(){
-        for(int i = 0; i < gameModel.getWeaponList().getList().size(); i++){
-            if(weapon.equalsIgnoreCase(gameModel.getWeaponList().getList().get(i).getName())){
-                return gameModel.getWeaponList().getList().get(i).getWeapon();
-            }
-        }
-        return null;
     }
 
     public String getWeapon(){
@@ -44,12 +32,4 @@ public class ShootPack implements Info {
                 return macroPack;
         return null;
     }
-
-    public MicroPack getActivatedMicro(int macro, int micro){
-        if(getActivatedMacro(macro) != null)
-            return getActivatedMacro(macro).getActivatedMicro(micro);
-        else return null;
-    }
-
-
 }

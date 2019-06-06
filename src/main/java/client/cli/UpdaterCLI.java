@@ -462,6 +462,11 @@ public class UpdaterCLI  implements Updater,Runnable{
                 connection.send(action);
             }
             else if (read.equalsIgnoreCase("S")) {        //shoot
+                if(gameModel.getPlayerHand().getWeaponHand().isEmpty()){
+                    System.out.println("You have no weapon! Sorry.");
+                    ask = true;
+                    continue;
+                }
                 boolean askShoot = false;
                 String strChoice = "";
                 int choice = 0;
@@ -572,6 +577,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
             }
             else if (read.equalsIgnoreCase("P")) {      //powerUp
+                if(gameModel.getPlayerHand().getPowerupHand().isEmpty()){
+                    System.out.println("You have no powerUp! Sorry.");
+                    ask = true;
+                    continue;
+                }
+
                 String strChoice;
                 int choice = 0;
                 boolean askPowerUp = true;

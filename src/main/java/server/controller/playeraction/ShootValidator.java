@@ -43,7 +43,8 @@ public class ShootValidator {
         if(shootInfo.getWeapon().isSpecial()){
             gameBoard.getMap().setValid(false);
             for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-                playerAbstract.getGameCharacter().setOldPosition();
+                if(playerAbstract.getPosition() != null)
+                    playerAbstract.getGameCharacter().setOldPosition();
             }
         }
 
@@ -161,7 +162,8 @@ public class ShootValidator {
                         //adds all active players to playerList and then removes those who don't meet
                         //  policy requirements
                         for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-                            microInfo.getPlayersList().add(playerAbstract);
+                            if(playerAbstract.getPosition() != null)
+                                microInfo.getPlayersList().add(playerAbstract);
                         }
                     }
                     for(WeaponPolicy weaponPolicy : weaponMicro.getPolicies()){
@@ -183,7 +185,8 @@ public class ShootValidator {
         } finally {
             if (shootInfo.getWeapon().isSpecial()) {
                 for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
-                    playerAbstract.getGameCharacter().move(playerAbstract.getGameCharacter().getOldPosition());
+                    if(playerAbstract.getPosition() != null)
+                        playerAbstract.getGameCharacter().move(playerAbstract.getGameCharacter().getOldPosition());
                 }
                 gameBoard.getMap().setValid(true);
             }

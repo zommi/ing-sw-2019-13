@@ -133,20 +133,6 @@ public class ConnectionSocket implements Connection {
         send(new SetupInfo(map,initialSkulls,playerName));
     }
 
-    public int getMapIndexFromName(String name) {
-        switch (name){
-            case "map11.txt":
-                return 0;
-            case "map12.txt":
-                return 1;
-            case "map21.txt":
-                return 2;
-            case "map22.txt":
-                return 3;
-        }
-        return  -1;
-    }
-
     public int getInitialSkulls(){
         return this.initialSkulls;
     }

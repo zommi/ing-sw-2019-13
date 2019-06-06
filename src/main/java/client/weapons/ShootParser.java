@@ -19,7 +19,7 @@ public class ShootParser {
         this.isLimitedActivated = false;
         this.weapon = weapon;
         this.input = input; //magari togliere questo assegnamento e metterlo in un setter apposta
-        shootPack = new ShootPack(weapon.getName(), gameModel);
+        shootPack = new ShootPack(weapon.getName());
         switch(weapon.getType()){
             case EXTRA:
                 for(MacroEffect macroEffect : weapon.getMacroEffects()){
