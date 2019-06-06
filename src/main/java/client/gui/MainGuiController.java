@@ -19,19 +19,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 
-import java.io.ObjectOutputStream;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-import server.controller.playeraction.normalaction.CollectAction;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
-import server.model.player.PlayerAbstract;
-import server.model.player.PlayerBoard;
 import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
@@ -338,7 +333,7 @@ public class MainGuiController implements GuiController {
                 break;
             }
         }
-        Info spawn = this.actionParser.createSpawEvent(card);
+        Info spawn = this.actionParser.createSpawnEvent(card);
         this.gui.getConnection().send(spawn);
     }
 

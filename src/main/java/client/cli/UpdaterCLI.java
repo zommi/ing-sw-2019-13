@@ -77,7 +77,8 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
     @Override
-    public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException { //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
+    public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
+        //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
         String read;
         String playerName;
@@ -163,8 +164,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 try {
                     stringChoice =  myObj.nextLine();
-                    choice = Integer.parseInt(stringChoice);
-                    if(choice <mnList.size() && choice > 0){
+                    choice = Integer.parseInt(stringChoice) - 1;
+                    if(choice <mnList.size() && choice >= 0){
                         mapChosen = true;
                         mapNumber = choice;
                     }
@@ -317,7 +318,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     if(gameModel.getToSpawn()){
                         powerups = this.spawn(powerups, playerHand, actionParser);
                     }
-                    this.startInput(actionParser, powerups);
+                    this.startInput(actionParser);
                 }
                 else if(connection.getGrenadeID() != -1){
                     if(connection.getClientID() != connection.getGrenadeID()){
@@ -329,8 +330,11 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println("Yes (1)");
                         System.out.println("No (2)");
                         String read = myObj.nextLine();
+
+                        //GESTISCI ECCEZIONE
                         if(Integer.parseInt(read) == 1){
-                            actionParser.createPowerUpEvent("Tagback Grenade");
+                            //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
+                            //actionParser.createPowerUpEvent("Tagback Grenade");
                         }
                     }
                 }
@@ -373,7 +377,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         powerups = playerHand.getPowerupHand();
         System.out.println(">You have the following powerups: ");
         while ((powerups == null) || (powerups.isEmpty())) {
-            System.out.println(">You have no powerups. There's a problem as you should have draw them");
+            System.out.println(">You have no powerups. There's a problem as you should have drawn them");
             playerHand = gameModel.getPlayerHand();
             powerups = playerHand.getPowerupHand();
             try{
@@ -383,19 +387,30 @@ public class UpdaterCLI  implements Updater,Runnable{
                 e.printStackTrace();
             }
         }
-        for (int i = 0; i < powerups.size(); i++) {
-            System.out.println("> " + powerups.get(i) + " (" +i +")");
-        }
-        System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
-        read = myObj.nextLine();
-        while(Integer.parseInt(read) >= 2){
-            System.out.println(">Choose one of the two powerups you have draw and discard it. You will be put in the spawn point of the color of that card : ");
+        boolean askSpawn = true;
+        int spawnChoice = 0;
+        while(askSpawn){
+            for (int i = 0; i < powerups.size(); i++) {
+                System.out.println("> " + powerups.get(i) + " (" +(i+1) +")");
+            }
+            System.out.println(">Choose one of the two powerups and discard it. You will be put in the spawn point of the color of that card : ");
             read = myObj.nextLine();
+            try{
+                spawnChoice = Integer.parseInt(read) - 1;
+                if(spawnChoice==0 || spawnChoice== 1)
+                    askSpawn = false;
+                else
+                    System.out.println("Please insert a valid number.");
+            }catch(NumberFormatException e){
+                System.out.println("Please insert a valid number.");
+            }
+
         }
-        Info action1 = actionParser.createSpawEvent(powerups.get(Integer.parseInt(read)));
+
+        Info action1 = actionParser.createSpawnEvent(powerups.get(spawnChoice));
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
-        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(Integer.parseInt(read)).getColor());
+        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(spawnChoice).getColor());
         return powerups;
     }
 
@@ -403,114 +418,188 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-    public void startInput(ActionParser actionParser, List<PowerUpCard> powerups){
-        String read;
-        int coordinatex = 0;
-        int coordinatey = 0;
-        Scanner myObj = new Scanner(System.in);
-        int collectDecision = 0;
-        boolean collectChosen = false;
-        boolean powerupChosen = false;
-        printPlayerBoard(gameModel.getPlayerBoard(gameModel.getClientID()));
-        System.out.println(">Write a command: ");
-        read = myObj.nextLine();
-        int result = -1;
-        if (read.toUpperCase().equals("MOVE")) {
-            System.out.println(">You are in the position: row " +gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " +gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
-            System.out.println(">Choose the row you want to move to: ");
-            coordinatex = Integer.parseInt(myObj.nextLine());
-            System.out.println(">Choose the col you want to move to: ");
-            coordinatey = Integer.parseInt(myObj.nextLine());
-            Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
-            connection.send(action);
-        } else if (read.toUpperCase().equals("SHOOT")) {
-            boolean ask = false;
-            String strChoice = "";
-            int choice = 0;
-            while(!ask) {
-                System.out.println(">Choose the name of the weapon: ");
-                for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
-                    System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
-                }
-                try{
-                    strChoice = myObj.nextLine();
-                    choice = Integer.parseInt(strChoice) - 1;
-                    if(choice>=0 && choice<gameModel.getPlayerHand().getWeaponHand().size()) {
-                        ask = true;
-                        //TODO set weapon
-                    }
-                    else
-                        System.out.println("Please insert a valid number.");
-                }catch (NumberFormatException e){
-                    System.out.println("Please insert a valid number.");
-                }
-            }
-            Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
-            connection.send(action);
-        } else if (read.toUpperCase().equals("COLLECT")) {
-            do {
-                System.out.println(">Choose what you want to collect: ");
-                System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                System.out.println("Ammo (2)"); //3 is to collect ammo
-                read = myObj.nextLine();
-                if (read.equals("1")) {
-                    collectDecision = 1;
-                    collectChosen = true;
-                } else if (read.equals("2")) {
-                    collectDecision = 2;
-                    collectChosen = true;
-                }
-            } while (!collectChosen);
-            do {
-                System.out.println(">Do you want to move before collecting? ");
-                System.out.println("Yes (1)"); //1 move
-                System.out.println("No (2)"); //2 not move
-                result = Integer.parseInt(myObj.nextLine());
-            } while ((result != 1) && (result != 2));
-            coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getRow();
-            coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getCol();
-            if(result == 1){
-                System.out.println(">Choose the row you want to move to: ");
-                coordinatex = Integer.parseInt(myObj.nextLine());
-                System.out.println(">Choose the col you want to move to: ");
-                coordinatey = Integer.parseInt(myObj.nextLine());
-            }
+    public void startInput(ActionParser actionParser){
+        boolean ask = true;
+        while(ask) {
+            ask = false;
 
+            String read;
+            int coordinatex = 0;
+            int coordinatey = 0;
+            Scanner myObj = new Scanner(System.in);
+            int collectDecision = 0;
+            boolean collectChosen = false;
+            boolean powerupChosen = false;
+            printPlayerBoard(gameModel.getPlayerBoard(gameModel.getClientID()));
+            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp");
+            read = myObj.nextLine();
+            int result = -1;
+            if (read.equalsIgnoreCase("M")) {       //move
+                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
 
-            if(collectDecision == 1){ //he has chosen to collect a weapon
-                do {
-                    if(gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint)
-                    {
-                        System.out.println(">Choose which weapon you want to collect ");
-                        for(int i = 0; i < ((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().size(); i++) { //1 is to collect weapon
-                            System.out.println("" +i +" " +((SpawnPoint)gameModel.getMap().getResult().getSquare(coordinatex, coordinatey)).getWeaponCards().get(i)); //1 is to collect weapon
-                        }
-                        result = Integer.parseInt(myObj.nextLine());
-                        Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
-                        connection.send(action);
+                boolean askX = true;
+                while(askX) {
+                    System.out.println(">Choose the row you want to move to: ");
+                    try {
+                        coordinatex = Integer.parseInt(myObj.nextLine());
+                        askX = false;
+                    }catch(NumberFormatException e){
+                        //ask == true
                     }
-                    else{
-                        System.out.println("This is not a spawn point, you can't collect weapons");
-                        break;
+                }
+                boolean askY = true;
+                while(askY) {
+                    System.out.println(">Choose the col you want to move to: ");
+                    try {
+                        coordinatey = Integer.parseInt(myObj.nextLine());
+                        askY = false;
+                    }catch(NumberFormatException e){
+                        //ask == true
                     }
-                } while ((result != 0) && (result != 1) && (result != 2));
-            }
-            else if(collectDecision == 2) {
-                Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
+                }
+
+                Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
                 connection.send(action);
             }
-        }
-        else if (read.toUpperCase().equals("USE POWERUP")) {
-            do {
-                System.out.println(">Choose what powerup you want to use: ");
-                read = myObj.nextLine();
+            else if (read.equalsIgnoreCase("S")) {        //shoot
+                boolean askShoot = false;
+                String strChoice = "";
+                int choice = 0;
+                while (!askShoot) {
+                    System.out.println(">Choose the name of the weapon: ");
+                    for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                        System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
+                    }
+                    try {
+                        strChoice = myObj.nextLine();
+                        choice = Integer.parseInt(strChoice) - 1;
+                        if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size()) {
+                            askShoot = true;
+                        } else
+                            System.out.println("Please insert a valid number.");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please insert a valid number.");
+                    }
+                }
+                Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
+                connection.send(action);
             }
-            while ((read.equals("")) || ((!read.toUpperCase().equals("TELEPORTER")) && (!read.toUpperCase().equals("NEWTON")) && (!read.toUpperCase().equals("TARGETING SCOPE")) && (!read.toUpperCase().equals("TAGBACK GRANADE"))));
-            Info action = actionParser.createPowerUpEvent(read.toUpperCase());
-            connection.send(action);
-        } else {
-            System.out.println(">You have to choose between 'COLLECT', 'SHOOT', 'MOVE' and 'USE POWERUP' ");
-            startInput(actionParser, powerups);
+            else if (read.equalsIgnoreCase("C")) {      //collect
+                do {
+                    System.out.println(">Choose what you want to collect: ");
+                    System.out.println("Weapon Card (1)"); //1 is to collect weapon
+                    System.out.println("Ammo (2)"); //2 is to collect ammo
+                    read = myObj.nextLine();
+                    if (read.equals("1")) {
+                        collectDecision = 1;
+                        collectChosen = true;
+                    } else if (read.equals("2")) {
+                        collectDecision = 2;
+                        collectChosen = true;
+                    }
+                } while (!collectChosen);
+
+                do {
+                    System.out.println(">Do you want to move before collecting? ");
+                    System.out.println("Yes (1)"); //1 move
+                    System.out.println("No (2)"); //2 not move
+                    try {
+                        result = Integer.parseInt(myObj.nextLine());
+                    }catch(NumberFormatException e){
+                        result = 0; //to force another loop
+                    }
+                } while ((result != 1) && (result != 2));
+
+                coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getRow();
+                coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getCol();
+
+                if (result == 1) {
+                    boolean askX = true;
+                    while(askX) {
+                        System.out.println(">Choose the row you want to move to: ");
+                        try {
+                            coordinatex = Integer.parseInt(myObj.nextLine());
+                            askX = false;
+                        }catch(NumberFormatException e){
+                            //ask == true
+                        }
+                    }
+                    boolean askY = true;
+                    while(askY) {
+                        System.out.println(">Choose the col you want to move to: ");
+                        try {
+                            coordinatey = Integer.parseInt(myObj.nextLine());
+                            askY = false;
+                        }catch(NumberFormatException e){
+                            //ask == true
+                        }
+                    }
+                }
+
+
+                if (collectDecision == 1) { //he has chosen to collect a weapon
+                    do {
+                        if (gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint) {
+                            SpawnPoint spawnPoint = (SpawnPoint) gameModel.getMap().getResult().getSquare(coordinatex, coordinatey);
+
+                            boolean askWeapon = true;
+                            while(askWeapon) {
+                                System.out.println(">Choose which weapon you want to collect ");
+                                for (int i = 0; i < spawnPoint.getWeaponCards().size(); i++) {
+                                    System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
+                                }
+                                try {
+                                    result = Integer.parseInt(myObj.nextLine()) - 1;
+                                    if(result>= 0 && result <spawnPoint.getWeaponCards().size())
+                                        askWeapon = false;
+                                    else
+                                        System.out.println("Please insert a valid number.");
+                                }catch(NumberFormatException e){
+                                    System.out.println("Please insert a valid number.");
+                                }
+                            }
+
+                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
+                            connection.send(action);
+                        } else {
+                            System.out.println("This is not a spawn point, you can't collect weapons");
+                            break;
+                        }
+                    } while ((result != 0) && (result != 1) && (result != 2));
+                } else if (collectDecision == 2) {
+                    Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
+                    connection.send(action);
+                }
+            }
+            else if (read.equalsIgnoreCase("P")) {      //powerUp
+                String strChoice;
+                int choice = 0;
+                boolean askPowerUp = true;
+                while (askPowerUp) {
+                    System.out.println(">Choose what powerup you want to use: ");
+                    for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
+                        System.out.println(gameModel.getPlayerHand().getPowerupHand().get(i).getName() + " (" + (i + 1) + ")");
+                    }
+                    strChoice = myObj.nextLine();
+                    try {
+                        choice = Integer.parseInt(strChoice) - 1;
+                        if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size()) {
+                            askPowerUp = false;
+
+                        } else
+                            System.out.println("Please insert a valid number.");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please insert a valid number.");
+
+                    }
+                }
+                Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp());
+                connection.send(action);
+            }
+            else {
+                System.out.println(">Please insert a valid action.");
+                ask = true;
+            }
         }
     }
 

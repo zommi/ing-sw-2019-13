@@ -137,8 +137,9 @@ public class CliInput extends InputAbstract{
 
     @Override
     public MacroEffect chooseOneMacro(Weapon weapon){
+        System.out.println("Choose one of the following macro effects:");
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
-            System.out.println(macroEffect.getNumber() + ": " + macroEffect);
+            System.out.println((macroEffect.getNumber()+1) + ": " + macroEffect);
         }
         String s;
         int i = 0;
@@ -147,7 +148,7 @@ public class CliInput extends InputAbstract{
             System.out.println("Choose a number\n");
             s = scanner.nextLine();
             try {
-                i = Integer.parseInt(s);
+                i = Integer.parseInt(s) - 1;
                 if(i < weapon.getMacroEffects().size())
                     ask = false;
                 else
