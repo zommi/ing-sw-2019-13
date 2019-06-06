@@ -10,15 +10,15 @@ public class ShootParser {
     private InputAbstract input;
     private GameModel gameModel;
 
-    public ShootParser(GameModel gameModel){
+    public ShootParser(GameModel gameModel, InputAbstract input){
         this.gameModel = gameModel;
+        this.input = input;
     }
     private ShootPack shootPack;
 
-    public ShootPack getWeaponInput(Weapon weapon, InputAbstract input){
+    public ShootPack getWeaponInput(Weapon weapon){
         this.isLimitedActivated = false;
         this.weapon = weapon;
-        this.input = input; //magari togliere questo assegnamento e metterlo in un setter apposta
         shootPack = new ShootPack(weapon.getName());
         switch(weapon.getType()){
             case EXTRA:

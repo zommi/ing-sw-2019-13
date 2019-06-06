@@ -4,6 +4,7 @@ import client.weapons.Weapon;
 import constants.Constants;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
+import server.model.game.Game;
 import server.model.map.*;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
@@ -49,7 +50,9 @@ public class GameBoard implements Serializable {
 
     private Map<Integer,PlayerBoard> mapPlayerBoard;
 
-    private List<GameCharacter> gameCharacterList = new ArrayList<>();
+    private List<GameCharacter> gameCharacterList;
+
+    private List<GameCharacter> activeCharacters;
 
     public GameBoard(){
 
@@ -67,8 +70,14 @@ public class GameBoard implements Serializable {
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
         this.mapPlayerBoard = new HashMap<>();
+        activeCharacters = new ArrayList<>();
+        gameCharacterList = new ArrayList<>();
         setupGameBoard();
 
+    }
+
+    public List<GameCharacter> getActiveCharacters() {
+        return activeCharacters;
     }
 
     public List<String> getPlayerNames(){

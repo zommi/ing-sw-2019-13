@@ -70,15 +70,15 @@ public class WeaponDeck implements Serializable {
         this.deck = new LinkedList<>();
         this.staticDeck = new LinkedList<>();
 
-        /*for(int i = 0; i < arrayOfWeapons.length; i++){
-            this.deck.push(new WeaponCard(arrayOfWeapons[i]));
-            this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
+        for(Weapon weapon : arrayOfWeapons){
+            this.deck.push(new WeaponCard(weapon));
+            this.staticDeck.push(new WeaponCard(weapon));
 
         }
 
-        this.shuffle();*/
+        this.shuffle();
 
-        for(int i = 0; i < arrayOfWeapons.length-1; i++){
+        /*for(int i = 0; i < arrayOfWeapons.length-1; i++){
             this.deck.push(new WeaponCard(arrayOfWeapons[i]));
             this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
 
@@ -89,7 +89,7 @@ public class WeaponDeck implements Serializable {
                 weapon = weapon1;
 
         this.deck.push(new WeaponCard(weapon));
-        this.staticDeck.push(new WeaponCard(weapon));
+        this.staticDeck.push(new WeaponCard(weapon));*/
 
     }
 

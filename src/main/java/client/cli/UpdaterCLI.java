@@ -9,6 +9,8 @@ import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.map.SpawnPoint;
+import server.model.player.Figure;
+import server.model.player.GameCharacter;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -191,8 +193,8 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         connection.add(playerName, mapNumber, initialSkulls);
 
-        String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
-        List<String> cnList = Arrays.asList(characterNames);
+        /*String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
+        List<String> cnList = Arrays.asList(characterNames);*/
         int choice;
         boolean set = false;
         String stringChoice;
@@ -200,15 +202,15 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         do{
             System.out.println(">Choose your character:");
-            for(int i = 0; i< cnList.size(); i++){
-                System.out.println(cnList.get(i) + " (" + (i+1) + ")");
+            for(int i = 0; i< Figure.values().length; i++){
+                System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
             }
             try {
                 stringChoice =  myObj.nextLine();
                 choice = Integer.parseInt(stringChoice) - 1;
-                if(choice < cnList.size() && choice >= 0){
+                if(choice < Figure.values().length && choice >= 0){
                     set = true;
-                    characterName = cnList.get(choice);
+                    characterName = Figure.values()[choice].name();
                     this.characterName = characterName;
                 }
                 else{
@@ -339,7 +341,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 }
                 else{
-                    System.out.println("For now it is not your turn: " + connection.getCurrentCharacter() +"is playing");
+                    System.out.println("For now it is not your turn: " +
+                            getCharacter(connection.getCurrentCharacter()).getColor().getAnsi() +
+                            connection.getCurrentCharacter() +"\u001B[0m is playing");
                     try{
                         TimeUnit.SECONDS.sleep(5);
                     }
@@ -615,6 +619,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     public void printPlayerBoard(PlayerBoardAnswer p){
+        System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
+                characterName + "\u001B[0m");
         System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.RED) +" red marks tokens");
         System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.BLUE) +" blue marks tokens");
         System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.YELLOW) +" yellow marks tokens");
@@ -624,6 +630,14 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
 
 
+    }
+
+    public GameCharacter getCharacter(String string){
+        for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
+            if(gameCharacter.getFigure().name().equalsIgnoreCase(string))
+                return gameCharacter;
+        }
+        return null;
     }
 
     public static void main(String[] args) {

@@ -51,8 +51,8 @@ public class ActionParser{
     }
 
     public Info createShootEvent(Weapon weapon){
-        ShootParser shootParser = new ShootParser(gameModel);
-        return shootParser.getWeaponInput(weapon,input);
+        ShootParser shootParser = new ShootParser(gameModel, input);
+        return shootParser.getWeaponInput(weapon);
     }
 
     public void setPlayersNames(List<String> names){

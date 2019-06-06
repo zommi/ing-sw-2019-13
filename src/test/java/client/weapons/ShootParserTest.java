@@ -83,8 +83,8 @@ class ShootParserTest {
         //gameBoard.getMap().printOnCLI();
 
 
-        ShootParser shootParser = new ShootParser(new GameModel());
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"), inputAbstract);
+        ShootParser shootParser = new ShootParser(new GameModel(), inputAbstract);
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"));
 
         ShootValidator shootValidator = new ShootValidator();
         ShootInfo shootInfo = shootValidator.validate(shootPack, game, player1);

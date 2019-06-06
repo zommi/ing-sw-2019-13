@@ -3,6 +3,7 @@ package client;
 import exceptions.GameAlreadyStartedException;
 import server.GameProxyInterface;
 import server.model.map.GameMap;
+import server.model.player.Figure;
 import view.ServerAnswer;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
@@ -109,7 +111,12 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     @Override
     public boolean CharacterChoice(String name) {
-        if ((name.toUpperCase().equals("SPROG") || (name.toUpperCase().equals("DESTRUCTOR")) || (name.toUpperCase().equals("BANSHEE")) || (name.toUpperCase().equals("DOZER")) || (name.toUpperCase().equals("VIOLET")))) {
+        boolean found = false;
+        for(Figure figure : Figure.values()){
+            if(figure.name().equalsIgnoreCase(name))
+                found = true;
+        }
+        if (found) {
             try{
                 if(gameProxy.isCharacterTaken(name)){
                     return false;
@@ -256,7 +263,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
         if(clientID == 0) {
             System.out.println("Trying to send your choice of initial skulls to the server...");
-            while (initialSkullsSet == false) {
+            while (!initialSkullsSet) {
                 try {
                     initialSkullsSet = gameProxy.sendInitialSkulls(initialSkulls);
                     initialSkullsSet = true;
@@ -274,7 +281,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
 
         System.out.println("Trying to send your name to the server...");
-        while (playerNameSet == false) {
+        while (!playerNameSet) {
             try{
                 playerNameSet = gameProxy.sendPlayer(playerName, clientID);
                 playerNameSet = true;
@@ -289,7 +296,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
         if(clientID == 0){
             System.out.println("Sending your chosen map to the server...");
-            while(mapSet == false){
+            while(!mapSet){
                 try{
                     mapSet = gameProxy.sendMap(mapClient);
                     mapSet = true;

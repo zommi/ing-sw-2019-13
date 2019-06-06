@@ -5,6 +5,7 @@ import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
+import server.model.player.PlayerAbstract;
 import view.*;
 
 import java.rmi.RemoteException;
@@ -43,6 +44,12 @@ public class Server {
         else{
             game = controller.getCurrentGame();
             game.setPlayersNames();
+
+            //adding active characters to the gameboard
+            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+                game.getCurrentGameBoard().getActiveCharacters().add(playerAbstract.getGameCharacter());
+            }
+
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());

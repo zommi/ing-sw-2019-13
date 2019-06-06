@@ -19,7 +19,7 @@ public class GameCharacter implements Serializable {
 
     private SquareAbstract position;
     private ConcretePlayer concretePlayer;
-    private SquareAbstract oldPosition;
+    private transient SquareAbstract oldPosition;
 
     public GameCharacter(){
 
