@@ -121,6 +121,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         playerToAdd.setIfCharacter(false);
         ((ConcretePlayer) playerToAdd).setClientID(clientID);
         player.add(playerToAdd);
+        serverRMI.getServer().addPlayer(playerToAdd);
         return true;
     }
 
