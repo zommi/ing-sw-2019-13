@@ -230,7 +230,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         } while (!set || (!connection.CharacterChoice(characterName)));
 
         System.out.println("Name is: " +characterName.toUpperCase());
-        connection.addPlayerCharacter(characterName); //TODO
+        connection.addPlayerCharacter(characterName);
 
         /*if(gameModel.getClientID() == 0){
             System.out.println("Waiting 30 seconds for the others to join the game");
@@ -342,10 +342,20 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println("No (2)");
                         String read = myObj.nextLine();
 
-                        //GESTISCI ECCEZIONE
-                        if(Integer.parseInt(read) == 1){
-                            //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
-                            //actionParser.createPowerUpEvent("Tagback Grenade");
+                        try{
+                            int choice = Integer.parseInt(read);
+                            if((choice != 1) && (choice != 0)){
+                                System.out.println("Error: insert a valid number!");
+                            }
+                            else{
+                                if(Integer.parseInt(read) == 1){
+                                    System.out.println("ciao");
+                                    //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
+                                    //actionParser.createPowerUpEvent("Tagback Grenade");
+                                }
+                            }
+                        } catch(NumberFormatException e) {
+                            System.out.println("Error: insert a valid number");
                         }
                     }
                 }

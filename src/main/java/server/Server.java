@@ -6,6 +6,7 @@ import server.controller.Controller;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerHand;
 import view.*;
 
 import java.rmi.RemoteException;
@@ -27,6 +28,8 @@ public class Server {
     private int clientIDadded;
     private int startGame = 0;
     private static List<Integer> listOfClients = new ArrayList<>();
+    private List<PlayerAbstract> playerList = new ArrayList<>();
+
 
     public int getStartGame(){
         return this.startGame;
@@ -106,6 +109,15 @@ public class Server {
         }
     }
 
+    public void addPlayer(PlayerAbstract player){
+        playerList.add(player);
+        if((listOfClients.size() == 3)&&(playerList.size() == 3)){ //start timer di N secondi
+            TimerTask timerTask = new MyTimerTask(this);
+            Timer timer = new Timer(true);
+            timer.schedule(timerTask, 0);
+            System.out.println("Task started");
+        }
+    }
 
 
     public int addClient(ReceiverInterface client){
@@ -118,13 +130,6 @@ public class Server {
             this.clientIDadded = clientIDadded + 1;
         }
         System.out.println("Added the clientID ");
-
-        if(listOfClients.size() == 3){ //start timer di N secondi
-            TimerTask timerTask = new MyTimerTask(this);
-            Timer timer = new Timer(true);
-            timer.schedule(timerTask, 0);
-            System.out.println("Task started");
-        }
         return clientIDadded;
     }
 
