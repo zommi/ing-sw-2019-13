@@ -125,6 +125,7 @@ public class Controller {
         if(action instanceof PowerUpPack){
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);
             turnHandler.setAndDoAction(powerUpAction);
+            this.sendCollectShootAnswersRMI(currentPlayer, currentID);
         }
 
         if(action instanceof DrawInfo){
@@ -166,11 +167,13 @@ public class Controller {
             for(int i = 0; i < listOfPlayers.size(); i++){
                 for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
                     if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
-                        grenadeID = currentPlayer.getJustDamagedBy().getClientID();
-                        TimerTask timerTask = new MyTimerTask(server);
-                        Timer timer = new Timer(true);
-                        timer.schedule(timerTask, 0);
-                        System.out.println("Waiting for the other player to do the action");
+                        if(listOfPlayers.get(i).getJustDamagedBy() != null){
+                            grenadeID = listOfPlayers.get(i).getJustDamagedBy().getClientID();
+                            TimerTask timerTask = new MyTimerTask(server);
+                            Timer timer = new Timer(true);
+                            timer.schedule(timerTask, 0);
+                            System.out.println("Waiting for the other player to do the action");
+                        }
                         grenadeID = -1;
                     }
                 }

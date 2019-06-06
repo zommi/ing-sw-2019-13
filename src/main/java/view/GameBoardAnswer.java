@@ -32,11 +32,6 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
         return result.getPlayerNames();
     }
 
-    public AmmoTileDeck getWeaponDeck() {
-        //TODO
-        return null;
-    }
-
     public PlayerBoardAnswer getPlayerBoard(int clientID){
         return (new PlayerBoardAnswer((PlayerBoard) (result.getHashMap()).get(clientID)));
     }

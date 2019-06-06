@@ -394,7 +394,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("Creating the action of drawing");
         DrawInfo action = new DrawInfo();
         System.out.println("Sending the action of spawning to the server");
-        connection.send(action);//TODO is it istant as an action?
+        connection.send(action);//TODO is it instant as an action?
         playerHand = gameModel.getPlayerHand();
         powerups = playerHand.getPowerupHand();
         System.out.println(">You have the following powerups: ");
@@ -433,6 +433,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
         System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(spawnChoice).getColor());
+        System.out.println("In the raw " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
         return powerups;
     }
 
@@ -444,20 +445,22 @@ public class UpdaterCLI  implements Updater,Runnable{
         boolean ask = true;
         while(ask) {
             ask = false;
-
             String read;
-            int coordinatex = 0;
-            int coordinatey = 0;
+            int coordinatex = gameModel.getPlayerBoard(connection.getClientID()).getRow();
+            int coordinatey = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+            System.out.println(" " +connection.getClientID());
+            System.out.println(" " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+            System.out.println(" " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
             Scanner myObj = new Scanner(System.in);
             int collectDecision = 0;
             boolean collectChosen = false;
             boolean powerupChosen = false;
-            printPlayerBoard(gameModel.getPlayerBoard(gameModel.getClientID()));
+            printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
             System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp");
             read = myObj.nextLine();
             int result = -1;
             if (read.equalsIgnoreCase("M")) {       //move
-                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(gameModel.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
+                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
 
                 boolean askX = true;
                 while(askX) {
@@ -537,8 +540,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 } while ((result != 1) && (result != 2));
 
-                coordinatex = gameModel.getPlayerBoard(gameModel.getClientID()).getRow();
-                coordinatey = gameModel.getPlayerBoard(gameModel.getClientID()).getCol();
+                coordinatex = gameModel.getPlayerBoard(connection.getClientID()).getRow();
+                coordinatey = gameModel.getPlayerBoard(connection.getClientID()).getCol();
 
                 if (result == 1) {
                     boolean askX = true;
@@ -567,7 +570,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 if (collectDecision == 1) { //he has chosen to collect a weapon
                     do {
                         if (gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint) {
-                            SpawnPoint spawnPoint = (SpawnPoint) gameModel.getMap().getResult().getSquare(coordinatex, coordinatey);
+                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getResult().getSquare(coordinatex, coordinatey));
 
                             boolean askWeapon = true;
                             while(askWeapon) {

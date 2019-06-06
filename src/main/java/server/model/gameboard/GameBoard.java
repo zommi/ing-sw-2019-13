@@ -76,6 +76,10 @@ public class GameBoard implements Serializable {
 
     }
 
+    public void setPositionHashMap(int id, int col, int row){
+        mapPlayerBoard.get(id).setPosition(col,row);
+    }
+
     public List<GameCharacter> getActiveCharacters() {
         return activeCharacters;
     }

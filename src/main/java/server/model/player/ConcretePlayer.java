@@ -125,7 +125,12 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public void collect(SpawnPoint spawnPoint, int choice){
-        if(!this.hand.weaponFull()) this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
+        if(!this.hand.weaponFull()){
+            this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
+        }
+        else { //TODO deve discardare
+
+        }
     }
 
 

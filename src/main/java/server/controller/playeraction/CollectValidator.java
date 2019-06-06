@@ -26,6 +26,16 @@ public class CollectValidator {
             return false;
         }
 
+        if(square instanceof SpawnPoint){ //then it is a Weapon
+            int blueCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost().getBlue();
+            int redCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost().getRed();
+            int yellowCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost().getYellow();
+            if((blueCost > player.getBoard().getBlueAmmo()) || (redCost > player.getBoard().getRedAmmo()) || (yellowCost > player.getBoard().getYellowAmmo())){
+                return false;
+            }
+        }
+
+
 
         //checks that all the movements are allowed
 
