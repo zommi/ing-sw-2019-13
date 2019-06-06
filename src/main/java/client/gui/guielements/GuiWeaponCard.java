@@ -3,6 +3,7 @@ package client.gui.guielements;
 import constants.Color;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import server.model.cards.WeaponCard;
 
 public class GuiWeaponCard extends ImageView {
 
@@ -10,14 +11,16 @@ public class GuiWeaponCard extends ImageView {
 
     private String name;
 
-    public GuiWeaponCard(String path, int index){
+    private WeaponCard card;
+
+    public GuiWeaponCard(WeaponCard card, int index, String path){
         super(path);
+        this.card = card;
         this.index = index;
     }
 
-    public GuiWeaponCard(String name, String path, int index){
+    public GuiWeaponCard(String path, int index){
         super(path);
-        this.name = name;
         this.index = index;
     }
 
@@ -26,7 +29,10 @@ public class GuiWeaponCard extends ImageView {
     }
 
     public String getName() {
-        return name;
+        return this.card.getName();
     }
 
+    public WeaponCard getWeaponCard() {
+        return card;
+    }
 }

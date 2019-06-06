@@ -152,22 +152,22 @@ public class Controller {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
-            System.out.println("ciao");
-            //TODO check if the target has a powerup
-            List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
-
-            for(int i = 0; i < listOfPlayers.size(); i++){
-                for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
-                    if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
-                        grenadeID = currentPlayer.getJustDamagedBy().getClientID();
-                        TimerTask timerTask = new MyTimerTask(server);
-                        Timer timer = new Timer(true);
-                        timer.schedule(timerTask, 0);
-                        System.out.println("Waiting for the other player to do the action");
-                        grenadeID = -1;
-                    }
-                }
-            }
+//            System.out.println("ciao");
+//            //TODO check if the target has a powerup
+//            List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
+//
+//            for(int i = 0; i < listOfPlayers.size(); i++){
+//                for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
+//                    if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
+//                        grenadeID = currentPlayer.getJustDamagedBy().getClientID();
+//                        TimerTask timerTask = new MyTimerTask(server);
+//                        Timer timer = new Timer(true);
+//                        timer.schedule(timerTask, 0);
+//                        System.out.println("Waiting for the other player to do the action");
+//                        grenadeID = -1;
+//                    }
+//                }
+//            }
         }
 
 

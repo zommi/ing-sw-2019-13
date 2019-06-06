@@ -103,16 +103,19 @@
          <children>
              <GridPane GridPane.rowIndex="0">
                  <columnConstraints>
-                     <ColumnConstraints prefWidth="113.0"/>
-                     <ColumnConstraints prefWidth="113.0"/>
-                     <ColumnConstraints prefWidth="113.0"/>
+                     <ColumnConstraints prefWidth="85.0"/>
+                     <ColumnConstraints prefWidth="85.0"/>
+                     <ColumnConstraints prefWidth="85.0"/>
+                     <ColumnConstraints prefWidth="85.0"/>
                  </columnConstraints>
                  <children>
-                     <Button prefHeight="76.0" prefWidth="113.0" text="MOVE" GridPane.columnIndex="0"
+                     <Button prefHeight="76.0" prefWidth="85.0" text="MOVE" GridPane.columnIndex="0"
                              onMousePressed="#enableMove"/>
-                     <Button prefHeight="76.0" prefWidth="113.0" text="COLLECT" GridPane.columnIndex="1"
+                     <Button prefHeight="76.0" prefWidth="85.0" text="COLLECT" GridPane.columnIndex="1"
                              onMousePressed="#enableCollect"/>
-                     <Button prefHeight="76.0" prefWidth="113.0" text="SHOOT" GridPane.columnIndex="2"/>
+                     <Button prefHeight="76.0" prefWidth="85.0" text="SHOOT" GridPane.columnIndex="2"
+                             onMousePressed="#enableShoot"/>
+                     <Button prefHeight="76.0" prefWidth="85.0" text="POWERUP" GridPane.columnIndex="3"/>
                  </children>
              </GridPane>
              <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD" GridPane.rowIndex="1" />

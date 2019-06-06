@@ -15,7 +15,7 @@ public class GuiCharacter extends Circle {
         center(spawnPoint);
         setStrokeWidth(2.0);
         setStroke(Paint.valueOf("#000000"));
-        setFill(Paint.valueOf(color.getHexValue()));
+        setFill(Paint.valueOf(color.getNormalColor()));
     }
 
     public void setPosition(GuiTile tile){
