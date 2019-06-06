@@ -307,7 +307,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             }
             System.out.println("The server received your choice of the map...");
             try{
-                this.mapChoice = gameProxy.getNameMap();
+                this.mapChoice = gameProxy.getMapName();
             }
             catch(RemoteException e){
                 System.out.println("Remote Exception caught");

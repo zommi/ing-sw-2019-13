@@ -30,8 +30,6 @@ public interface Connection extends Serializable {
 
     public String getMapName();
 
-    public GameMap getMap();
-
     public void configure();
 
     public GameModel getGameModel();

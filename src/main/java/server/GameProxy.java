@@ -83,22 +83,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public String getNameMap() throws RemoteException {
-        switch (numMap){
-            case 1:
-                return "map11.txt";
-            case 2:
-                return "map12.txt";
-            case 3:
-                return "map21.txt";
-            case 4:
-                return "map22.txt";
-            default:
-                return "No one has chosen yet";
-        }
-    }
-
-    @Override
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
         if(serverRMI.getServer().getStartGame() == 1){
@@ -155,29 +139,19 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public GameMap getMap() throws RemoteException{
-//        if(this.numMap == 1)
-//            return "map11.txt";
-//        else if(this.numMap == 2)
-//            return "map12.txt";
-//        else if(this.numMap == 3)
-//            return "map21.txt";
-//        else if(this.numMap == 4)
-//            return "map22.txt";
-//        else
-//            return "No one has chosen yet";
         return this.map;
     }
 
     @Override
     public String getMapName() throws RemoteException{
-        if(this.numMap == 1)
-            return "map11.txt";
+        if(this.numMap == 0)
+            return "Map 1";
+        else if(this.numMap == 1)
+            return "Map 2";
         else if(this.numMap == 2)
-            return "map12.txt";
+            return "Map 3";
         else if(this.numMap == 3)
-            return "map21.txt";
-        else if(this.numMap == 4)
-            return "map22.txt";
+            return "Map 4";
         else
             return "No one has chosen yet";
     }

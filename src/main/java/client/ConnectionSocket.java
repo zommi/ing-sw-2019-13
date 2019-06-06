@@ -55,10 +55,6 @@ public class ConnectionSocket implements Connection {
     }
 
 
-    public GameMap getMap(){
-        return this.map;
-    }
-
     @Override
     public String getMapName() {
         return this.mapChoice;

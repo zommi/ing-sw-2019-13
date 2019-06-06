@@ -167,6 +167,14 @@ public class UpdaterCLI  implements Updater,Runnable{
                 try {
                     stringChoice =  myObj.nextLine();
                     choice = Integer.parseInt(stringChoice) - 1;
+                    if(choice == 0)
+                        mapName = "Map 1";
+                    else if(choice == 1)
+                        mapName = "Map 2";
+                    else if(choice == 2)
+                        mapName = "Map 3";
+                    else if(choice == 3)
+                        mapName = "Map 4";
                     if(choice <mnList.size() && choice >= 0){
                         mapChosen = true;
                         mapNumber = choice;
