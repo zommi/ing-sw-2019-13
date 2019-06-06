@@ -2,6 +2,7 @@ package client.weapons;
 
 import client.GameModel;
 import client.InputAbstract;
+import server.model.player.PlayerState;
 
 public class ShootParser {
 
@@ -20,6 +21,11 @@ public class ShootParser {
         this.isLimitedActivated = false;
         this.weapon = weapon;
         shootPack = new ShootPack(weapon.getName());
+
+        if(gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT){
+            shootPack.setSquare(input.askSquares(1).get(0));
+        }
+
         switch(weapon.getType()){
             case EXTRA:
                 for(MacroEffect macroEffect : weapon.getMacroEffects()){

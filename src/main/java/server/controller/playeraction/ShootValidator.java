@@ -9,13 +9,14 @@ import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
-import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShootValidator {
+    private static final int ADREN_MOVE = 1;
 
     public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
         GameBoard gameBoard = game.getCurrentGameBoard();
@@ -24,20 +25,18 @@ public class ShootValidator {
         if(shootInfo == null)       //if conversion fails
             return null;
 
-       /*
-       IMPORTANT:
-        uncomment these lines only when instantiating weapon cards and assigning them to players
+        /*//IMPORTANT:
+        //uncomment these lines only when instantiating weapon cards and assigning them to players
 
         //attacker must have the selected weapon
         if(shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()) == null)
-            return false;
+            return null;
 
         //weapon must be loaded
         if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
-            return false;
+            return null;*/
 
 
-        */
 
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
@@ -46,6 +45,23 @@ public class ShootValidator {
                 if(playerAbstract.getPosition() != null)
                     playerAbstract.getGameCharacter().setOldPosition();
             }
+        }
+
+        //validating adrenalinic move
+        if(shootInfo.getAttacker().getPlayerState()==PlayerState.BETTER_SHOOT){
+            shootInfo.getAttacker().getGameCharacter().setOldPosition();
+            if(shootInfo.getSquare() != null) {
+                if(shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) == ADREN_MOVE) {
+                    gameBoard.getMap().setValid(false);
+                    shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
+                }
+                else{
+                    return null;
+                }
+            }
+        }else{
+            if(shootInfo.getSquare()!=null)
+                return null;
         }
 
         //a try finally block is used to restore old positions
@@ -190,6 +206,10 @@ public class ShootValidator {
                 }
                 gameBoard.getMap().setValid(true);
             }
+
+            if(shootInfo.getAttacker().getPlayerState() == PlayerState.BETTER_SHOOT){
+                shootInfo.getAttacker().getGameCharacter().move(shootInfo.getAttacker().getGameCharacter().getOldPosition());
+            }
         }
     }
 
@@ -248,6 +268,17 @@ public class ShootValidator {
             macroInfos.add(new MacroInfo(macroPack.getMacroNumber(), microInfos));
         }
 
-        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos);
+        //converting adrenalinic square
+        SquareAbstract squareAbstract;
+        if(shootPack.getSquare() != null) {
+            squareAbstract = gameBoard.getMap().getSquare(shootPack.getSquare().getRow(), shootPack.getSquare().getCol());
+            if(squareAbstract== null)
+                return null;
+        }
+        else
+            squareAbstract = null;
+
+
+        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos, squareAbstract);
     }
 }

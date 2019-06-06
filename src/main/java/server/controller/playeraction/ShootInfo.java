@@ -3,6 +3,7 @@ package server.controller.playeraction;
 import client.Info;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
+import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
 
@@ -14,14 +15,19 @@ public class ShootInfo implements Serializable, Info {
     private PlayerAbstract attacker;
     private Weapon weapon;
     private List<MacroInfo> activatedMacros;
+    private SquareAbstract square;
 
 
-    public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros){
+    public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros, SquareAbstract squareAbstract){
         this.attacker = attacker;
         this.weapon = weapon;
         this.activatedMacros = activatedMacros;
+        this.square = squareAbstract;
     }
 
+    public SquareAbstract getSquare() {
+        return square;
+    }
 
     public PlayerAbstract getAttacker() {
         return attacker;

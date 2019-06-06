@@ -1,6 +1,6 @@
-mapPlayerBoard transient? ora viene inviata?
+-mapPlayerBoard transient? ora viene inviata?
 
-togliere list of weapons answer, non serve più
+-togliere list of weapons answer, non serve più
     1) togli quella answer
     2) togli dal game la weaponlist
     3) togli dal game la get weapon list
@@ -8,32 +8,32 @@ togliere list of weapons answer, non serve più
 togliere posizioni da playerboard
 dire dove si è spawnati dopo primo turno
     mandare mappa dopo spawn
-gestire eccezione parseint anche per scelta spawn
+-gestire eccezione parseint anche per scelta spawn
 
 
 
 se un oggetto è serializzato più volte? tipo a catena
 
 
-ConcretePlayer costruttore dove viene usato
-setPlayerCharacter
+-ConcretePlayer costruttore dove viene usato
+-setPlayerCharacter
 
-distance ha dato nullpointer con shockwave su macro 1 ?
+-distance ha dato nullpointer con shockwave su macro 1 ?
 
-gamemodel nel client ha ref diversi alle mappe, in gameboard result gamemap e map result
+--gamemodel nel client ha ref diversi alle mappe, in gameboard result gamemap e map result
 
-gamemap in spawnpoint è da togliere?
+-gamemap in spawnpoint è da togliere?
 
-collect di ammo in spawnpoint non raccoglie niente e conta come azione
+-collect di ammo in spawnpoint non raccoglie niente e conta come azione
 
 raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
 
-178 weapon policy null pointer
-        controllare se giocatore spawnato in validator (position != null)
+-178 weapon policy null pointer
+        -controllare se giocatore spawnato in validator (position != null)
 
-collect verificare quadrato in validator e anche move
+-collect verificare quadrato in validator e anche move
 
-e se scelgo numero sbagliato di skull?
+OO nessuno verifica skull number legale su server
 
 spostare stampa mappa da un'altra parte
 
@@ -42,7 +42,9 @@ usare unico scanner
 comando per mostrare mappa
 comando per passare
 
-square in shootinfo
+-square in shootinfo
+
+azione ricarica
 
 
 

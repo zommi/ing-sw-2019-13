@@ -2,6 +2,8 @@ package client;
 
 import client.weapons.Weapon;
 import server.model.map.GameMap;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import view.*;
 
@@ -129,5 +131,13 @@ public class GameModel extends Observable implements Serializable {
     }
 
     public ListOfWeaponsAnswer getWeaponList() {return weaponList; }
+
+    public PlayerAbstract getMyPlayer(){
+        for(GameCharacter gameCharacter : gameBoard.getResult().getActiveCharacters()){
+            if(gameCharacter.getConcretePlayer().getClientID() == clientID)
+                return gameCharacter.getConcretePlayer();
+        }
+        return null;
+    }
 
 }

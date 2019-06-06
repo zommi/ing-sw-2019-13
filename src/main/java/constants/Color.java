@@ -7,7 +7,7 @@ public enum Color {
     GREEN("g",true, false, 3, "#00ff00", "#298c2c", "\u001B[32m"),
     WHITE("w", false,false, 4, "#ffffff", "e5e3e3", "\u001B[37m"),
     PURPLE("p", true,false, 5, "#b600ff", "#791c89", "\u001B[35m"),
-    GREY("e",true, false, 6, "#6d6d6d", "#614c4c", ""),
+    GREY("e",true, false, 6, "#6d6d6d", "#614c4c", "\u001B[30m"),
     UNDEFINED("u", false,false, 7, "#000000", "#000000", "");
 
     private int index;

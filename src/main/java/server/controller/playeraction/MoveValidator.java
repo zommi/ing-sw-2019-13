@@ -13,6 +13,9 @@ public class MoveValidator {
     public MoveValidator(){}
 
     public boolean validate(PlayerAbstract player, SquareAbstract square){
+        if(square == null)
+            return false;
+
         return square.distance(player.getPosition()) < 4;
     }
 }

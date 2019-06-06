@@ -4,7 +4,6 @@ import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
 import exceptions.WrongGameStateException;
-import server.MyTimerTask;
 import server.Server;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
@@ -13,25 +12,19 @@ import server.controller.playeraction.normalaction.ShootAction;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
-import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
-import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
-import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerHand;
 import server.model.player.PlayerState;
 import view.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Controller {
 
@@ -199,7 +192,7 @@ public class Controller {
     public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
         MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-        PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getBoard());
+        PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getPlayerBoard());
         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
         server.sendToEverybodyRMI(mapAnswer);
         server.sendToEverybodyRMI(gameBoardAnswer);

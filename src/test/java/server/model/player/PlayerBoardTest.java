@@ -20,7 +20,7 @@ class PlayerBoardTest {
         ConcretePlayer testPlayer = new ConcretePlayer("Carlo");
         testPlayer.setPlayerCharacter(Figure.BANSHEE);
 
-        PlayerBoard testPlayerBoard = testPlayer.getBoard();
+        PlayerBoard testPlayerBoard = testPlayer.getPlayerBoard();
 
         List<AmmoCube> testList = new ArrayList<>();
         testList.add(new AmmoCube(Color.RED));

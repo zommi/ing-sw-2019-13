@@ -12,8 +12,8 @@ public class Square extends SquareAbstract implements Serializable {
 
     private AmmoTile ammoTile;
 
-    public Square(int x, int y, Color color, GameMap gameMap) {
-        super(x, y, color, gameMap);
+    public Square(int x, int y, Color color) {
+        super(x, y, color);
     }
 
     public AmmoTile getAmmoTile() {

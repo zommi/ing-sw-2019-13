@@ -18,7 +18,7 @@ public class ConcretePlayer extends PlayerAbstract {
     private String name;
     private GameCharacter gameCharacter;
     private transient PlayerHand hand;
-    private PlayerBoard board;
+    private PlayerBoard playerBoard;
     private transient Game currentGame;
     private PlayerState state;
     private int clientID;
@@ -30,7 +30,7 @@ public class ConcretePlayer extends PlayerAbstract {
     public ConcretePlayer(String name) {
         this.name = name;
         this.hand = new PlayerHand(this);
-        this.board = new PlayerBoard(this);
+        this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
     }
 
@@ -74,14 +74,14 @@ public class ConcretePlayer extends PlayerAbstract {
     public void setPlayerCharacter(Figure figure){
         this.gameCharacter = new GameCharacter(chooseFigure(figure));
         this.gameCharacter.setConcretePlayer(this);
-        this.board.setCharacterName(figure.toString());
+        this.playerBoard.setCharacterName(figure.toString());
     }
 
     public GameCharacter getGameCharacter(){
         return gameCharacter;
     }
 
-    public PlayerBoard getBoard(){return board;}
+    public PlayerBoard getPlayerBoard(){return playerBoard;}
 
     public Game getCurrentGame(){return this.currentGame;}
 
@@ -121,7 +121,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
 
     public void collect(Square square){
-        this.board.processAmmoTile(square.getAmmoTile());
+        this.playerBoard.processAmmoTile(square.getAmmoTile());
     }
 
     public void collect(SpawnPoint spawnPoint, int choice){
@@ -151,7 +151,7 @@ public class ConcretePlayer extends PlayerAbstract {
      */
     public void spawn(SquareAbstract sp){
         gameCharacter.spawn(sp);
-        board.spawn(getPosition().getRow(), getPosition().getCol());
+        playerBoard.spawn(getPosition().getRow(), getPosition().getCol());
     }
 
 
@@ -178,7 +178,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public boolean canPay(ArrayList<AmmoCube> cost) {
-        return this.board.canPay(cost);
+        return this.playerBoard.canPay(cost);
     }
 
     @Override
@@ -202,18 +202,18 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void addDamage(int damage, Color color) {
-        this.board.addDamage(damage, color);
+        this.playerBoard.addDamage(damage, color);
     }
 
     @Override
     public void addMarks(int marks, Color color) {
-        this.board.addMarks(marks, color);
+        this.playerBoard.addMarks(marks, color);
     }
 
     @Override
     public void setPosition(SquareAbstract square) {
         this.gameCharacter.setPosition(square);
-        this.board.setPosition(square.getRow(), square.getCol());
+        this.playerBoard.setPosition(square.getRow(), square.getCol());
     }
 
     @Override
@@ -224,11 +224,11 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public void pay(Cost cost) {
         for(int i = 1; i<=cost.getBlue(); i++)
-            board.decreaseAmmo(Color.BLUE);
+            playerBoard.decreaseAmmo(Color.BLUE);
         for(int i = 1; i<=cost.getRed(); i++)
-            board.decreaseAmmo(Color.RED);
+            playerBoard.decreaseAmmo(Color.RED);
         for(int i = 1; i<=cost.getYellow(); i++)
-            board.decreaseAmmo(Color.YELLOW);
+            playerBoard.decreaseAmmo(Color.YELLOW);
     }
 }
 

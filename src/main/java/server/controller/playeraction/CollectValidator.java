@@ -19,16 +19,16 @@ public class CollectValidator {
         //checks that the number of steps the player takes is allowed by the rules of the game:
         //max 2 movements if the player has more than 2 damages,
         // max 1 movement if the player has less than 2 damages
+
+        if(square == null)
+            return false;
+
         if ((player.currentState() != PlayerState.NORMAL
                 && square.distance(player.getPosition()) > Constants.MAX_NUMBER_OF_ADRENALINE_MOVEMENTS)
             || (player.currentState() == PlayerState.NORMAL
                 && square.distance(player.getPosition()) > Constants.MAX_NUMBER_OF_NORMAL_MOVEMENTS)) {
             return false;
         }
-
-
-        //checks that all the movements are allowed
-
 
         //checks that the choice parameter and the type of squareTemp are coherent
         //moreover if squareTemp is a spawn point it check that the choice is inside the boundaries

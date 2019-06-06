@@ -293,7 +293,8 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
-                    System.out.println("Testing what client I am in: i am in client: " +connection.getClientID() + "and the current id is: " +connection.getCurrentID());
+                    System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
+                            " and the current id is: " +connection.getCurrentID());
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard(connection.getClientID());
                     weapons = playerHand.getWeaponHand();

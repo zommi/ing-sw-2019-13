@@ -2,6 +2,7 @@ package client.weapons;
 
 import client.GameModel;
 import client.Info;
+import client.SquareInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Scanner;
 public class ShootPack implements Info {
 
     private String weapon;
-    List<MacroPack> activatedMacros;
+    private List<MacroPack> activatedMacros;
+    private SquareInfo square;
 
 
     public ShootPack(String weapon){
@@ -31,5 +33,13 @@ public class ShootPack implements Info {
             if(macroPack.getMacroNumber() == macro)
                 return macroPack;
         return null;
+    }
+
+    public SquareInfo getSquare() {
+        return square;
+    }
+
+    public void setSquare(SquareInfo square) {
+        this.square = square;
     }
 }

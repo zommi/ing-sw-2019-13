@@ -165,14 +165,14 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
                 s = String.valueOf(c).toLowerCase();
 
                 if(c=='R'||c=='B'||c=='Y'||c=='G'||c=='W'||c=='P') {
-                    SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, Color.fromString(s), this);
+                    SpawnPoint tempSquare = new SpawnPoint(row/2, col/2, Color.fromString(s));
                     squares.get(row/2).add(tempSquare);
                     spawnPoints.add(tempSquare);
                     if(!roomsToBuild.contains(Color.fromString(s)))
                         roomsToBuild.add(Color.fromString(s));
                 }
                 else if(c=='r'||c=='b'||c=='y'||c=='g'||c=='w'||c=='p'){
-                    squares.get(row/2).add(new Square(row/2, col/2, Color.fromString(s), this));
+                    squares.get(row/2).add(new Square(row/2, col/2, Color.fromString(s)));
                     if(!roomsToBuild.contains(Color.fromString(s)))
                         roomsToBuild.add(Color.fromString(s));
                 }
