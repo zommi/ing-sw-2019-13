@@ -28,6 +28,10 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
         return list;
     }
 
+    public List<String> getPlayerNames() {
+        return result.getPlayerNames();
+    }
+
     public AmmoTileDeck getWeaponDeck() {
         //TODO
         return null;

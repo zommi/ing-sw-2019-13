@@ -42,6 +42,7 @@ public class Server {
         //now we have to start the game!
         else{
             game = controller.getCurrentGame();
+            game.setPlayersNames();
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
             ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());

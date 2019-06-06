@@ -33,8 +33,13 @@ public class GameModel extends Observable implements Serializable {
         toSpawn = decision;
     }
 
-    public List<String> getPlayersNames(){
+    public List<String> getCharactersNames(){
         List<String> listNames = gameBoard.getCharacterNames();
+        return listNames;
+    }
+
+    public List<String> getPlayersNames(){
+        List<String> listNames = gameBoard.getPlayerNames();
         return listNames;
     }
 

@@ -30,8 +30,6 @@ public class ShootAction implements Action {
     }
 
     public boolean shoot(){
-        ShootValidator shootValidator = new ShootValidator();
-        ShootActuator shootActuator = new ShootActuator();
         ShootInfo shootInfo = shootValidator.validate(shootPack, game, player);
         if(shootInfo != null) {
             shootActuator.actuate(shootInfo);

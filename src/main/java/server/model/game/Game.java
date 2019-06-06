@@ -179,6 +179,14 @@ public class Game {
         return activePlayers;
     }
 
+    public void setPlayersNames(){
+        List<String> names = new ArrayList<>();
+        for(int i = 0; i < activePlayers.size(); i++){
+            names.add(activePlayers.get(i).getName());
+        }
+        this.currentGameBoard.setPlayerNames(names);
+    }
+
     public GameMap getCurrentGameMap() {
         return currentGameMap;
     }

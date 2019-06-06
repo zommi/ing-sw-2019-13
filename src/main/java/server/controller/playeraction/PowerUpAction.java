@@ -3,7 +3,6 @@ package server.controller.playeraction;
 import client.powerups.PowerUpPack;
 import server.controller.Controller;
 import server.model.game.Game;
-import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 
 public class PowerUpAction implements Action {
