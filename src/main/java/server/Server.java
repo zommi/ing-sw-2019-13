@@ -25,7 +25,7 @@ public class Server {
     private int initialSkulls;
     private int clientIDadded;
     private int startGame = 0;
-    private static List<Integer> listOfClients = new ArrayList<Integer>();
+    private static List<Integer> listOfClients = new ArrayList<>();
 
     public int getStartGame(){
         return this.startGame;

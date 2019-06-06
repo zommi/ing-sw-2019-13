@@ -181,8 +181,8 @@ public class Game {
 
     public void setPlayersNames(){
         List<String> names = new ArrayList<>();
-        for(int i = 0; i < activePlayers.size(); i++){
-            names.add(activePlayers.get(i).getName());
+        for(PlayerAbstract playerAbstract : activePlayers){
+            names.add(playerAbstract.getName());
         }
         this.currentGameBoard.setPlayerNames(names);
     }

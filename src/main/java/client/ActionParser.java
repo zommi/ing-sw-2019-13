@@ -6,6 +6,7 @@ import client.weapons.ShootParser;
 import client.weapons.Weapon;
 import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
+import server.model.map.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +27,19 @@ public class ActionParser{
 
     public void addGameModel(GameModel gameModel, String name){
         this.gameModel = gameModel;
+
+        //initialize players names
         List<String> pNames = new ArrayList<>();
         for(String string : gameModel.getPlayersNames())
             if(!string.equals(name))
                 pNames.add(string);
         setPlayersNames(pNames);
-        //TODO initialize rooms
+
+        //initialize rooms names
+        List<String> rNames = new ArrayList<>();
+        for(Room room : gameModel.getMap().getResult().getRooms())
+            rNames.add(room.getColor().toString());
+        setRoomsNames(rNames);
     }
 
     public InputAbstract getInput(){
@@ -47,22 +55,12 @@ public class ActionParser{
         return shootParser.getWeaponInput(weapon,input);
     }
 
-    public Weapon weaponFromString(String name){
-        for(int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++){
-            if(name.equalsIgnoreCase(gameModel.getPlayerHand().getWeaponHand().get(i).getName())){
-                return gameModel.getPlayerHand().getWeaponHand().get(i).getWeapon();
-            }
-        }
-        System.out.println("ERROR: THE WEAPON DOES NOT EXIST OR YOU DON'T HAVE IT");
-        System.out.println("Insert a new one: ");
-        Scanner myObj = new Scanner(System.in);
-        String read = myObj.nextLine();
-        weaponFromString(read);
-        return null;
+    public void setPlayersNames(List<String> names){
+        input.setPlayersNames(names);
     }
 
-    public void setPlayersNames(List<String> names){
-        this.input.setPlayersNames(names);
+    public void setRoomsNames(List<String> names){
+        input.setRoomsNames(names);
     }
 
     public Info createCollectEvent(int row, int col, int collectDecision) {

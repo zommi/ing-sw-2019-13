@@ -34,13 +34,11 @@ public class GameModel extends Observable implements Serializable {
     }
 
     public List<String> getCharactersNames(){
-        List<String> listNames = gameBoard.getCharacterNames();
-        return listNames;
+        return gameBoard.getCharacterNames();
     }
 
     public List<String> getPlayersNames(){
-        List<String> listNames = gameBoard.getPlayerNames();
-        return listNames;
+        return gameBoard.getPlayerNames();
     }
 
     public void setClientID(int clientID){
