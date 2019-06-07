@@ -50,12 +50,16 @@ OO usare unico scanner
 
 -far scegliere arma da scartare quando se ne hanno già 3 e se ne pesca un'altra
 
+-raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
+
 -comando per mostrare mappa
+
+
+
 comando per passare
 azione ricarica
 sistemare layout munizioni e armi cli
 
-raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
 
 testare arma che sceglie rooms
 
@@ -67,13 +71,13 @@ rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel co
 provare a fare collect weapon senza spostarsi in ammo square
 
 PAGAMENTO CON POWERUP:
-mando lista di carte
-verifico che tutte le carte siano possedute dal player
-a tutti i costi che devo verificare sottraggo quello dato dal totale dei cubi-powerup
-    metodo che data una lista di powerupcard ritorna un Cost
-    metodo che sottrae
-mando la parte restante alla canPay as usual
+    mando lista di carte
+    verifico che tutte le carte siano possedute dal player
+    a tutti i costi che devo verificare sottraggo quello dato dal totale dei cubi-powerup
+        metodo che data una lista di powerupcard ritorna un Cost
+        metodo che sottrae
+    mando la parte restante alla canPay as usual
 
-dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
-finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
-oppure resta un costo diverso da zero, per cui verranno usate le ammo normali
+    dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
+    finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
+    oppure resta un costo diverso da zero, per cui verranno usate le ammo normali
