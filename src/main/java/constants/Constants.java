@@ -17,6 +17,9 @@ public class Constants {
 
     public static final int NO_POWERUP = -10;
 
+    public static final int BETTERCOLLECTDAMAGE = 2;
+    public static final int BETTERSHOOTDAMAGE = 5;
+
     public static final int FIRST_POWERUP_EXTRA = 0;
     public static final int SECOND_POWERUP_EXTRA = 1;
     public static final int THIRD_POWERUP_EXTRA = 2;

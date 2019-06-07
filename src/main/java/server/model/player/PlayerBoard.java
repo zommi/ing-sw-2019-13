@@ -169,6 +169,12 @@ public class PlayerBoard implements Serializable {
             setDamage(i,color);
         }
         damageTaken += damageInBullet + marksActivated;
+        if((damageTaken > Constants.BETTERCOLLECTDAMAGE)&&((damageTaken <= Constants.BETTERSHOOTDAMAGE))){
+            player.setState(PlayerState.BETTER_COLLECT);
+        }
+        if((damageTaken > Constants.BETTERSHOOTDAMAGE) && (damageTaken <= Constants.DEATH_THRESHOLD)){
+            player.setState(PlayerState.BETTER_SHOOT);
+        }
         if(damageTaken > Constants.DEATH_THRESHOLD){
             //add skull on player board, remove skull from game board, decrease value of player,
             //if damage == 12 place a mark on killer

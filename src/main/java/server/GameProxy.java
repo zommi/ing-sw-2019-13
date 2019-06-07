@@ -116,6 +116,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
+        if(player.size() == 5)
+            return false;
         PlayerAbstract playerToAdd = new ConcretePlayer(name);
         playerToAdd.setState(PlayerState.TOBESPAWNED);
         playerToAdd.setIfCharacter(false);

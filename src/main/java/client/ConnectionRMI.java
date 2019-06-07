@@ -12,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
@@ -30,7 +29,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private GameModel gameModel;
     private GameProxyInterface game;
     private int clientID;
-    private static final String SERVER_ADDRESS  = "localhost";//192.168.43.66;
+    private static final String SERVER_ADDRESS  = "192.168.43.66";
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private static final int REGISTRATION_PORT = 1099;
     private int startGame = 0;
@@ -284,7 +283,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         while (!playerNameSet) {
             try{
                 playerNameSet = gameProxy.sendPlayer(playerName, clientID);
-                playerNameSet = true;
             }
             catch(RemoteException re){
                 System.out.println("Could not send the player");
