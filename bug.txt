@@ -53,23 +53,24 @@ mandare messaggi che informano client di cosa è successo nell'azione appena fat
 
 rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
-pagare anche con powerup: mandare lista di carte che si vogliono usare
-
 far scegliere arma con cui scambiare la propria quando se ne hanno 3 (settarla carica quando si posa)
 
 ora arma raccolta sparisce quando se ne hanno 3, non viene messa nella mano e non c'e nello spawnpoint
+
+far scegliere arma da scartare quando se ne hanno già 3 e se ne pesca un'altra
 
 provare a fare collect weapon senza spostarsi in ammo square
 
 rimuovere duplicato scelta coordinate
 
->Choose which weapon you want to collect
-Heatseeker (1)
-Plasma Gun (2)
-Hellion (3)
+PAGAMENTO CON POWERUP:
+mando lista di carte
+verifico che tutte le carte siano possedute dal player
+a tutti i costi che devo verificare sottraggo quello dato dal totale dei cubi-powerup
+    metodo che data una lista di powerupcard ritorna un Cost
+    metodo che sottrae
+mando la parte restante alla canPay as usual
 
->You have the following weapons:
-> Tractor beam
-> Cyberblade
-> Heatseeker
-
+dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
+finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
+oppure resta un costo diverso da zero, per cui verranno usate le ammo normali

@@ -1,6 +1,7 @@
 package client;
 
 import constants.Constants;
+import server.model.cards.WeaponCard;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ public class CollectInfo implements Serializable, Info {
     private int row;
     private int col;
     private int choice;
+    private WeaponCard weaponToDiscard;
 
     /**
      * constructor used if the player doesn't specify a choice. It is used
@@ -35,5 +37,9 @@ public class CollectInfo implements Serializable, Info {
 
     public int getChoice() {
         return choice;
+    }
+
+    public WeaponCard getWeaponToDiscard() {
+        return weaponToDiscard;
     }
 }

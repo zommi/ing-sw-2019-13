@@ -46,17 +46,15 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
         //Draw card from spawnpoint.
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof WeaponCard))
+            return false;
+        WeaponCard card2 = (WeaponCard) obj;
 
-    public void getEffect() {
-        // TODO READ FROM FILE
-        return;
+        return this.getName().equalsIgnoreCase(card2.getName());
+
     }
-
-
-    public void collect() {
-
-    }
-
 
     @Override
     public String toString() {
