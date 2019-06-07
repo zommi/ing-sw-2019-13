@@ -127,7 +127,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("Change player")){
             System.out.println("Player changed");
             Platform.runLater(() -> {
-                MainGuiController controllerConverted = (MainGuiController) currentController;
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
                 controllerConverted.restoreSquares();
             });
             handleTurn();
@@ -156,7 +156,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("PlayerHand") && handInitialized && mapInitialized){
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
-                MainGuiController controllerConverted = (MainGuiController) currentController;
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
                 controllerConverted.updateHand();
             });
         }
