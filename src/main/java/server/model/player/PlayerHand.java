@@ -52,15 +52,22 @@ public class PlayerHand implements Serializable {
         }
     }
 
+    public void removeWeaponCard(WeaponCard weaponCard){
+        Iterator<WeaponCard> iterator = weaponHand.iterator();
+        WeaponCard weaponCard1;
+        while(iterator.hasNext()){
+            weaponCard1 = iterator.next();
+            if(weaponCard.equals(weaponCard1)){
+                iterator.remove();
+                return;
+            }
+
+        }
+    }
+
     public List<PowerUpCard> getPowerupHand() {
         return powerupHand;    //cloning for server answers
     }
-
-    /*
-    public void playWeapon(int choice, int extra, int x, int y){
-        weaponHand.get(choice).play(extra, x, y);
-    }
-    */
 
     public void playPowerup(int choice){
         powerupHand.get(choice).play();
@@ -89,12 +96,12 @@ public class PlayerHand implements Serializable {
         this.player.getGameCharacter().getPosition().removeItem(cardToAdd, controller);
     }
 
-    public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
+    public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_WEAPON_HAND;}
 
-    public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_NUMBER_OF_CARDS;}
+    public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_POWERUP_HAND;}
 
     public void addCard(PowerUpCard draw) {
-        if(this.powerupHand.size()< Constants.MAX_NUMBER_OF_CARDS)
+        if(this.powerupHand.size()< Constants.MAX_POWERUP_HAND)
             this.powerupHand.add(draw);
     }
 

@@ -224,7 +224,7 @@ public class Controller {
     }
 
     public void sendSquaresRestored(){
-        server.sendToEverybodyRMI(new MapAnswer(this.currentGame.getCurrentGameMap()));
+        server.sendToEverybodyRMI(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
     }
 
     public Game getCurrentGame(){

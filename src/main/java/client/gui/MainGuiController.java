@@ -256,7 +256,9 @@ public class MainGuiController implements GuiController {
 
         cardToAdd.setOnMousePressed(null);
         //this.weaponHand.add(cardToAdd,weaponHandSize,0);
-        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex());
+
+        //null da cambiare con la WeaponCard da scartare
+        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex(), null);    //TODO
         this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
@@ -308,7 +310,7 @@ public class MainGuiController implements GuiController {
         if(!this.model.getToSpawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
-                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE);
+                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null);
                     this.gui.getConnection().send(collectInfo);
                     this.tilesToUpdate.add(square);
                 });
@@ -438,7 +440,7 @@ public class MainGuiController implements GuiController {
 
     private void emptyHand() {
         this.weaponHand.getChildren().removeAll();
-        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+        for(int i = 0; i < Constants.MAX_WEAPON_HAND; i++){
             GuiWeaponCard weaponCard = new GuiWeaponCard(getClass().getResource("/Grafica/cards/AD_weapons_IT_0225.png").toExternalForm(),i);
             weaponCard.setFitWidth(weaponHand.getWidth()/3);
             weaponCard.setFitHeight(weaponHand.getHeight());
@@ -446,7 +448,7 @@ public class MainGuiController implements GuiController {
         }
 
         this.powerupHand.getChildren().removeAll();
-        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+        for(int i = 0; i < Constants.MAX_POWERUP_HAND; i++){
             GuiPowerupCard powerupCard = new GuiPowerupCard(
                     getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(), i);
             powerupCard.setFitWidth(powerupHand.getWidth()/3);

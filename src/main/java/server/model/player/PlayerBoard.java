@@ -56,6 +56,19 @@ public class PlayerBoard implements Serializable {
         unloadedWeapons = new ArrayList<>();
     }
 
+    public void removeWeaponCard(WeaponCard weaponCard){
+        Iterator<WeaponCard> iterator = unloadedWeapons.iterator();
+        WeaponCard weaponCard1;
+        while(iterator.hasNext()){
+            weaponCard1 = iterator.next();
+            if(weaponCard.equals(weaponCard1)){
+                iterator.remove();
+                return;
+            }
+
+        }
+    }
+
     public void addUnloadedWeapon(WeaponCard weaponCard){
         unloadedWeapons.add(weaponCard);
     }

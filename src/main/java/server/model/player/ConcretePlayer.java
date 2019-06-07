@@ -61,7 +61,7 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public WeaponCard getWeaponCard(Weapon weapon) {
         for(WeaponCard weaponCard : hand.getWeaponHand()){
-            if(weaponCard.getWeapon() == weapon)
+            if(weaponCard.getWeapon().equals(weapon))
                 return weaponCard;
         }
         return null;
@@ -125,12 +125,7 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public void collect(SpawnPoint spawnPoint, int choice){
-        if(!this.hand.weaponFull()){
-            this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
-        }
-        else { //TODO deve discardare
-
-        }
+        this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
     }
 
 

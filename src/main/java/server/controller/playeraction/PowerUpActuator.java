@@ -25,5 +25,8 @@ public class PowerUpActuator {
                 break;
             default: //this should never happen
         }
+
+        //discard
+        powerUpInfo.getAttacker().getHand().removePowerUpCard(powerUpInfo.getPowerUpCard());
     }
 }
