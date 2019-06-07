@@ -19,7 +19,7 @@ public enum Color {
     private boolean characterColor;
     private String playerboardCol;
 
-    private Color(String abbreviation, boolean characterColor, boolean ammoColor, int index, String normalColor, String tileColor, String ansi, String playerboardCol) {
+    Color(String abbreviation, boolean characterColor, boolean ammoColor, int index, String normalColor, String tileColor, String ansi, String playerboardCol) {
         this.abbreviation = abbreviation;
         this.index = index;
         this.tileColor = tileColor;

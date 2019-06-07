@@ -28,6 +28,9 @@ public class Constants {
 
     public static final int NO_CHOICE = -99999;
 
+    public static final String ANSI_RESET = "\u001B[0m";
+
+
     /////////////////////////////////////////////////////////////////////////////////
 
     public static final String PATH_TO_RESOURCES_FOLDER = "." + File.separatorChar + "src" +

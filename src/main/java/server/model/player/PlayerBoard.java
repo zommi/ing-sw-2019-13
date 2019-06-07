@@ -138,6 +138,10 @@ public class PlayerBoard implements Serializable {
         return ammo[YELLOW_CUBES_INDEX];
     }
 
+    public int getAmmo(Color color){
+        return ammo[color.getIndex()];
+    }
+
     public void spawn(int row, int col){
         this.row = row;
         this.col = col;

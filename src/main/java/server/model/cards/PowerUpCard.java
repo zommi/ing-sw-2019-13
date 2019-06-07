@@ -64,6 +64,6 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
 
     @Override
     public String toString() {
-        return powerUp.getName() + ", " + color;
+        return color.getAnsi() + powerUp.getName() + Constants.ANSI_RESET;
     }
 }

@@ -58,7 +58,7 @@ OO usare unico scanner
 
 comando per passare
 azione ricarica
-sistemare layout munizioni e armi cli
+-sistemare layout munizioni e armi cli
 
 
 testare arma che sceglie rooms

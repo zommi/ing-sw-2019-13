@@ -300,7 +300,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     weapons = playerHand.getWeaponHand();
                     System.out.println(">You have the following weapons: ");
                     if ((weapons == null) || (weapons.isEmpty())) {
-                        System.out.println(">You have no weapons!");
+                        System.out.println("You have no weapons!");
                     } else {
                         for (WeaponCard weaponCard : weapons) {
                             System.out.println("> " + weaponCard.getName());
@@ -309,7 +309,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     powerups = playerHand.getPowerupHand();
                     System.out.println(">You have the following powerups: ");
                     if ((powerups == null) || (powerups.isEmpty())) {
-                        System.out.println(">You have no powerups!");
+                        System.out.println("You have no powerups!");
                     } else {
                         for (PowerUpCard powerUpCard : powerups) {
                             System.out.println("> " + powerUpCard);
@@ -317,15 +317,16 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
 
                     if (playerBoard != null) { //these checks are used when the clients still do not have any update, at the start of the match
-                        ammoRED = playerBoard.getRedAmmo();
-                        System.out.println(">Red ammos:" + ammoRED);
-
-                        ammoBLUE = playerBoard.getBlueAmmo();
-                        System.out.println(">Blue ammos:" + ammoBLUE);
-
-                        ammoYELLOW = playerBoard.getYellowAmmo();
-                        System.out.println(">Yellow ammos:" + ammoYELLOW);
+                        System.out.println();
+                        for(Color color : Color.values()){
+                            if(color.isAmmoColor()){
+                                System.out.print(color.getAnsi() + "∎ x" + playerBoard.getResult().getAmmo(color) +
+                                        Constants.ANSI_RESET + "\t");
+                            }
+                        }
+                        System.out.println();
                     }
+
                     if(gameModel.getToSpawn()){
                         powerups = this.spawn(powerups, playerHand, actionParser);
                     }
@@ -644,22 +645,33 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void printPlayerBoard(PlayerBoardAnswer p){
         System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
                 characterName + "\u001B[0m");
-        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.RED) +" red marks tokens");
-        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.BLUE) +" blue marks tokens");
-        System.out.println("You currently have: " +p.getResult().getMarksOfAColor(Color.YELLOW) +" yellow marks tokens");
-        System.out.println("You currently have: " +p.getResult().getDamageTaken() +" damage tokens");
-        for(int i = 0; (i < p.getResult().getDamage().length) && (p.getResult().getDamage()[i] != null); i++){
-            System.out.println("You currently have a " +(p.getResult().getDamage())[i].toString() +" damage token");
+
+        //prints damage
+        System.out.println("\nDAMAGE:\n");
+        int i = 0;
+        for(Color color : p.getResult().getDamage()){
+            if(color != null) {
+                i++;
+                System.out.print(color.getAnsi() + "O" + Constants.ANSI_RESET);
+            }
         }
+        System.out.println("\nTOT: " + i);
 
-
+        //prints marks
+        System.out.println("\nMARKS:\n");
+        i=0;
+        for(Color color : p.getResult().getMarks()){
+            i++;
+            System.out.print(color.getAnsi() + "O" + Constants.ANSI_RESET);
+        }
+        System.out.println("\nTOT: " + i);
     }
 
     public int askCoordinate(Scanner myObj, String coordinateType){
         boolean ask = true;
         int coordinate = 0;
         while(ask) {
-            System.out.println(">Choose the" + coordinateType + " you want to move to: ");
+            System.out.println(">Choose the " + coordinateType + " you want to move to: ");
             try {
                 coordinate = Integer.parseInt(myObj.nextLine());
                 ask = false;
