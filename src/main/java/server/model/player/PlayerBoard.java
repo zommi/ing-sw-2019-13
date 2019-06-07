@@ -183,6 +183,7 @@ public class PlayerBoard implements Serializable {
             for(int i = 0; i < Constants.MAX_HP; i++){
                 this.damage[i] = Color.UNDEFINED;
             }
+            player.setState(PlayerState.TOBESPAWNED);
         }
     }
 
