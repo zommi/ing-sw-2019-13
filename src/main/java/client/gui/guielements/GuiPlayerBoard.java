@@ -70,8 +70,8 @@ public class GuiPlayerBoard extends StackPane {
 
 
 
-        mainGridpane.add(hpGrid,0,1);
-        mainGridpane.add(marksGrid,0,2);
+        mainGridpane.add(hpGrid,0,0);
+        mainGridpane.add(marksGrid,0,1);
         this.getChildren().add(mainGridpane);
     }
 }

@@ -23,7 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import server.model.cards.PowerUpCard;
@@ -319,9 +319,9 @@ public class MainGuiController implements GuiController {
 
     public void enableShoot(MouseEvent mouseEvent) {
         if(!this.model.getToSpawn()){
+            logText("Select a weapon to use!\n");
             for(Node card : weaponHand.getChildren()){
                 card.setDisable(false);
-                logText("Select a weapon to use!\n");
             }
         }else{
             logText("You first need to spawn!\n");
@@ -585,29 +585,70 @@ public class MainGuiController implements GuiController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         List<SquareInfo> result = new ArrayList<>();
         alert.setTitle("SQUARE SELECTION");
-        alert.setContentText("Click on a square to select it!");
-        Button selectButton = new Button("SELECT SQUARE");
-        Button cancelButton = new Button("CANCEL");
-        AtomicBoolean loop = new AtomicBoolean(true);
+        alert.setHeaderText("Do you want to select a square?");
+        ButtonType selectButton = new ButtonType("Select");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        AtomicInteger squareAsked = new AtomicInteger();
 
-        while(loop.get()){
-            selectButton.setOnMousePressed(e -> {
-                alert.hide();
-                for(GuiTile tile : tiles){
-                    tile.setOnMousePressed( ev -> {
-                        result.add(new SquareInfo(tile.getRow(),tile.getCol()));
-                        for(GuiTile tileToDisable : tiles){
-                            tileToDisable.setOnMousePressed(null);
-                        }
-                    });
+        alert.getButtonTypes().setAll(selectButton,cancelButton);
+
+        while (squareAsked.get() < maxSquares) {
+            Optional<ButtonType> choice = alert.showAndWait();
+            if (choice.get() == selectButton) {
+                synchronized (alert) {
+                    alert.close();
+                    logText("Select a tile on the map.\n");
+                    for (GuiTile tile : tiles) {
+                        tile.setOnMousePressed(ev -> {
+                            result.add(new SquareInfo(tile.getRow(), tile.getCol()));
+                            for (GuiTile tileToDisable : tiles) {
+                                tileToDisable.setOnMousePressed(null);
+                            }
+                        });
+                    }
+                    try {
+                        alert.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    squareAsked.getAndIncrement();
                 }
-                alert.show();
-            });
-            cancelButton.setOnMousePressed(e -> {
-                loop.set(false);
-            });
+            } else {
+                break;
+            }
         }
 
         return result;
+//        selectButton.setOnMousePressed(e -> {
+//            alert.hide();
+//            logText("Select a tile on the map.\n");
+//            for(GuiTile tile : tiles){
+//                tile.setOnMousePressed( ev -> {
+//                    result.add(new SquareInfo(tile.getRow(),tile.getCol()));
+//                    for(GuiTile tileToDisable : tiles){
+//                        tileToDisable.setOnMousePressed(null);
+//                    }
+//                    alert.show();
+//                });
+//            }
+//        });
+//
+//        alert.setOnCloseRequest(e -> {
+//            alert.close();
+//        });
+//
+//        alert.getDialogPane().setContent(selectButton);
+//        alert.showAndWait();
+//        while(squareAsked.get() < maxSquares){
+//            synchronized (lock) {
+//                try {
+//                    alert.wait();
+//                } catch (InterruptedException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//            squareAsked.getAndIncrement();
+//        }
+//        return result;
     }
 }
