@@ -44,6 +44,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void update(Observable obs, Object object){
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
+            gameModel.getMap().printOnCLI();
         }
 
         if(object.equals("Change player")){
@@ -64,7 +65,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         if(object.equals("Map")){
             System.out.println("New Update of the map");
-            gameModel.getMap().getResult().printOnCLI();
         }
 
         if(object.equals("PlayerHand")){
@@ -434,7 +434,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
         System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(spawnChoice).getColor());
-        System.out.println("In the raw " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+        System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
         return powerups;
     }
 
@@ -449,15 +449,17 @@ public class UpdaterCLI  implements Updater,Runnable{
             String read;
             int coordinatex = gameModel.getPlayerBoard(connection.getClientID()).getRow();
             int coordinatey = gameModel.getPlayerBoard(connection.getClientID()).getCol();
-            System.out.println(" " +connection.getClientID());
-            System.out.println(" " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
-            System.out.println(" " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
+            System.out.println(" Client ID: " +connection.getClientID());
+            System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
+            System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+
             Scanner myObj = new Scanner(System.in);
             int collectDecision = 0;
             boolean collectChosen = false;
             boolean powerupChosen = false;
             printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
-            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp");
+            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp" +
+                    "\nMAP to show the map");
             read = myObj.nextLine();
             int result = -1;
             if (read.equalsIgnoreCase("M")) {       //move
@@ -522,10 +524,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println("Ammo (2)"); //2 is to collect ammo
                     read = myObj.nextLine();
                     if (read.equals("1")) {
-                        collectDecision = 1;
+                        collectDecision = 1;        //weapon
                         collectChosen = true;
                     } else if (read.equals("2")) {
-                        collectDecision = 2;
+                    collectDecision = 2;            //ammo
                         collectChosen = true;
                     }
                 } while (!collectChosen);
@@ -570,8 +572,8 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                 if (collectDecision == 1) { //he has chosen to collect a weapon
                     do {
-                        if (gameModel.getMap().getResult().getSquare(coordinatex, coordinatey) instanceof SpawnPoint) {
-                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getResult().getSquare(coordinatex, coordinatey));
+                        if (gameModel.getMap().getSquare(coordinatex, coordinatey) instanceof SpawnPoint) {
+                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(coordinatex, coordinatey));
 
                             boolean askWeapon = true;
                             while(askWeapon) {
@@ -632,6 +634,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp());
                 connection.send(action);
+            }
+            else if(read.equalsIgnoreCase("map")){
+                gameModel.getMap().printOnCLI();
             }
             else {
                 System.out.println(">Please insert a valid action.");

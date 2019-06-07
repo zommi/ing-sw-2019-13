@@ -6,13 +6,13 @@
     3) togli dal game la get weapon list
 
 togliere posizioni da playerboard
-dire dove si è spawnati dopo primo turno
-    mandare mappa dopo spawn
+-dire dove si è spawnati dopo primo turno
+    -mandare mappa dopo spawn
 -gestire eccezione parseint anche per scelta spawn
 
 
 
-se un oggetto è serializzato più volte? tipo a catena
+-se un oggetto è serializzato più volte? tipo a catena
 
 
 -ConcretePlayer costruttore dove viene usato
@@ -26,8 +26,6 @@ se un oggetto è serializzato più volte? tipo a catena
 
 -collect di ammo in spawnpoint non raccoglie niente e conta come azione
 
-raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
-
 -178 weapon policy null pointer
         -controllare se giocatore spawnato in validator (position != null)
 
@@ -35,19 +33,43 @@ raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
 
 OO nessuno verifica skull number legale su server
 
-spostare stampa mappa da un'altra parte
+--spostare stampa mappa da un'altra parte
 
-usare unico scanner
-
-comando per mostrare mappa
-comando per passare
+OO usare unico scanner
 
 -square in shootinfo
 
+-comando per mostrare mappa
+comando per passare
 azione ricarica
+sistemare layout munizioni e armi cli
 
-
-
-
+raccolta di più di 3 armi (le toglie dallo spawn e conta pure come azione)
 
 testare arma che sceglie rooms
+
+mandare messaggi che informano client di cosa è successo nell'azione appena fatta, anche in caso di errore allo specifico client
+    uno anche per il numero dell'azione da fare magari
+
+rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
+
+pagare anche con powerup: mandare lista di carte che si vogliono usare
+
+far scegliere arma con cui scambiare la propria quando se ne hanno 3 (settarla carica quando si posa)
+
+ora arma raccolta sparisce quando se ne hanno 3, non viene messa nella mano e non c'e nello spawnpoint
+
+provare a fare collect weapon senza spostarsi in ammo square
+
+rimuovere duplicato scelta coordinate
+
+>Choose which weapon you want to collect
+Heatseeker (1)
+Plasma Gun (2)
+Hellion (3)
+
+>You have the following weapons:
+> Tractor beam
+> Cyberblade
+> Heatseeker
+

@@ -5,7 +5,7 @@ import constants.Color;
 public enum Figure {
     DESTRUCTOR(0, Color.YELLOW),
     BANSHEE(1, Color.BLUE),
-    DOZER(2, Color.GREY),
+    DOZER(2, Color.WHITE),      //it should be grey but white is the new grey
     VIOLET(3, Color.PURPLE),
     SPROG(4, Color.GREEN);
 

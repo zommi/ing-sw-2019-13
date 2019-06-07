@@ -36,13 +36,19 @@ public class PlayerHand implements Serializable {
 
 
     public List<WeaponCard> getWeaponHand() {
-        return (ArrayList<WeaponCard>) weaponHand.clone();  //cloning for server answers
+        return weaponHand;
     }
 
-    public void removePowerUpCard(PowerUpCard powerupCard){
-        for(int i = 0; i < powerupHand.size(); i++){
-            if((powerupHand.get(i).getColor() == powerupCard.getColor())&&(powerupHand.get(i).getName().equals(powerupCard.getName())))
-                this.powerupHand.remove(i);
+    public void removePowerUpCard(PowerUpCard powerUpCard){
+        Iterator<PowerUpCard> iterator = powerupHand.iterator();
+        PowerUpCard powerUpCard1;
+        while(iterator.hasNext()){
+            powerUpCard1 = iterator.next();
+            if(powerUpCard.equals(powerUpCard1)){
+                iterator.remove();
+                return;
+            }
+
         }
     }
 

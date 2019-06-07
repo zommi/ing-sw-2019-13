@@ -38,4 +38,6 @@ public abstract class InputAbstract {
     public List<String> getPlayersNames() {
         return playersNames;
     }
+
+    public abstract boolean getMoveChoice();
 }

@@ -114,8 +114,8 @@ public class GameModel extends Observable implements Serializable {
     }
 
 
-    public MapAnswer getMap(){
-        return this.map;
+    public GameMap getMap(){
+        return gameBoard.getResult().getMap();
     }
 
     public PlayerBoardAnswer getPlayerBoard(int clientID) {

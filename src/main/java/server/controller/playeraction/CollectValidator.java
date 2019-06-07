@@ -30,6 +30,14 @@ public class CollectValidator {
             return false;
         }
 
+        //checks illegal combinations
+        if(square instanceof SpawnPoint && choice == Constants.NO_CHOICE)
+            return false;
+
+        if(square instanceof Square && choice != Constants.NO_CHOICE)
+            return false;
+
+
         if(square instanceof SpawnPoint){ //then it is a Weapon
             int blueCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost().getBlue();
             int redCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost().getRed();
@@ -37,6 +45,9 @@ public class CollectValidator {
             if((blueCost > player.getPlayerBoard().getBlueAmmo()) || (redCost > player.getPlayerBoard().getRedAmmo()) || (yellowCost > player.getPlayerBoard().getYellowAmmo())){
                 return false;
             }
+
+            if(!player.canPay(((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost()))
+                return false;
         }
 
 

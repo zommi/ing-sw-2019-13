@@ -22,8 +22,9 @@ public class ShootParser {
         this.weapon = weapon;
         shootPack = new ShootPack(weapon.getName());
 
-        if(gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT){
-            shootPack.setSquare(input.askSquares(1).get(0));
+        if(gameModel.getGameBoard() != null && gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT){
+            if(input.getMoveChoice())
+                shootPack.setSquare(input.askSquares(1).get(0));
         }
 
         switch(weapon.getType()){

@@ -136,14 +136,15 @@ public class Controller {
             turnHandler.setAndDoAction(spawnAction);
             server.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
             server.sendToSpecificRMI(new SetSpawnAnswer(false), currentID);
+            server.sendToSpecificRMI(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
         }
 
         if(action instanceof MoveInfo){
             MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer, currentMap);
             turnHandler.setAndDoAction(moveAction);
-            MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
+            //MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
             GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-            server.sendToEverybodyRMI(mapAnswer);
+            //server.sendToEverybodyRMI(mapAnswer);
             server.sendToEverybodyRMI(gameBoardAnswer);
         }
         else if(action instanceof CollectInfo){
@@ -212,13 +213,13 @@ public class Controller {
     }
 
     public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
-        MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
+        //MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-        PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getPlayerBoard());
+        //PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getPlayerBoard());
         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
-        server.sendToEverybodyRMI(mapAnswer);
+        //server.sendToEverybodyRMI(mapAnswer);
         server.sendToEverybodyRMI(gameBoardAnswer);
-        server.sendToEverybodyRMI(playerBoardAnswer);
+        //server.sendToEverybodyRMI(playerBoardAnswer);
         server.sendToSpecificRMI(playerHandAnswer, clientID);
     }
 

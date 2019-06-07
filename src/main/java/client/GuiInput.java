@@ -57,4 +57,11 @@ public class GuiInput extends InputAbstract {
     public List<String> askRooms(int maxTargetRoomSize) {
         return this.guiController.askPlayersOrRooms(maxTargetRoomSize,playersNames,roomsNames,false);
     }
+
+    @Override
+    public boolean getMoveChoice() {
+        //TODO
+        //chiede al player se vuole muoversi prima di sparare, viene chiamato solo se lo stato è BETTER_SHOOT
+        return false;
+    }
 }

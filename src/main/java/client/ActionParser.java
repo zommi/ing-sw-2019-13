@@ -37,7 +37,7 @@ public class ActionParser{
 
         //initialize rooms names
         List<String> rNames = new ArrayList<>();
-        for(Room room : gameModel.getMap().getResult().getRooms())
+        for(Room room : gameModel.getMap().getRooms())
             rNames.add(room.getColor().name());
         setRoomsNames(rNames);
     }

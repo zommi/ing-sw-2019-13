@@ -131,7 +131,7 @@ public class MainGuiController implements GuiController {
 
     private void initializeMap() { //NOSONAR
         this.model = gui.getGameModel();
-        GameMap map = model.getMap().getResult();
+        GameMap map = model.getMap();
         SquareAbstract currentSquare = map.iterator().next();
         int doorSize = side / 3;
         GuiDoorway doorway;
@@ -496,7 +496,7 @@ public class MainGuiController implements GuiController {
 
     public void restoreSquares() {
         for (GuiTile tile : tiles) {
-            tile.setSquare(this.model.getMap().getResult().getSquare(tile.getRow(),tile.getCol()));
+            tile.setSquare(this.model.getMap().getSquare(tile.getRow(),tile.getCol()));
             tile.restore();
         }
     }

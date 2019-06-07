@@ -88,6 +88,13 @@ public class CliInput extends InputAbstract{
         return askPlayersOrRooms(max, false);
     }
 
+    @Override
+    public boolean getMoveChoice() {
+        System.out.println("Do you wanna move before shooting? [y to activate] ");
+        String s = scanner.nextLine();
+        return s.equals("y");
+    }
+
     private List<String> askPlayersOrRooms(int maxTargetPlayerSize, boolean players) {
         List<String> names = players ? playersNames : roomsNames;
         String choice;
