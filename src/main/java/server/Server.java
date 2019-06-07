@@ -111,7 +111,7 @@ public class Server {
 
     public void addPlayer(PlayerAbstract player){
         playerList.add(player);
-        if((listOfClients.size() == 3)&&(playerList.size() == 3)){ //start timer di N secondi
+        if(playerList.size() == 3){ //start timer di N secondi
             TimerTask timerTask = new MyTimerTask(this);
             Timer timer = new Timer(true);
             timer.schedule(timerTask, 0);
