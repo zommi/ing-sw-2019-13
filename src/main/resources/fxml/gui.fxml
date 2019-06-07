@@ -119,7 +119,7 @@
                  </children>
              </GridPane>
              <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD" GridPane.rowIndex="1" />
-            <Button prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2"
+            <Button fx:id="scoreboardButton" prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2"
                     onMousePressed="#showScoreboard"/>
          </children>
       </GridPane>

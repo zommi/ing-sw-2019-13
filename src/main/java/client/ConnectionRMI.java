@@ -30,7 +30,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private GameModel gameModel;
     private GameProxyInterface game;
     private int clientID;
-    private static final String SERVER_ADDRESS  = "192.168.43.66";
+    private static final String SERVER_ADDRESS  = "localhost";
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private static final int REGISTRATION_PORT = 1099;
     private int startGame = 0;

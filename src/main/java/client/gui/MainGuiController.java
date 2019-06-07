@@ -51,6 +51,9 @@ public class MainGuiController implements GuiController {
     @FXML
     private TextArea textLogger;
 
+    @FXML
+    public Button scoreboardButton;
+
     private String log;
 
     @FXML
@@ -126,6 +129,7 @@ public class MainGuiController implements GuiController {
         for(Node powerupNode : powerupHand.getChildren()){
             powerupNode.setDisable(true);
         }
+        scoreboardButton.setDisable(false);
         logText("It's not your turn, disabled commands \n");
     }
 
@@ -343,7 +347,7 @@ public class MainGuiController implements GuiController {
     private void setSpawn(PowerUpCard card) {
         for(GuiSpawnPoint spawnPoint : this.spawnPoints){
             if(card.getColor() == spawnPoint.getColor()){
-                this.myCharacter = new GuiCharacter(spawnPoint,Color.fromCharacter(this.gui.getCharacter()));
+                this.myCharacter = new GuiCharacter(spawnPoint,model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
                 this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(),myCharacter);
                 this.gui.getGameModel().setToSpawn(false);
                 disableMouseEvent();
@@ -458,7 +462,7 @@ public class MainGuiController implements GuiController {
             //update position of players
             for (int i = 0; i < this.model.getPlayersNames().size(); i++) {
                 if (this.idClientGuiCharacterMap.get((Object) i) == null) {
-                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i)));
+                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i),model.getPlayersNames().get(i)));
                 } else {
                     this.idClientGuiCharacterMap.get(i).setPosition(getTile(
                             this.model.getPlayerBoard(i).getRow(),
@@ -471,10 +475,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard) {
+    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard, String name) {
         for(GuiSpawnPoint sp : spawnPoints){
             if(sp.getCol() == playerBoard.getCol() && sp.getRow() == playerBoard.getRow()){
-                return new GuiCharacter(sp,Color.fromCharacter(playerBoard.getCharacterName()));
+                return new GuiCharacter(sp,playerBoard.getResult(),name);
             }
         }
         return null;
