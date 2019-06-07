@@ -6,6 +6,7 @@ import client.weapons.ShootParser;
 import client.weapons.Weapon;
 import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
 import server.model.map.Room;
 
 import java.util.ArrayList;
@@ -77,8 +78,8 @@ public class ActionParser{
         input.setRoomsNames(names);
     }
 
-    public Info createCollectEvent(int row, int col, int collectDecision) {
-        return new CollectInfo(row, col, collectDecision);
+    public Info createCollectEvent(int row, int col, int collectDecision, WeaponCard weaponToDiscard) {
+        return new CollectInfo(row, col, collectDecision, weaponToDiscard);
     }
 
     public Info createPowerUpEvent(PowerUp powerUp) {

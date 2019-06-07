@@ -1,6 +1,7 @@
 package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import server.model.cards.PowerUpCard;
 
 import java.io.Serializable;
 import java.util.List;
@@ -69,5 +70,15 @@ public class Weapon implements Serializable {
 
     public boolean isSpecial(){
         return special;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Weapon))
+            return false;
+        Weapon weapon2 = (Weapon) obj;
+
+        return weapon2.getName().equalsIgnoreCase(this.name);
+
     }
 }

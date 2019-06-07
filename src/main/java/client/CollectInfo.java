@@ -21,10 +21,11 @@ public class CollectInfo implements Serializable, Info {
      * constructor used if the player doesn't specify a choice. It is used
      * when the player wants to collect an ammo tile
      */
-    public CollectInfo(int row, int col, int choice){
+    public CollectInfo(int row, int col, int choice, WeaponCard weaponToDiscard){
         this.choice = choice;
         this.row = row;
         this.col = col;
+        this.weaponToDiscard = weaponToDiscard;
     }
 
     public int getRow(){
@@ -42,4 +43,5 @@ public class CollectInfo implements Serializable, Info {
     public WeaponCard getWeaponToDiscard() {
         return weaponToDiscard;
     }
+
 }

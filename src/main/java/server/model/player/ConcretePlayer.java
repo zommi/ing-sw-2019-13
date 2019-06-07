@@ -61,7 +61,7 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public WeaponCard getWeaponCard(Weapon weapon) {
         for(WeaponCard weaponCard : hand.getWeaponHand()){
-            if(weaponCard.getWeapon() == weapon)
+            if(weaponCard.getWeapon().equals(weapon))
                 return weaponCard;
         }
         return null;

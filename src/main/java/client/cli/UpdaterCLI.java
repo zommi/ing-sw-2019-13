@@ -447,8 +447,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         while(ask) {
             ask = false;
             String read;
-            int coordinatex = gameModel.getPlayerBoard(connection.getClientID()).getRow();
-            int coordinatey = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+            int row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
+            int col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
             System.out.println(" Client ID: " +connection.getClientID());
             System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
             System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
@@ -458,6 +458,9 @@ public class UpdaterCLI  implements Updater,Runnable{
             boolean collectChosen = false;
             boolean powerupChosen = false;
             printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
+
+            gameModel.getMap().printOnCLI();
+
             System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp" +
                     "\nMAP to show the map");
             read = myObj.nextLine();
@@ -465,28 +468,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             if (read.equalsIgnoreCase("M")) {       //move
                 System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
 
-                boolean askX = true;
-                while(askX) {
-                    System.out.println(">Choose the row you want to move to: ");
-                    try {
-                        coordinatex = Integer.parseInt(myObj.nextLine());
-                        askX = false;
-                    }catch(NumberFormatException e){
-                        //ask == true
-                    }
-                }
-                boolean askY = true;
-                while(askY) {
-                    System.out.println(">Choose the col you want to move to: ");
-                    try {
-                        coordinatey = Integer.parseInt(myObj.nextLine());
-                        askY = false;
-                    }catch(NumberFormatException e){
-                        //ask == true
-                    }
-                }
+                row = askCoordinate(myObj, "row");
+                col = askCoordinate(myObj, "col");
 
-                Info action = actionParser.createMoveEvent(coordinatex, coordinatey);
+                Info action = actionParser.createMoveEvent(row, col);
                 connection.send(action);
             }
             else if (read.equalsIgnoreCase("S")) {        //shoot
@@ -543,37 +528,22 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 } while ((result != 1) && (result != 2));
 
-                coordinatex = gameModel.getPlayerBoard(connection.getClientID()).getRow();
-                coordinatey = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+
 
                 if (result == 1) {
-                    boolean askX = true;
-                    while(askX) {
-                        System.out.println(">Choose the row you want to move to: ");
-                        try {
-                            coordinatex = Integer.parseInt(myObj.nextLine());
-                            askX = false;
-                        }catch(NumberFormatException e){
-                            //ask == true
-                        }
-                    }
-                    boolean askY = true;
-                    while(askY) {
-                        System.out.println(">Choose the col you want to move to: ");
-                        try {
-                            coordinatey = Integer.parseInt(myObj.nextLine());
-                            askY = false;
-                        }catch(NumberFormatException e){
-                            //ask == true
-                        }
-                    }
+                    row = askCoordinate(myObj, "row");
+                    col = askCoordinate(myObj, "col");
+                }
+                else{
+                    row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
+                    col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
                 }
 
 
                 if (collectDecision == 1) { //he has chosen to collect a weapon
                     do {
-                        if (gameModel.getMap().getSquare(coordinatex, coordinatey) instanceof SpawnPoint) {
-                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(coordinatex, coordinatey));
+                        if (gameModel.getMap().getSquare(row, col) instanceof SpawnPoint) {
+                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(row, col));
 
                             boolean askWeapon = true;
                             while(askWeapon) {
@@ -592,15 +562,41 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 }
                             }
 
-                            Info action = actionParser.createCollectEvent(coordinatex, coordinatey, result);
+                            WeaponCard weaponToDiscard = null;
+
+                            if(gameModel.getPlayerHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
+                                int weaponToDiscardIndex = 0;
+                                askWeapon = true;
+                                while (askWeapon) {
+                                    System.out.println(">Choose which weapon you want to discard ");
+                                    for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                                        System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i).getName() +
+                                                " (" + (i + 1) + ")");
+                                    }
+                                    try {
+                                        weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
+                                        if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
+                                            askWeapon = false;
+                                        else
+                                            System.out.println("Please insert a valid number.");
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Please insert a valid number.");
+                                    }
+                                }
+                                weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
+                            }
+
+
+                            Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard);
                             connection.send(action);
                         } else {
                             System.out.println("This is not a spawn point, you can't collect weapons");
                             break;
                         }
                     } while ((result != 0) && (result != 1) && (result != 2));
-                } else if (collectDecision == 2) {
-                    Info action = actionParser.createCollectEvent(coordinatex, coordinatey, Constants.NO_CHOICE);
+                } else  {
+                    //if collectdecision == 2
+                    Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null);
                     connection.send(action);
                 }
             }
@@ -657,6 +653,21 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
 
 
+    }
+
+    public int askCoordinate(Scanner myObj, String coordinateType){
+        boolean ask = true;
+        int coordinate = 0;
+        while(ask) {
+            System.out.println(">Choose the" + coordinateType + " you want to move to: ");
+            try {
+                coordinate = Integer.parseInt(myObj.nextLine());
+                ask = false;
+            }catch(NumberFormatException e){
+                //ask == true
+            }
+        }
+        return coordinate;
     }
 
     public GameCharacter getCharacter(String string){

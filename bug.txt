@@ -39,6 +39,17 @@ OO usare unico scanner
 
 -square in shootinfo
 
+-rimuovere duplicato scelta coordinate
+
+-al passaggio di turno dal 3 al primo, in uno spawn point non erano state restorate le armi
+    dopo aver collectato 2 armi per due volte di fila
+
+-far scegliere arma con cui scambiare la propria quando se ne hanno 3 (settarla carica quando si posa)
+
+-ora arma raccolta sparisce quando se ne hanno 3, non viene messa nella mano e non c'e nello spawnpoint
+
+-far scegliere arma da scartare quando se ne hanno già 3 e se ne pesca un'altra
+
 -comando per mostrare mappa
 comando per passare
 azione ricarica
@@ -53,15 +64,7 @@ mandare messaggi che informano client di cosa è successo nell'azione appena fat
 
 rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
-far scegliere arma con cui scambiare la propria quando se ne hanno 3 (settarla carica quando si posa)
-
-ora arma raccolta sparisce quando se ne hanno 3, non viene messa nella mano e non c'e nello spawnpoint
-
-far scegliere arma da scartare quando se ne hanno già 3 e se ne pesca un'altra
-
 provare a fare collect weapon senza spostarsi in ammo square
-
-rimuovere duplicato scelta coordinate
 
 PAGAMENTO CON POWERUP:
 mando lista di carte
