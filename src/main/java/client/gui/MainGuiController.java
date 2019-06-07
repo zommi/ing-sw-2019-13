@@ -26,6 +26,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.map.GameMap;
@@ -260,6 +263,7 @@ public class MainGuiController implements GuiController {
 
     private void showWeapons(GuiSpawnPoint spawnPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         alert.setTitle("WEAPONS AVAILABLE");
 
         GridPane cards = new GridPane();
@@ -361,6 +365,7 @@ public class MainGuiController implements GuiController {
     @FXML
     public void showScoreboard(MouseEvent mouseEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         alert.setTitle("SCOREBOARD");
         alert.setContentText(null);
         alert.setHeaderText(null);
@@ -507,6 +512,7 @@ public class MainGuiController implements GuiController {
 
     public boolean askMacro(MacroEffect macroEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MACRO ACTIVATION CONFIRMATION");
         alert.setContentText("Do you wanna activate this macro effect?\n" + macroEffect);
         Optional<ButtonType> result = alert.showAndWait();
@@ -515,6 +521,7 @@ public class MainGuiController implements GuiController {
 
     public boolean askMicro(MicroEffect microEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MICRO ACTIVATION CONFIRMATION");
         alert.setContentText("Do you wanna activate this micro effect?\n" + microEffect);
         Optional<ButtonType> result = alert.showAndWait();
@@ -523,6 +530,7 @@ public class MainGuiController implements GuiController {
 
     public MacroEffect chooseOneMacro(Weapon weapon) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         AtomicReference<MacroEffect> result = new AtomicReference<MacroEffect>();
         alert.setTitle("CHOOSE ONE MACRO");
         alert.setContentText("Select a macro");
@@ -557,6 +565,7 @@ public class MainGuiController implements GuiController {
 
     public List<String> askPlayersOrRooms(int maxTargetPlayerSize, List<String> players,List<String> rooms, boolean askedPlayers) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         List<String> listToAsk = askedPlayers ? players : rooms;
         String playersOrRooms = askedPlayers ? "players" : "rooms";
         List<String> result = new ArrayList<>();
@@ -584,75 +593,36 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
-
     public List<SquareInfo> askSquares(int maxSquares) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        int iteration = 0;
         List<SquareInfo> result = new ArrayList<>();
-        alert.setTitle("SQUARE SELECTION");
-        alert.setHeaderText("Do you want to select a square?");
-        ButtonType selectButton = new ButtonType("Select");
-        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        AtomicInteger squareAsked = new AtomicInteger();
+        Stage empytStage = new Stage(StageStyle.TRANSPARENT);
+        empytStage.initModality(Modality.NONE);
 
-        alert.getButtonTypes().setAll(selectButton,cancelButton);
-
-        while (squareAsked.get() < maxSquares) {
-            Optional<ButtonType> choice = alert.showAndWait();
-            if (choice.get() == selectButton) {
-                synchronized (alert) {
-                    alert.close();
-                    logText("Select a tile on the map.\n");
-                    for (GuiTile tile : tiles) {
-                        tile.setOnMousePressed(ev -> {
-                            result.add(new SquareInfo(tile.getRow(), tile.getCol()));
-                            for (GuiTile tileToDisable : tiles) {
-                                tileToDisable.setOnMousePressed(null);
-                            }
-                        });
+        while(iteration < maxSquares){
+            logText("Select a square!");
+            for(GuiTile tile : tiles){
+                tile.setOnMousePressed(e -> {
+                    result.add(new SquareInfo(tile.getRow(),tile.getCol()));
+                    for(GuiTile tileToDisable : tiles){
+                        tileToDisable.setOnMousePressed(null);
                     }
-                    try {
-                        alert.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    squareAsked.getAndIncrement();
-                }
-            } else {
-                break;
+                    empytStage.close();
+                });
             }
+            iteration++;
         }
-
+        empytStage.showAndWait();
         return result;
-//        selectButton.setOnMousePressed(e -> {
-//            alert.hide();
-//            logText("Select a tile on the map.\n");
-//            for(GuiTile tile : tiles){
-//                tile.setOnMousePressed( ev -> {
-//                    result.add(new SquareInfo(tile.getRow(),tile.getCol()));
-//                    for(GuiTile tileToDisable : tiles){
-//                        tileToDisable.setOnMousePressed(null);
-//                    }
-//                    alert.show();
-//                });
-//            }
-//        });
-//
-//        alert.setOnCloseRequest(e -> {
-//            alert.close();
-//        });
-//
-//        alert.getDialogPane().setContent(selectButton);
-//        alert.showAndWait();
-//        while(squareAsked.get() < maxSquares){
-//            synchronized (lock) {
-//                try {
-//                    alert.wait();
-//                } catch (InterruptedException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//            squareAsked.getAndIncrement();
-//        }
-//        return result;
+    }
+
+    public boolean getMoveChoice() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("Move before shoot");
+        alert.setHeaderText("Do you want to move a square before shooting?");
+        alert.setContentText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 }
