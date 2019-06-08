@@ -1,21 +1,22 @@
 package server.controller.playeraction;
 
 import client.CollectInfo;
+import client.weapons.Cost;
 import constants.Constants;
 import constants.Direction;
 import server.controller.Controller;
 import server.model.cards.CardInterface;
 import server.model.cards.CollectableInterface;
+import server.model.cards.PowerUpCard;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollectActuator {
-
-    public CollectActuator(){}
 
     public void actuate(PlayerAbstract player, SquareAbstract square, int choice, Controller controller, CollectInfo collectInfo){
         player.getGameCharacter().move(square);
@@ -26,6 +27,24 @@ public class CollectActuator {
             card = ((Square) player.getPosition()).getAmmoTile();
             squarePlayer.removeItem(card, controller);
         }else {     //collecting a weapon
+
+            //removes powerups and pay
+            Cost updatedCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost();
+            List<PowerUpCard> oneCard = new ArrayList<>();
+            for(PowerUpCard powerUpCard : collectInfo.getPowerUpCards()){
+                Cost oldCost = updatedCost;
+                oneCard.add(powerUpCard);
+                updatedCost = updatedCost.subtract(Cost.powerUpListToCost(oneCard));
+                if(oldCost != updatedCost)
+                    //discard the card
+                    player.getHand().removePowerUpCard(powerUpCard);
+
+                oneCard.clear();
+            }
+            player.pay(updatedCost);
+
+
+
             SpawnPoint spawnPoint = (SpawnPoint) player.getPosition();
 
             if(player.getHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {

@@ -1,12 +1,17 @@
 package server.controller.playeraction;
 
 import client.CollectInfo;
+import client.weapons.Cost;
 import constants.Constants;
+import server.model.cards.PowerUpCard;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CollectValidator {
 
@@ -41,7 +46,25 @@ public class CollectValidator {
             if(choice >= ((SpawnPoint) square).getWeaponCards().size())
                 return false;
 
-            if(!player.canPay(((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost()))
+
+            //checking powerups
+            //converting powerUpCards
+            List<PowerUpCard> powerUpCards = new ArrayList<>();
+            if(collectInfo.getPowerUpCards() == null)
+                return false;
+            for(PowerUpCard powerUpCard : collectInfo.getPowerUpCards()){
+                if(player.getPowerUpCard(powerUpCard) == null)
+                    return false;
+                else
+                    powerUpCards.add(powerUpCard);
+            }
+
+            //attacker must have the selected powerups
+            if(!player.hasCards(collectInfo.getPowerUpCards()))
+                return false;
+
+            if(!player.canPay(((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost()
+                    .subtract(Cost.powerUpListToCost(collectInfo.getPowerUpCards()))))
                 return false;
 
             if(player.getHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {

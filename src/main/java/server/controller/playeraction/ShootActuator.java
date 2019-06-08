@@ -19,10 +19,10 @@ public class ShootActuator {
         //pay
         List<PowerUpCard> oneCard = new ArrayList<>();
         for(PowerUpCard powerUpCard : shootInfo.getPowerUpCards()){
-            Cost tempCost = shootInfo.getTotalCost();
+            Cost oldCost = shootInfo.getTotalCost();
             oneCard.add(powerUpCard);
             shootInfo.setTotalCost(shootInfo.getTotalCost().subtract(Cost.powerUpListToCost(oneCard)));
-            if(tempCost != shootInfo.getTotalCost())
+            if(oldCost != shootInfo.getTotalCost())
                 //discard the card
                 shootInfo.getAttacker().getHand().removePowerUpCard(powerUpCard);
 
