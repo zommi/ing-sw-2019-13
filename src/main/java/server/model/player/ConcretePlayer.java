@@ -235,6 +235,16 @@ public class ConcretePlayer extends PlayerAbstract {
         for(int i = 1; i<=cost.getYellow(); i++)
             playerBoard.decreaseAmmo(Color.YELLOW);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ConcretePlayer))
+            return false;
+        ConcretePlayer player2 = (ConcretePlayer) obj;
+
+        return this.gameCharacter.equals(player2.gameCharacter);
+
+    }
 }
 
 

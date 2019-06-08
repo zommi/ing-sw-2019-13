@@ -8,6 +8,8 @@ mandare messaggi che informano client di cosa è successo nell'azione appena fat
 
 rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
+modificare toString Cost
+
 PAGAMENTO CON POWERUP:
     mando lista di carte
     verifico che tutte le carte siano possedute dal player

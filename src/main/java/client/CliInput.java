@@ -3,6 +3,10 @@ package client;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
+import constants.Constants;
+import server.model.map.Room;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,24 +83,13 @@ public class CliInput extends InputAbstract{
     }
 
     @Override
-    public List<String> askPlayers(int max){
-        return askPlayersOrRooms(max, true);
-    }
+    public List<String> askPlayers(int maxTargetPlayerSize){
+        List<GameCharacter> characters = new ArrayList<>();
+        for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
+            if(!gameCharacter.getConcretePlayer().equals(gameModel.getMyPlayer()))
+                characters.add(gameCharacter);
+        }
 
-    @Override
-    public List<String> askRooms(int max){
-        return askPlayersOrRooms(max, false);
-    }
-
-    @Override
-    public boolean getMoveChoice() {
-        System.out.println("Do you wanna move before shooting? [y to activate] ");
-        String s = scanner.nextLine();
-        return s.equals("y");
-    }
-
-    private List<String> askPlayersOrRooms(int maxTargetPlayerSize, boolean players) {
-        List<String> names = players ? playersNames : roomsNames;
         String choice;
         boolean ask;
         boolean exit = false;
@@ -106,13 +99,14 @@ public class CliInput extends InputAbstract{
         do{
             ask = true;
             while(ask) {
-                for(int i = 0; i<names.size(); i++){
-                    System.out.println(i + ": " + names.get(i));
+                for(int i = 0; i<characters.size(); i++){
+                    System.out.println(characters.get(i).getColor().getAnsi() + characters.get(i).getConcretePlayer().getName()
+                            + Constants.ANSI_RESET + " (" + i + ")");
                 }
                 if(maxTargetPlayerSize != 1 && counter != maxTargetPlayerSize)  //maybe maxTarget check is useless
-                    System.out.println("Give me a number [or say 'stop']:\n");
+                    System.out.println("Choose a player [or say 'stop']:\n");
                 else
-                    System.out.println("Give me a number:\n");
+                    System.out.println("Choose a player:\n");
                 choice = scanner.nextLine();
                 if (choice.equals("stop") && maxTargetPlayerSize != 1 && counter != maxTargetPlayerSize) {
                     exit = true;
@@ -120,15 +114,16 @@ public class CliInput extends InputAbstract{
                 }
                 else{
                     try{
-                       number = Integer.parseInt(choice);
-                       if(number < names.size()){
-                           list.add(names.get(number));
-                           System.out.println("You chose " + number + ": " + names.get(number));
-                           ask = false;
-                       }
-                       else{
-                           System.out.println("Number not valid.");
-                       }
+                        number = Integer.parseInt(choice);
+                        if(number < characters.size()){
+                            list.add(characters.get(number).getConcretePlayer().getName());
+                            System.out.println("You chose: " + characters.get(number).getConcretePlayer().getColor().getAnsi()
+                                    + characters.get(number).getConcretePlayer().getName() + Constants.ANSI_RESET);
+                            ask = false;
+                        }
+                        else{
+                            System.out.println("Number not valid.");
+                        }
                     }catch(NumberFormatException e){
                         System.out.println("Not a valid choice, try again.");
                     }
@@ -140,6 +135,63 @@ public class CliInput extends InputAbstract{
                 counter--;
         }while(counter > 0);
         return list;
+    }
+
+    @Override
+    public List<String> askRooms(int max){
+        List<Room> rooms = new ArrayList<>(gameModel.getGameBoard().getResult().getMap().getRooms());
+
+        String choice;
+        boolean ask;
+        boolean exit = false;
+        int number = 0;
+        List<String> list = new ArrayList<>();
+        int counter = max;      //always != 0
+        do{
+            ask = true;
+            while(ask) {
+                for(int i = 0; i<rooms.size(); i++){
+                    System.out.println(rooms.get(i).getColor().getAnsi() + rooms.get(i).getColor().name()
+                            + Constants.ANSI_RESET + " (" + i + ")");
+                }
+                if(max != 1 && counter != max)  //maybe maxTarget check is useless
+                    System.out.println("Choose a room [or say 'stop']:\n");
+                else
+                    System.out.println("Choose a room:\n");
+                choice = scanner.nextLine();
+                if (choice.equals("stop") && max != 1 && counter != max) {
+                    exit = true;
+                    break;
+                }
+                else{
+                    try{
+                        number = Integer.parseInt(choice);
+                        if(number < rooms.size()){
+                            list.add(rooms.get(number).getColor().name());
+                            System.out.println("You chose " + number + ": " + rooms.get(number).getColor().name());
+                            ask = false;
+                        }
+                        else{
+                            System.out.println("Number not valid.");
+                        }
+                    }catch(NumberFormatException e){
+                        System.out.println("Not a valid choice, try again.");
+                    }
+                }
+            }
+            if(exit)
+                break;
+            else
+                counter--;
+        }while(counter > 0);
+        return list;
+    }
+
+    @Override
+    public boolean getMoveChoice() {
+        System.out.println("Do you wanna move before shooting? [y to activate] ");
+        String s = scanner.nextLine();
+        return s.equals("y");
     }
 
     @Override

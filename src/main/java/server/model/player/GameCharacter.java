@@ -118,4 +118,14 @@ public class GameCharacter implements Serializable {
     public SquareAbstract getOldPosition(){
         return oldPosition;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof GameCharacter))
+            return false;
+        GameCharacter gameCharacter2 = (GameCharacter) obj;
+
+        return this.getFigure().getId() == gameCharacter2.getFigure().getId();
+
+    }
 }

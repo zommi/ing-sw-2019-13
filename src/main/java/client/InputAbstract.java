@@ -11,6 +11,8 @@ public abstract class InputAbstract {
     List<String> playersNames;
     List<String> roomsNames;
 
+    GameModel gameModel;
+
     public abstract boolean getChoice(MacroEffect macroEffect);
 
     public abstract MacroEffect chooseOneMacro(Weapon weapon);
@@ -40,4 +42,12 @@ public abstract class InputAbstract {
     }
 
     public abstract boolean getMoveChoice();
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
+    }
 }

@@ -58,6 +58,8 @@ public class ShootParser {
         if(macroEffect.isLimited())
             isLimitedActivated = true;
 
+        System.out.println(macroEffect.getDescription());
+
         for(MicroEffect microEffect : macroEffect.getMicroEffects()){
             if(microEffect.isMandatory())
                 this.manageMicro(microEffect);

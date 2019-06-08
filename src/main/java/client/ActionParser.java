@@ -28,6 +28,7 @@ public class ActionParser{
 
     public void addGameModel(GameModel gameModel, String name){
         this.gameModel = gameModel;
+        input.setGameModel(gameModel);
 
         //initialize players names
         List<String> pNames = new ArrayList<>();
