@@ -6,6 +6,7 @@ import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import server.model.player.Figure;
 
 import java.rmi.RemoteException;
 
@@ -88,6 +89,8 @@ public class StartMenuController implements GuiController {
 
     public void connectGame(MouseEvent mouseEvent) throws RemoteException{
 
+        String characterChosen = (String)this.characterBox.getValue();
+
         this.gui.setPlayerName(this.nameField.getText());
         this.gui.setConnection(
                 this.connectionBox.getValue().toString().equals("RMI") ?
@@ -101,7 +104,15 @@ public class StartMenuController implements GuiController {
         this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
         this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
-        this.gui.getConnection().addPlayerCharacter((String)this.characterBox.getValue());
+        if(!this.gui.getConnection().CharacterChoice(characterChosen)){
+            for(Figure figure : Figure.values()){
+                if(this.gui.getConnection().CharacterChoice(figure.toString())){
+                    characterChosen = figure.toString();
+                    break;
+                }
+            }
+        }
+        this.gui.getConnection().addPlayerCharacter(characterChosen);
     }
 
     @Override

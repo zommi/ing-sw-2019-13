@@ -41,6 +41,7 @@ public class CollectAction implements Action {
     private int weaponChoice;
     private MoveInfo moveInfo;
     private GameMap map;
+    private CollectInfo collectInfo;
 
     public CollectAction(MoveInfo moveInfo, CollectInfo collectInfo, PlayerAbstract player, GameMap currentMap){
         this.moveInfo = moveInfo;
@@ -49,6 +50,7 @@ public class CollectAction implements Action {
         this.weaponChoice = collectInfo.getChoice();
         this.validator = new CollectValidator();
         this.actuator = new CollectActuator();
+        this.collectInfo = collectInfo;
     }
 
 
@@ -59,8 +61,8 @@ public class CollectAction implements Action {
     }
 
     public boolean collect(){
-        if(validator.validate(player, map.getSquare(moveInfo.getRow(),moveInfo.getCol()),weaponChoice)) {
-            actuator.actuate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()) ,weaponChoice, controller);
+        if(validator.validate(player, map.getSquare(moveInfo.getRow(),moveInfo.getCol()),weaponChoice, collectInfo)) {
+            actuator.actuate(player, map.getSquare(moveInfo.getRow(), moveInfo.getCol()) ,weaponChoice, controller, collectInfo);
             return true;
         }else {
             System.out.println("You can't collect");

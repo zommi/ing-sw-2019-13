@@ -4,6 +4,7 @@ import constants.Color;
 import constants.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.LightBase;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
@@ -21,7 +22,7 @@ public class GuiPlayerBoard extends StackPane {
         super();
         this.getStylesheets().add("style.css");
         this.setWidth(600.0);
-        this.setHeight(200.0);
+        this.setHeight(100.0);
         BackgroundFill backgroundFill = new BackgroundFill(
                 Paint.valueOf(Color.fromCharacter(playerBoard.getCharacterName()).getPlayerboardCol()),
                 new CornerRadii(10.0),
@@ -31,13 +32,13 @@ public class GuiPlayerBoard extends StackPane {
 
         GridPane mainGridpane = new GridPane();
         mainGridpane.setPrefWidth(600.0);
-        mainGridpane.setPrefHeight(200.0);
+        mainGridpane.setPrefHeight(100.0);
         mainGridpane.setPadding(new Insets(5.0,5.0,5.0,5.0));
         for(int i = 0; i < COLUMN; i++){
             mainGridpane.getColumnConstraints().add(new ColumnConstraints(600.0 / COLUMN));
         }
         for(int i = 0; i < ROW; i++){
-            mainGridpane.getRowConstraints().add(new RowConstraints(200.0 / ROW));
+            mainGridpane.getRowConstraints().add(new RowConstraints(100.0 / ROW));
         }
 
 
@@ -67,11 +68,45 @@ public class GuiPlayerBoard extends StackPane {
         }
         for(int i = 0; i < playerBoard.getResult().)*/
 
+        GridPane ammoGrid = new GridPane();
+        ammoGrid.setPadding(new Insets(1.0,1.0,1.0,1.0));
+        ammoGrid.setHgap(2.0);
+        ammoGrid.setVgap(2.0);
+
+        for(int i = 0; i < playerBoard.getResult().getRedAmmo();i++){
+            ammoGrid.add(
+                    new Rectangle(15.0,15.0,Paint.valueOf(Color.RED.getNormalColor())),
+                    i,
+                    0
+            );
+        }
+        Label redLabel = new Label("RED AMMO");
+        ammoGrid.add(redLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,0);
+
+        for(int i = 0; i < playerBoard.getResult().getBlueAmmo();i++){
+            ammoGrid.add(
+                    new Rectangle(15.0,15.0,Paint.valueOf(Color.BLUE.getNormalColor())),
+                    i,
+                    1
+            );
+        }
+        Label blueLabel = new Label("BLUE AMMO");
+        ammoGrid.add(blueLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,1);
+
+        for(int i = 0; i < playerBoard.getResult().getYellowAmmo();i++){
+            ammoGrid.add(
+                    new Rectangle(15.0,15.0,Paint.valueOf(Color.YELLOW.getNormalColor())),
+                    i,
+                    2
+            );
+        }
+        Label yellowLabel = new Label("YELLOW AMMO");
+        ammoGrid.add(yellowLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,2);
 
 
-
-        mainGridpane.add(hpGrid,0,1);
-        mainGridpane.add(marksGrid,0,2);
+        mainGridpane.add(hpGrid,0,0);
+        mainGridpane.add(marksGrid,0,1);
+        mainGridpane.add(ammoGrid,1,0);
         this.getChildren().add(mainGridpane);
     }
 }

@@ -119,17 +119,17 @@ public class UpdaterGui extends Application implements Updater {
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
                 MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
-                //controllerConverted.restoreSquares();
+                controllerConverted.restoreSquares();
                 controllerConverted.updateGameboard();
             });
         }
 
         if(object.equals("Change player")){
             System.out.println("Player changed");
-//            Platform.runLater(() -> {
-//                MainGuiController controllerConverted = (MainGuiController) currentController;
-//                controllerConverted.restoreSquares();
-//            });
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
+                controllerConverted.restoreSquares();
+            });
             handleTurn();
         }
 
@@ -156,7 +156,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("PlayerHand") && handInitialized && mapInitialized){
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
-                MainGuiController controllerConverted = (MainGuiController) currentController;
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
                 controllerConverted.updateHand();
             });
         }
@@ -172,7 +172,6 @@ public class UpdaterGui extends Application implements Updater {
             }
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.currentController.enableAll();
-                ((MainGuiController)currentController).restoreSquares();
                 if (this.model.getToSpawn()){
                     ((MainGuiController)this.currentController).spawn();
                 }

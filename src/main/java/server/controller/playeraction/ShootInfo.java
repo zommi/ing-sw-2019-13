@@ -49,7 +49,10 @@ public class ShootInfo implements Serializable, Info {
     }
 
     public MicroInfo getActivatedMicro(int macro, int micro){
-        return getActivatedMacro(macro).getActivatedMicro(micro);
+        if(getActivatedMacro(macro) != null)
+            return getActivatedMacro(macro).getActivatedMicro(micro);
+        else
+            return null;
     }
 
     public boolean areDimensionsOk(MicroInfo microInfo, MicroEffect microEffect){

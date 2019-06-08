@@ -52,7 +52,7 @@ public class MapSelectionController implements GuiController {
     @FXML
     void selectMap(MouseEvent event) {
         if(skullBox.getValue() != null){
-            for(int i = 1; i <= 4 ; i++){ //le mappe vanno da 1 a 4 
+            for(int i = 1; i <= 4 ; i++){ //le mappe vanno da 1 a 4
                 if(event.getSource().equals(this.mapGridPane.getChildren().get(i))){
                     this.gui.setMapIndex(i);
                     break;

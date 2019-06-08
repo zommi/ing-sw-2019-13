@@ -23,9 +23,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.map.GameMap;
@@ -50,6 +53,9 @@ public class MainGuiController implements GuiController {
 
     @FXML
     private TextArea textLogger;
+
+    @FXML
+    public Button scoreboardButton;
 
     private String log;
 
@@ -126,6 +132,7 @@ public class MainGuiController implements GuiController {
         for(Node powerupNode : powerupHand.getChildren()){
             powerupNode.setDisable(true);
         }
+        scoreboardButton.setDisable(false);
         logText("It's not your turn, disabled commands \n");
     }
 
@@ -249,13 +256,16 @@ public class MainGuiController implements GuiController {
 
         cardToAdd.setOnMousePressed(null);
         //this.weaponHand.add(cardToAdd,weaponHandSize,0);
-        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex());
+
+        //null da cambiare con la WeaponCard da scartare
+        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex(), null);    //TODO
         this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
 
     private void showWeapons(GuiSpawnPoint spawnPoint) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         alert.setTitle("WEAPONS AVAILABLE");
 
         GridPane cards = new GridPane();
@@ -300,7 +310,7 @@ public class MainGuiController implements GuiController {
         if(!this.model.getToSpawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
-                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE);
+                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null);
                     this.gui.getConnection().send(collectInfo);
                     this.tilesToUpdate.add(square);
                 });
@@ -319,9 +329,9 @@ public class MainGuiController implements GuiController {
 
     public void enableShoot(MouseEvent mouseEvent) {
         if(!this.model.getToSpawn()){
+            logText("Select a weapon to use!\n");
             for(Node card : weaponHand.getChildren()){
                 card.setDisable(false);
-                logText("Select a weapon to use!\n");
             }
         }else{
             logText("You first need to spawn!\n");
@@ -343,7 +353,7 @@ public class MainGuiController implements GuiController {
     private void setSpawn(PowerUpCard card) {
         for(GuiSpawnPoint spawnPoint : this.spawnPoints){
             if(card.getColor() == spawnPoint.getColor()){
-                this.myCharacter = new GuiCharacter(spawnPoint,Color.fromCharacter(this.gui.getCharacter()));
+                this.myCharacter = new GuiCharacter(spawnPoint,model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
                 this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(),myCharacter);
                 this.gui.getGameModel().setToSpawn(false);
                 disableMouseEvent();
@@ -357,6 +367,7 @@ public class MainGuiController implements GuiController {
     @FXML
     public void showScoreboard(MouseEvent mouseEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         alert.setTitle("SCOREBOARD");
         alert.setContentText(null);
         alert.setHeaderText(null);
@@ -429,7 +440,7 @@ public class MainGuiController implements GuiController {
 
     private void emptyHand() {
         this.weaponHand.getChildren().removeAll();
-        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+        for(int i = 0; i < Constants.MAX_WEAPON_HAND; i++){
             GuiWeaponCard weaponCard = new GuiWeaponCard(getClass().getResource("/Grafica/cards/AD_weapons_IT_0225.png").toExternalForm(),i);
             weaponCard.setFitWidth(weaponHand.getWidth()/3);
             weaponCard.setFitHeight(weaponHand.getHeight());
@@ -437,7 +448,7 @@ public class MainGuiController implements GuiController {
         }
 
         this.powerupHand.getChildren().removeAll();
-        for(int i = 0; i < Constants.MAX_NUMBER_OF_CARDS; i++){
+        for(int i = 0; i < Constants.MAX_POWERUP_HAND; i++){
             GuiPowerupCard powerupCard = new GuiPowerupCard(
                     getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(), i);
             powerupCard.setFitWidth(powerupHand.getWidth()/3);
@@ -458,7 +469,7 @@ public class MainGuiController implements GuiController {
             //update position of players
             for (int i = 0; i < this.model.getPlayersNames().size(); i++) {
                 if (this.idClientGuiCharacterMap.get((Object) i) == null) {
-                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i)));
+                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i),model.getPlayersNames().get(i)));
                 } else {
                     this.idClientGuiCharacterMap.get(i).setPosition(getTile(
                             this.model.getPlayerBoard(i).getRow(),
@@ -471,10 +482,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard) {
+    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard, String name) {
         for(GuiSpawnPoint sp : spawnPoints){
             if(sp.getCol() == playerBoard.getCol() && sp.getRow() == playerBoard.getRow()){
-                return new GuiCharacter(sp,Color.fromCharacter(playerBoard.getCharacterName()));
+                return new GuiCharacter(sp,playerBoard.getResult(),name);
             }
         }
         return null;
@@ -503,6 +514,7 @@ public class MainGuiController implements GuiController {
 
     public boolean askMacro(MacroEffect macroEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MACRO ACTIVATION CONFIRMATION");
         alert.setContentText("Do you wanna activate this macro effect?\n" + macroEffect);
         Optional<ButtonType> result = alert.showAndWait();
@@ -511,6 +523,7 @@ public class MainGuiController implements GuiController {
 
     public boolean askMicro(MicroEffect microEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MICRO ACTIVATION CONFIRMATION");
         alert.setContentText("Do you wanna activate this micro effect?\n" + microEffect);
         Optional<ButtonType> result = alert.showAndWait();
@@ -519,6 +532,7 @@ public class MainGuiController implements GuiController {
 
     public MacroEffect chooseOneMacro(Weapon weapon) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         AtomicReference<MacroEffect> result = new AtomicReference<MacroEffect>();
         alert.setTitle("CHOOSE ONE MACRO");
         alert.setContentText("Select a macro");
@@ -553,6 +567,7 @@ public class MainGuiController implements GuiController {
 
     public List<String> askPlayersOrRooms(int maxTargetPlayerSize, List<String> players,List<String> rooms, boolean askedPlayers) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
         List<String> listToAsk = askedPlayers ? players : rooms;
         String playersOrRooms = askedPlayers ? "players" : "rooms";
         List<String> result = new ArrayList<>();
@@ -580,34 +595,36 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
-
     public List<SquareInfo> askSquares(int maxSquares) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        int iteration = 0;
         List<SquareInfo> result = new ArrayList<>();
-        alert.setTitle("SQUARE SELECTION");
-        alert.setContentText("Click on a square to select it!");
-        Button selectButton = new Button("SELECT SQUARE");
-        Button cancelButton = new Button("CANCEL");
-        AtomicBoolean loop = new AtomicBoolean(true);
+        Stage empytStage = new Stage(StageStyle.TRANSPARENT);
+        empytStage.initModality(Modality.NONE);
 
-        while(loop.get()){
-            selectButton.setOnMousePressed(e -> {
-                alert.hide();
-                for(GuiTile tile : tiles){
-                    tile.setOnMousePressed( ev -> {
-                        result.add(new SquareInfo(tile.getRow(),tile.getCol()));
-                        for(GuiTile tileToDisable : tiles){
-                            tileToDisable.setOnMousePressed(null);
-                        }
-                    });
-                }
-                alert.show();
-            });
-            cancelButton.setOnMousePressed(e -> {
-                loop.set(false);
-            });
+        while(iteration < maxSquares){
+            logText("Select a square!");
+            for(GuiTile tile : tiles){
+                tile.setOnMousePressed(e -> {
+                    result.add(new SquareInfo(tile.getRow(),tile.getCol()));
+                    for(GuiTile tileToDisable : tiles){
+                        tileToDisable.setOnMousePressed(null);
+                    }
+                    empytStage.close();
+                });
+            }
+            iteration++;
         }
-
+        empytStage.showAndWait();
         return result;
+    }
+
+    public boolean getMoveChoice() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setTitle("Move before shoot");
+        alert.setHeaderText("Do you want to move a square before shooting?");
+        alert.setContentText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 }

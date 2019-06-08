@@ -60,8 +60,7 @@ public class GuiInput extends InputAbstract {
 
     @Override
     public boolean getMoveChoice() {
-        //TODO
         //chiede al player se vuole muoversi prima di sparare, viene chiamato solo se lo stato è BETTER_SHOOT
-        return false;
+        return this.guiController.getMoveChoice();
     }
 }

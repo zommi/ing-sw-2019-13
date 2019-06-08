@@ -55,7 +55,7 @@ public class Server {
 
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
-            ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());
+            //ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
@@ -68,7 +68,7 @@ public class Server {
                     System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
                     temp.get(i).publishMessage(temp0);
                     temp.get(i).publishMessage(gameBoardAnswer);
-                    temp.get(i).publishMessage(mapAnswer);
+                    //temp.get(i).publishMessage(mapAnswer);
                     temp.get(i).publishMessage(setSpawnAnswer);
                     System.out.println("Sent the map to the connection RMI");
                     //temp.get(i).publishMessage(temp1);

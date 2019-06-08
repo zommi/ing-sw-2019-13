@@ -1,6 +1,7 @@
 package client;
 
 import constants.Constants;
+import server.model.cards.WeaponCard;
 
 import java.io.Serializable;
 
@@ -14,15 +15,17 @@ public class CollectInfo implements Serializable, Info {
     private int row;
     private int col;
     private int choice;
+    private WeaponCard weaponToDiscard;
 
     /**
      * constructor used if the player doesn't specify a choice. It is used
      * when the player wants to collect an ammo tile
      */
-    public CollectInfo(int row, int col, int choice){
+    public CollectInfo(int row, int col, int choice, WeaponCard weaponToDiscard){
         this.choice = choice;
         this.row = row;
         this.col = col;
+        this.weaponToDiscard = weaponToDiscard;
     }
 
     public int getRow(){
@@ -36,4 +39,9 @@ public class CollectInfo implements Serializable, Info {
     public int getChoice() {
         return choice;
     }
+
+    public WeaponCard getWeaponToDiscard() {
+        return weaponToDiscard;
+    }
+
 }

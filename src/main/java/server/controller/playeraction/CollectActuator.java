@@ -1,5 +1,6 @@
 package server.controller.playeraction;
 
+import client.CollectInfo;
 import constants.Constants;
 import constants.Direction;
 import server.controller.Controller;
@@ -16,7 +17,7 @@ public class CollectActuator {
 
     public CollectActuator(){}
 
-    public void actuate(PlayerAbstract player, SquareAbstract square, int choice, Controller controller){
+    public void actuate(PlayerAbstract player, SquareAbstract square, int choice, Controller controller, CollectInfo collectInfo){
         player.getGameCharacter().move(square);
         CollectableInterface card;
         if(choice == Constants.NO_CHOICE){
@@ -24,8 +25,19 @@ public class CollectActuator {
             player.collect(squarePlayer);
             card = ((Square) player.getPosition()).getAmmoTile();
             squarePlayer.removeItem(card, controller);
-        }else {
+        }else {     //collecting a weapon
             SpawnPoint spawnPoint = (SpawnPoint) player.getPosition();
+
+            if(player.getHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
+                //reloads weapon to discard
+                player.getWeaponCard(collectInfo.getWeaponToDiscard().getWeapon()).setReady(true);
+
+                //discard weapon from hand and from PLAYERBOARD
+                player.getHand().removeWeaponCard(collectInfo.getWeaponToDiscard());
+                player.getPlayerBoard().removeWeaponCard(collectInfo.getWeaponToDiscard());
+            }
+
+
             player.collect(spawnPoint, choice);
             card = ((SpawnPoint)player.getPosition()).getWeaponCards().get(choice);
             spawnPoint.removeItem(card, controller);
