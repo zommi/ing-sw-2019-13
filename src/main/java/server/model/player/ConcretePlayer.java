@@ -222,6 +222,11 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public void setJustDamagedBy(PlayerAbstract justDamagedBy) {
+        this.justDamagedBy = justDamagedBy;
+    }
+
+    @Override
     public void pay(Cost cost) {
         for(int i = 1; i<=cost.getBlue(); i++)
             playerBoard.decreaseAmmo(Color.BLUE);

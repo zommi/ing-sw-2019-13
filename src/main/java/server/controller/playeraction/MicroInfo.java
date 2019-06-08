@@ -65,11 +65,16 @@ public class MicroInfo implements Serializable, Info {
 
     public void actuate(ShootInfo shootInfo){
         Color color = shootInfo.getAttacker().getColor();
+        int damage = shootInfo.getWeapon()
+                .getMicroEffect(macroNumber, microNumber).getDamage();
         for (PlayerAbstract playerAbstract : playersList) {
-            playerAbstract.addDamage(shootInfo.getWeapon()
-                    .getMicroEffect(macroNumber, microNumber).getDamage(), color);
+            if(damage > 0) {
+                playerAbstract.addDamage(damage, color);
+                playerAbstract.setJustDamagedBy(shootInfo.getAttacker());
+            }
             playerAbstract.addMarks(shootInfo.getWeapon()
                     .getMicroEffect(macroNumber, microNumber).getMarks(), color);
+
             if (shootInfo.getWeapon()
                     .getMicroEffect(macroNumber, microNumber).isMoveFlag())
                 playerAbstract.getGameCharacter().move(this.square);

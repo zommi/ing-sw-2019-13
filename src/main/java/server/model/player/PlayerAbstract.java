@@ -108,5 +108,7 @@ public abstract class PlayerAbstract implements Serializable {
 
     public  abstract PlayerAbstract getJustDamagedBy();
 
+    public abstract void setJustDamagedBy(PlayerAbstract playerAbstract);
+
     public abstract void pay(Cost cost);
 }

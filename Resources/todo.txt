@@ -1,0 +1,21 @@
+comando per passare
+azione ricarica
+
+testare arma che sceglie rooms
+
+mandare messaggi che informano client di cosa è successo nell'azione appena fatta, anche in caso di errore allo specifico client
+    uno anche per il numero dell'azione da fare magari
+
+rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
+
+PAGAMENTO CON POWERUP:
+    mando lista di carte
+    verifico che tutte le carte siano possedute dal player
+    a tutti i costi che devo verificare sottraggo quello dato dal totale dei cubi-powerup
+        metodo che data una lista di powerupcard ritorna un Cost
+        metodo che sottrae
+    mando la parte restante alla canPay as usual
+
+    dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
+    finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
+    oppure resta un costo diverso da zero, per cui verranno usate le ammo normali
