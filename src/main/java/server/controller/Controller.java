@@ -163,9 +163,10 @@ public class Controller {
             for(int i = 0; i < listOfPlayers.size(); i++){
                 for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
                     if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
+                        System.out.println("Found a player that has the tagback grenade");
                         if(listOfPlayers.get(i).getJustDamagedBy() != null){
                             grenadeID = listOfPlayers.get(i).getJustDamagedBy().getClientID();
-                            TimerTask timerTask = new MyTimerTask(server);
+                            TimerTask timerTask = new TimerTaskController();
                             Timer timer = new Timer(true);
                             timer.schedule(timerTask, 0);
                             System.out.println("Waiting for the other player to do the action");

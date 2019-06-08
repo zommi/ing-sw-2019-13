@@ -350,7 +350,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             }
                             else{
                                 if(Integer.parseInt(read) == 1){
-                                    System.out.println("ciao");
+                                    System.out.println("Ok you can use the tagback grenade towards the shooter");
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                                     //actionParser.createPowerUpEvent("Tagback Grenade");
                                 }
@@ -467,7 +467,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             read = myObj.nextLine();
             int result = -1;
             if (read.equalsIgnoreCase("M")) {       //move
-                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(gameModel.getClientID()).getCol());
+                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
                 row = askCoordinate(myObj, "row");
                 col = askCoordinate(myObj, "col");
