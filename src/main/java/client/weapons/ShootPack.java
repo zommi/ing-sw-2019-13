@@ -3,6 +3,7 @@ package client.weapons;
 import client.GameModel;
 import client.Info;
 import client.SquareInfo;
+import server.model.cards.PowerUpCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class ShootPack implements Info {
     private String weapon;
     private List<MacroPack> activatedMacros;
     private SquareInfo square;
+    private List<PowerUpCard> powerUpCards;
 
 
     public ShootPack(String weapon){
@@ -41,5 +43,13 @@ public class ShootPack implements Info {
 
     public void setSquare(SquareInfo square) {
         this.square = square;
+    }
+
+    public void setPowerUpCards(List<PowerUpCard> powerUpCards) {
+        this.powerUpCards = powerUpCards;
+    }
+
+    public List<PowerUpCard> getPowerUpCards() {
+        return powerUpCards;
     }
 }

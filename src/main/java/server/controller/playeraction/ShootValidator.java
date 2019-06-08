@@ -4,6 +4,7 @@ import client.SquareInfo;
 import client.weapons.*;
 
 import constants.Color;
+import constants.Constants;
 import server.model.cards.*;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShootValidator {
-    private static final int ADREN_MOVE = 1;
 
     public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
         GameBoard gameBoard = game.getCurrentGameBoard();
@@ -36,7 +36,9 @@ public class ShootValidator {
         if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
             return null;*/
 
-
+        //attacker must have the selected powerups
+        if(!shootInfo.getAttacker().hasCards(shootInfo.getPowerUpCards()))
+            return null;
 
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
@@ -51,7 +53,7 @@ public class ShootValidator {
         if(shootInfo.getAttacker().getPlayerState()==PlayerState.BETTER_SHOOT){
             shootInfo.getAttacker().getGameCharacter().setOldPosition();
             if(shootInfo.getSquare() != null) {
-                if(shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) == ADREN_MOVE) {
+                if(shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) == Constants.MAX_MOVES_BETTER_SHOOT) {
                     gameBoard.getMap().setValid(false);
                     shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
                 }
@@ -101,7 +103,10 @@ public class ShootValidator {
 
                 //player should have enough ammo
                 totalCost = totalCost.sum(weaponMacro.getCost());
-                if (!shootInfo.getAttacker().canPay(totalCost))
+                //it's a surprise tool that will help us later in the actuator
+                shootInfo.setTotalCost(totalCost);
+                //also removing cubes given by powerups
+                if (!shootInfo.getAttacker().canPay(totalCost.subtract(Cost.powerUpListToCost(shootInfo.getPowerUpCards()))))
                     return null;
 
                 //checks if macro depends on the activation of another macro
@@ -278,7 +283,15 @@ public class ShootValidator {
         else
             squareAbstract = null;
 
+        //converting powerUpCards
+        List<PowerUpCard> powerUpCards = new ArrayList<>();
+        for(PowerUpCard powerUpCard : shootPack.getPowerUpCards()){
+            if(attacker.getPowerUpCard(powerUpCard) == null)
+                return null;
+            else
+                powerUpCards.add(powerUpCard);
+        }
 
-        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos, squareAbstract);
+        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos, squareAbstract, powerUpCards);
     }
 }

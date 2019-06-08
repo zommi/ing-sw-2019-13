@@ -29,6 +29,8 @@ public class Constants {
 
     public static final int MAX_MOVES_NORMAL_COLLECT = 1;
 
+    public static final int MAX_MOVES_BETTER_SHOOT = 1;
+
     public static final int MAX_WEAPON_HAND = 3;
     public static final int MAX_POWERUP_HAND = 3;
 

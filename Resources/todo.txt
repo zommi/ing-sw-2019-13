@@ -10,6 +10,12 @@ rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel co
 
 modificare toString Cost
 
+togliere deck da carte
+
+controllare powerupvalidator
+
+abilitare controllo armi commentato
+
 PAGAMENTO CON POWERUP:
     mando lista di carte
     verifico che tutte le carte siano possedute dal player
@@ -18,6 +24,7 @@ PAGAMENTO CON POWERUP:
         metodo che sottrae
     mando la parte restante alla canPay as usual
 
+    NELLA ACTUATE
     dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
     finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
     oppure resta un costo diverso da zero, per cui verranno usate le ammo normali

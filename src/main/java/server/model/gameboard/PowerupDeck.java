@@ -66,7 +66,8 @@ public class PowerupDeck implements Serializable {
                             arrayOfPowerUps[i].getValue(),
                             getPoweupFromIndex(arrayOfPowerUps[i].getIndex()),
                             arrayOfPowerUps[i].getPath(),
-                            this
+                            this,
+                            i
                     ));
                 }
             }

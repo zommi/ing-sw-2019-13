@@ -2,8 +2,11 @@ package client.weapons;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import constants.Color;
+import server.model.cards.PowerUpCard;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Cost implements Serializable {
 
@@ -35,6 +38,43 @@ public class Cost implements Serializable {
         sumYellow = this.yellow + cost.yellow;
         return new Cost(sumRed, sumBlue, sumYellow);
 
+    }
+
+    public Cost subtract(Cost cost){
+        int resultRed;
+        int resultBlue;
+        int resultYellow;
+
+        if(this.red > cost.red)
+            resultRed = this.red - cost.red;
+        else resultRed = 0;
+
+        if(this.yellow > cost.yellow)
+            resultYellow = this.yellow = cost.yellow;
+        else resultYellow = 0;
+
+        if(this.blue > cost.blue)
+            resultBlue = this.blue - cost.blue;
+        else resultBlue = 0;
+
+        return new Cost(resultRed, resultBlue, resultYellow);
+    }
+
+    public static Cost powerUpListToCost(List<PowerUpCard> powerUpCards){
+        int resultRed = 0;
+        int resultYellow = 0;
+        int resultBlue = 0;
+
+        for(PowerUpCard powerUpCard : powerUpCards){
+            if(powerUpCard.getColor() == Color.RED)
+                resultRed++;
+            else if(powerUpCard.getColor() == Color.BLUE)
+                resultBlue++;
+            else if(powerUpCard.getColor() == Color.YELLOW)
+                resultYellow++;
+        }
+
+        return new Cost(resultRed, resultBlue, resultYellow);
     }
 
     @Override
