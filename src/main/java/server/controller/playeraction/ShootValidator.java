@@ -285,6 +285,8 @@ public class ShootValidator {
 
         //converting powerUpCards
         List<PowerUpCard> powerUpCards = new ArrayList<>();
+        if(shootPack.getPowerUpCards() == null)
+            return null;
         for(PowerUpCard powerUpCard : shootPack.getPowerUpCards()){
             if(attacker.getPowerUpCard(powerUpCard) == null)
                 return null;

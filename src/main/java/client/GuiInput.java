@@ -6,7 +6,9 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 import javafx.application.Platform;
+import server.model.cards.PowerUpCard;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,5 +64,10 @@ public class GuiInput extends InputAbstract {
     public boolean getMoveChoice() {
         //chiede al player se vuole muoversi prima di sparare, viene chiamato solo se lo stato è BETTER_SHOOT
         return this.guiController.getMoveChoice();
+    }
+
+    @Override
+    public List<PowerUpCard> askPowerUps() {
+        return Collections.emptyList();
     }
 }

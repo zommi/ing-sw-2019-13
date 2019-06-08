@@ -3,6 +3,7 @@ package client;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
+import server.model.cards.PowerUpCard;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -50,4 +51,6 @@ public abstract class InputAbstract {
     public GameModel getGameModel() {
         return gameModel;
     }
+
+    public abstract List<PowerUpCard> askPowerUps();
 }

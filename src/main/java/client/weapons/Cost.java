@@ -3,6 +3,7 @@ package client.weapons;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import constants.Color;
+import constants.Constants;
 import server.model.cards.PowerUpCard;
 
 import java.io.Serializable;
@@ -93,7 +94,10 @@ public class Cost implements Serializable {
     }
 
     public String toString(){
-        return red + "red, " + blue + "blue, " + yellow + "yellow";
+        return Color.RED.getAnsi() + Constants.CUBE + " x" + red + "    " +
+               Color.BLUE.getAnsi() + Constants.CUBE + " x" + blue + "    " +
+               Color.YELLOW.getAnsi() + Constants.CUBE + " x" + yellow + Constants.ANSI_RESET;
+
     }
 
     public int getBlue() {

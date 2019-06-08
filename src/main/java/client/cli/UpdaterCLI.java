@@ -320,7 +320,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println();
                         for(Color color : Color.values()){
                             if(color.isAmmoColor()){
-                                System.out.print(color.getAnsi() + "∎ x" + playerBoard.getResult().getAmmo(color) +
+                                System.out.print(color.getAnsi() + Constants.CUBE + " x" + playerBoard.getResult().getAmmo(color) +
                                         Constants.ANSI_RESET + "\t");
                             }
                         }
@@ -363,7 +363,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 else{
                     System.out.println("For now it is not your turn: " +
                             getCharacter(connection.getCurrentCharacter()).getColor().getAnsi() +
-                            connection.getCurrentCharacter() +"\u001B[0m is playing");
+                            connection.getCurrentCharacter() + Constants.ANSI_RESET + " is playing");
                     try{
                         TimeUnit.SECONDS.sleep(5);
                     }
@@ -644,7 +644,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
     public void printPlayerBoard(PlayerBoardAnswer p){
         System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
-                characterName + "\u001B[0m");
+                characterName + Constants.ANSI_RESET);
 
         //prints damage
         System.out.println("\nDAMAGE:\n");

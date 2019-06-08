@@ -16,6 +16,10 @@ controllare powerupvalidator
 
 abilitare controllo armi commentato
 
+evitare di usare nomi player duplicati, ma ricordarsi del nome salvato localmente in cli, dovrà essere aggiornato con quello del server
+
+modificare collect validator e actuator, anche li si possono usare powerups
+
 PAGAMENTO CON POWERUP:
     mando lista di carte
     verifico che tutte le carte siano possedute dal player

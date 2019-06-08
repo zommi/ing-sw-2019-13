@@ -2,7 +2,11 @@ package client.weapons;
 
 import client.GameModel;
 import client.InputAbstract;
+import server.model.cards.PowerUpCard;
 import server.model.player.PlayerState;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ShootParser {
 
@@ -49,6 +53,13 @@ public class ShootParser {
             default:
                 //this should never happen (it depends on json file)
         }
+
+        //asking for powerup cards
+        if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
+            shootPack.setPowerUpCards(input.askPowerUps());
+        else
+            shootPack.setPowerUpCards(Collections.emptyList());
+
         return shootPack;
     }
 
