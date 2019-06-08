@@ -94,10 +94,14 @@ public class Cost implements Serializable {
     }
 
     public String toString(){
-        return Color.RED.getAnsi() + Constants.CUBE + " x" + red + "    " +
-               Color.BLUE.getAnsi() + Constants.CUBE + " x" + blue + "    " +
-               Color.YELLOW.getAnsi() + Constants.CUBE + " x" + yellow + Constants.ANSI_RESET;
+        return red + " red, " + blue + " blue, " + yellow + " yellow";
 
+    }
+
+    public String printOnCli(){
+        return Color.RED.getAnsi() + Constants.CUBE + " x" + red + "    " +
+                Color.BLUE.getAnsi() + Constants.CUBE + " x" + blue + "    " +
+                Color.YELLOW.getAnsi() + Constants.CUBE + " x" + yellow + Constants.ANSI_RESET;
     }
 
     public int getBlue() {

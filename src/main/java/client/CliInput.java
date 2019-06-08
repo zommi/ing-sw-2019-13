@@ -25,7 +25,7 @@ public class CliInput extends InputAbstract{
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
         System.out.println("Do you wanna activate this macro effect?\n"
-                + macroEffect + "[y to activate]\n");
+                + macroEffect.getDescription() + "\n" + macroEffect.getCost().printOnCli() + "[y to activate]\n");
         String s = scanner.nextLine();
         return s.equals("y");
     }
@@ -239,7 +239,8 @@ public class CliInput extends InputAbstract{
     public MacroEffect chooseOneMacro(Weapon weapon){
         System.out.println("Choose one of the following macro effects:");
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
-            System.out.println((macroEffect.getNumber()+1) + ": " + macroEffect);
+            System.out.println((macroEffect.getNumber()+1) + ": " + macroEffect.getDescription() +
+                    "\n" + macroEffect.getCost().printOnCli());
         }
         String s;
         int i = 0;

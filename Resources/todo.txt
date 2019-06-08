@@ -8,8 +8,6 @@ mandare messaggi che informano client di cosa è successo nell'azione appena fat
 
 rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
-modificare toString Cost
-
 togliere deck da carte
 
 controllare powerupvalidator
@@ -18,7 +16,13 @@ abilitare controllo armi commentato
 
 evitare di usare nomi player duplicati, ma ricordarsi del nome salvato localmente in cli, dovrà essere aggiornato con quello del server
 
-modificare collect validator e actuator, anche li si possono usare powerups
+stampare costo in due modi perche con gui da problemi
+
+aggiungere "you cant use that now" quando si sceglie di giocare tagback nel proprio turno
+
+sistemare distancecheckswitch riga 184, da eccezione probabilmente con generate e giocatori non spawnati (hellion 2)
+
+stampare coordinate mappa (anche all'interno del quadrato)
 
 PAGAMENTO CON POWERUP:
     mando lista di carte

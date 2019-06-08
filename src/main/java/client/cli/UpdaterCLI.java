@@ -587,8 +587,14 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
                             }
 
+                            //asking for powerup cards
+                            List<PowerUpCard> powerUpCards;
+                            if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
+                                powerUpCards = actionParser.getInput().askPowerUps();
+                            else
+                                powerUpCards = Collections.emptyList();
 
-                            Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard);
+                            Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard, powerUpCards);
                             connection.send(action);
                         } else {
                             System.out.println("This is not a spawn point, you can't collect weapons");
@@ -597,7 +603,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     } while ((result != 0) && (result != 1) && (result != 2));
                 } else  {
                     //if collectdecision == 2
-                    Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null);
+                    Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null, Collections.emptyList());
                     connection.send(action);
                 }
             }

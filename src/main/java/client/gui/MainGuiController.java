@@ -258,7 +258,9 @@ public class MainGuiController implements GuiController {
         //this.weaponHand.add(cardToAdd,weaponHandSize,0);
 
         //null da cambiare con la WeaponCard da scartare
-        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex(), null);    //TODO
+        //far scegliere anche i powerup con cui pagare eventualmente l'arma
+        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),
+                weaponCard.getIndex(), null, Collections.emptyList());    //TODO
         this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
@@ -310,7 +312,7 @@ public class MainGuiController implements GuiController {
         if(!this.model.getToSpawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
-                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null);
+                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
                     this.gui.getConnection().send(collectInfo);
                     this.tilesToUpdate.add(square);
                 });

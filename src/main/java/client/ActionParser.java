@@ -79,8 +79,10 @@ public class ActionParser{
         input.setRoomsNames(names);
     }
 
-    public Info createCollectEvent(int row, int col, int collectDecision, WeaponCard weaponToDiscard) {
-        return new CollectInfo(row, col, collectDecision, weaponToDiscard);
+    public Info createCollectEvent(int row, int col, int collectDecision, WeaponCard weaponToDiscard, List<PowerUpCard> powerUpCards) {
+        CollectInfo collectInfo = new CollectInfo(row, col, collectDecision, weaponToDiscard);
+        collectInfo.setPowerUpCards(powerUpCards);
+        return  collectInfo;
     }
 
     public Info createPowerUpEvent(PowerUp powerUp) {
