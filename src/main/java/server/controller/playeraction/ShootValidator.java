@@ -160,6 +160,12 @@ public class ShootValidator {
                             return null;
                     }
 
+                    //checks if there are non-spawned targets
+                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                        if(playerAbstract.getPosition() == null)
+                            return null;
+                    }
+
                     //checks if there are duplicates inside player list
                     for(int i=0; i<microInfo.getPlayersList().size(); i++){
                         for(int j=i+1; j<microInfo.getPlayersList().size(); j++){

@@ -32,10 +32,10 @@ public class CollectActuator {
             Cost updatedCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost();
             List<PowerUpCard> oneCard = new ArrayList<>();
             for(PowerUpCard powerUpCard : collectInfo.getPowerUpCards()){
-                Cost oldCost = updatedCost;
+                Cost oldCost =  new Cost(updatedCost);
                 oneCard.add(powerUpCard);
                 updatedCost = updatedCost.subtract(Cost.powerUpListToCost(oneCard));
-                if(oldCost != updatedCost)
+                if(!oldCost.equals(updatedCost))
                     //discard the card
                     player.getHand().removePowerUpCard(powerUpCard);
 

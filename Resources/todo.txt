@@ -20,9 +20,18 @@ stampare costo in due modi perche con gui da problemi
 
 aggiungere "you cant use that now" quando si sceglie di giocare tagback nel proprio turno
 
-sistemare distancecheckswitch riga 184, da eccezione probabilmente con generate e giocatori non spawnati (hellion 2)
+-sistemare distancecheckswitch riga 184, da eccezione probabilmente con generate e giocatori non spawnati (hellion 2)
 
 stampare coordinate mappa (anche all'interno del quadrato)
+
+stampare tutte le armi di tutti gli spawnpoint insieme alla mappa in qualche modo
+
+contenuto ammotile visibile da client?
+
+inviare playerboard appena si spawna (ora finche non si fanno cose sta a null)
+    però c'è già la map delle playerboard in gameboard che è aggiornata
+
+powerup dentro powerupcard UNDEFINED eppure stampa lo stesso il nome, metterli serializable? lo dice sonar
 
 PAGAMENTO CON POWERUP:
     mando lista di carte

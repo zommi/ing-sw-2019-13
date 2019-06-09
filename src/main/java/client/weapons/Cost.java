@@ -30,6 +30,12 @@ public class Cost implements Serializable {
         this.yellow = yellow;
     }
 
+    public Cost(Cost cost){
+        this.red = cost.red;
+        this.blue = cost.blue;
+        this.yellow = cost.yellow;
+    }
+
     public Cost sum(Cost cost){
         int sumRed;
         int sumBlue;

@@ -518,20 +518,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 } while (!collectChosen);
 
-                do {
-                    System.out.println(">Do you want to move before collecting? ");
-                    System.out.println("Yes (1)"); //1 move
-                    System.out.println("No (2)"); //2 not move
-                    try {
-                        result = Integer.parseInt(myObj.nextLine());
-                    }catch(NumberFormatException e){
-                        result = 0; //to force another loop
-                    }
-                } while ((result != 1) && (result != 2));
-
-
-
-                if (result == 1) {
+                //ask for move
+                System.out.println(">Do you want to move before collecting? [y to move]");
+                if(myObj.nextLine().equalsIgnoreCase("y")){
                     row = askCoordinate(myObj, "row");
                     col = askCoordinate(myObj, "col");
                 }
@@ -540,68 +529,67 @@ public class UpdaterCLI  implements Updater,Runnable{
                     col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
                 }
 
+                if (collectDecision == 1) { //collect weapon
+                    if (gameModel.getMap().getSquare(row, col) instanceof SpawnPoint) {     //collect weapon in a spawnpoint
+                        SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(row, col));
 
-                if (collectDecision == 1) { //he has chosen to collect a weapon
-                    do {
-                        if (gameModel.getMap().getSquare(row, col) instanceof SpawnPoint) {
-                            SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(row, col));
+                        //ask weapon
+                        boolean askWeapon = true;
+                        while(askWeapon) {
+                            System.out.println(">Choose which weapon you want to collect ");
+                            for (int i = 0; i < spawnPoint.getWeaponCards().size(); i++) {
+                                System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
+                            }
+                            try {
+                                result = Integer.parseInt(myObj.nextLine()) - 1;
+                                if(result>= 0 && result <spawnPoint.getWeaponCards().size())
+                                    askWeapon = false;
+                                else
+                                    System.out.println("Please insert a valid number.");
+                            }catch(NumberFormatException e){
+                                System.out.println("Please insert a valid number.");
+                            }
+                        }
 
-                            boolean askWeapon = true;
-                            while(askWeapon) {
-                                System.out.println(">Choose which weapon you want to collect ");
-                                for (int i = 0; i < spawnPoint.getWeaponCards().size(); i++) {
-                                    System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
+                        //checks max number of weapons reached and choose what to discard
+                        WeaponCard weaponToDiscard = null;
+                        if(gameModel.getPlayerHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
+                            int weaponToDiscardIndex = 0;
+                            askWeapon = true;
+                            while (askWeapon) {
+                                System.out.println(">Choose which weapon you want to discard ");
+                                for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                                    System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i).getName() +
+                                            " (" + (i + 1) + ")");
                                 }
                                 try {
-                                    result = Integer.parseInt(myObj.nextLine()) - 1;
-                                    if(result>= 0 && result <spawnPoint.getWeaponCards().size())
+                                    weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
+                                    if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
                                         askWeapon = false;
                                     else
                                         System.out.println("Please insert a valid number.");
-                                }catch(NumberFormatException e){
+                                } catch (NumberFormatException e) {
                                     System.out.println("Please insert a valid number.");
                                 }
                             }
-
-                            WeaponCard weaponToDiscard = null;
-
-                            if(gameModel.getPlayerHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
-                                int weaponToDiscardIndex = 0;
-                                askWeapon = true;
-                                while (askWeapon) {
-                                    System.out.println(">Choose which weapon you want to discard ");
-                                    for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
-                                        System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i).getName() +
-                                                " (" + (i + 1) + ")");
-                                    }
-                                    try {
-                                        weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
-                                        if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
-                                            askWeapon = false;
-                                        else
-                                            System.out.println("Please insert a valid number.");
-                                    } catch (NumberFormatException e) {
-                                        System.out.println("Please insert a valid number.");
-                                    }
-                                }
-                                weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
-                            }
-
-                            //asking for powerup cards
-                            List<PowerUpCard> powerUpCards;
-                            if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
-                                powerUpCards = actionParser.getInput().askPowerUps();
-                            else
-                                powerUpCards = Collections.emptyList();
-
-                            Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard, powerUpCards);
-                            connection.send(action);
-                        } else {
-                            System.out.println("This is not a spawn point, you can't collect weapons");
-                            break;
+                            weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
                         }
-                    } while ((result != 0) && (result != 1) && (result != 2));
-                } else  {
+
+                        //asking for powerup cards to pay with
+                        List<PowerUpCard> powerUpCards;
+                        if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
+                            powerUpCards = actionParser.getInput().askPowerUps();
+                        else
+                            powerUpCards = Collections.emptyList();
+
+
+                        Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard, powerUpCards);
+                        connection.send(action);
+                    } else {
+                        System.out.println("This is not a spawn point, you can't collect weapons");
+                        break;
+                    }
+                } else  {       //collect ammo
                     //if collectdecision == 2
                     Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null, Collections.emptyList());
                     connection.send(action);

@@ -205,7 +205,8 @@ public class CliInput extends InputAbstract{
             while(ask){
                 System.out.println("Choose the card you want to use, or say \"stop\":");
                 for(int i = 0; i<cardsToAsk.size(); i++){
-                    System.out.println(cardsToAsk.get(i) + " (" + (i+1) + ")");
+                    System.out.println(cardsToAsk.get(i).getColor().getAnsi() + cardsToAsk.get(i) +
+                            Constants.ANSI_RESET + " (" + (i+1) + ")");
                 }
 
                 try{
