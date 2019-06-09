@@ -28,6 +28,8 @@ public interface Connection extends Serializable {
 
     public void send(Info action);
 
+    public void sendAsynchronous(Info action);
+
     public String getMapName();
 
     public void configure();

@@ -26,7 +26,7 @@ public class GuiPlayerBoard extends StackPane {
         BackgroundFill backgroundFill = new BackgroundFill(
                 Paint.valueOf(Color.fromCharacter(playerBoard.getCharacterName()).getPlayerboardCol()),
                 new CornerRadii(10.0),
-                new Insets(5.0,5.0,5.0,5.0));
+                new Insets(1.0,1.0,1.0,1.0));
         Background background = new Background(backgroundFill);
         this.setBackground(background);
 
@@ -47,7 +47,7 @@ public class GuiPlayerBoard extends StackPane {
         hpGrid.setPrefHeight(15.0);
         hpGrid.setAlignment(Pos.CENTER_LEFT);
         for(int i = 0; i < playerBoard.getResult().getDamageTaken(); i++){
-            hpGrid.add(new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage()[i].getNormalColor())),i,0);
+            hpGrid.add(new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage().get(i).getNormalColor())),i,0);
         }
         Label hpLabel = new Label("HP");
         hpGrid.add(hpLabel,playerBoard.getResult().getDamageTaken(),0);
@@ -57,7 +57,7 @@ public class GuiPlayerBoard extends StackPane {
         marksGrid.setPrefHeight(15.0);
         marksGrid.setAlignment(Pos.CENTER_LEFT);
         for (int i = 0; i < playerBoard.getResult().getMarks().size() ; i++){
-            marksGrid.add(new Circle(7,Paint.valueOf(playerBoard.getResult().getMarks().get(i).getNormalColor())),i,0);
+            marksGrid.add(new Circle(5,Paint.valueOf(playerBoard.getResult().getMarks().get(i).getNormalColor())),i,0);
         }
         Label marksLabel = new Label("MARKS");
         marksGrid.add(marksLabel,playerBoard.getResult().getMarks().size(),0);
@@ -75,7 +75,7 @@ public class GuiPlayerBoard extends StackPane {
 
         for(int i = 0; i < playerBoard.getResult().getRedAmmo();i++){
             ammoGrid.add(
-                    new Rectangle(15.0,15.0,Paint.valueOf(Color.RED.getNormalColor())),
+                    new Rectangle(10.0,10.0,Paint.valueOf(Color.RED.getNormalColor())),
                     i,
                     0
             );
@@ -85,7 +85,7 @@ public class GuiPlayerBoard extends StackPane {
 
         for(int i = 0; i < playerBoard.getResult().getBlueAmmo();i++){
             ammoGrid.add(
-                    new Rectangle(15.0,15.0,Paint.valueOf(Color.BLUE.getNormalColor())),
+                    new Rectangle(10.0,10.0,Paint.valueOf(Color.BLUE.getNormalColor())),
                     i,
                     1
             );
@@ -95,7 +95,7 @@ public class GuiPlayerBoard extends StackPane {
 
         for(int i = 0; i < playerBoard.getResult().getYellowAmmo();i++){
             ammoGrid.add(
-                    new Rectangle(15.0,15.0,Paint.valueOf(Color.YELLOW.getNormalColor())),
+                    new Rectangle(10.0,10.0,Paint.valueOf(Color.YELLOW.getNormalColor())),
                     i,
                     2
             );

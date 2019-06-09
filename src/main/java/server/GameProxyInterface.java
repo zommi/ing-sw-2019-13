@@ -43,6 +43,8 @@ public interface GameProxyInterface extends Remote {
 
     public boolean makeAction(int clientID, Info action) throws RemoteException;
 
+    public boolean makeAsynchronousAction(int clientID, Info action)  throws RemoteException;
+
     public int getClientID() throws RemoteException;
 
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;

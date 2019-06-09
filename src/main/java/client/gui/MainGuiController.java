@@ -101,6 +101,12 @@ public class MainGuiController implements GuiController {
         this.gui.getConnection().send(action);
     }
 
+    public void spawnAfterDeath(){
+        logText("You died!\nChoose a powerup and Spawn in that color! \n");
+        DrawInfo action = new DrawInfo();
+        this.gui.getConnection().sendAsynchronous(action);
+    }
+
     @Override
     public void enableAll() {
         for(GuiTile tile : tiles){
@@ -353,17 +359,24 @@ public class MainGuiController implements GuiController {
 
 
     private void setSpawn(PowerUpCard card) {
+        boolean firstSpawn = myCharacter == null;
         for(GuiSpawnPoint spawnPoint : this.spawnPoints){
             if(card.getColor() == spawnPoint.getColor()){
-                this.myCharacter = new GuiCharacter(spawnPoint,model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
-                this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(),myCharacter);
+                if(myCharacter == null) {
+                    this.myCharacter = new GuiCharacter(spawnPoint, model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
+                    this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(), myCharacter);
+                }
                 this.gui.getGameModel().setToSpawn(false);
                 disableMouseEvent();
                 break;
             }
         }
         Info spawn = this.actionParser.createSpawnEvent(card);
-        this.gui.getConnection().send(spawn);
+        if(firstSpawn){
+            this.gui.getConnection().send(spawn);
+        }else {
+            this.gui.getConnection().sendAsynchronous(spawn);
+        }
     }
 
     @FXML
@@ -628,5 +641,9 @@ public class MainGuiController implements GuiController {
         alert.setContentText(null);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
+    }
+
+    public void removeMyCharacter() {
+        this.myCharacter = null;
     }
 }

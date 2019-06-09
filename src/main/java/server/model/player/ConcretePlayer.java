@@ -222,6 +222,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void setPosition(SquareAbstract square) {
+        this.gameCharacter.getPosition().removeCharacter(this.gameCharacter);
         this.gameCharacter.setPosition(square);
         this.playerBoard.setPosition(square.getRow(), square.getCol());
     }
@@ -265,6 +266,11 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public void die() {
+        this.playerBoard.processDeath();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof ConcretePlayer))
             return false;
@@ -273,15 +279,12 @@ public class ConcretePlayer extends PlayerAbstract {
         return this.gameCharacter.equals(player2.gameCharacter);
 
     }
+
+    public boolean isOverkilled(){
+        return this.playerBoard.getDamageTaken() == Constants.MAX_HP;
+    }
+
+    public Color getKillerColor(){
+        return this.playerBoard.getKillerColor();
+    }
 }
-
-
-/*
-        I added a method in WeaponCard called chooseCharacter, you have to call it before calling play().
-        You have to pass the square to the method so that he can tell you who you can choose.
-
-        ArrayList<ArrayList<GameCharacter>> possibleTargets;
-        possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
-        weapon.charge();
-
-*/

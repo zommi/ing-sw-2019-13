@@ -62,7 +62,7 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         return path;
     }
 
-    public void play(){};
+    public void play(){}
 
     @Override
     public String toString() {

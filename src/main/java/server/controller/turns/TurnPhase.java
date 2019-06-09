@@ -1,7 +1,7 @@
 package server.controller.turns;
 
 public enum TurnPhase {
-    FIRST_ACTION (1), SECOND_ACTION (2), END_TURN (3);
+    FIRST_ACTION (1), SECOND_ACTION (2), END_TURN (3), SPAWN_PHASE (4);
     int turn;
 
     TurnPhase(int turn){
@@ -13,6 +13,7 @@ public enum TurnPhase {
             case 1 : return FIRST_ACTION;
             case 2 : return SECOND_ACTION;
             case 3 : return END_TURN;
+            case 4 : return SPAWN_PHASE;
             default: return null;
         }
     }

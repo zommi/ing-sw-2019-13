@@ -134,7 +134,7 @@ public class UpdaterGui extends Application implements Updater {
         }
 
 
-        if(object.equals("Map") && !mapInitialized){
+        if(object.equals("GameBoard") && !mapInitialized){
             System.out.println("Game initialised");
             Platform.runLater(() -> {
                 getControllerFromString("gui.fxml").init();
@@ -157,6 +157,23 @@ public class UpdaterGui extends Application implements Updater {
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
                 MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
+                controllerConverted.updateHand();
+            });
+        }
+
+        if(object.equals("Player died")){
+            System.out.println("gameboard updated");
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
+                controllerConverted.updateGameboard();
+            });
+        }
+
+        if(object.equals("Spawn phase")){
+            System.out.println("spawn commanded");
+            Platform.runLater(() -> {
+                MainGuiController controllerConverted = (MainGuiController)getControllerFromString("gui.fxml");
+                controllerConverted.spawnAfterDeath();
                 controllerConverted.updateHand();
             });
         }

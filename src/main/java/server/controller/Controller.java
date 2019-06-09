@@ -3,6 +3,8 @@ package server.controller;
 import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
+import constants.Color;
+import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.MyTimerTask;
 import server.Server;
@@ -21,13 +23,11 @@ import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
 import view.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Controller {
 
@@ -43,6 +43,8 @@ public class Controller {
 
     private List<SquareAbstract> squaresToUpdate;
 
+    private List<PlayerAbstract> playersToSpawn;
+
     public Controller(int mapChoice, int initialSkulls, Server server){
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
@@ -50,6 +52,7 @@ public class Controller {
         this.currentID = 0;
         this.grenadeID = -1;
         this.squaresToUpdate = new ArrayList<>();
+        this.playersToSpawn = new ArrayList<>();
     }
 
     public WeaponCard drawWeapon(){
@@ -88,6 +91,30 @@ public class Controller {
         return "No one is playing";
     }
 
+    public void makeAsynchronousAction(int clientID, Info action){
+        ConcretePlayer player = (ConcretePlayer)currentGame.getActivePlayers().get(clientID);
+        TurnHandler turnHandler = currentGame.getTurnHandler();
+
+        if(action instanceof SpawnInfo){
+            SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, player, currentGame.getCurrentGameBoard());
+            turnHandler.setAndDoSpawn(spawnAction);
+            server.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+            server.sendToSpecificRMI(new SetSpawnAnswer(false), clientID);
+            server.sendToSpecificRMI(new PlayerHandAnswer(player.getHand()), clientID);
+            this.playersToSpawn.remove(currentGame.getPlayerFromId(clientID));
+            if(this.playersToSpawn.isEmpty()){
+                turnHandler.nextPhase();
+            }
+        }
+
+        if(action instanceof DrawInfo){
+            DrawAction drawAction = new DrawAction(player, currentGame);
+            turnHandler.setAndDoSpawn(drawAction);
+            server.sendToSpecificRMI(new PlayerHandAnswer(player.getHand()), clientID);
+            System.out.println("sending the playerhand to the clientID: " + clientID);
+        }
+    }
+
     public boolean makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         turnHandler.setController(this);
@@ -114,7 +141,9 @@ public class Controller {
             }
         }
 
-        if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) || (currentPlayer.getPlayerState().equals(PlayerState.DEAD)) || (currentGame.getCurrentState().equals(GameState.END_GAME))) {
+        if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) ||
+                (currentPlayer.getPlayerState().equals(PlayerState.DEAD)) ||
+                (currentGame.getCurrentState().equals(GameState.END_GAME))) {
             return false;
         }
 
@@ -245,5 +274,38 @@ public class Controller {
             }
         }
         squaresToUpdate.clear();
+    }
+
+    public boolean handleDeaths() {
+        int skullsToAdd;
+        boolean needToSpawn = false;
+        PlayerBoard board;
+        for(PlayerAbstract player : this.currentGame.getActivePlayers()){
+            if(player.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD){
+                player.die();
+                skullsToAdd = player.isOverkilled() ? 2 : 1;
+                this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
+                sendSpawnAnswer(player);
+                if(player.isOverkilled()){
+                    board = this.getCurrentGame().getCurrentGameBoard().getBoardFromColor(player.getKillerColor());
+                    board.addMarks(1,player.getColor());
+                }
+                needToSpawn = true;
+            }
+        }
+        return needToSpawn;
+    }
+
+    private void sendSpawnAnswer(PlayerAbstract playerAbstract) {
+        this.playersToSpawn.add(playerAbstract);
+        server.sendToSpecificRMI(new SetSpawnAnswer(true),playerAbstract.getClientID());
+        server.sendToEverybodyRMI(new PlayerDiedAnswer());
+        server.sendToEverybodyRMI(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+    }
+
+    public void sendSpawnRequest() {
+        for(PlayerAbstract player : this.playersToSpawn){
+            server.sendToSpecificRMI(new SpawnCommandAnswer(), player.getClientID());
+        }
     }
 }

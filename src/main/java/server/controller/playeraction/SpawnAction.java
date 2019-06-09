@@ -16,6 +16,7 @@ public class SpawnAction implements Action {
         this.powerUpCardToDiscard = spawnInfo.getPowerupCard();
         this.gameBoard = gameBoard;
     }
+
     public boolean execute(Controller controller){
         player.spawn(gameBoard.getMap().getSpawnPoint(powerUpCardToDiscard.getColor())); //a spawn
         player.getHand().removePowerUpCard(powerUpCardToDiscard);

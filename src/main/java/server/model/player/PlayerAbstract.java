@@ -117,4 +117,10 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract void pay(Cost cost);
 
     public abstract boolean hasCards(List<PowerUpCard> powerUpCards);
+
+    public abstract void die();
+
+    public abstract boolean isOverkilled();
+
+    public abstract Color getKillerColor();
 }
