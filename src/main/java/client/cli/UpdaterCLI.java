@@ -2,6 +2,7 @@ package client.cli;
 
 
 import client.*;
+import client.powerups.PowerUpPack;
 import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
@@ -335,6 +336,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 else if(connection.getGrenadeID() != -1){
                     if(connection.getClientID() != connection.getGrenadeID()){
                         System.out.println("There is somebody that has a tagback grenade. Checking if he wants to use it");
+                        try{
+                            TimeUnit.SECONDS.sleep(5000);
+                        }
+                        catch(InterruptedException e){
+                            e.printStackTrace();
+                        }
                     }
                     else { //we are exactly in the player that has the current turn to use the tagback
                         Scanner myObj = new Scanner(System.in);
@@ -348,9 +355,37 @@ public class UpdaterCLI  implements Updater,Runnable{
                             if((choice != 1) && (choice != 0)){
                                 System.out.println("Error: insert a valid number!");
                             }
-                            else{
-                                if(Integer.parseInt(read) == 1){
+                            else {
+                                if (Integer.parseInt(read) == 1) {
                                     System.out.println("Ok you can use the tagback grenade towards the shooter");
+                                    System.out.println("Which tagback do you want to use?");
+                                    List<PowerUpCard> powerupsTemp = gameModel.getPlayerHand().getPowerupHand();
+                                    int k = 0;
+                                    int i = 0;
+                                    for (PowerUpCard powerUpCard : powerupsTemp) {
+                                        k++;
+                                        if (powerUpCard.getName().equals("Tagback Grenade")) {
+                                            i++;
+                                            System.out.println("> " + i + " " + powerUpCard);
+                                        }
+                                    }
+                                    read = myObj.nextLine();
+                                    boolean chosenPowerup = false;
+                                    while(!chosenPowerup) {
+                                        try {
+                                            choice = Integer.parseInt(read);
+                                            if (choice > 0 && choice <= powerupsTemp.size())
+                                                chosenPowerup = true;
+                                            else
+                                                System.out.println("You chose a number not available");
+                                        } catch (NumberFormatException e) {
+                                            System.out.println("Please insert a valid number.");
+                                        }
+                                    }
+                                    System.out.println("Test");
+                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k).getPowerUp());
+                                    connection.send(action);
+                                    connection.setClientHasChosen();
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                                     //actionParser.createPowerUpEvent("Tagback Grenade");
                                 }

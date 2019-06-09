@@ -64,6 +64,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return true;
     }
 
+    @Override
+    public void setClientHasChosenPowerup(){
+        this.serverRMI.getServer().getController().setClientHasChosen();
+    }
+
     public void addClientRMI(ReceiverInterface receiver){
         this.clientRMIadded.add(receiver);
     }
