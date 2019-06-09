@@ -1,6 +1,8 @@
 package client;
 
 import client.weapons.Weapon;
+import server.controller.PlayerDiedAnswer;
+import server.controller.SpawnCommandAnswer;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
@@ -106,6 +108,16 @@ public class GameModel extends Observable implements Serializable {
             weaponList = (ListOfWeaponsAnswer) answer;
             setChanged();
             notifyObservers("Weapons list");
+        }
+
+        if(answer instanceof PlayerDiedAnswer) {
+            setChanged();
+            notifyObservers("Player died");
+        }
+
+        if(answer instanceof SpawnCommandAnswer) {
+            setChanged();
+            notifyObservers("Spawn phase");
         }
     }
 

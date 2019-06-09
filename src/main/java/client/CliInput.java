@@ -4,6 +4,8 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
 import constants.Constants;
+import server.model.cards.PowerUp;
+import server.model.cards.PowerUpCard;
 import server.model.map.Room;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
@@ -11,9 +13,7 @@ import server.model.player.PlayerAbstract;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CliInput extends InputAbstract{
     private Scanner scanner;
@@ -25,7 +25,7 @@ public class CliInput extends InputAbstract{
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
         System.out.println("Do you wanna activate this macro effect?\n"
-                + macroEffect + "[y to activate]\n");
+                + macroEffect.getDescription() + "\n" + macroEffect.getCost().printOnCli() + "[y to activate]\n");
         String s = scanner.nextLine();
         return s.equals("y");
     }
@@ -195,10 +195,53 @@ public class CliInput extends InputAbstract{
     }
 
     @Override
+    public List<PowerUpCard> askPowerUps() {
+        System.out.println("Do you wanna use your PowerUps as ammo? [y to activate] ");
+        String s = scanner.nextLine();
+        if(s.equalsIgnoreCase("y")){
+            List<PowerUpCard> returnedList = new ArrayList<>();
+            List<PowerUpCard> cardsToAsk = new ArrayList<>(gameModel.getPlayerHand().getPowerupHand());
+            boolean ask = true;
+            while(ask){
+                System.out.println("Choose the card you want to use, or say \"stop\":");
+                for(int i = 0; i<cardsToAsk.size(); i++){
+                    System.out.println(cardsToAsk.get(i).getColor().getAnsi() + cardsToAsk.get(i) +
+                            Constants.ANSI_RESET + " (" + (i+1) + ")");
+                }
+
+                try{
+                    String strChoice = scanner.nextLine();
+                    if(strChoice.equalsIgnoreCase("stop")){
+                        break;
+                    }
+
+                    int choice = Integer.parseInt(strChoice) - 1;
+                    if(choice>=0 && choice < cardsToAsk.size()){
+                        returnedList.add(cardsToAsk.get(choice));
+                        cardsToAsk.remove(choice);
+                        if(cardsToAsk.isEmpty())
+                            ask = false;
+                    }
+                    else{
+                        System.out.println("Please insert a valid number.");
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Please insert a valid number, or say \"stop\".");
+                }
+            }
+            return returnedList;
+        }
+        else
+            return Collections.emptyList();
+
+    }
+
+    @Override
     public MacroEffect chooseOneMacro(Weapon weapon){
         System.out.println("Choose one of the following macro effects:");
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
-            System.out.println((macroEffect.getNumber()+1) + ": " + macroEffect);
+            System.out.println((macroEffect.getNumber()+1) + ": " + macroEffect.getDescription() +
+                    "\n" + macroEffect.getCost().printOnCli());
         }
         String s;
         int i = 0;

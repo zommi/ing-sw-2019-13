@@ -2,6 +2,7 @@ package server.model.player;
 
 import client.weapons.Cost;
 import client.weapons.Weapon;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.items.AmmoCube;
@@ -63,6 +64,15 @@ public class ConcretePlayer extends PlayerAbstract {
         for(WeaponCard weaponCard : hand.getWeaponHand()){
             if(weaponCard.getWeapon().equals(weapon))
                 return weaponCard;
+        }
+        return null;
+    }
+
+    @Override
+    public PowerUpCard getPowerUpCard(PowerUpCard powerUpCard) {
+        for(PowerUpCard powerUpCard1 : hand.getPowerupHand()){
+            if(powerUpCard1.equals(powerUpCard))
+                return powerUpCard1;
         }
         return null;
     }
@@ -212,6 +222,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void setPosition(SquareAbstract square) {
+        this.gameCharacter.getPosition().removeCharacter(this.gameCharacter);
         this.gameCharacter.setPosition(square);
         this.playerBoard.setPosition(square.getRow(), square.getCol());
     }
@@ -237,6 +248,29 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public boolean hasCards(List<PowerUpCard> powerUpCards) {
+        //checks duplicate (no duplicate allowed because of the id)
+        for(PowerUpCard powerUpCard : powerUpCards){
+            for(PowerUpCard powerUpCard1 : powerUpCards){
+                if(powerUpCard != powerUpCard1 && powerUpCard.equals(powerUpCard1))
+                    return false;
+            }
+        }
+
+        //checks possession
+        for(PowerUpCard powerUpCard : powerUpCards){
+            if(getPowerUpCard(powerUpCard) == null)
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void die() {
+        this.playerBoard.processDeath();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof ConcretePlayer))
             return false;
@@ -245,15 +279,12 @@ public class ConcretePlayer extends PlayerAbstract {
         return this.gameCharacter.equals(player2.gameCharacter);
 
     }
+
+    public boolean isOverkilled(){
+        return this.playerBoard.getDamageTaken() == Constants.MAX_HP;
+    }
+
+    public Color getKillerColor(){
+        return this.playerBoard.getKillerColor();
+    }
 }
-
-
-/*
-        I added a method in WeaponCard called chooseCharacter, you have to call it before calling play().
-        You have to pass the square to the method so that he can tell you who you can choose.
-
-        ArrayList<ArrayList<GameCharacter>> possibleTargets;
-        possibleTargets = weapon.getPossibleTargets(); //This returns the list of characters I can shoot
-        weapon.charge();
-
-*/

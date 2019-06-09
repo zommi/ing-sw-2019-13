@@ -13,13 +13,15 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
     private PowerUp powerUp;
     private PowerupDeck powerupDeck;
     private String path;
+    private int cardId;
 
 
-    public PowerUpCard(Color color, PowerUp powerUp, String path, PowerupDeck powerupDeck) {
+    public PowerUpCard(Color color, PowerUp powerUp, String path, PowerupDeck powerupDeck, int cardId) {
         this.color = color;
         this.powerUp = powerUp;
         this.powerupDeck = powerupDeck;
         this.path = path;
+        this.cardId = cardId;
     }
 
     public PowerUp getPowerUp() {
@@ -52,7 +54,7 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
             return false;
         PowerUpCard card2 = (PowerUpCard) obj;
 
-        return (color == card2.getColor() && powerUp.getName().equals(card2.getPowerUp().getName()));
+        return card2.cardId == this.cardId;
 
     }
 
@@ -60,7 +62,7 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         return path;
     }
 
-    public void play(){};
+    public void play(){}
 
     @Override
     public String toString() {

@@ -1,12 +1,14 @@
 package server.model.gameboard;
 
 import client.weapons.Weapon;
+import constants.Color;
 import constants.Constants;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.map.*;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import java.util.HashMap;
 
@@ -48,6 +50,8 @@ public class GameBoard implements Serializable {
 
     private Map<Integer,PlayerBoard> mapPlayerBoard;
 
+    private Map<Color, PlayerAbstract> colorToPlayer;
+
     private List<GameCharacter> gameCharacterList;
 
     private List<GameCharacter> activeCharacters;
@@ -68,6 +72,7 @@ public class GameBoard implements Serializable {
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
         this.mapPlayerBoard = new HashMap<>();
+        this.colorToPlayer = new HashMap<>();
         activeCharacters = new ArrayList<>();
         gameCharacterList = new ArrayList<>();
         setupGameBoard();
@@ -157,6 +162,14 @@ public class GameBoard implements Serializable {
 
     public void addGameCharacter(GameCharacter gameCharacter){
         this.gameCharacterList.add(gameCharacter);
+        this.colorToPlayer.put(
+                Color.fromCharacter(gameCharacter.getFigure().toString()),
+                gameCharacter.getConcretePlayer()
+        );
+    }
+
+    public PlayerBoard getBoardFromColor(Color color){
+        return this.colorToPlayer.get(color).getPlayerBoard();
     }
 
     public Weapon getWeapon(String name){       //TODO

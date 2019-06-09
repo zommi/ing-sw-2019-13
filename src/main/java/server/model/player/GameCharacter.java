@@ -78,7 +78,9 @@ public class GameCharacter implements Serializable {
 
     public void setPosition(SquareAbstract position){
         this.position = position;
-        position.addCharacter(this);
+        if(position != null) {
+            position.addCharacter(this);
+        }
     }
     /**
      *
@@ -103,7 +105,9 @@ public class GameCharacter implements Serializable {
             sp.addCharacter(this);
             this.position = sp;
         } else{
-            System.out.println("Invalid move");
+            this.position.removeCharacter(this);
+            sp.addCharacter(this);
+            this.position = sp;
         }
     }
 
@@ -127,5 +131,10 @@ public class GameCharacter implements Serializable {
 
         return this.getFigure().getId() == gameCharacter2.getFigure().getId();
 
+    }
+
+    public void remove() {
+        getPosition().removeCharacter(this);
+        this.position = null;
     }
 }

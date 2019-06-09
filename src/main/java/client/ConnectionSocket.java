@@ -122,6 +122,11 @@ public class ConnectionSocket implements Connection {
         }
     }
 
+    @Override
+    public void sendAsynchronous(Info action) {
+
+    }
+
     public void initializeSocket(){
 
     }

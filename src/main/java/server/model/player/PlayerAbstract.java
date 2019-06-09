@@ -4,6 +4,7 @@ import client.weapons.Weapon;
 import constants.Color;
 import constants.Direction;
 import client.weapons.Cost;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
@@ -12,6 +13,7 @@ import server.model.map.SquareAbstract;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -66,6 +68,8 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void collect(Square square);
 
+    public abstract PowerUpCard getPowerUpCard(PowerUpCard powerUpCard);
+
     public abstract String getCharacterName();
 
     public abstract void collect(SpawnPoint spawnPoint, int choice);
@@ -111,4 +115,12 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract void setJustDamagedBy(PlayerAbstract playerAbstract);
 
     public abstract void pay(Cost cost);
+
+    public abstract boolean hasCards(List<PowerUpCard> powerUpCards);
+
+    public abstract void die();
+
+    public abstract boolean isOverkilled();
+
+    public abstract Color getKillerColor();
 }

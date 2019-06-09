@@ -1,9 +1,11 @@
 package client;
 
 import constants.Constants;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CollectInfo implements Serializable, Info {
 
@@ -16,6 +18,7 @@ public class CollectInfo implements Serializable, Info {
     private int col;
     private int choice;
     private WeaponCard weaponToDiscard;
+    private List<PowerUpCard> powerUpCards;
 
     /**
      * constructor used if the player doesn't specify a choice. It is used
@@ -26,6 +29,14 @@ public class CollectInfo implements Serializable, Info {
         this.row = row;
         this.col = col;
         this.weaponToDiscard = weaponToDiscard;
+    }
+
+    public List<PowerUpCard> getPowerUpCards() {
+        return powerUpCards;
+    }
+
+    public void setPowerUpCards(List<PowerUpCard> powerUpCards) {
+        this.powerUpCards = powerUpCards;
     }
 
     public int getRow(){

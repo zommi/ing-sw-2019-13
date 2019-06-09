@@ -1,8 +1,10 @@
 package server.controller.playeraction;
 
 import client.Info;
+import client.weapons.Cost;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;
+import server.model.cards.PowerUpCard;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
@@ -16,13 +18,25 @@ public class ShootInfo implements Serializable, Info {
     private Weapon weapon;
     private List<MacroInfo> activatedMacros;
     private SquareAbstract square;
+    private List<PowerUpCard> powerUpCards;
+    private Cost totalCost;
 
 
-    public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros, SquareAbstract squareAbstract){
+    public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros, SquareAbstract squareAbstract,
+                            List<PowerUpCard> powerUpCards){
         this.attacker = attacker;
         this.weapon = weapon;
         this.activatedMacros = activatedMacros;
         this.square = squareAbstract;
+        this.powerUpCards = powerUpCards;
+    }
+
+    public Cost getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Cost totalCost) {
+        this.totalCost = totalCost;
     }
 
     public SquareAbstract getSquare() {
@@ -35,6 +49,10 @@ public class ShootInfo implements Serializable, Info {
 
     public Weapon getWeapon() {
         return weapon;
+    }
+
+    public List<PowerUpCard> getPowerUpCards() {
+        return powerUpCards;
     }
 
     public List<MacroInfo> getActivatedMacros() {

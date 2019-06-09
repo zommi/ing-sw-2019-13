@@ -101,6 +101,12 @@ public class MainGuiController implements GuiController {
         this.gui.getConnection().send(action);
     }
 
+    public void spawnAfterDeath(){
+        logText("You died!\nChoose a powerup and Spawn in that color! \n");
+        DrawInfo action = new DrawInfo();
+        this.gui.getConnection().sendAsynchronous(action);
+    }
+
     @Override
     public void enableAll() {
         for(GuiTile tile : tiles){
@@ -258,7 +264,9 @@ public class MainGuiController implements GuiController {
         //this.weaponHand.add(cardToAdd,weaponHandSize,0);
 
         //null da cambiare con la WeaponCard da scartare
-        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),weaponCard.getIndex(), null);    //TODO
+        //far scegliere anche i powerup con cui pagare eventualmente l'arma
+        Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),
+                weaponCard.getIndex(), null, Collections.emptyList());    //TODO
         this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
@@ -310,7 +318,7 @@ public class MainGuiController implements GuiController {
         if(!this.model.getToSpawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
-                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null);
+                    Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
                     this.gui.getConnection().send(collectInfo);
                     this.tilesToUpdate.add(square);
                 });
@@ -351,17 +359,24 @@ public class MainGuiController implements GuiController {
 
 
     private void setSpawn(PowerUpCard card) {
+        boolean firstSpawn = myCharacter == null;
         for(GuiSpawnPoint spawnPoint : this.spawnPoints){
             if(card.getColor() == spawnPoint.getColor()){
-                this.myCharacter = new GuiCharacter(spawnPoint,model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
-                this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(),myCharacter);
+                if(myCharacter == null) {
+                    this.myCharacter = new GuiCharacter(spawnPoint, model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
+                    this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(), myCharacter);
+                }
                 this.gui.getGameModel().setToSpawn(false);
                 disableMouseEvent();
                 break;
             }
         }
         Info spawn = this.actionParser.createSpawnEvent(card);
-        this.gui.getConnection().send(spawn);
+        if(firstSpawn){
+            this.gui.getConnection().send(spawn);
+        }else {
+            this.gui.getConnection().sendAsynchronous(spawn);
+        }
     }
 
     @FXML
@@ -626,5 +641,9 @@ public class MainGuiController implements GuiController {
         alert.setContentText(null);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
+    }
+
+    public void removeMyCharacter() {
+        this.myCharacter = null;
     }
 }

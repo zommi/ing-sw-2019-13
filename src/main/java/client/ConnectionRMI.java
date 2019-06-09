@@ -158,6 +158,16 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
     }
 
+    public void sendAsynchronous(Info action){
+        try{
+            game.makeAsynchronousAction(this.clientID, action);
+        }
+        catch(Exception re){
+            System.out.println("Could not make the action");
+            re.printStackTrace();
+        }
+    }
+
     @Override
     public void publishMessage(ServerAnswer answer) throws RemoteException{
         this.gameModel.saveAnswer(answer);

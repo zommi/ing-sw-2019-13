@@ -15,17 +15,16 @@ import java.util.*;
 public class PlayerBoard implements Serializable {
     ConcretePlayer player;
 
-    private Color[] damage;
-    private int damageTaken;
+    private List<Color> damage;
 
     private List<Color> marks;
     private int[] pointValue;
     private int currentPointValueCursor;
-    private int numberOfDeaths;
     private int row;
     private int col;
     private String characterName;
     private List<WeaponCard> unloadedWeapons;
+    private Color killerColor;
 
 
     //0 red, 1 blue, 2 yellow
@@ -47,10 +46,8 @@ public class PlayerBoard implements Serializable {
 
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
-        this.damage = new Color[Constants.MAX_HP];
-        this.damageTaken = 0;
+        this.damage = new ArrayList<>();
         this.marks = new ArrayList<>();
-        this.numberOfDeaths = 0;
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
         unloadedWeapons = new ArrayList<>();
@@ -86,62 +83,6 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    private void setDamage(int i, Color color) {
-        this.damage[i] = color;
-    }
-
-    public void setCharacterName(String string){
-        this.characterName = string;
-    }
-
-    public String getCharacterName(){
-        return this.characterName;
-    }
-
-    public ConcretePlayer getPlayer() {
-        return player;
-    }
-
-    public Color[] getDamage() {
-        return damage;
-    }
-
-    public int getCurrentPointValueCursor(){
-        return this.currentPointValueCursor;
-    }
-
-    public int getDamageTaken() {
-        return damageTaken;
-    }
-
-    public Color getTokenColor(int index){
-        return damage[index];
-    }
-
-    public List<Color> getMarks(){
-        return this.marks;
-    }
-
-    public int getNumberOfDeaths() {
-        return numberOfDeaths;
-    }
-
-    public int getRedAmmo() {
-        return ammo[RED_CUBES_INDEX];
-    }
-
-    public int getBlueAmmo() {
-        return ammo[BLUE_CUBES_INDEX];
-    }
-
-    public int getYellowAmmo() {
-        return ammo[YELLOW_CUBES_INDEX];
-    }
-
-    public int getAmmo(Color color){
-        return ammo[color.getIndex()];
-    }
-
     public void spawn(int row, int col){
         this.row = row;
         this.col = col;
@@ -159,49 +100,29 @@ public class PlayerBoard implements Serializable {
     public int getCol(){
         return this.col;
     }
-    //TODO add easter egg when someone dies 7 times in the same game and make him win.
-    public void addSkull(Color colorOfAttacker) {
-        if(damageTaken > Constants.DEATH_THRESHOLD){
-            int token2add = damageTaken >= Constants.MAX_HP ? 2 : 1;
-            numberOfDeaths++;
-            currentPointValueCursor++;
-            player.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(token2add,colorOfAttacker);
-        } else{
-            System.err.println("PLAYER STILL ALIVE");
-        }
-    }
 
-    public int[] getPointValueArray(){
-        return this.pointValue;
-    }
-
-    public int getPointValue(){
-        return pointValue[currentPointValueCursor];
-    }
-
-    public void addDamage(int damageInBullet, Color color) {
+    public void addDamage(int damageToAdd, Color color) {
         int marksActivated = getMarksOfAColor(color);
         removeMarksOfAColor(color);
-        for(int i = damageTaken; i < damageTaken+marksActivated+damageInBullet;i++){
-            setDamage(i,color);
+        int initialDamage = damage.size();
+        for(int i = initialDamage; i < initialDamage+marksActivated+damageToAdd && i < Constants.MAX_HP;i++){
+            this.damage.add(color);
         }
-        damageTaken += damageInBullet + marksActivated;
-        if((damageTaken > Constants.BETTERCOLLECTDAMAGE)&&((damageTaken <= Constants.BETTERSHOOTDAMAGE))){
+        if((damage.size() > Constants.BETTERCOLLECTDAMAGE)&&(damage.size() <= Constants.BETTERSHOOTDAMAGE)){
             player.setState(PlayerState.BETTER_COLLECT);
         }
-        if((damageTaken > Constants.BETTERSHOOTDAMAGE) && (damageTaken <= Constants.DEATH_THRESHOLD)){
+        if((damage.size() > Constants.BETTERSHOOTDAMAGE) && (damage.size() <= Constants.DEATH_THRESHOLD)){
             player.setState(PlayerState.BETTER_SHOOT);
         }
-        if(damageTaken > Constants.DEATH_THRESHOLD){
-            //add skull on player board, remove skull from game board, decrease value of player,
-            //if damage == 12 place a mark on killer
-            addSkull(color);
-            damageTaken = 0;
-            for(int i = 0; i < Constants.MAX_HP; i++){
-                this.damage[i] = Color.UNDEFINED;
-            }
-            player.setState(PlayerState.TOBESPAWNED);
+        if(damage.size() > Constants.DEATH_THRESHOLD){
+            this.killerColor = color;
         }
+    }
+
+    public void processDeath() {
+        this.damage.clear();
+        currentPointValueCursor++;
+        player.setState(PlayerState.TOBESPAWNED);
     }
 
     public void removeMarksOfAColor(Color color) {
@@ -226,7 +147,6 @@ public class PlayerBoard implements Serializable {
             }
         }
     }
-
 
     public void useAmmo(List<AmmoCube> cost) throws InvalidMoveException{
         for(AmmoCube cube : cost){
@@ -265,5 +185,65 @@ public class PlayerBoard implements Serializable {
             default: //this should never happen
         }
         ammo[index]--;
+    }
+
+    public void setCharacterName(String string){
+        this.characterName = string;
+    }
+
+    public String getCharacterName(){
+        return this.characterName;
+    }
+
+    public ConcretePlayer getPlayer() {
+        return player;
+    }
+
+    public List<Color> getDamage() {
+        return damage;
+    }
+
+    public int getCurrentPointValueCursor(){
+        return this.currentPointValueCursor;
+    }
+
+    public int getDamageTaken() {
+        return damage.size();
+    }
+
+    public Color getTokenColor(int index){
+        return damage.get(index);
+    }
+
+    public List<Color> getMarks(){
+        return this.marks;
+    }
+
+    public int getRedAmmo() {
+        return ammo[RED_CUBES_INDEX];
+    }
+
+    public int getBlueAmmo() {
+        return ammo[BLUE_CUBES_INDEX];
+    }
+
+    public int getYellowAmmo() {
+        return ammo[YELLOW_CUBES_INDEX];
+    }
+
+    public int getAmmo(Color color){
+        return ammo[color.getIndex()];
+    }
+
+    public int[] getPointValueArray(){
+        return this.pointValue;
+    }
+
+    public int getPointValue(){
+        return pointValue[currentPointValueCursor];
+    }
+
+    public Color getKillerColor() {
+        return killerColor;
     }
 }
