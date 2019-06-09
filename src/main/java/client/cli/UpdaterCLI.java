@@ -8,6 +8,7 @@ import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.PowerUpCard;
+import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
@@ -648,10 +649,15 @@ public class UpdaterCLI  implements Updater,Runnable{
                     strChoice = myObj.nextLine();
                     try {
                         choice = Integer.parseInt(strChoice) - 1;
-                        if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size()) {
+                        if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
+                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade)) {
                             askPowerUp = false;
 
-                        } else
+                        } else if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
+                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade){
+                            System.out.println("Oak's words echoed... There's a time and place for everything, but not now.");
+                        }
+                        else
                             System.out.println("Please insert a valid number.");
                     } catch (NumberFormatException e) {
                         System.out.println("Please insert a valid number.");

@@ -70,6 +70,8 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract PowerUpCard getPowerUpCard(PowerUpCard powerUpCard);
 
+    public abstract  WeaponCard getWeaponCard(WeaponCard weaponCard);
+
     public abstract String getCharacterName();
 
     public abstract void collect(SpawnPoint spawnPoint, int choice);
@@ -118,7 +120,9 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void payWithPowerUps(Cost cost, List<PowerUpCard> powerUpCards);
 
-    public abstract boolean hasCards(List<PowerUpCard> powerUpCards);
+    public abstract boolean hasPowerUpCards(List<PowerUpCard> powerUpCards);
+
+    public abstract boolean hasWeaponCards(List<WeaponCard> weaponCards);
 
     public abstract void die();
 

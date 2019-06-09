@@ -77,6 +77,15 @@ public class ConcretePlayer extends PlayerAbstract {
         return null;
     }
 
+    @Override
+    public WeaponCard getWeaponCard(WeaponCard weaponCard) {
+        for(WeaponCard weaponCard1 : hand.getWeaponHand()){
+            if(weaponCard1.equals(weaponCard))
+                return weaponCard1;
+        }
+        return null;
+    }
+
     public String getCharacterName(){
          return this.gameCharacter.getFigure().fromFigure();
     }
@@ -264,7 +273,7 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
-    public boolean hasCards(List<PowerUpCard> powerUpCards) {
+    public boolean hasPowerUpCards(List<PowerUpCard> powerUpCards) {
         //checks duplicate (no duplicate allowed because of the id)
         for(PowerUpCard powerUpCard : powerUpCards){
             for(PowerUpCard powerUpCard1 : powerUpCards){
@@ -276,6 +285,24 @@ public class ConcretePlayer extends PlayerAbstract {
         //checks possession
         for(PowerUpCard powerUpCard : powerUpCards){
             if(getPowerUpCard(powerUpCard) == null)
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hasWeaponCards(List<WeaponCard> weaponCards) {
+        //checks duplicates
+        for(WeaponCard weaponCard : weaponCards){
+            for(WeaponCard weaponCard1 : weaponCards){
+                if(weaponCard != weaponCard1 && weaponCard.equals(weaponCard1))
+                    return false;
+            }
+        }
+
+        //checks possession
+        for(WeaponCard weaponCard : weaponCards){
+            if(getWeaponCard(weaponCard) == null)
                 return false;
         }
         return true;

@@ -13,6 +13,7 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
     private String name;
     private Weapon weapon;
     private boolean ready;
+    private int id;
 
     /**
      * Initialize the card cost
@@ -41,6 +42,13 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
 
     public void discard() { }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public void draw() {
         //Draw card from spawnpoint.
@@ -52,7 +60,7 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
             return false;
         WeaponCard card2 = (WeaponCard) obj;
 
-        return this.getName().equalsIgnoreCase(card2.getName());
+        return this.id == card2.id;
 
     }
 

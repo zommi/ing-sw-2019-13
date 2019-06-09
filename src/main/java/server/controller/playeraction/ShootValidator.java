@@ -39,7 +39,7 @@ public class ShootValidator {
             return null;*/
 
         //attacker must have the selected powerups
-        if(!shootInfo.getAttacker().hasCards(shootInfo.getPowerUpCards()))
+        if(!shootInfo.getAttacker().hasPowerUpCards(shootInfo.getPowerUpCards()))
             return null;
 
         //saves players' old positions and sets map to not valid if weapon is special
@@ -231,7 +231,7 @@ public class ShootValidator {
                 }
 
                 //player must have the selected powerups
-                if(!attacker.hasCards(cardsUsed))
+                if(!attacker.hasPowerUpCards(cardsUsed))
                     return null;
 
                 //checks if player can pay

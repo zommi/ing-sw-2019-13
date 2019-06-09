@@ -60,7 +60,7 @@ public class CollectValidator {
             }
 
             //attacker must have the selected powerups
-            if(!player.hasCards(collectInfo.getPowerUpCards()))
+            if(!player.hasPowerUpCards(collectInfo.getPowerUpCards()))
                 return false;
 
             if(!player.canPay(((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost()
