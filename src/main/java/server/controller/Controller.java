@@ -27,8 +27,11 @@ import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
 import view.*;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 public class Controller {
 
     private int currentID;
@@ -38,6 +41,8 @@ public class Controller {
     private Game currentGame;
 
     private GameMap currentMap;
+
+    private boolean clientHasChosen;
 
     private Server server;
 
@@ -52,6 +57,7 @@ public class Controller {
         this.currentID = 0;
         this.grenadeID = -1;
         this.squaresToUpdate = new ArrayList<>();
+        this.clientHasChosen = false;
         this.playersToSpawn = new ArrayList<>();
     }
 
@@ -182,25 +188,35 @@ public class Controller {
             turnHandler.setAndDoAction(collectAction);
             this.sendCollectShootAnswersRMI(currentPlayer, clientID);
         }
-        else if(action instanceof ShootPack){
+        else if(action instanceof ShootPack) {
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame); // TODO add player
             turnHandler.setAndDoAction(shootAction);
             sendCollectShootAnswersRMI(currentPlayer, clientID);
             //TODO check if the target has a powerup
             List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
 
-            for(int i = 0; i < listOfPlayers.size(); i++){
-                for(int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++){
-                    if(listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")){
+            for (int i = 0; i < listOfPlayers.size(); i++) {
+                for (int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++) {
+                    if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
                         System.out.println("Found a player that has the tagback grenade");
-                        if(listOfPlayers.get(i).getJustDamagedBy() != null){
-                            grenadeID = listOfPlayers.get(i).getJustDamagedBy().getClientID();
-                            TimerTask timerTask = new TimerTaskController();
-                            Timer timer = new Timer(true);
-                            timer.schedule(timerTask, 0);
-                            System.out.println("Waiting for the other player to do the action");
+                        if (listOfPlayers.get(i).getJustDamagedBy() != null) {
+                            if(listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer))
+                                grenadeID = -1;
+                            else{
+                                grenadeID = listOfPlayers.get(i).getJustDamagedBy().getClientID();
+                                while (!clientHasChosen) {
+                                    System.out.println("Waiting for the other player to do the action");
+                                    try {
+                                        TimeUnit.SECONDS.sleep(5000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            clientHasChosen = false;
+                            grenadeID = -1;
                         }
-                        grenadeID = -1;
+                        break;
                     }
                 }
             }
@@ -217,6 +233,10 @@ public class Controller {
             //server.sendToEverybodyRMI(change);
         }
         return true;
+    }
+
+    public void setClientHasChosen(){
+        this.clientHasChosen = true;
     }
 
 

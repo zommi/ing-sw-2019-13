@@ -62,6 +62,16 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
+    public void setClientHasChosen(){
+        try{
+            gameProxy.setClientHasChosenPowerup();
+        }
+        catch(RemoteException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public int getStartGame(){
         try{
             return gameProxy.getStartGame();

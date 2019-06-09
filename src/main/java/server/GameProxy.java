@@ -65,6 +65,10 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public void setClientHasChosenPowerup() {
+        this.serverRMI.getServer().getController().setClientHasChosen();
+    }
+
     public boolean makeAsynchronousAction(int clientID, Info action)  throws RemoteException{
         this.serverRMI.getServer().getController().makeAsynchronousAction(clientID, action);
         return true;
