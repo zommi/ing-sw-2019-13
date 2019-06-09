@@ -36,6 +36,22 @@ public class Cost implements Serializable {
         this.yellow = cost.yellow;
     }
 
+    public static Cost getCost(Color color){
+
+        int tblue = 0;
+        int tred = 0;
+        int tyellow = 0;
+
+        switch(color){
+            case RED: tblue++; break;
+            case BLUE: tred++; break;
+            case YELLOW: tyellow++; break;
+            default: //zero cost
+        }
+
+        return new Cost(tred, tblue, tyellow);
+    }
+
     public Cost sum(Cost cost){
         int sumRed;
         int sumBlue;

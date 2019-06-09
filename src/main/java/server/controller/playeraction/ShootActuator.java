@@ -17,20 +17,7 @@ public class ShootActuator {
         }
 
         //pay
-        List<PowerUpCard> oneCard = new ArrayList<>();
-        for(PowerUpCard powerUpCard : shootInfo.getPowerUpCards()){
-            Cost oldCost =  new Cost(shootInfo.getTotalCost());
-            oneCard.add(powerUpCard);
-            shootInfo.setTotalCost(shootInfo.getTotalCost().subtract(Cost.powerUpListToCost(oneCard)));
-            if(oldCost.equals(shootInfo.getTotalCost()))
-                //discard the card
-                shootInfo.getAttacker().getHand().removePowerUpCard(powerUpCard);
-
-            oneCard.clear();
-        }
-
-        shootInfo.getAttacker().pay(shootInfo.getTotalCost());
-
+        shootInfo.getAttacker().payWithPowerUps(shootInfo.getTotalCost(), shootInfo.getPowerUpCards());
 
         //adding unloaded weapon to the playerboard, so that it's visible to the other players
         //but keeping it in playerhand

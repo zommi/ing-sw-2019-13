@@ -29,21 +29,8 @@ public class CollectActuator {
         }else {     //collecting a weapon
 
             //removes powerups and pay
-            Cost updatedCost = ((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost();
-            List<PowerUpCard> oneCard = new ArrayList<>();
-            for(PowerUpCard powerUpCard : collectInfo.getPowerUpCards()){
-                Cost oldCost =  new Cost(updatedCost);
-                oneCard.add(powerUpCard);
-                updatedCost = updatedCost.subtract(Cost.powerUpListToCost(oneCard));
-                if(!oldCost.equals(updatedCost))
-                    //discard the card
-                    player.getHand().removePowerUpCard(powerUpCard);
-
-                oneCard.clear();
-            }
-            player.pay(updatedCost);
-
-
+            player.payWithPowerUps(((SpawnPoint) square).getWeaponCards().get(choice).getWeapon().getBuyCost(),
+                    collectInfo.getPowerUpCards());
 
             SpawnPoint spawnPoint = (SpawnPoint) player.getPosition();
 

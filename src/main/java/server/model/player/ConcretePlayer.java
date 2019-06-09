@@ -247,6 +247,22 @@ public class ConcretePlayer extends PlayerAbstract {
             playerBoard.decreaseAmmo(Color.YELLOW);
     }
 
+    public void payWithPowerUps(Cost cost, List<PowerUpCard> powerUpCards){
+        Cost updatedCost = new Cost(cost);
+        List<PowerUpCard> oneCard = new ArrayList<>();
+        for(PowerUpCard powerUpCard : powerUpCards){
+            Cost oldCost =  new Cost(updatedCost);
+            oneCard.add(powerUpCard);
+            updatedCost = updatedCost.subtract(Cost.powerUpListToCost(oneCard));
+            if(!oldCost.equals(updatedCost))
+                //discard the card
+                getHand().removePowerUpCard(powerUpCard);
+
+            oneCard.clear();
+        }
+        pay(updatedCost);
+    }
+
     @Override
     public boolean hasCards(List<PowerUpCard> powerUpCards) {
         //checks duplicate (no duplicate allowed because of the id)

@@ -20,15 +20,21 @@ public class ShootInfo implements Serializable, Info {
     private SquareAbstract square;
     private List<PowerUpCard> powerUpCards;
     private Cost totalCost;
+    private List<ScopeInfo> scopeInfos;
 
 
     public ShootInfo(PlayerAbstract attacker, Weapon weapon, List<MacroInfo> activatedMacros, SquareAbstract squareAbstract,
-                            List<PowerUpCard> powerUpCards){
+                            List<PowerUpCard> powerUpCards, List<ScopeInfo> scopeInfos){
         this.attacker = attacker;
         this.weapon = weapon;
         this.activatedMacros = activatedMacros;
         this.square = squareAbstract;
         this.powerUpCards = powerUpCards;
+        this.scopeInfos = scopeInfos;
+    }
+
+    public List<ScopeInfo> getScopeInfos() {
+        return scopeInfos;
     }
 
     public Cost getTotalCost() {

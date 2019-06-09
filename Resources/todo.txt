@@ -33,15 +33,13 @@ inviare playerboard appena si spawna (ora finche non si fanno cose sta a null)
 
 powerup dentro powerupcard UNDEFINED eppure stampa lo stesso il nome, metterli serializable? lo dice sonar
 
-PAGAMENTO CON POWERUP:
-    mando lista di carte
-    verifico che tutte le carte siano possedute dal player
-    a tutti i costi che devo verificare sottraggo quello dato dal totale dei cubi-powerup
-        metodo che data una lista di powerupcard ritorna un Cost
-        metodo che sottrae
-    mando la parte restante alla canPay as usual
+mandare nomi dei character e non dei giocatori nella shootpack
 
-    NELLA ACTUATE
-    dal costo totale si va avanti a togliere un cubo e facendo scartare una carta powerup
-    finchè o il costo non arriva a zero, e le altre se le può tenere e non deve pagare con nessun cubo di munizioni
-    oppure resta un costo diverso da zero, per cui verranno usate le ammo normali
+MIRINO
+    metto tutti i mirini dentro la shoot info
+    li faccio chiedere alla fine di tutto
+    poi man mano che passo i microeffetti, guardo i giocatori nelle liste
+    e se il micro effetto fa danno, inserisco il giocatore il una lista
+    poi prendo tuttii i mirini e guardo che il giocatore di ogni mirino sia nella lista
+
+    devo anche far scegliere una powerupcard da giocare col mirino al posto del cubo

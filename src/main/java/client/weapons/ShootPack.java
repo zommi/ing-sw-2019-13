@@ -1,13 +1,11 @@
 package client.weapons;
 
-import client.GameModel;
 import client.Info;
 import client.SquareInfo;
 import server.model.cards.PowerUpCard;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ShootPack implements Info {
 
@@ -15,6 +13,7 @@ public class ShootPack implements Info {
     private List<MacroPack> activatedMacros;
     private SquareInfo square;
     private List<PowerUpCard> powerUpCards;
+    private List<ScopePack> scopePacks;
 
 
     public ShootPack(String weapon){
@@ -35,6 +34,14 @@ public class ShootPack implements Info {
             if(macroPack.getMacroNumber() == macro)
                 return macroPack;
         return null;
+    }
+
+    public void setScopePacks(List<ScopePack> scopePacks) {
+        this.scopePacks = scopePacks;
+    }
+
+    public List<ScopePack> getScopePacks() {
+        return scopePacks;
     }
 
     public SquareInfo getSquare() {

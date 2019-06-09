@@ -21,6 +21,8 @@ public class ShootValidator {
     public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
         GameBoard gameBoard = game.getCurrentGameBoard();
 
+        List<PlayerAbstract> damagedPlayers = new ArrayList<>();
+
         ShootInfo shootInfo = convert(shootPack, game, attacker);
         if(shootInfo == null)       //if conversion fails
             return null;
@@ -91,7 +93,7 @@ public class ShootValidator {
             }
 
             //now every single activated macro is processed
-            Cost totalCost = new Cost(0, 0, 0);
+            shootInfo.setTotalCost(new Cost(0, 0, 0));
             boolean limitedActivated = false;
             MacroEffect weaponMacro;
             for (MacroInfo macroInfo : shootInfo.getActivatedMacros()) {
@@ -101,12 +103,12 @@ public class ShootValidator {
                 else
                     weaponMacro = shootInfo.getWeapon().getMacroEffect(macroInfo.getMacroNumber());
 
-                //player should have enough ammo
-                totalCost = totalCost.sum(weaponMacro.getCost());
-                //it's a surprise tool that will help us later in the actuator
-                shootInfo.setTotalCost(totalCost);
+                //updating cost
+                shootInfo.setTotalCost(shootInfo.getTotalCost().sum(weaponMacro.getCost()));
+
                 //also removing cubes given by powerups
-                if (!shootInfo.getAttacker().canPay(totalCost.subtract(Cost.powerUpListToCost(shootInfo.getPowerUpCards()))))
+                if (!shootInfo.getAttacker().canPay(shootInfo.getTotalCost()
+                        .subtract(Cost.powerUpListToCost(shootInfo.getPowerUpCards()))))
                     return null;
 
                 //checks if macro depends on the activation of another macro
@@ -205,8 +207,39 @@ public class ShootValidator {
                     if (shootInfo.getWeapon().isSpecial()) {
                         microInfo.fakeActuate(shootInfo);       //just moves characters, without giving damage
                     }
+
+                    //adds damaged player to a list for a later check
+                    for(PlayerAbstract playerAbstract : microInfo.getPlayersList()){
+                        if(weaponMicro.getDamage() != 0 && !damagedPlayers.contains(playerAbstract))
+                            damagedPlayers.add(playerAbstract);
+                    }
                 }
             }
+
+            //validating targeting scopes
+            if(shootInfo.getScopeInfos() != null){
+                List<PowerUpCard> cardsUsed = new ArrayList<>();
+
+                for(ScopeInfo scopeInfo : shootInfo.getScopeInfos()){
+                    cardsUsed.add(scopeInfo.getTargetingScope());
+
+                    if(!damagedPlayers.contains(scopeInfo.getTarget()))
+                        return null;
+
+                    shootInfo.setTotalCost(shootInfo.getTotalCost().sum(Cost.getCost(scopeInfo.getColor())));
+
+                }
+
+                //player must have the selected powerups
+                if(!attacker.hasCards(cardsUsed))
+                    return null;
+
+                //checks if player can pay
+                if(!attacker.canPay(shootInfo.getTotalCost().subtract(Cost.powerUpListToCost(shootInfo.getPowerUpCards()))))
+                    return null;
+
+            }
+
             return shootInfo;
 
         } finally {
@@ -300,6 +333,30 @@ public class ShootValidator {
                 powerUpCards.add(powerUpCard);
         }
 
-        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()), macroInfos, squareAbstract, powerUpCards);
+        //converting scopePacks
+        List<ScopeInfo> scopeInfos = new ArrayList<>();
+
+        if(shootPack.getScopePacks() != null) {
+
+            PowerUpCard targetingScope;
+            PlayerAbstract target;
+            Color color;
+            for (ScopePack scopePack : shootPack.getScopePacks()) {
+                targetingScope = attacker.getPowerUpCard(scopePack.getTargetingScope());
+                if (targetingScope == null)
+                    return null;
+                target = game.getPlayer(scopePack.getTarget());
+                if (target == null)
+                    return null;
+                color = scopePack.getColor();
+                if (color == null || !color.isAmmoColor())
+                    return null;
+
+                scopeInfos.add(new ScopeInfo(targetingScope, target, color));
+            }
+        }
+
+        return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()),
+                            macroInfos, squareAbstract, powerUpCards, scopeInfos);
     }
 }
