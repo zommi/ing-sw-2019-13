@@ -261,9 +261,17 @@ public class ShootValidator {
         //must return null if conversion fails
         GameBoard gameBoard = game.getCurrentGameBoard();
         List<MacroInfo> macroInfos = new ArrayList<>();
+
+        if(shootPack == null)
+            return null;
+
         for(MacroPack macroPack : shootPack.getActivatedMacros()){
             List<MicroInfo> microInfos = new ArrayList<>();
+            if(macroPack == null)
+                return null;
             for(MicroPack microPack : macroPack.getActivatedMicros()){
+                if(microPack == null)
+                    return null;
                 List<PlayerAbstract> playerAbstractList = new ArrayList<>();
                 SquareAbstract squareAbstract;
                 List<Room> roomList = new ArrayList<>();

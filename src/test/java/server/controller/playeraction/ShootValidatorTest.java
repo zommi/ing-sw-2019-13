@@ -36,7 +36,8 @@ class ShootValidatorTest {
         List<MacroInfo> activatedMacros = new ArrayList<>();
         activatedMacros.add(macroInfo);
 
-        ShootInfo shootInfo = new ShootInfo(player1, testGb.getWeaponDeck().getWeapon("Zx-2"), activatedMacros, null, Collections.emptyList());
+        ShootInfo shootInfo = new ShootInfo(player1, testGb.getWeaponDeck().getWeapon("Zx-2"), activatedMacros,
+                null, Collections.emptyList(), Collections.emptyList());
 
         ShootValidator shootValidator = new ShootValidator();
 

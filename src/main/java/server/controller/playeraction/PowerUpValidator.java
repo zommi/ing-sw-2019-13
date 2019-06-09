@@ -25,26 +25,6 @@ public class PowerUpValidator {
 
 
         switch(powerUpInfo.getPowerUpCard().getPowerUp().getName()){
-            case "Targeting Scope":
-                if(powerUpInfo.getSquare() != null || powerUpInfo.getTarget() == null)
-                    return null;
-                if(powerUpInfo.getTarget().getJustDamagedBy() != attacker)
-                    return null;
-                int blue = 0, red = 0, yellow = 0;
-                switch(powerUpInfo.getCubeColor()){
-                    case BLUE: blue++;
-                        break;
-                    case RED: red++;
-                        break;
-                    case YELLOW: yellow++;
-                        break;
-                    default: return null;
-                }
-                Cost cost = new Cost(red, blue, yellow);
-                if(!attacker.canPay(cost))
-                    return null;
-                powerUpInfo.setCost(cost);
-                break;
             case "Newton":
                 if(powerUpInfo.getTarget() == null || powerUpInfo.getSquare() == null )
                     return null;
@@ -63,8 +43,9 @@ public class PowerUpValidator {
                 powerUpInfo.setTarget(attacker);
                 break;
             case "Tagback Grenade":
-                if(powerUpInfo.getTarget() != attacker.getJustDamagedBy())
+                if(powerUpInfo.getTarget() != null)
                     return null;
+                powerUpInfo.setTarget(attacker.getJustDamagedBy());
                 if(!attacker.getPosition().getVisibleCharacters().contains(powerUpInfo
                         .getTarget().getGameCharacter()))
                     return null;
@@ -80,6 +61,9 @@ public class PowerUpValidator {
         SquareAbstract square = null;
         PlayerAbstract target = null;
 
+        if(powerUpPack == null)
+            return null;
+
         if(powerUpPack.getSquareInfo() != null && gameBoard.getMap().getSquare(powerUpPack.getSquareInfo().getRow(),
                 powerUpPack.getSquareInfo().getCol()) != null)
             square = gameBoard.getMap().getSquare(powerUpPack.getSquareInfo().getRow(),
@@ -88,7 +72,7 @@ public class PowerUpValidator {
         if(powerUpPack.getTarget() != null && game.getPlayer(powerUpPack.getTarget()) != null)
             target = game.getPlayer(powerUpPack.getTarget());
 
-        return new PowerUpInfo(attacker, powerUpPack.getPowerupCard(), square, target, powerUpPack.getCubeColor());
+        return new PowerUpInfo(attacker, powerUpPack.getPowerupCard(), square, target);
     }
 
 }

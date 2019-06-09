@@ -4,6 +4,7 @@ import client.gui.MainGuiController;
 import client.gui.UpdaterGui;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
+import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import javafx.application.Platform;
 import server.model.cards.PowerUpCard;
@@ -69,5 +70,10 @@ public class GuiInput extends InputAbstract {
     @Override
     public List<PowerUpCard> askPowerUps() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<ScopePack> askTargetingScopes() {
+        return null;
     }
 }

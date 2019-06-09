@@ -383,7 +383,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                         }
                                     }
                                     System.out.println("Test");
-                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k).getPowerUp());
+                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k));
                                     connection.send(action);
                                     connection.setClientHasChosen();
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
@@ -658,7 +658,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     }
                 }
-                Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp());
+                Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
                 connection.send(action);
             }
             else if(read.equalsIgnoreCase("map")){

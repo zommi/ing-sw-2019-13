@@ -85,9 +85,9 @@ public class ActionParser{
         return  collectInfo;
     }
 
-    public Info createPowerUpEvent(PowerUp powerUp) {
-        PowerUpParser powerUpParser = new PowerUpParser(gameModel);
-        return powerUpParser.getPowerUpInput(powerUp,input);
+    public Info createPowerUpEvent(PowerUpCard powerUpCard) {
+        PowerUpParser powerUpParser = new PowerUpParser(gameModel, input);
+        return powerUpParser.getPowerUpInput(powerUpCard);
     }
 
     public Info createSpawnEvent(PowerUpCard powerupCard){

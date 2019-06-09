@@ -15,7 +15,7 @@ public class PlayerHandAnswer implements ServerAnswer {
         this.playerHand = p;
     }
 
-    public PlayerHand getplayerHand() {
+    public PlayerHand getPlayerHand() {
         return this.playerHand;
     }
 

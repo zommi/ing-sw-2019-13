@@ -1,7 +1,5 @@
 package server.controller.playeraction;
 
-import client.weapons.Cost;
-import constants.Color;
 import server.model.cards.PowerUpCard;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
@@ -11,15 +9,13 @@ public class PowerUpInfo {
     private PowerUpCard powerUpCard;
     private SquareAbstract square;
     private PlayerAbstract target;
-    private Color cubeColor;
-    private Cost cost;
 
-    public PowerUpInfo(PlayerAbstract attacker, PowerUpCard powerUpCard, SquareAbstract square, PlayerAbstract target, Color cubeColor){
+
+    public PowerUpInfo(PlayerAbstract attacker, PowerUpCard powerUpCard, SquareAbstract square, PlayerAbstract target){
         this.attacker = attacker;
         this.powerUpCard = powerUpCard;
         this.square = square;
         this.target = target;
-        this.cubeColor = cubeColor;
     }
 
     public PlayerAbstract getAttacker() {
@@ -40,17 +36,5 @@ public class PowerUpInfo {
 
     public void setTarget(PlayerAbstract target) {
         this.target = target;
-    }
-
-    public Color getCubeColor() {
-        return cubeColor;
-    }
-
-    public Cost getCost() {
-        return cost;
-    }
-
-    public void setCost(Cost cost) {
-        this.cost = cost;
     }
 }

@@ -6,15 +6,10 @@ import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
-import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 import server.model.map.Room;
 import server.model.player.GameCharacter;
-import server.model.player.PlayerAbstract;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class CliInput extends InputAbstract{
@@ -27,7 +22,7 @@ public class CliInput extends InputAbstract{
     @Override
     public boolean getChoice(MacroEffect macroEffect) {
         System.out.println("Do you wanna activate this macro effect?\n"
-                + macroEffect.getDescription() + "\n" + macroEffect.getCost().printOnCli() + "[y to activate]\n");
+                + macroEffect.getDescription() + "\n" + macroEffect.getCost().printOnCli() + "    [y to activate]\n");
         String s = scanner.nextLine();
         return s.equals("y");
     }
@@ -35,7 +30,7 @@ public class CliInput extends InputAbstract{
     @Override
     public boolean getChoice(MicroEffect microEffect) {
         System.out.println("Do you wanna activate this micro effect?\n"
-                + microEffect + "[y to activate]\n");
+                + microEffect + "    [y to activate]");
         String s = scanner.nextLine();
         return s.equals("y");
     }
@@ -241,8 +236,8 @@ public class CliInput extends InputAbstract{
     @Override
     public List<ScopePack> askTargetingScopes(){
         List<ScopePack> returnList = new ArrayList<>();
-        if(!gameModel.getMyPlayer().getHand().getTargetingScopes().isEmpty()){
-            List<PowerUpCard> notChosen = new ArrayList<>(gameModel.getMyPlayer().getHand().getTargetingScopes());
+        if(gameModel != null && !gameModel.getPlayerHand().getPlayerHand().getTargetingScopes().isEmpty()){
+            List<PowerUpCard> notChosen = new ArrayList<>(gameModel.getPlayerHand().getPlayerHand().getTargetingScopes());
             PowerUpCard chosenCard;
             boolean ask = true;
             while(ask && !notChosen.isEmpty()){

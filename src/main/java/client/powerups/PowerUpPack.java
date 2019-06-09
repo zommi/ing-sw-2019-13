@@ -3,13 +3,19 @@ package client.powerups;
 import client.Info;
 import client.SquareInfo;
 import constants.Color;
+import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 
 public class PowerUpPack implements Info {
     private PowerUpCard powerUpCard;
     private SquareInfo squareInfo;
     private String target;
-    private Color cubeColor;
+
+    public PowerUpPack(PowerUpCard powerUpCard, SquareInfo squareInfo, String target){
+        this.powerUpCard = powerUpCard;
+        this.squareInfo = squareInfo;
+        this.target = target;
+    }
 
     public SquareInfo getSquareInfo() {
         return squareInfo;
@@ -21,9 +27,5 @@ public class PowerUpPack implements Info {
 
     public PowerUpCard getPowerupCard() {
         return powerUpCard;
-    }
-
-    public Color getCubeColor() {
-        return cubeColor;
     }
 }

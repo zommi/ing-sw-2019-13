@@ -35,6 +35,7 @@ public class Constants {
     public static final int MAX_POWERUP_HAND = 3;
 
     public static final int TARGET_SCOPE_DMG = 1;
+    public static final int TAGBACK_GRENADE_MARKS = 1;
 
 
     public static final String TARGETING_SCOPE = "Targeting Scope";

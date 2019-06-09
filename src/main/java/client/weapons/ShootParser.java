@@ -59,7 +59,7 @@ public class ShootParser {
         shootPack.setScopePacks(input.askTargetingScopes());
 
         //asking for powerup cards
-        if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
+        if(gameModel != null && gameModel.getPlayerHand() != null && !gameModel.getPlayerHand().getPowerupHand().isEmpty())
             shootPack.setPowerUpCards(input.askPowerUps());
         else
             shootPack.setPowerUpCards(Collections.emptyList());
