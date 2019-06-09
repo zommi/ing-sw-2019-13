@@ -39,6 +39,15 @@ public class PlayerHand implements Serializable {
         return weaponHand;
     }
 
+    public List<PowerUpCard> getTargetingScopes(){
+        List<PowerUpCard> returnList = new ArrayList<>();
+        for(PowerUpCard powerUpCard : powerupHand){
+            if(powerUpCard.getName().equalsIgnoreCase(Constants.TARGETING_SCOPE))
+                returnList.add(powerUpCard);
+        }
+        return returnList;
+    }
+
     public void removePowerUpCard(PowerUpCard powerUpCard){
         Iterator<PowerUpCard> iterator = powerupHand.iterator();
         PowerUpCard powerUpCard1;

@@ -2,6 +2,7 @@ package server.controller.playeraction;
 
 
 import client.weapons.Cost;
+import constants.Constants;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 
@@ -14,6 +15,11 @@ public class ShootActuator {
         for(MacroInfo macroInfo : shootInfo.getActivatedMacros()){
             for(MicroInfo microInfo : macroInfo.getActivatedMicros())
                 microInfo.actuate(shootInfo);
+        }
+
+        //actuate targeting scopes
+        for(ScopeInfo scopeInfo : shootInfo.getScopeInfos()){
+            scopeInfo.getTarget().addDamage(Constants.TARGET_SCOPE_DMG, shootInfo.getAttacker().getColor());
         }
 
         //pay

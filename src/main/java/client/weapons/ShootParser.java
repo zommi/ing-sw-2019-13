@@ -5,6 +5,7 @@ import client.InputAbstract;
 import server.model.cards.PowerUpCard;
 import server.model.player.PlayerState;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +54,9 @@ public class ShootParser {
             default:
                 //this should never happen (it depends on json file)
         }
+
+        //ask for targeting scopes
+        shootPack.setScopePacks(input.askTargetingScopes());
 
         //asking for powerup cards
         if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())

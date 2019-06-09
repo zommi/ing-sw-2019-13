@@ -2,6 +2,7 @@ package client;
 
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
+import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import server.model.cards.PowerUpCard;
 
@@ -53,4 +54,6 @@ public abstract class InputAbstract {
     }
 
     public abstract List<PowerUpCard> askPowerUps();
+
+    public abstract List<ScopePack> askTargetingScopes();
 }

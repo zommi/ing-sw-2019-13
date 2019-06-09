@@ -34,6 +34,11 @@ public class Constants {
     public static final int MAX_WEAPON_HAND = 3;
     public static final int MAX_POWERUP_HAND = 3;
 
+    public static final int TARGET_SCOPE_DMG = 1;
+
+
+    public static final String TARGETING_SCOPE = "Targeting Scope";
+
     public static final int NO_CHOICE = -99999;
 
     public static final String ANSI_RESET = "\u001B[0m";

@@ -2,7 +2,9 @@ package client;
 
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
+import client.weapons.ScopePack;
 import client.weapons.Weapon;
+import constants.Color;
 import constants.Constants;
 import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
@@ -234,6 +236,74 @@ public class CliInput extends InputAbstract{
         else
             return Collections.emptyList();
 
+    }
+
+    @Override
+    public List<ScopePack> askTargetingScopes(){
+        List<ScopePack> returnList = new ArrayList<>();
+        if(!gameModel.getMyPlayer().getHand().getTargetingScopes().isEmpty()){
+            List<PowerUpCard> notChosen = new ArrayList<>(gameModel.getMyPlayer().getHand().getTargetingScopes());
+            PowerUpCard chosenCard;
+            boolean ask = true;
+            while(ask && !notChosen.isEmpty()){
+                System.out.println("Choose the card, or say \"stop\":");
+                for(int i = 0; i<notChosen.size(); i++){
+                    System.out.println(notChosen.get(i) + " (" + (i+1) + ")");
+                }
+                String strChoice = scanner.nextLine();
+                if(strChoice.equals("stop"))
+                    ask = false;
+                else{
+                    try{
+                        int choice = Integer.parseInt(strChoice) - 1;
+                        if(choice >= 0 && choice < notChosen.size()){
+                            chosenCard = notChosen.get(choice);
+                            notChosen.remove(chosenCard);
+                            returnList.add(manageScope(chosenCard));
+                        }
+                        else
+                            System.out.println("Please insert a valid number, or say \"stop\".");
+                    }catch(NumberFormatException e){
+                        System.out.println("Please insert a valid number, or say \"stop\".");
+                    }
+                }
+            }
+        }
+        return returnList;
+
+    }
+
+    private ScopePack manageScope(PowerUpCard powerUpCard){
+        String target = askPlayers(1).get(0);
+        Color color = chooseAmmoColor();
+        return new ScopePack(powerUpCard, target, color);
+    }
+
+    private Color chooseAmmoColor(){
+        boolean ask = true;
+        Color color = Color.RED;
+        while(ask){
+            System.out.println("Choose a color:");
+            for(int i = 0; i<Color.values().length; i++){
+                if(Color.values()[i].isAmmoColor()) {
+                    System.out.println(Color.values()[i].getAnsi() + Color.values()[i].name() + Constants.ANSI_RESET +
+                            " (" + (i + 1) + ")");
+
+                }
+            }
+            try {
+                int choice = Integer.parseInt(scanner.nextLine()) - 1;
+                if (choice >= 0 && choice < Color.values().length) {
+                    color = Color.values()[choice];
+                    ask = false;
+                }
+                else
+                    System.out.println("Please insert a valid number.");
+            }catch(NumberFormatException e){
+                System.out.println("Please insert a valid number.");
+            }
+        }
+        return color;
     }
 
     @Override
