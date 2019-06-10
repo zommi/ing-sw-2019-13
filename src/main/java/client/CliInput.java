@@ -237,6 +237,10 @@ public class CliInput extends InputAbstract{
     public List<ScopePack> askTargetingScopes(){
         List<ScopePack> returnList = new ArrayList<>();
         if(gameModel != null && !gameModel.getPlayerHand().getPlayerHand().getTargetingScopes().isEmpty()){
+            System.out.println("Do you want to use a targeting scope? [y]");
+            if(!scanner.nextLine().equalsIgnoreCase("y"))
+                return returnList;
+
             List<PowerUpCard> notChosen = new ArrayList<>(gameModel.getPlayerHand().getPlayerHand().getTargetingScopes());
             PowerUpCard chosenCard;
             boolean ask = true;

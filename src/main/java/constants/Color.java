@@ -1,6 +1,8 @@
 package constants;
 
-public enum Color {
+import java.io.Serializable;
+
+public enum Color implements Serializable {
     RED("r", false,true,0, "#ff0000", "#af2b2b", "\u001B[31m", "#eb0a0a50"),
     BLUE("b", true,true,1, "#0000ff", "#2b4daf", "\u001B[34m", "#3a0aeb50"),
     YELLOW("y", true,true,2, "#ffff00", "#d8de25", "\u001B[33m", "#f4f80950"),
