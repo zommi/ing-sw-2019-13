@@ -6,6 +6,7 @@ import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.ScopePack;
 import client.weapons.Weapon;
+import constants.Color;
 import javafx.application.Platform;
 import server.model.cards.PowerUpCard;
 
@@ -28,6 +29,7 @@ public class GuiInput extends InputAbstract {
     public GuiInput(Updater updater){
         UpdaterGui updaterGui = (UpdaterGui) updater;
         this.guiController = (MainGuiController)((UpdaterGui) updater).getControllerFromString("gui.fxml");
+        this.guiController.setInput(this);
     }
 
     @Override
@@ -43,7 +45,6 @@ public class GuiInput extends InputAbstract {
     @Override
     public boolean getChoice(MicroEffect microEffect) {
         return this.guiController.askMicro(microEffect);
-
     }
 
     @Override
@@ -69,11 +70,18 @@ public class GuiInput extends InputAbstract {
 
     @Override
     public List<PowerUpCard> askPowerUps() {
-        return Collections.emptyList();
+        return this.guiController.askPowerups();
     }
 
     @Override
     public List<ScopePack> askTargetingScopes() {
-        return null;
+        return this.guiController.askTargetingScopes();
     }
+
+    public ScopePack manageScope(PowerUpCard powerUpCard){
+        String target = askPlayers(1).get(0);
+        Color color = this.guiController.chooseAmmoColor();
+        return new ScopePack(powerUpCard, target, color);
+    }
+
 }

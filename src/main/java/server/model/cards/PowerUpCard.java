@@ -48,6 +48,10 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         powerupDeck.discardCard(this); //It will add the card to the discardedcards.
     }
 
+    public int getCardId() {
+        return cardId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof PowerUpCard))
