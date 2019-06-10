@@ -224,7 +224,12 @@ public class Controller {
                                         System.out.println("Client has chosen: "+clientHasChosen);
                                         if(clientHasChosen){
                                             Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
-                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade,currentGame, currentPlayer);
+                                            PlayerAbstract playerShooter = null;
+                                            for(int b = 0; i < currentGame.getActivePlayers().size(); i++){
+                                                if(currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
+                                                    playerShooter = currentGame.getActivePlayers().get(b);
+                                            }
+                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade,currentGame, playerShooter);
                                             turnHandler.setAndDoAction(powerUpAction);
                                             this.sendCollectShootAnswersRMI(currentPlayer, grenadeID);
                                         }
