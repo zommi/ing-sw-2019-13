@@ -7,6 +7,7 @@ import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
+import server.controller.playeraction.Action;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
@@ -293,9 +294,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel, name);
 
-                //excluding my name from player names list and setting input
-
-
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
                     System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
@@ -308,7 +306,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println("You have no weapons!");
                     } else {
                         for (WeaponCard weaponCard : weapons) {
-                            System.out.println("> " + weaponCard.getName());
+                            System.out.println("> " + weaponCard.getName() + weaponCard.printStatus());
                         }
                     }
                     powerups = playerHand.getPowerupHand();
@@ -349,59 +347,52 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                     else { //we are exactly in the player that has the current turn to use the tagback
                         Scanner myObj = new Scanner(System.in);
-                        System.out.println("You have been shot. You can use the tagback grenade to give him 1 mark. Do you want to use it?");
-                        System.out.println("Yes (1)");
-                        System.out.println("No (2)");
+                        System.out.println("You have been shot. You can use the tagback grenade to give him 1 mark. Do you want to use it? [y]");
+
                         String read = myObj.nextLine();
 
-                        try{
-                            int choice = Integer.parseInt(read);
-                            if((choice != 1) && (choice != 0)){
-                                System.out.println("Error: insert a valid number!");
-                            }
-                            else {
-                                if (Integer.parseInt(read) == 1) {
-                                    System.out.println("Ok you can use the tagback grenade towards the shooter");
-                                    System.out.println("Which tagback do you want to use?");
-                                    List<PowerUpCard> powerupsTemp = gameModel.getPlayerHand().getPowerupHand();
-                                    int k = 0;
-                                    int i = 0;
-                                    for (PowerUpCard powerUpCard : powerupsTemp) {
-                                        k++;
-                                        if (powerUpCard.getName().equals("Tagback Grenade")) {
-                                            i++;
-                                            System.out.println("> " + i + " " + powerUpCard);
-                                        }
-                                    }
-                                    read = myObj.nextLine();
-                                    boolean chosenPowerup = false;
-                                    while(!chosenPowerup) {
-                                        try {
-                                            choice = Integer.parseInt(read);
-                                            if (choice > 0 && choice <= powerupsTemp.size())
-                                                chosenPowerup = true;
-                                            else
-                                                System.out.println("You chose a number not available");
-                                        } catch (NumberFormatException e) {
-                                            System.out.println("Please insert a valid number.");
-                                        }
-                                    }
-                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
-                                    gameModel.setClientChoice(true);
-                                    gameModel.setGrenadeAction(action);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(5000);
-                                    }
-                                    catch (InterruptedException e){
-                                        e.printStackTrace();
-                                    }
-                                    //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
-                                    //actionParser.createPowerUpEvent("Tagback Grenade");
+                        if(read.equalsIgnoreCase("y")){
+                            System.out.println("Ok you can use the tagback grenade towards the shooter");
+                            System.out.println("Which tagback do you want to use?");
+                            List<PowerUpCard> powerupsTemp = gameModel.getPlayerHand().getPowerupHand();
+                            int k = 0;
+                            int i = 0;
+                            for (PowerUpCard powerUpCard : powerupsTemp) {
+                                k++;
+                                if (powerUpCard.getName().equals("Tagback Grenade")) {
+                                    i++;
+                                    System.out.println(powerUpCard + " (" + (i+1) + ")");
                                 }
                             }
-                        } catch(NumberFormatException e) {
-                            System.out.println("Error: insert a valid number");
+
+                            read = myObj.nextLine();
+                            boolean chosenPowerup = false;
+                            while(!chosenPowerup) {
+                                try {
+                                    int choice = Integer.parseInt(read) - 1;
+                                    if (choice >- 0 && choice < powerupsTemp.size())
+                                        chosenPowerup = true;
+                                    else
+                                        System.out.println("You chose a number not available");
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Please insert a valid number.");
+                                }
+                            }
+                            System.out.println("Test");
+                            Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
+                            System.out.println("Test 1");
+                            gameModel.setClientChoice(true);
+                            gameModel.setGrenadeAction(action);
+                            try{
+                                TimeUnit.SECONDS.sleep(5000);
+                            }
+                            catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
+                            //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
+                            //actionParser.createPowerUpEvent("Tagback Grenade");
                         }
+
                     }
                     System.out.println("Ok the powerup has been used towards your shooter");
                 }
@@ -653,7 +644,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                 while (askPowerUp) {
                     System.out.println(">Choose what powerup you want to use: ");
                     for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
-                        System.out.println(gameModel.getPlayerHand().getPowerupHand().get(i).getName() + " (" + (i + 1) + ")");
+                        PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
+                        System.out.println(powerUpCard.getColor().getAnsi() + powerUpCard.getName() +
+                                Constants.ANSI_RESET + " (" + (i + 1) + ")");
                     }
                     strChoice = myObj.nextLine();
                     try {
@@ -675,6 +668,19 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
                 connection.send(action);
+            }
+            else if(read.equalsIgnoreCase("r")){        //reload
+                List<WeaponCard> weaponCards = new ArrayList<>();
+                List<PowerUpCard> powerUpCards = new ArrayList<>();
+                if(!gameModel.getMyPlayer().getHand().areAllWeaponsLoaded()) {
+                    System.out.println("Do you want to reload any weapon? [y]");
+                    if (myObj.nextLine().equalsIgnoreCase("y")) {
+                        weaponCards = askWeaponsToReload(myObj);
+                        powerUpCards = actionParser.getInput().askPowerUps();
+                    }
+                }
+                System.out.println("Ok, your turn is over.");
+                connection.send(actionParser.createReloadEvent(weaponCards, powerUpCards));
             }
             else if(read.equalsIgnoreCase("map")){
                 gameModel.getMap().printOnCLI();
@@ -724,6 +730,46 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
         return coordinate;
+    }
+
+    public List<WeaponCard> askWeaponsToReload(Scanner scanner){
+        List<WeaponCard> returnedList = new ArrayList<>();
+        List<WeaponCard> cardsToAsk = new ArrayList<>();
+
+        //will ask only for unloaded weapons
+        for(WeaponCard weaponCard : gameModel.getMyPlayer().getHand().getWeaponHand()){
+            if(!weaponCard.isReady())
+                cardsToAsk.add(weaponCard);
+        }
+
+        boolean ask = true;
+        while(ask){
+            System.out.println("Choose the card you want to reload, or say \"stop\":");
+            for(int i = 0; i<cardsToAsk.size(); i++){
+
+                    System.out.println( cardsToAsk.get(i) + " (" + (i+1) + ")");
+            }
+            try{
+                String strChoice = scanner.nextLine();
+                if(strChoice.equalsIgnoreCase("stop")){
+                    break;
+                }
+
+                int choice = Integer.parseInt(strChoice) - 1;
+                if(choice>=0 && choice < cardsToAsk.size()){
+                    returnedList.add(cardsToAsk.get(choice));
+                    cardsToAsk.remove(choice);
+                    if(cardsToAsk.isEmpty())
+                        ask = false;
+                }
+                else{
+                    System.out.println("Please insert a valid number.");
+                }
+            }catch(NumberFormatException e){
+                System.out.println("Please insert a valid number, or say \"stop\".");
+            }
+        }
+        return returnedList;
     }
 
     public GameCharacter getCharacter(String string){

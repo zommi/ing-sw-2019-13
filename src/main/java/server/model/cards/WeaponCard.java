@@ -72,4 +72,8 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
     public String getPath(){
         return weapon.getPath();
     }
+
+    public String printStatus(){
+        return ", " + (isReady() ? "OK" : "KO");
+    }
 }

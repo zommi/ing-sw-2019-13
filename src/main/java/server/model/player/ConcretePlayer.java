@@ -330,4 +330,8 @@ public class ConcretePlayer extends PlayerAbstract {
     public Color getKillerColor(){
         return this.playerBoard.getKillerColor();
     }
+
+    public void setHand(PlayerHand hand) {
+        this.hand = hand;
+    }
 }

@@ -27,7 +27,7 @@ public class ShootValidator {
         if(shootInfo == null)       //if conversion fails
             return null;
 
-        /*//IMPORTANT:
+        //IMPORTANT:
         //uncomment these lines only when instantiating weapon cards and assigning them to players
 
         //attacker must have the selected weapon
@@ -36,7 +36,7 @@ public class ShootValidator {
 
         //weapon must be loaded
         if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
-            return null;*/
+            return null;
 
         //attacker must have the selected powerups
         if(!shootInfo.getAttacker().hasPowerUpCards(shootInfo.getPowerUpCards()))

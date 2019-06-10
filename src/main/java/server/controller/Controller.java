@@ -154,12 +154,17 @@ public class Controller {
             return false;
         }
 
-        /*if(action instanceof ReloadInfo){
-            ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, );
+        if(action instanceof ReloadInfo){
+
+            //checks that it's not the wrong time to reload
+            if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN)
+                return false;
+
+            ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
             turnHandler.setAndDoAction(reloadAction);
-            this.sendToSpecificRMI(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
-            this.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-        }*/
+            server.sendToSpecificRMI(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
+            server.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+        }
 
         if(action instanceof PowerUpPack){
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);

@@ -114,4 +114,12 @@ public class PlayerHand implements Serializable {
             this.powerupHand.add(draw);
     }
 
+    public boolean areAllWeaponsLoaded(){
+        for(WeaponCard weaponCard : weaponHand){
+            if(!weaponCard.isReady())
+                return false;
+        }
+        return true;
+    }
+
 }

@@ -30,6 +30,8 @@ public class ActionParser{
         this.gameModel = gameModel;
         input.setGameModel(gameModel);
 
+        this.gameModel.getMyPlayer().setHand(gameModel.getPlayerHand().getPlayerHand());
+
         //initialize players names
         List<String> pNames = new ArrayList<>();
         for(String string : gameModel.getPlayersNames())
@@ -92,6 +94,10 @@ public class ActionParser{
 
     public Info createSpawnEvent(PowerUpCard powerupCard){
         return new SpawnInfo(powerupCard);
+    }
+
+    public Info createReloadEvent(List<WeaponCard> weaponCards, List<PowerUpCard> powerUpCards){
+        return new ReloadInfo(weaponCards, powerUpCards);
     }
 }
 

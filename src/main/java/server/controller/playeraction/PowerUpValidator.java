@@ -52,7 +52,7 @@ public class PowerUpValidator {
                 return powerUpInfo;
             default: return null;
         }
-        return null;
+        return powerUpInfo;
 
     }
 
