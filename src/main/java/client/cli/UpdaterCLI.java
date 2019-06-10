@@ -290,9 +290,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel, name);
 
-                //excluding my name from player names list and setting input
-
-
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
                     System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
@@ -644,7 +641,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                 while (askPowerUp) {
                     System.out.println(">Choose what powerup you want to use: ");
                     for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
-                        System.out.println(gameModel.getPlayerHand().getPowerupHand().get(i).getName() + " (" + (i + 1) + ")");
+                        PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
+                        System.out.println(powerUpCard.getColor().getAnsi() + powerUpCard.getName() +
+                                Constants.ANSI_RESET + " (" + (i + 1) + ")");
                     }
                     strChoice = myObj.nextLine();
                     try {
