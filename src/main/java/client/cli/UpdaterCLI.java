@@ -37,9 +37,12 @@ public class UpdaterCLI  implements Updater,Runnable{
     private String name;
     private String characterName;
 
+
     public UpdaterCLI(){
         super();
     }
+
+
 
 
     @Override
@@ -384,9 +387,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                                         }
                                     }
                                     System.out.println("Test");
-                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k));
-                                    connection.send(action);
-                                    connection.setClientHasChosen();
+                                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
+                                    System.out.println("Test 1");
+                                    gameModel.setClientChoice(true);
+                                    gameModel.setGrenadeAction(action);
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                                     //actionParser.createPowerUpEvent("Tagback Grenade");
                                 }

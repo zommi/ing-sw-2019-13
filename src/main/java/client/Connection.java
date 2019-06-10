@@ -10,7 +10,7 @@ public interface Connection extends Serializable {
 
     public void addPlayerCharacter(String name);
 
-    public void setClientHasChosen();
+    //public void setClientHasChosen();
 
     public boolean CharacterChoice(String name);
 

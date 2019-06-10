@@ -50,6 +50,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return null;
     }
 
+
     public GameMap getMap(){
         try{
             return gameProxy.getMap();
@@ -61,7 +62,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return null;
     }
 
-    @Override
+    /*@Override
     public void setClientHasChosen(){
         try{
             gameProxy.setClientHasChosenPowerup();
@@ -69,7 +70,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         catch(RemoteException e){
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public int getStartGame(){
@@ -105,6 +106,17 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             e.printStackTrace();
         }
         return -1;
+    }
+
+    @Override
+    public boolean askClient() throws RemoteException{
+        return gameModel.getClientChoice();
+    }
+
+
+    @Override
+    public Info getGrenadeAction(){
+        return gameModel.getGrenadeAction();
     }
 
     @Override

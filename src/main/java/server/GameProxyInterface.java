@@ -19,7 +19,11 @@ public interface GameProxyInterface extends Remote {
 
     public String getCurrentCharacter() throws RemoteException;
 
-    public void setClientHasChosenPowerup() throws RemoteException;
+    public boolean askClient(int ID) throws RemoteException;
+
+    public Info getGrenadeAction(int grenadeID) throws RemoteException;
+
+    //public void setClientHasChosenPowerup() throws RemoteException;
 
     public int getCurrentID() throws RemoteException;
 

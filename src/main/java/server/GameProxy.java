@@ -64,9 +64,41 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return true;
     }
 
+    /*
     @Override
     public void setClientHasChosenPowerup() {
         this.serverRMI.getServer().getController().setClientHasChosen();
+    }*/
+
+    @Override
+    public Info getGrenadeAction(int ID) throws RemoteException{
+        for (int k = 0; k < clientRMIadded.size(); k++) {
+            try {
+                int clientID = clientRMIadded.get(k).getClientID();
+                if (clientID == ID) {
+                    return clientRMIadded.get(k).getGrenadeAction();
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean askClient(int ID) throws RemoteException{
+        for(int k = 0; k < clientRMIadded.size(); k++){
+            try{
+                int clientID = clientRMIadded.get(k).getClientID();
+                if(clientID == ID){
+                    return clientRMIadded.get(k).askClient();
+                }
+            }
+            catch(RemoteException e){
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public boolean makeAsynchronousAction(int clientID, Info action)  throws RemoteException{
@@ -88,7 +120,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public int getGrenadeID(){
+    public int getGrenadeID() throws RemoteException{
         return this.serverRMI.getServer().getController().getGrenadeID();
     }
 
