@@ -8,6 +8,7 @@ import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.controller.playeraction.Action;
+import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
@@ -357,11 +358,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                             List<PowerUpCard> powerupsTemp = gameModel.getPlayerHand().getPowerupHand();
                             int k = 0;
                             int i = 0;
+                            List<PowerUpCard> listTagback = new ArrayList<>();
                             for (PowerUpCard powerUpCard : powerupsTemp) {
-                                k++;
                                 if (powerUpCard.getName().equals("Tagback Grenade")) {
                                     i++;
-                                    System.out.println(powerUpCard + " (" + (i+1) + ")");
+                                    System.out.println(powerUpCard + " (" + (i) + ")");
+                                    listTagback.add(powerUpCard);
                                 }
                             }
 
@@ -370,7 +372,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             while(!chosenPowerup) {
                                 try {
                                     int choice = Integer.parseInt(read) - 1;
-                                    if (choice >- 0 && choice < powerupsTemp.size())
+                                    if (choice >= 0 && choice < powerupsTemp.size())
                                         chosenPowerup = true;
                                     else
                                         System.out.println("You chose a number not available");
@@ -379,7 +381,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 }
                             }
                             System.out.println("Test");
-                            Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
+                            Info action = actionParser.createPowerUpEvent(listTagback.get(i-1));
                             System.out.println("Test 1");
                             gameModel.setClientChoice(true);
                             gameModel.setGrenadeAction(action);
@@ -389,6 +391,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             catch (InterruptedException e){
                                 e.printStackTrace();
                             }
+
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");
                         }
