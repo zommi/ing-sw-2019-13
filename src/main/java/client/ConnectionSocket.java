@@ -33,10 +33,10 @@ public class ConnectionSocket implements Connection {
         this.socket = null;
     }
 
-    @Override
+    /*@Override
     public void setClientHasChosen(){
 
-    }
+    }*/
 
     public boolean getError(){
         return this.error;

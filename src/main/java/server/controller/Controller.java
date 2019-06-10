@@ -27,6 +27,7 @@ import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
 import view.*;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -153,6 +154,13 @@ public class Controller {
             return false;
         }
 
+        /*if(action instanceof ReloadInfo){
+            ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, );
+            turnHandler.setAndDoAction(reloadAction);
+            this.sendToSpecificRMI(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
+            this.sendToEverybodyRMI(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+        }*/
+
         if(action instanceof PowerUpPack){
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);
             turnHandler.setAndDoAction(powerUpAction);
@@ -200,21 +208,41 @@ public class Controller {
                     if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
                         System.out.println("Found a player that has the tagback grenade");
                         if (listOfPlayers.get(i).getJustDamagedBy() != null) {
-                            if(listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer))
-                                grenadeID = -1;
-                            else{
-                                grenadeID = listOfPlayers.get(i).getJustDamagedBy().getClientID();
-                                while (!clientHasChosen) {
+                            if(listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)){
+                                grenadeID = listOfPlayers.get(i).getClientID();
+                                while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
                                     System.out.println("Waiting for the other player to do the action");
-                                    try {
+                                    /*try {
                                         TimeUnit.SECONDS.sleep(5000);
                                     } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }*/
+                                    System.out.println("ciaoo ");
+                                    try{
+                                        System.out.println(" "+grenadeID);
+                                        clientHasChosen = server.getGameProxy().askClient(grenadeID);
+                                        System.out.println("Client has chosen: "+clientHasChosen);
+                                        if(clientHasChosen){
+                                            Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
+                                            PlayerAbstract playerShooter = null;
+                                            for(int b = 0; i < currentGame.getActivePlayers().size(); i++){
+                                                if(currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
+                                                    playerShooter = currentGame.getActivePlayers().get(b);
+                                            }
+                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade,currentGame, playerShooter);
+                                            turnHandler.setAndDoAction(powerUpAction);
+                                            this.sendCollectShootAnswersRMI(currentPlayer, grenadeID);
+                                        }
+                                    }
+                                    catch(RemoteException e){
                                         e.printStackTrace();
                                     }
                                 }
                             }
+                            listOfPlayers.get(i).setJustDamagedBy(null);
                             clientHasChosen = false;
                             grenadeID = -1;
+                            System.out.println("The player did the action ");
                         }
                         break;
                     }
@@ -235,9 +263,9 @@ public class Controller {
         return true;
     }
 
-    public void setClientHasChosen(){
+    /*public void setClientHasChosen(){
         this.clientHasChosen = true;
-    }
+    }*/
 
 
     public void sendChangeCurrentPlayer(){

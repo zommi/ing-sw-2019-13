@@ -34,6 +34,9 @@ public class Server {
     public int getStartGame(){
         return this.startGame;
     }
+    public GameProxyInterface getGameProxy(){
+        return gameProxy;
+    }
 
     public int startMatch(){ //TODO here we have a problem: what if the player does not choose the character in time?
         if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start

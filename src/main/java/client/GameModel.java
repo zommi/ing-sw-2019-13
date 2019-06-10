@@ -27,10 +27,21 @@ public class GameModel extends Observable implements Serializable {
     private static int lastClientID = 0;
     private ListOfWeaponsAnswer weaponList;
     public boolean toSpawn;
+    private boolean clientChoice;
+    private Info grenadeAction;
+
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
         toSpawn = true;
+    }
+
+    public void setGrenadeAction(Info action){
+        this.grenadeAction = action;
+    }
+
+    public Info getGrenadeAction(){
+        return this.grenadeAction;
     }
 
     public void setToSpawn(boolean decision){
@@ -47,6 +58,14 @@ public class GameModel extends Observable implements Serializable {
 
     public void setClientID(int clientID){
         this.clientID = clientID;
+    }
+
+    public boolean getClientChoice(){
+        return this.clientChoice;
+    }
+
+    public void setClientChoice(boolean choice){
+        this.clientChoice = choice;
     }
 
 
