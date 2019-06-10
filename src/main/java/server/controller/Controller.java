@@ -203,38 +203,38 @@ public class Controller {
             //TODO check if the target has a powerup
             List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
 
+
             for (int i = 0; i < listOfPlayers.size(); i++) {
                 for (int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++) {
                     if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
                         System.out.println("Found a player that has the tagback grenade");
                         if (listOfPlayers.get(i).getJustDamagedBy() != null) {
-                            if(listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)){
+                            if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
                                 grenadeID = listOfPlayers.get(i).getClientID();
                                 while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
-                                    System.out.println("Waiting for the other player to do the action");
-                                    /*try {
-                                        TimeUnit.SECONDS.sleep(5000);
+                                    System.out.println("Waiting for the other player to do the action");/*try {
+                                        TimeUnit.SECONDS.sleep(5000)
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }*/
                                     System.out.println("ciaoo ");
-                                    try{
-                                        System.out.println(" "+grenadeID);
+                                    try {
+                                        System.out.println(" " + grenadeID);
                                         clientHasChosen = server.getGameProxy().askClient(grenadeID);
-                                        System.out.println("Client has chosen: "+clientHasChosen);
-                                        if(clientHasChosen){
+                                        System.out.println("Client has chosen: " + clientHasChosen);
+                                        if (clientHasChosen) {
                                             Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
                                             PlayerAbstract playerShooter = null;
-                                            for(int b = 0; b < currentGame.getActivePlayers().size(); b++){
-                                                if(currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
+                                            for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
+                                                if (currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
                                                     playerShooter = currentGame.getActivePlayers().get(b);
                                             }
-                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade,currentGame, playerShooter);
+                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade, currentGame, playerShooter);
                                             turnHandler.setAndDoAction(powerUpAction);
                                             this.sendCollectShootAnswersRMI(currentPlayer, grenadeID);
+                                            grenadeID = -1;
                                         }
-                                    }
-                                    catch(RemoteException e){
+                                    } catch (RemoteException e) {
                                         e.printStackTrace();
                                     }
                                 }

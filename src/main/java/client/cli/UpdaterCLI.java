@@ -389,6 +389,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                                     Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
                                     gameModel.setClientChoice(true);
                                     gameModel.setGrenadeAction(action);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(5000);
+                                    }
+                                    catch (InterruptedException e){
+                                        e.printStackTrace();
+                                    }
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                                     //actionParser.createPowerUpEvent("Tagback Grenade");
                                 }
