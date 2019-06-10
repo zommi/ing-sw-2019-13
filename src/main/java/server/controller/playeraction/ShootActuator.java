@@ -1,13 +1,8 @@
 package server.controller.playeraction;
 
 
-import client.weapons.Cost;
 import constants.Constants;
-import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShootActuator {
     public void actuate(ShootInfo shootInfo){

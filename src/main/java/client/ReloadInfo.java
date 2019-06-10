@@ -6,7 +6,7 @@ import server.model.cards.WeaponCard;
 
 import java.util.List;
 
-public class ReloadInfo {
+public class ReloadInfo implements Info{
     private List<WeaponCard> weaponCards;
     private List<PowerUpCard> powerUpCards;
     private Cost cost;

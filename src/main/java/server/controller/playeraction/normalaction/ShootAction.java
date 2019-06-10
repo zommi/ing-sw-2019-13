@@ -13,8 +13,8 @@ public class ShootAction implements Action {
 
     private PlayerAbstract player;
     private Game game;
-    ShootValidator shootValidator;
-    ShootActuator shootActuator;
+    private ShootValidator shootValidator;
+    private ShootActuator shootActuator;
 
     public ShootAction(ShootPack shootPack, PlayerAbstract player, Game game){
         this.shootPack = shootPack;

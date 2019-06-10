@@ -66,7 +66,7 @@ public class TurnHandler {
                     (action instanceof MoveAction))) {//if it is a draw or a spawn it is not counted as an action
                 nextPhase();
             } else {
-                //mandare al client messaggio di errore
+                //mandare al client messaggio di errore //TODO
             }
         }
     }

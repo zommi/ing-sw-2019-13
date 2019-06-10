@@ -35,6 +35,12 @@ powerup dentro powerupcard UNDEFINED eppure stampa lo stesso il nome, metterli s
 
 mandare nomi dei character e non dei giocatori nella shootpack
 
+
+sistemare invio cose al client ripetute
+
+far scegliere se usare targeting scope
+
+
 MIRINO
     metto tutti i mirini dentro la shoot info
     li faccio chiedere alla fine di tutto
