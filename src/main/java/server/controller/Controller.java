@@ -225,7 +225,7 @@ public class Controller {
                                         if(clientHasChosen){
                                             Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
                                             PlayerAbstract playerShooter = null;
-                                            for(int b = 0; i < currentGame.getActivePlayers().size(); i++){
+                                            for(int b = 0; b < currentGame.getActivePlayers().size(); b++){
                                                 if(currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
                                                     playerShooter = currentGame.getActivePlayers().get(b);
                                             }

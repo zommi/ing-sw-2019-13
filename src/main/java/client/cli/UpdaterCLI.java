@@ -340,12 +340,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 else if(connection.getGrenadeID() != -1){
                     if(connection.getClientID() != connection.getGrenadeID()){
                         System.out.println("There is somebody that has a tagback grenade. Checking if he wants to use it");
-                        try{
+                        /*try{
                             TimeUnit.SECONDS.sleep(5000);
                         }
                         catch(InterruptedException e){
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                     else { //we are exactly in the player that has the current turn to use the tagback
                         Scanner myObj = new Scanner(System.in);
@@ -386,9 +386,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                             System.out.println("Please insert a valid number.");
                                         }
                                     }
-                                    System.out.println("Test");
                                     Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(k-1));
-                                    System.out.println("Test 1");
                                     gameModel.setClientChoice(true);
                                     gameModel.setGrenadeAction(action);
                                     //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
@@ -399,6 +397,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Error: insert a valid number");
                         }
                     }
+                    System.out.println("Ok the powerup has been used towards your shooter");
                 }
                 else{
                     System.out.println("For now it is not your turn: " +
