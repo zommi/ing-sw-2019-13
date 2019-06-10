@@ -1,6 +1,3 @@
-comando per passare
-azione ricarica
-
 testare arma che sceglie rooms
 
 mandare messaggi che informano client di cosa è successo nell'azione appena fatta, anche in caso di errore allo specifico client
@@ -9,18 +6,6 @@ mandare messaggi che informano client di cosa è successo nell'azione appena fat
 rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
 togliere deck da carte
-
-controllare powerupvalidator
-
-abilitare controllo armi commentato
-
-evitare di usare nomi player duplicati, ma ricordarsi del nome salvato localmente in cli, dovrà essere aggiornato con quello del server
-
-stampare costo in due modi perche con gui da problemi
-
-aggiungere "you cant use that now" quando si sceglie di giocare tagback nel proprio turno
-
--sistemare distancecheckswitch riga 184, da eccezione probabilmente con generate e giocatori non spawnati (hellion 2)
 
 stampare coordinate mappa (anche all'interno del quadrato)
 
@@ -37,15 +22,3 @@ mandare nomi dei character e non dei giocatori nella shootpack
 
 
 sistemare invio cose al client ripetute
-
-far scegliere se usare targeting scope
-
-
-MIRINO
-    metto tutti i mirini dentro la shoot info
-    li faccio chiedere alla fine di tutto
-    poi man mano che passo i microeffetti, guardo i giocatori nelle liste
-    e se il micro effetto fa danno, inserisco il giocatore il una lista
-    poi prendo tuttii i mirini e guardo che il giocatore di ogni mirino sia nella lista
-
-    devo anche far scegliere una powerupcard da giocare col mirino al posto del cubo

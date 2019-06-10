@@ -3,7 +3,9 @@ package client.weapons;
 import constants.Color;
 import server.model.cards.PowerUpCard;
 
-public class ScopePack {
+import java.io.Serializable;
+
+public class ScopePack implements Serializable {
     private PowerUpCard targetingScope;
     private String target;
     private Color color;
