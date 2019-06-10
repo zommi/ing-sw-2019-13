@@ -4,6 +4,7 @@ import client.*;
 import client.gui.guielements.*;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
+import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
@@ -23,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.stage.Modality;
@@ -83,6 +83,8 @@ public class MainGuiController implements GuiController {
     private List<GuiTile> tilesToUpdate = new ArrayList<>();
 
     private GuiCharacter myCharacter;
+
+    private GuiInput input;
 
     private Map<Integer,GuiCharacter> idClientGuiCharacterMap = new HashMap<>();
     @Override
@@ -346,6 +348,17 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    public void enablePowerup(MouseEvent mouseEvent){
+        if(!this.model.getToSpawn()){
+            logText("Select a powerup to use! \n");
+            for(Node card : powerupHand.getChildren()){
+                card.setDisable(false);
+            }
+        }else{
+            logText("You first need to spawn!\n");
+        }
+    }
+
     private void disableMouseEvent() {
         for(GuiTile tile : tiles){
             tile.setOnMousePressed(null);
@@ -356,7 +369,6 @@ public class MainGuiController implements GuiController {
     public void addGui(UpdaterGui updaterGui) {
         this.gui = updaterGui;
     }
-
 
     private void setSpawn(PowerUpCard card) {
         boolean firstSpawn = myCharacter == null;
@@ -434,6 +446,7 @@ public class MainGuiController implements GuiController {
             powerupCard.setFitHeight(powerupHand.getHeight());
 
             int finalI = i;
+            GuiPowerupCard finalPowerupCard = powerupCard;
             powerupCard.setOnMousePressed(e -> {
                 GuiPowerupCard defaultCard = new GuiPowerupCard(
                         getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(),
@@ -444,6 +457,12 @@ public class MainGuiController implements GuiController {
                 defaultCard.setFitHeight(powerupHand.getHeight());
                 if(this.model.getToSpawn()){
                     setSpawn(card);
+                }else{
+                    Info info = this.actionParser.createPowerUpEvent(finalPowerupCard.getCard());
+                    this.gui.getConnection().send(info);
+                    for(Node node : powerupHand.getChildren()){
+                        node.setDisable(true);
+                    }
                 }
                 powerupHand.add(defaultCard, finalI, 0);
                 enablePowerup();
@@ -645,5 +664,103 @@ public class MainGuiController implements GuiController {
 
     public void removeMyCharacter() {
         this.myCharacter = null;
+    }
+
+    public List<PowerUpCard> askPowerups() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
+        List<PowerUpCard> result = new ArrayList<>();
+        List<CheckBox> checkBoxList = new ArrayList<>();
+        alert.setTitle("CHOOSE POWERUPS");
+        alert.setContentText("Select optional powerups to use as ammo");
+
+        VBox box = new VBox();
+        for(PowerUpCard card : listToAsk){
+            CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
+            choice.setId(String.valueOf(card.getCardId()));
+            box.getChildren().add(choice);
+            checkBoxList.add(choice);
+        }
+
+        alert.getDialogPane().setContent(box);
+        alert.setOnCloseRequest(e -> {
+            for(CheckBox checkBox : checkBoxList){
+                if(checkBox.isSelected()){
+                    String id = checkBox.getId();
+                    for(PowerUpCard card : listToAsk){
+                        if(Integer.valueOf(id) == card.getCardId()){
+                            result.add(card);
+                        }
+                    }
+                }
+            }
+        });
+        alert.showAndWait();
+        return result;
+    }
+
+    public List<ScopePack> askTargetingScopes() {
+        List<ScopePack> result = new ArrayList<>();
+        if(model != null && !model.getPlayerHand().getPlayerHand().getTargetingScopes().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setGraphic(null);
+            List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPlayerHand().getTargetingScopes();
+            List<CheckBox> checkBoxList = new ArrayList<>();
+            alert.setTitle("CHOOSE TARGETING SCOPES");
+            alert.setContentText("Select optional targeting scopes to use:");
+
+            VBox box = new VBox();
+            for(PowerUpCard card : listToAsk){
+                CheckBox choice = new CheckBox("Targeting scope - " + card.getColor().toString());
+                choice.setId(String.valueOf(card.getCardId()));
+                box.getChildren().add(choice);
+                checkBoxList.add(choice);
+            }
+
+            alert.getDialogPane().setContent(box);
+            alert.setOnCloseRequest(e -> {
+                for(CheckBox checkBox : checkBoxList){
+                    if(checkBox.isSelected()){
+                        String id = checkBox.getId();
+                        for(PowerUpCard card : listToAsk){
+                            if(Integer.valueOf(id) == card.getCardId()){
+                                result.add(this.input.manageScope(card));
+                            }
+                        }
+                    }
+                }
+            });
+            alert.showAndWait();
+        }
+        return result;
+    }
+
+    public Color chooseAmmoColor() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        AtomicReference<Color> result = new AtomicReference<>();
+        ToggleGroup group = new ToggleGroup();
+        alert.setTitle("CHOOSE AMMO TO USE");
+        alert.setContentText("Select ammo color to use");
+
+        VBox box = new VBox();
+        for(Color color: Color.values()){
+            RadioButton choice = new RadioButton(color.toString());
+            box.getChildren().add(choice);
+            choice.setToggleGroup(group);
+        }
+
+        alert.getDialogPane().setContent(box);
+        alert.setOnCloseRequest(e -> {
+            RadioButton selectedToggle = (RadioButton) group.getSelectedToggle();
+            result.set(Color.fromString(selectedToggle.getText()));
+        });
+        alert.showAndWait();
+        return result.get();
+    }
+
+    public void setInput(GuiInput input) {
+        this.input = input;
     }
 }
