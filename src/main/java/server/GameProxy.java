@@ -165,7 +165,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         playerToAdd.setIfCharacter(false);
         ((ConcretePlayer) playerToAdd).setClientID(clientID);
         player.add(playerToAdd);
-        serverRMI.getServer().addPlayer(playerToAdd);
         return true;
     }
 
@@ -173,6 +172,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean addPlayerCharacter(String name, int ID) throws RemoteException{
         for(int i = 0; i < player.size(); i++){
             if(player.get(i).getClientID() == ID){
+                serverRMI.getServer().addPlayer(player.get(i));
                 this.player.get(i).setPlayerCharacter(Figure.fromString(name));
                 this.player.get(i).setIfCharacter(true);
                 this.serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addGameCharacter(new GameCharacter(Figure.fromString(name)));
