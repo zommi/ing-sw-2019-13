@@ -49,25 +49,25 @@
                 <RowConstraints prefHeight="40.0" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="map1" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                  <ImageView fx:id="map1" id="1" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
                              GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../map1.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="map2" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                  <ImageView fx:id="map2" id="2" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
                              GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../map2.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="map3" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                  <ImageView fx:id="map3" id="3" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
                              GridPane.columnIndex="2" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../map3.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="map4" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
+                  <ImageView fx:id="map4" id="4" fitWidth="170.0" preserveRatio="true" onMousePressed="#selectMap"
                              GridPane.columnIndex="3" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../map4.png" />

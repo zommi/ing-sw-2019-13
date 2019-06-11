@@ -4,6 +4,7 @@ import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -52,10 +53,9 @@ public class MapSelectionController implements GuiController {
     @FXML
     void selectMap(MouseEvent event) {
         if(skullBox.getValue() != null){
-            for(int i = 1; i <= 4 ; i++){ //le mappe vanno da 1 a 4
-                if(event.getSource().equals(this.mapGridPane.getChildren().get(i))){
-                    this.gui.setMapIndex(i);
-                    break;
+            for(Node map : mapGridPane.getChildren()){
+                if(map.getId() != null && map instanceof ImageView) {
+                    this.gui.setMapIndex(Integer.valueOf(map.getId()));
                 }
             }
             this.gui.changeStage("loading_screen.fxml");
