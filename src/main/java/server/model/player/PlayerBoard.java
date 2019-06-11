@@ -102,10 +102,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public void addDamage(int damageToAdd, Color color) {
-        int marksActivated = getMarksOfAColor(color);
-        removeMarksOfAColor(color);
-        int initialDamage = damage.size();
-        for(int i = initialDamage; i < initialDamage+marksActivated+damageToAdd && i < Constants.MAX_HP;i++){
+        for(int i = 0; i < damageToAdd && i < Constants.MAX_HP;i++){
             this.damage.add(color);
         }
         if((damage.size() > Constants.BETTERCOLLECTDAMAGE)&&(damage.size() <= Constants.BETTERSHOOTDAMAGE)){
@@ -116,6 +113,14 @@ public class PlayerBoard implements Serializable {
         }
         if(damage.size() > Constants.DEATH_THRESHOLD){
             this.killerColor = color;
+        }
+    }
+
+    public void marks2Damage(Color color){
+        int marksActivated = getMarksOfAColor(color);
+        removeMarksOfAColor(color);
+        for(int i = 0; i < marksActivated && i < Constants.MAX_HP;i++){
+            this.damage.add(color);
         }
     }
 

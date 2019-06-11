@@ -70,7 +70,10 @@ public class MicroInfo implements Serializable, Info {
         for (PlayerAbstract playerAbstract : playersList) {
             if(damage > 0) {
                 playerAbstract.addDamage(damage, color);
+                if(playerAbstract.getJustDamagedBy() == null)
+                    playerAbstract.getPlayerBoard().marks2Damage(shootInfo.getAttacker().getColor());
                 playerAbstract.setJustDamagedBy(shootInfo.getAttacker());
+
             }
             playerAbstract.addMarks(shootInfo.getWeapon()
                     .getMicroEffect(macroNumber, microNumber).getMarks(), color);

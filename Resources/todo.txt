@@ -22,3 +22,7 @@ mandare nomi dei character e non dei giocatori nella shootpack
 
 
 sistemare invio cose al client ripetute
+
+aggiungere alla cli le info degli altri giocatori, tipo danni marchi e armi scariche
+
+sparare senza far danno a nessuno?
