@@ -20,7 +20,7 @@ public class ReloadAction implements Action {
 
     public boolean execute(Controller controller){
         ReloadInfo reloadInfoValidated = reloadValidator.validate(this.reloadInfo, playerAbstract);
-        if(reloadInfo != null) {
+        if(reloadInfoValidated != null) {
             reloadActuator.actuate(reloadInfoValidated, playerAbstract);
             return true;
         }
