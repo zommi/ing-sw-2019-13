@@ -497,7 +497,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
             gameModel.getMap().printOnCLI();
 
-            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp" +
+            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to reload" +
                     "\nMAP to show the map");
             read = myObj.nextLine();
             int result = -1;
