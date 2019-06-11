@@ -251,13 +251,13 @@ public class Controller {
                                 }
 
                             }
-                            listOfPlayers.get(i).setJustDamagedBy(null);
                             clientHasChosen = false;
                             grenadeID = -1;
                             System.out.println("The player did the action ");
                         }
                     }
                 }
+                listOfPlayers.get(i).setJustDamagedBy(null);
             }
         }
 
