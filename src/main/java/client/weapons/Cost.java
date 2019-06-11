@@ -73,7 +73,7 @@ public class Cost implements Serializable {
         else resultRed = 0;
 
         if(this.yellow > cost.yellow)
-            resultYellow = this.yellow = cost.yellow;
+            resultYellow = this.yellow - cost.yellow;
         else resultYellow = 0;
 
         if(this.blue > cost.blue)

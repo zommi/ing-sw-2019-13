@@ -8,10 +8,7 @@ import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.controller.playeraction.Action;
-import server.model.cards.PowerUp;
-import server.model.cards.PowerUpCard;
-import server.model.cards.TagbackGrenade;
-import server.model.cards.WeaponCard;
+import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
 import server.model.player.GameCharacter;
@@ -356,24 +353,26 @@ public class UpdaterCLI  implements Updater,Runnable{
                         if(read.equalsIgnoreCase("y")){
                             System.out.println("Ok you can use the tagback grenade towards the shooter");
                             System.out.println("Which tagback do you want to use?");
-                            List<PowerUpCard> powerupsTemp = gameModel.getPlayerHand().getPowerupHand();
-                            int k = 0;
-                            int i = 0;
+
+                            //initialize cards to ask
                             List<PowerUpCard> listTagback = new ArrayList<>();
-                            for (PowerUpCard powerUpCard : powerupsTemp) {
+                            for (PowerUpCard powerUpCard : gameModel.getPlayerHand().getPowerupHand()) {
                                 if (powerUpCard.getName().equals("Tagback Grenade")) {
-                                    i++;
-                                    System.out.println(powerUpCard + " (" + (i) + ")");
                                     listTagback.add(powerUpCard);
                                 }
                             }
 
+                            for(int i = 0; i<listTagback.size(); i++){
+                                System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
+                            }
+
                             read = myObj.nextLine();
+                            int choice = 0;
                             boolean chosenPowerup = false;
                             while(!chosenPowerup) {
                                 try {
-                                    int choice = Integer.parseInt(read) - 1;
-                                    if (choice >= 0 && choice < powerupsTemp.size())
+                                     choice = Integer.parseInt(read) - 1;
+                                    if (choice >= 0 && choice < listTagback.size())
                                         chosenPowerup = true;
                                     else
                                         System.out.println("You chose a number not available");
@@ -382,7 +381,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 }
                             }
                             System.out.println("Test");
-                            Info action = actionParser.createPowerUpEvent(listTagback.get(i-1));
+                            Info action = actionParser.createPowerUpEvent(listTagback.get(choice));
                             System.out.println("Test 1");
                             gameModel.setGrenadeAction(action);
                             gameModel.setClientChoice(true);
@@ -527,9 +526,14 @@ public class UpdaterCLI  implements Updater,Runnable{
                     try {
                         strChoice = myObj.nextLine();
                         choice = Integer.parseInt(strChoice) - 1;
-                        if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size()) {
+                        if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
+                                gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
                             askShoot = true;
-                        } else
+                        }else if(choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
+                                !gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
+                            System.out.println("The selected weapon is unloaded. Reload it at the end of your turn.");
+                        }
+                        else
                             System.out.println("Please insert a valid number.");
                     } catch (NumberFormatException e) {
                         System.out.println("Please insert a valid number.");
@@ -640,23 +644,27 @@ public class UpdaterCLI  implements Updater,Runnable{
                 String strChoice;
                 int choice = 0;
                 boolean askPowerUp = true;
+                boolean playPowerUp = false;
                 while (askPowerUp) {
                     System.out.println(">Choose what powerup you want to use: ");
                     for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
                         PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
-                        System.out.println(powerUpCard.getColor().getAnsi() + powerUpCard.getName() +
-                                Constants.ANSI_RESET + " (" + (i + 1) + ")");
+                        System.out.println(powerUpCard.printOnCli() + " (" + (i + 1) + ")");
                     }
                     strChoice = myObj.nextLine();
                     try {
                         choice = Integer.parseInt(strChoice) - 1;
                         if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
-                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade)) {
+                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade) &&
+                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)) {
                             askPowerUp = false;
+                            playPowerUp = true;
 
-                        } else if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
-                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade){
+                        } else if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() && (
+                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade ||
+                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)){
                             System.out.println("Oak's words echoed... There's a time and place for everything, but not now.");
+                            askPowerUp = false;
                         }
                         else
                             System.out.println("Please insert a valid number.");
@@ -665,8 +673,10 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     }
                 }
-                Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
-                connection.send(action);
+                if(playPowerUp) {
+                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
+                    connection.send(action);
+                }
             }
             else if(read.equalsIgnoreCase("r")){        //reload
                 List<WeaponCard> weaponCards = new ArrayList<>();

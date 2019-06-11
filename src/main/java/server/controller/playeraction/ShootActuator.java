@@ -12,6 +12,8 @@ public class ShootActuator {
                 microInfo.actuate(shootInfo);
         }
 
+
+
         //actuate targeting scopes
         for(ScopeInfo scopeInfo : shootInfo.getScopeInfos()){
             scopeInfo.getTarget().addDamage(Constants.TARGET_SCOPE_DMG, shootInfo.getAttacker().getColor());
