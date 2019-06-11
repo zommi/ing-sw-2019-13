@@ -202,7 +202,9 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public boolean canPay(Cost cost) {      //TODO
-        return true;
+        return this.playerBoard.getRedAmmo() >= cost.getRed() &&
+                this.playerBoard.getBlueAmmo() >= cost.getBlue() &&
+                this.playerBoard.getYellowAmmo() >= cost.getYellow();
     }
 
     public String getName() {

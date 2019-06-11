@@ -257,7 +257,7 @@ public class MainGuiController implements GuiController {
 
 
     @FXML
-    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiSpawnPoint sp) {
+    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiWeaponCard cardToDiscard, GuiSpawnPoint sp) {
         if(weaponHandSize == 3) return;
         GuiWeaponCard cardToAdd = weaponCard;
 
@@ -270,8 +270,15 @@ public class MainGuiController implements GuiController {
 
         //null da cambiare con la WeaponCard da scartare
         //far scegliere anche i powerup con cui pagare eventualmente l'arma
+
+        List<PowerUpCard> powerUpCards = this.model.getPlayerHand().getPowerupHand().isEmpty() ?
+                Collections.emptyList() :
+                askPowerups();
+
         Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),
-                weaponCard.getIndex(), null, Collections.emptyList());    //TODO
+                weaponCard.getIndex(),
+                weaponHandSize<3 ? null : cardToDiscard.getWeaponCard(),
+                powerUpCards);
         this.gui.getConnection().send(collectInfo);
         weaponHandSize++;
     }
@@ -288,11 +295,15 @@ public class MainGuiController implements GuiController {
                     i,
                     getClass().getResource(spawnPoint.getCardsOnSpawnPoint().get(i).getPath()).toExternalForm());
             weapon.setOnMousePressed(e -> {
+                weapon.setPreserveRatio(true);
+                alert.close();
                 if(weaponHandSize < 3){
-                    drawWeapon(e,weapon,spawnPoint);
-                    spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
-                    alert.close();
+                    drawWeapon(e,weapon,null,spawnPoint);
+                }else{
+                    GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
+                    drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
                 }
+                spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
             });
             cards.add(weapon,i,0);
         }
@@ -302,6 +313,21 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText("Choose a card to draw. (Press OK to cancel)");
         alert.setOnCloseRequest(e -> alert.close());
         alert.showAndWait();
+    }
+
+    private GuiWeaponCard askWeaponToDiscard() {
+        Stage empytStage = new Stage(StageStyle.TRANSPARENT);
+        empytStage.initModality(Modality.NONE);
+        logText("Choose a weapon to swap\n");
+        AtomicReference<GuiWeaponCard> result = new AtomicReference<>();
+        for(Node card : weaponHand.getChildren()){
+            card.setOnMousePressed(e -> {
+                result.set((GuiWeaponCard) card);
+                empytStage.close();
+            });
+        }
+        empytStage.showAndWait();
+        return result.get();
     }
 
     public void enableMove(){
@@ -427,6 +453,9 @@ public class MainGuiController implements GuiController {
             cardToAdd.setCursor(Cursor.HAND);
             cardToAdd.setFitWidth(weaponHand.getWidth()/3);
             cardToAdd.setFitHeight(weaponHand.getHeight());
+            if(!card.isReady()){
+                cardToAdd.setOpacity(0.6);
+            }
             GuiWeaponCard finalCardToAdd = cardToAdd;
             cardToAdd.setOnMousePressed(e -> {
                 Info info = this.actionParser.createShootEvent(finalCardToAdd.getWeaponCard().getWeapon());
@@ -540,7 +569,6 @@ public class MainGuiController implements GuiController {
         }
         return null;
     }
-
 
     public void restoreSquares() {
         for (GuiTile tile : tiles) {
@@ -688,7 +716,7 @@ public class MainGuiController implements GuiController {
 
         alert.getDialogPane().setContent(box);
         alert.setOnCloseRequest(e -> {
-            result.set(checkBoxInput(checkBoxList, listToAsk));
+            result.set(getCheckBoxInput(checkBoxList, listToAsk));
         });
         alert.showAndWait();
         return result.get();
@@ -781,7 +809,7 @@ public class MainGuiController implements GuiController {
                 }
 
                 alert.setOnCloseRequest(e -> {
-                    activatedGrenades.set(checkBoxInput(checkBoxList, grenadeList));
+                    activatedGrenades.set(getCheckBoxInput(checkBoxList, grenadeList));
                 });
                 alert.getDialogPane().setContent(box);
                 alert.showAndWait();
@@ -797,7 +825,7 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    private List<PowerUpCard> checkBoxInput(List<CheckBox> checkBoxes, List<PowerUpCard> listToAsk){
+    private List<PowerUpCard> getCheckBoxInput(List<CheckBox> checkBoxes, List<PowerUpCard> listToAsk){
         List<PowerUpCard> result = new ArrayList<>();
         for(CheckBox choice : checkBoxes) {
             if (choice.isSelected()) {
@@ -812,4 +840,55 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
+    public void reload(MouseEvent mouseEvent) {
+        boolean notAllReady = false;
+        for(WeaponCard card : model.getPlayerHand().getWeaponHand()){
+            if(!card.isReady())notAllReady = true;
+        }
+        if(notAllReady){
+            Stage empytStage = new Stage(StageStyle.TRANSPARENT);
+            empytStage.initModality(Modality.NONE);
+            List<WeaponCard> weaponCards = askWeaponsToReload(empytStage);
+            empytStage.showAndWait();
+            List<PowerUpCard> powerUpCards = askPowerups();
+
+            this.gui.getConnection().send(actionParser.createReloadEvent(weaponCards,powerUpCards));
+
+        }
+    }
+
+    private List<WeaponCard> askWeaponsToReload(Stage stage) {
+        List<WeaponCard> result = new ArrayList<>();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setTitle("RELOAD");
+        alert.setHeaderText("Choose weapons to reload");
+
+        VBox box = new VBox();
+        List<CheckBox> checkBoxList = new ArrayList<>();
+        for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){
+            if(!card.isReady()){
+                CheckBox choice = new CheckBox(card.getName());
+                checkBoxList.add(choice);
+                choice.setId(String.valueOf(card.getId()));
+                box.getChildren().add(choice);
+            }
+        }
+
+        alert.setOnCloseRequest(e -> {
+            for(CheckBox choice : checkBoxList){
+                if(choice.isSelected()){
+                    String id = choice.getId();
+                    for(WeaponCard card : this.model.getMyPlayer().getHand().getWeaponHand()){
+                        if(card.getId() == Integer.valueOf(id)) result.add(card);
+                    }
+                }
+            }
+            stage.close();
+        });
+
+        alert.getDialogPane().setContent(box);
+        alert.showAndWait();
+        return result;
+    }
 }

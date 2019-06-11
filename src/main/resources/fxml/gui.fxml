@@ -115,10 +115,12 @@
                              onMousePressed="#enableCollect"/>
                      <Button prefHeight="76.0" prefWidth="85.0" text="SHOOT" GridPane.columnIndex="2"
                              onMousePressed="#enableShoot"/>
-                     <Button prefHeight="76.0" prefWidth="85.0" text="POWERUP" GridPane.columnIndex="3"/>
+                     <Button prefHeight="76.0" prefWidth="85.0" text="POWERUP" GridPane.columnIndex="3"
+                             onMousePressed="#enablePowerup"/>
                  </children>
              </GridPane>
-             <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD" GridPane.rowIndex="1" />
+             <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD/PASS" GridPane.rowIndex="1"
+                     onMousePressed="#reload"/>
             <Button fx:id="scoreboardButton" prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2"
                     onMousePressed="#showScoreboard"/>
          </children>

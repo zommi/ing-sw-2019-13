@@ -103,10 +103,26 @@ public class GuiPlayerBoard extends StackPane {
         Label yellowLabel = new Label("YELLOW AMMO");
         ammoGrid.add(yellowLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,2);
 
+        GridPane unloadedWeaponsGrid = new GridPane();
+        for(int i = 0; i < playerBoard.getResult().getUnloadedWeapons().size(); i++){
+            GuiWeaponCard cardToAdd = new GuiWeaponCard(
+                    playerBoard.getResult().getUnloadedWeapons().get(i),
+                    i,
+                    getClass().getResource(playerBoard.getResult().getUnloadedWeapons().get(i).getPath()).toExternalForm());
+            cardToAdd.setFitWidth(COLUMN / 3.0);
+            cardToAdd.setFitHeight(ROW);
+            cardToAdd.setPreserveRatio(true);
+            unloadedWeaponsGrid.add(cardToAdd,
+                    i,
+                    0);
+        }
+
 
         mainGridpane.add(hpGrid,0,0);
         mainGridpane.add(marksGrid,0,1);
         mainGridpane.add(ammoGrid,1,0);
+
+        mainGridpane.add(unloadedWeaponsGrid,2,0);
         this.getChildren().add(mainGridpane);
     }
 }
