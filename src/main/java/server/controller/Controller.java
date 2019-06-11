@@ -230,16 +230,17 @@ public class Controller {
                                         clientHasChosen = server.getGameProxy().askClient(grenadeID);
                                         System.out.println("Client has chosen: " + clientHasChosen);
                                         if (clientHasChosen) {
+                                            int IDShooter = grenadeID;
+                                            grenadeID = -1;
                                             Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
                                             PlayerAbstract playerShooter = null;
                                             for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
-                                                if (currentGame.getActivePlayers().get(b).getClientID() == grenadeID)
+                                                if (currentGame.getActivePlayers().get(b).getClientID() == IDShooter)
                                                     playerShooter = currentGame.getActivePlayers().get(b);
                                             }
                                             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade, currentGame, playerShooter);
                                             turnHandler.setAndDoAction(powerUpAction);
-                                            sendCollectShootAnswersRMI(currentPlayer, grenadeID);
-                                            grenadeID = -1;
+                                            sendCollectShootAnswersRMI(currentPlayer, IDShooter);
                                         }
                                     } catch (RemoteException e) {
                                         e.printStackTrace();
