@@ -18,6 +18,7 @@ import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
+import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
@@ -216,6 +217,7 @@ public class Controller {
                         if (listOfPlayers.get(i).getJustDamagedBy() != null) {
                             if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
                                 grenadeID = listOfPlayers.get(i).getClientID();
+                                sendGrenadeAnswer();
                                 while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
                                     System.out.println("Waiting for the other player to do the action");/*try {
                                         TimeUnit.SECONDS.sleep(5000)
@@ -236,7 +238,7 @@ public class Controller {
                                             }
                                             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade, currentGame, playerShooter);
                                             turnHandler.setAndDoAction(powerUpAction);
-                                            this.sendCollectShootAnswersRMI(currentPlayer, grenadeID);
+                                            sendCollectShootAnswersRMI(currentPlayer, grenadeID);
                                             grenadeID = -1;
                                         }
                                     } catch (RemoteException e) {
@@ -268,6 +270,9 @@ public class Controller {
         return true;
     }
 
+    private void sendGrenadeAnswer() {
+    server.sendToEverybodyRMI(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+    }
     /*public void setClientHasChosen(){
         this.clientHasChosen = true;
     }*/

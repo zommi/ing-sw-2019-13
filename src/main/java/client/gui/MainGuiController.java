@@ -30,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.model.cards.PowerUpCard;
+import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
 import server.model.map.GameMap;
 import server.model.map.SpawnPoint;
@@ -94,6 +95,8 @@ public class MainGuiController implements GuiController {
         this.actionParser = gui.getActionParser();
         this.actionParser.addGameModel(this.model,this.gui.getPlayerName());
         textLogger.setText(log);
+        textLogger.setWrapText(true);
+        logText("Welcome " + this.model.getMyPlayer().getName() + ", you chose " + this.gui.getCharacter() + "\n");
         this.textLogger.setEditable(false);
     }
 
@@ -670,10 +673,10 @@ public class MainGuiController implements GuiController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
         List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
-        List<PowerUpCard> result = new ArrayList<>();
+        AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
         List<CheckBox> checkBoxList = new ArrayList<>();
         alert.setTitle("CHOOSE POWERUPS");
-        alert.setContentText("Select optional powerups to use as ammo");
+        alert.setHeaderText("Select optional powerups to use as ammo");
 
         VBox box = new VBox();
         for(PowerUpCard card : listToAsk){
@@ -685,19 +688,10 @@ public class MainGuiController implements GuiController {
 
         alert.getDialogPane().setContent(box);
         alert.setOnCloseRequest(e -> {
-            for(CheckBox checkBox : checkBoxList){
-                if(checkBox.isSelected()){
-                    String id = checkBox.getId();
-                    for(PowerUpCard card : listToAsk){
-                        if(Integer.valueOf(id) == card.getCardId()){
-                            result.add(card);
-                        }
-                    }
-                }
-            }
+            result.set(checkBoxInput(checkBoxList, listToAsk));
         });
         alert.showAndWait();
-        return result;
+        return result.get();
     }
 
     public List<ScopePack> askTargetingScopes() {
@@ -708,7 +702,7 @@ public class MainGuiController implements GuiController {
             List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPlayerHand().getTargetingScopes();
             List<CheckBox> checkBoxList = new ArrayList<>();
             alert.setTitle("CHOOSE TARGETING SCOPES");
-            alert.setContentText("Select optional targeting scopes to use:");
+            alert.setHeaderText("Select optional targeting scopes to use:");
 
             VBox box = new VBox();
             for(PowerUpCard card : listToAsk){
@@ -742,7 +736,7 @@ public class MainGuiController implements GuiController {
         AtomicReference<Color> result = new AtomicReference<>();
         ToggleGroup group = new ToggleGroup();
         alert.setTitle("CHOOSE AMMO TO USE");
-        alert.setContentText("Select ammo color to use");
+        alert.setHeaderText("Select ammo color to use");
 
         VBox box = new VBox();
         for(Color color: Color.values()){
@@ -763,4 +757,59 @@ public class MainGuiController implements GuiController {
     public void setInput(GuiInput input) {
         this.input = input;
     }
+
+    public void handleGrenade() {
+        if(this.gui.getConnection().getClientID() == this.gui.getConnection().getGrenadeID()){
+            List<PowerUpCard> grenadeList = new ArrayList<>();
+            AtomicReference<List<PowerUpCard>> activatedGrenades = new AtomicReference<>();
+            for(PowerUpCard card : this.model.getPlayerHand().getPowerupHand()){
+                if(card.getPowerUp() instanceof TagbackGrenade) grenadeList.add(card);
+            }
+            if(!grenadeList.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setGraphic(null);
+                List<CheckBox> checkBoxList = new ArrayList<>();
+                alert.setTitle("CHOOSE TAGBACK GRENADES");
+                alert.setContentText("Select, if you want, the grenades to use:");
+
+                VBox box = new VBox();
+                for(PowerUpCard card : grenadeList){
+                    CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor());
+                    choice.setId(String.valueOf(card.getCardId()));
+                    checkBoxList.add(choice);
+                    box.getChildren().add(choice);
+                }
+
+                alert.setOnCloseRequest(e -> {
+                    activatedGrenades.set(checkBoxInput(checkBoxList, grenadeList));
+                });
+                alert.getDialogPane().setContent(box);
+                alert.showAndWait();
+                for(PowerUpCard card : activatedGrenades.get()){
+                    Info info = actionParser.createPowerUpEvent(card);
+                    this.model.setGrenadeAction(info);
+                    logText("Grenade used\n");
+                }
+            }
+            this.model.setClientChoice(true);
+        }else{
+            logText("Waiting for player to use a tagback grenade");
+        }
+    }
+
+    private List<PowerUpCard> checkBoxInput(List<CheckBox> checkBoxes, List<PowerUpCard> listToAsk){
+        List<PowerUpCard> result = new ArrayList<>();
+        for(CheckBox choice : checkBoxes) {
+            if (choice.isSelected()) {
+                String id = choice.getId();
+                for (PowerUpCard card : listToAsk) {
+                    if (Integer.valueOf(id) == card.getCardId()) {
+                        result.add(card);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 }
