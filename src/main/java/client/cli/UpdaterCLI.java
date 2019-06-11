@@ -291,7 +291,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
         while (alwaysTrue) {
-            System.out.println("entering the alwaysTrue cicle");
+            System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel, name);
 
@@ -383,21 +383,14 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Test");
                             Info action = actionParser.createPowerUpEvent(listTagback.get(i-1));
                             System.out.println("Test 1");
-                            gameModel.setClientChoice(true);
                             gameModel.setGrenadeAction(action);
-                            try{
-                                TimeUnit.SECONDS.sleep(5000);
-                            }
-                            catch (InterruptedException e){
-                                e.printStackTrace();
-                            }
-
+                            gameModel.setClientChoice(true);
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");
                         }
-
+                        System.out.println("Ok the powerup has been used towards your shooter");
                     }
-                    System.out.println("Ok the powerup has been used towards your shooter");
+
                 }
                 else{
                     System.out.println("For now it is not your turn: " +
