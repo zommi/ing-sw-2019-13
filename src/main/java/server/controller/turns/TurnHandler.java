@@ -5,9 +5,7 @@ import client.MoveInfo;
 import exceptions.WrongGameStateException;
 import server.Server;
 import server.controller.Controller;
-import server.controller.playeraction.Action;
-import server.controller.playeraction.ShootInfo;
-import server.controller.playeraction.SpawnAction;
+import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
@@ -57,13 +55,14 @@ public class TurnHandler {
 
     public void setAndDoAction(Action action){
         if(currentPhase == TurnPhase.FIRST_ACTION
-                || currentPhase == TurnPhase.SECOND_ACTION) {
+                || currentPhase == TurnPhase.SECOND_ACTION || currentPhase == TurnPhase.POWERUP_TURN) {
             this.action = action;
             boolean actionValid = this.action.execute(controller);
             if(actionValid &&
                     ((action instanceof ShootAction) ||
                     (action instanceof CollectAction) ||
-                    (action instanceof MoveAction))) {//if it is a draw or a spawn it is not counted as an action
+                    (action instanceof MoveAction) ||
+                    (action instanceof ReloadAction))) {//if it is a draw or a spawn it is not counted as an action
                 nextPhase();
             } else {
                 //mandare al client messaggio di errore //TODO
@@ -95,6 +94,9 @@ public class TurnHandler {
                 this.currentPhase = TurnPhase.SECOND_ACTION;
                 break;
             case SECOND_ACTION:
+                this.currentPhase = TurnPhase.POWERUP_TURN;
+                break;
+            case POWERUP_TURN:
                 this.currentPhase = TurnPhase.END_TURN;
                 break;
             case END_TURN:
