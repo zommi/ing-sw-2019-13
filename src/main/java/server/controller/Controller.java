@@ -161,7 +161,7 @@ public class Controller {
         if(action instanceof ReloadInfo){
 
             //checks that it's not the wrong time to reload
-            if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN)
+            if(!(turnHandler.getCurrentPhase() == TurnPhase.POWERUP_TURN))
                 return false;
 
             ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
