@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.stage.Modality;
@@ -687,28 +688,36 @@ public class MainGuiController implements GuiController {
     }
 
     public List<PowerUpCard> askPowerups() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setGraphic(null);
-        List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
-        if(listToAsk.isEmpty()) return Collections.emptyList();
-        AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
-        List<CheckBox> checkBoxList = new ArrayList<>();
-        alert.setTitle("CHOOSE POWERUPS");
-        alert.setHeaderText("Select optional powerups to use as ammo");
-
-        VBox box = new VBox();
-        for(PowerUpCard card : listToAsk){
-            CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
-            choice.setId(String.valueOf(card.getCardId()));
-            box.getChildren().add(choice);
-            checkBoxList.add(choice);
+        try {
+            TimeUnit.MILLISECONDS.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
+        if(model != null && !model.getPlayerHand().getPowerupHand().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setGraphic(null);
+            List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
+            List<CheckBox> checkBoxList = new ArrayList<>();
+            alert.setTitle("CHOOSE POWERUPS");
+            alert.setHeaderText("Select optional powerups to use as ammo");
 
-        alert.getDialogPane().setContent(box);
-        alert.setOnCloseRequest(e -> {
-            result.set(getCheckBoxInput(checkBoxList, listToAsk));
-        });
-        alert.showAndWait();
+            VBox box = new VBox();
+            for (PowerUpCard card : listToAsk) {
+                CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
+                choice.setId(String.valueOf(card.getCardId()));
+                box.getChildren().add(choice);
+                checkBoxList.add(choice);
+            }
+
+            alert.getDialogPane().setContent(box);
+            alert.setOnCloseRequest(e -> {
+                result.set(getCheckBoxInput(checkBoxList, listToAsk));
+            });
+            alert.showAndWait();
+        }else{
+            return Collections.emptyList();
+        }
         return result.get();
     }
 
@@ -836,18 +845,21 @@ public class MainGuiController implements GuiController {
             if(!card.isReady())notAllReady = true;
         }
         if(notAllReady){
-            Stage empytStage = new Stage(StageStyle.TRANSPARENT);
-            empytStage.initModality(Modality.NONE);
-            List<WeaponCard> weaponCards = askWeaponsToReload(empytStage);
-            empytStage.showAndWait();
-            List<PowerUpCard> powerUpCards = askPowerups();
-
+            List<WeaponCard> weaponCards = askWeaponsToReload();
+            List<PowerUpCard> powerUpCards;
+            if(!weaponCards.isEmpty()){
+                powerUpCards = askPowerups();
+            }else{
+                powerUpCards = Collections.emptyList();
+            }
             this.gui.getConnection().send(actionParser.createReloadEvent(weaponCards,powerUpCards));
 
+        }else{
+            this.gui.getConnection().send(actionParser.createReloadEvent(Collections.emptyList(),Collections.emptyList()));
         }
     }
 
-    private List<WeaponCard> askWeaponsToReload(Stage stage) {
+    private List<WeaponCard> askWeaponsToReload() {
         List<WeaponCard> result = new ArrayList<>();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -869,12 +881,12 @@ public class MainGuiController implements GuiController {
             for(CheckBox choice : checkBoxList){
                 if(choice.isSelected()){
                     String id = choice.getId();
-                    for(WeaponCard card : this.model.getMyPlayer().getHand().getWeaponHand()){
+                    for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){
                         if(card.getId() == Integer.valueOf(id)) result.add(card);
                     }
                 }
             }
-            stage.close();
+            alert.close();
         });
 
         alert.getDialogPane().setContent(box);
