@@ -139,6 +139,8 @@ public class Controller {
         //    currentGame.nextState();
         //}
 
+        if((turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN))&&(!(action instanceof PowerUpPack) && !(action instanceof ReloadInfo)))
+            return false;
 
         if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){
             System.out.println("The game is finished, the winner is...");
