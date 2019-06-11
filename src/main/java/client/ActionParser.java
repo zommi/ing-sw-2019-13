@@ -30,7 +30,7 @@ public class ActionParser{
         this.gameModel = gameModel;
         input.setGameModel(gameModel);
 
-        this.gameModel.getMyPlayer().setHand(gameModel.getPlayerHand().getPlayerHand());
+        //this.gameModel.getMyPlayer().setHand(gameModel.getPlayerHand().getPlayerHand());
 
         //initialize players names
         List<String> pNames = new ArrayList<>();

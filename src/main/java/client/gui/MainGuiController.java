@@ -120,12 +120,12 @@ public class MainGuiController implements GuiController {
         for(Node buttonNode : buttonGrid.getChildren()){
             buttonNode.setDisable(false);
         }
-        for(Node weaponNode : weaponHand.getChildren()){
-            weaponNode.setDisable(false);
-        }
-        for(Node powerupNode : powerupHand.getChildren()){
-            powerupNode.setDisable(false);
-        }
+//        for(Node weaponNode : weaponHand.getChildren()){
+//            weaponNode.setDisable(false);
+//        }
+//        for(Node powerupNode : powerupHand.getChildren()){
+//            powerupNode.setDisable(false);
+//        }
         logText("It's your turn! \n");
     }
 
@@ -377,6 +377,7 @@ public class MainGuiController implements GuiController {
         }
     }
 
+
     public void enablePowerup(MouseEvent mouseEvent){
         if(!this.model.getToSpawn()){
             logText("Select a powerup to use! \n");
@@ -485,20 +486,20 @@ public class MainGuiController implements GuiController {
                         finalI);
                 defaultCard.setOnMousePressed(null);
                 defaultCard.setCursor(Cursor.DEFAULT);
-                defaultCard.setFitWidth(powerupHand.getWidth()/3);
+                defaultCard.setFitWidth(powerupHand.getWidth() / 3);
                 defaultCard.setFitHeight(powerupHand.getHeight());
-                if(this.model.getToSpawn()){
+                if(model.getToSpawn()){
                     setSpawn(card);
                 }else{
                     Info info = this.actionParser.createPowerUpEvent(finalPowerupCard.getCard());
                     this.gui.getConnection().send(info);
-                    for(Node node : powerupHand.getChildren()){
-                        node.setDisable(true);
+                    for(Node node : powerupHand.getChildren()) {
+                        node.setOnMousePressed(null);
                     }
                 }
                 powerupHand.add(defaultCard, finalI, 0);
-                enablePowerup();
             });
+            if(!model.getToSpawn())powerupCard.setDisable(true);
             this.powerupHand.add(powerupCard,i,0);
             i++;
         }
@@ -520,12 +521,6 @@ public class MainGuiController implements GuiController {
             powerupCard.setFitWidth(powerupHand.getWidth()/3);
             powerupCard.setFitHeight(powerupHand.getHeight());
             this.powerupHand.add(powerupCard, i, 0);
-        }
-    }
-
-    private void enablePowerup() {
-        for(Node card : powerupHand.getChildren()){
-            card.setOnMousePressed(null);
         }
     }
 
@@ -557,10 +552,6 @@ public class MainGuiController implements GuiController {
         return null;
     }
 
-    public boolean noSpawned(){
-        return this. myCharacter == null || this.myCharacter.getPosition() == null;
-    }
-
     public GuiTile getTile(int row, int col){
         for(GuiTile tile : tiles){
             if(tile.getCol() == col && tile.getRow() == row){
@@ -581,7 +572,7 @@ public class MainGuiController implements GuiController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MACRO ACTIVATION CONFIRMATION");
-        alert.setContentText("Do you wanna activate this macro effect?\n" + macroEffect);
+        alert.setHeaderText("Do you wanna activate this macro effect?\n" + macroEffect);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -590,7 +581,7 @@ public class MainGuiController implements GuiController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("MICRO ACTIVATION CONFIRMATION");
-        alert.setContentText("Do you wanna activate this micro effect?\n" + microEffect);
+        alert.setHeaderText("Do you wanna activate this micro effect?\n" + microEffect);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -600,8 +591,7 @@ public class MainGuiController implements GuiController {
         alert.setGraphic(null);
         AtomicReference<MacroEffect> result = new AtomicReference<MacroEffect>();
         alert.setTitle("CHOOSE ONE MACRO");
-        alert.setContentText("Select a macro");
-        alert.setHeaderText(null);
+        alert.setHeaderText("Select a macro");
         GridPane box = new GridPane();
         int i = 0;
         for(MacroEffect macroEffect : weapon.getMacroEffects()){
@@ -638,7 +628,7 @@ public class MainGuiController implements GuiController {
         List<String> result = new ArrayList<>();
         List<CheckBox> checkBoxList = new ArrayList<>();
         alert.setTitle("CHOOSE PLAYERS");
-        alert.setContentText("Select up to " + maxTargetPlayerSize + " " + playersOrRooms + " then press OK");
+        alert.setHeaderText("Select up to " + maxTargetPlayerSize + " " + playersOrRooms + " then press OK");
 
         VBox box = new VBox();
         for(String name : listToAsk){
@@ -688,7 +678,6 @@ public class MainGuiController implements GuiController {
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("Move before shoot");
         alert.setHeaderText("Do you want to move a square before shooting?");
-        alert.setContentText(null);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -701,6 +690,7 @@ public class MainGuiController implements GuiController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
         List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
+        if(listToAsk.isEmpty()) return Collections.emptyList();
         AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
         List<CheckBox> checkBoxList = new ArrayList<>();
         alert.setTitle("CHOOSE POWERUPS");
@@ -798,7 +788,7 @@ public class MainGuiController implements GuiController {
                 alert.setGraphic(null);
                 List<CheckBox> checkBoxList = new ArrayList<>();
                 alert.setTitle("CHOOSE TAGBACK GRENADES");
-                alert.setContentText("Select, if you want, the grenades to use:");
+                alert.setHeaderText("Select, if you want, the grenades to use:");
 
                 VBox box = new VBox();
                 for(PowerUpCard card : grenadeList){
@@ -821,7 +811,7 @@ public class MainGuiController implements GuiController {
             }
             this.model.setClientChoice(true);
         }else{
-            logText("Waiting for player to use a tagback grenade");
+            logText("Waiting for player to use a tagback grenade\n");
         }
     }
 
