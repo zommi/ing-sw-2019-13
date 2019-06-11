@@ -869,12 +869,12 @@ public class MainGuiController implements GuiController {
             for(CheckBox choice : checkBoxList){
                 if(choice.isSelected()){
                     String id = choice.getId();
-                    for(WeaponCard card : this.model.getPlayerHand().getPlayerHand().getWeaponHand()){
+                    for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){
                         if(card.getId() == Integer.valueOf(id)) result.add(card);
                     }
                 }
             }
-            stage.close();
+            alert.close();
         });
 
         alert.getDialogPane().setContent(box);
