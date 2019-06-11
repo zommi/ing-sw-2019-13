@@ -3,6 +3,7 @@ package server.controller;
 import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import constants.Color;
 import constants.Constants;
 import exceptions.WrongGameStateException;
@@ -241,18 +242,20 @@ public class Controller {
                                             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade, currentGame, playerShooter);
                                             turnHandler.setAndDoAction(powerUpAction);
                                             sendCollectShootAnswersRMI(currentPlayer, IDShooter);
+                                            ResetAnswer resetChoice = new ResetAnswer();
+                                            server.sendToSpecificRMI(resetChoice, IDShooter);
                                         }
                                     } catch (RemoteException e) {
                                         e.printStackTrace();
                                     }
                                 }
+
                             }
                             listOfPlayers.get(i).setJustDamagedBy(null);
                             clientHasChosen = false;
                             grenadeID = -1;
                             System.out.println("The player did the action ");
                         }
-                        break;
                     }
                 }
             }

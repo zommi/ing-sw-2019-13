@@ -291,6 +291,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
         while (alwaysTrue) {
+            //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel, name);
@@ -385,6 +386,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Test 1");
                             gameModel.setGrenadeAction(action);
                             gameModel.setClientChoice(true);
+                            while(gameModel.getClientChoice()){
+                            }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");
                         }
