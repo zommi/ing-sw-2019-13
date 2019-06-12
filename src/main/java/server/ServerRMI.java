@@ -1,12 +1,12 @@
 package server;
 
-import client.Connection;
 import client.ReceiverInterface;
 import server.controller.Controller;
-import server.model.player.PlayerAbstract;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ServerRMI implements Runnable, ServerInterface {
@@ -28,12 +28,22 @@ public class ServerRMI implements Runnable, ServerInterface {
     public void run() {
         try {
             gameProxy = new GameProxy(this);
-            server.getRegistry().bind(server.getName(), gameProxy);
+            server.getRegistry().bind(server.getRemoteObjectName(), gameProxy);
             System.out.println("RMI started!!!");
         }
         catch (RemoteException | AlreadyBoundException e) {
             System.out.println("Exception caught while binding...");
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<ReceiverInterface> getClientsAdded() {
+        try {
+            return gameProxy.getClientsRMIadded();
+        }
+        catch(RemoteException e){
+            return Collections.emptyList();
         }
     }
 

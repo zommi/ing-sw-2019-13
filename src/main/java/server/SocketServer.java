@@ -6,11 +6,13 @@ import server.model.game.Game;
 
 import java.net.*;
 import java.io.*;
+import java.util.List;
 
 public class SocketServer implements ServerInterface{
     private ServerSocket serverSocket;
     private int port;
     private Game game;
+    private List<ReceiverInterface> clientsAdded;
 
 
     public SocketServer(int port){
@@ -31,6 +33,10 @@ public class SocketServer implements ServerInterface{
         }
     }
 
+    @Override
+    public List<ReceiverInterface> getClientsAdded() {
+        return clientsAdded;
+    }
 
 
     //public int addClient(ReceiverInterface client) {

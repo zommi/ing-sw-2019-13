@@ -39,7 +39,7 @@ public interface GameProxyInterface extends Remote {
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
 
-    public List<ReceiverInterface> getClientRMIadded() throws RemoteException;
+    public List<ReceiverInterface> getClientsRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
 

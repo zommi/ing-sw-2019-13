@@ -26,22 +26,9 @@ public class ActionParser{
         }
     }
 
-    public void addGameModel(GameModel gameModel, String name){
+    public void addGameModel(GameModel gameModel){
         this.gameModel = gameModel;
         input.setGameModel(gameModel);
-
-        //initialize players names
-        List<String> pNames = new ArrayList<>();
-        for(String string : gameModel.getPlayersNames())
-            if(!string.equalsIgnoreCase(name))
-                pNames.add(string);
-        setPlayersNames(pNames);
-
-        //initialize rooms names
-        List<String> rNames = new ArrayList<>();
-        for(Room room : gameModel.getMap().getRooms())
-            rNames.add(room.getColor().name());
-        setRoomsNames(rNames);
     }
 
     public InputAbstract getInput(){

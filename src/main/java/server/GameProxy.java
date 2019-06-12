@@ -39,7 +39,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.serverRMI.getServer().getController().getCurrentCharacter();
     }
 
-    public List<ReceiverInterface> getClientRMIadded() throws RemoteException{
+    public List<ReceiverInterface> getClientsRMIadded(){
         return this.clientRMIadded;
     }
 
@@ -129,7 +129,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         System.out.println("Adding the client to the server...");
         if(serverRMI.getServer().getStartGame() == 1){
             throw new GameAlreadyStartedException();
-        };
+        }
         this.clientIDadded = serverRMI.addClient(client);
         System.out.println("Added client number: " +clientIDadded);
 

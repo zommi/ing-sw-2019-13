@@ -6,7 +6,6 @@ import server.controller.Controller;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerHand;
 import view.*;
 
 import java.rmi.RemoteException;
@@ -25,10 +24,17 @@ public class Server {
     private int mapChoice;
     private Controller controller;
     private int initialSkulls;
-    private int clientIDadded;
+    private int lastClientIdAdded;
     private int startGame = 0;
-    private static List<Integer> listOfClients = new ArrayList<>();
+    private List<Integer> listOfClients = new ArrayList<>();
     private List<PlayerAbstract> playerList = new ArrayList<>();
+    private ServerInterface serverRMI;
+    private ServerInterface socketServer;
+
+
+    public Server() throws RemoteException{
+        this.registry = LocateRegistry.createRegistry(1099);
+    }
 
 
     public int getStartGame(){
@@ -62,29 +68,33 @@ public class Server {
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
                 InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
-                List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+
+                //adding all rmi and socket clients
+                List<ReceiverInterface> clientsAdded = new ArrayList<>(gameProxy.getClientsRMIadded());
+                //clientsAdded.addAll(SOCKET)
+
                 //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 GameBoard currentGameBoard = controller.getCurrentGame().getCurrentGameBoard();
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
                 SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
-                for(int i = 0; i < temp.size(); i++){
-                    System.out.println("Found a connection whose client is: " + temp.get(i).getClientID());
-                    temp.get(i).publishMessage(temp0);
-                    temp.get(i).publishMessage(gameBoardAnswer);
-                    //temp.get(i).publishMessage(mapAnswer);
-                    temp.get(i).publishMessage(setSpawnAnswer);
+                for(int i = 0; i < clientsAdded.size(); i++){
+                    System.out.println("Found a connection whose client is: " + clientsAdded.get(i).getClientID());
+                    clientsAdded.get(i).publishMessage(temp0);
+                    clientsAdded.get(i).publishMessage(gameBoardAnswer);
+                    //clientsAdded.get(i).publishMessage(mapAnswer);
+                    clientsAdded.get(i).publishMessage(setSpawnAnswer);
                     System.out.println("Sent the map to the connection RMI");
-                    //temp.get(i).publishMessage(temp1);
+                    //clientsAdded.get(i).publishMessage(temp1);
                     //System.out.println("Sent the weapon card list to the client RMI");
-                    System.out.println(" " +temp.get(i).getClientID());
+                    System.out.println(" " +clientsAdded.get(i).getClientID());
                     System.out.println(" " +controller.getCurrentID());
                     System.out.println("Sending the players their player hands");
                     System.out.println(" " +controller.getPlayers().get(i).getClientID());
                     for(int k = 0; k < controller.getPlayers().size(); k++){
-                        if(controller.getPlayers().get(k).getClientID() == temp.get(i).getClientID()){
+                        if(controller.getPlayers().get(k).getClientID() == clientsAdded.get(i).getClientID()){
                             PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
                             try{
-                                temp.get(i).publishMessage(playerHandAnswer);
+                                clientsAdded.get(i).publishMessage(playerHandAnswer);
                                 System.out.println("player hand sent");
                             }
                             catch(RemoteException e){
@@ -124,23 +134,29 @@ public class Server {
 
 
     public int addClient(ReceiverInterface client){
-        if(listOfClients.size() == 0){
+        if(listOfClients.isEmpty()){
             listOfClients.add(0);
-            this.clientIDadded = 0;
+            this.lastClientIdAdded = 0;
         }
         else{ //it is not the first element added in the list so it is not the first client.
-            listOfClients.add(clientIDadded +1);
-            this.clientIDadded = clientIDadded + 1;
+            listOfClients.add(lastClientIdAdded +1);
+            this.lastClientIdAdded = lastClientIdAdded + 1;
         }
         System.out.println("Added the clientID ");
-        return clientIDadded;
+        return lastClientIdAdded;
     }
+
+    /*public void sendToEverybody(ServerAnswer serverAnswer){
+        List<ReceiverInterface> temp = new ArrayList<>()
+        try{
+            for(ReceiverInterface receiverInterface : )
+        }
+    }*/
 
     public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
         try {
-            List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
-            for (int i = 0; i < temp.size(); i++) {
-                temp.get(i).publishMessage(serverAnswer);
+            for (ReceiverInterface receiverInterface : gameProxy.getClientsRMIadded()) {
+                receiverInterface.publishMessage(serverAnswer);
                 System.out.println("Sent an update to the clients");
             }
         }
@@ -151,7 +167,7 @@ public class Server {
 
     public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
         try {
-            List<ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            List<ReceiverInterface> temp = gameProxy.getClientsRMIadded();
             for (int i = 0; i < temp.size(); i++) {
                 if(temp.get(i).getClientID() == clientID){
                     temp.get(i).publishMessage(serverAnswer);
@@ -165,12 +181,8 @@ public class Server {
         }
     }
 
-    public int getClientIDadded(){
-        return this.clientIDadded;
-    }
-
-    public Server() throws RemoteException{
-        this.registry = LocateRegistry.createRegistry(1099);
+    public int getLastClientIdAdded(){
+        return this.lastClientIdAdded;
     }
 
     public Controller getController(){
@@ -201,21 +213,19 @@ public class Server {
         return this.registry;
     }
 
-    public String getName(){  //RETURNS the name of the remote object
+    public String getRemoteObjectName(){  //RETURNS the name of the remote object
         return REGISTRATION_ROOM_NAME;
     }
 
-    public void startRMI(){ //creates a new thread with the RMI connection
-        ExecutorService executorRMI = Executors.newCachedThreadPool();
-        executorRMI.submit(new ServerRMI(this));
-    }
-
-
     public static void main(String[] args) throws RemoteException{
-        Server rmiServer = new Server();
-        SocketServer socketServer = new SocketServer(1337);
-        rmiServer.startRMI();
-        socketServer.start();
+        Server server = new Server();
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        server.socketServer = new SocketServer(1337);
+        server.serverRMI = new ServerRMI(server);
+
+        executor.submit(server.serverRMI);
+        executor.submit(server.socketServer);
     }
 
 

@@ -33,9 +33,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     private static final int MIN_SKULL = 5;
     private static final int MAX_SKULL = 8;
 
-    private String name;
-    private String characterName;
-
 
     public UpdaterCLI(){
         super();
@@ -103,7 +100,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             playerName = myObj.nextLine();
         } while (playerName.equals(""));
 
-        this.name = playerName;
         System.out.println("Name is: " +playerName);
 
         do {
@@ -223,7 +219,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                 if(choice < Figure.values().length && choice >= 0){
                     set = true;
                     characterName = Figure.values()[choice].name();
-                    this.characterName = characterName;
                 }
                 else{
                     System.out.println("Error: insert a valid number!");
@@ -291,7 +286,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
-                actionParser.addGameModel(gameModel, name);
+                actionParser.addGameModel(gameModel);
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
@@ -702,8 +697,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     public void printPlayerBoard(PlayerBoardAnswer p){
-        System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
-                characterName + Constants.ANSI_RESET);
+        /*System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
+                characterName + Constants.ANSI_RESET);*/
 
         //prints damage
         System.out.println("\nDAMAGE:\n");

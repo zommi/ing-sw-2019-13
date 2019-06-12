@@ -94,7 +94,7 @@ public class MainGuiController implements GuiController {
         log = "Game started! \n";
         initializeMap();
         this.actionParser = gui.getActionParser();
-        this.actionParser.addGameModel(this.model,this.gui.getPlayerName());
+        this.actionParser.addGameModel(this.model);
         textLogger.setText(log);
         textLogger.setWrapText(true);
         logText("Welcome " + this.model.getMyPlayer().getName() + ", you chose " + this.gui.getCharacter() + "\n");

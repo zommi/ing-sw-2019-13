@@ -290,13 +290,9 @@ public class Controller {
     }
 
     public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
-        //MapAnswer mapAnswer = new MapAnswer(this.currentGame.getCurrentGameMap());
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-        //PlayerBoardAnswer playerBoardAnswer = new PlayerBoardAnswer(player.getPlayerBoard());
         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
-        //server.sendToEverybodyRMI(mapAnswer);
         server.sendToEverybodyRMI(gameBoardAnswer);
-        //server.sendToEverybodyRMI(playerBoardAnswer);
         server.sendToSpecificRMI(playerHandAnswer, clientID);
     }
 

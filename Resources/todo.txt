@@ -26,3 +26,11 @@ sistemare invio cose al client ripetute
 aggiungere alla cli le info degli altri giocatori, tipo danni marchi e armi scariche
 
 sparare senza far danno a nessuno?
+
+respawn cli
+
+mandare carte respawn automaticamente?
+
+
+SOCKET:
+cambiare send to specific
