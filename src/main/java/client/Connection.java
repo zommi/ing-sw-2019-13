@@ -14,6 +14,8 @@ public interface Connection extends Serializable {
 
     public boolean CharacterChoice(String name);
 
+    public String getCharacterName(int clientID);
+
     public int getCurrentID();
 
     public int getGrenadeID();

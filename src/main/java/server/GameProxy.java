@@ -3,6 +3,7 @@ package server;
 import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
+import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import server.model.map.GameMap;
 import server.model.player.*;
@@ -13,6 +14,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
@@ -26,7 +28,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private List<PlayerAbstract> player = new ArrayList();
     private int clientIDadded;
     private int initialSkulls;
-    private List<ReceiverInterface> clientRMIadded = new ArrayList<>();
+    private HashMap<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
 
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
@@ -39,7 +41,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.serverRMI.getServer().getController().getCurrentCharacter();
     }
 
-    public List<ReceiverInterface> getClientRMIadded() throws RemoteException{
+    public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException{
         return this.clientRMIadded;
     }
 
@@ -86,6 +88,17 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public String getCharacterName(int clientID) throws RemoteException{
+        for(PlayerAbstract p:player){
+            if(p.getGameCharacter() != null){ //if the character has already been assigned it means that the player already exists in the list and it's completed, otherwise the player still does not have a character
+                if(p.getClientID() == clientID)
+                    return p.getCharacterName();
+            }
+        }
+        return "No name yet";
+    }
+
+    @Override
     public boolean askClient(int ID) throws RemoteException{
         for(int k = 0; k < clientRMIadded.size(); k++){
             try{
@@ -106,8 +119,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return true;
     }
 
-    public void addClientRMI(ReceiverInterface receiver){
-        this.clientRMIadded.add(receiver);
+    public void addClientRMI(int id, ReceiverInterface receiver){
+        this.clientRMIadded.put(id, receiver);
     }
 
     @Override
@@ -147,17 +160,37 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException{
+    public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
         this.clientRMI = clientRMI;
         //clientRMI.print();
-        this.addClientRMI(clientRMI);
+        this.addClientRMI(id, clientRMI);
         System.out.println("I just connected to the client");
     }
 
     @Override
     public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
+        for(PlayerAbstract p:player){
+            if((p.getName().equals(name))&&(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+                int damage = p.getPlayerBoard().getDamageTaken();
+                if((damage > Constants.BETTERCOLLECTDAMAGE)&&(damage <= Constants.BETTERSHOOTDAMAGE)){
+                    p.setState(PlayerState.BETTER_COLLECT);
+                }
+                else if((damage > Constants.BETTERSHOOTDAMAGE) && (damage <= Constants.DEATH_THRESHOLD)){
+                    p.setState(PlayerState.BETTER_SHOOT);
+                }
+                else if((p.getPosition().getRow() == -1000)&&(p.getPosition().getCol() == -1000)){
+                    p.setState(PlayerState.TOBESPAWNED);
+                }
+                else
+                    p.setState(PlayerState.NORMAL);
+                return true;
+            }
+            else if((p.getName().equals(name))&&!(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+                name = name + clientID;
+            }
+        }
         if(player.size() == 5)
             return false;
         PlayerAbstract playerToAdd = new ConcretePlayer(name);
@@ -172,9 +205,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean addPlayerCharacter(String name, int ID) throws RemoteException{
         for(int i = 0; i < player.size(); i++){
             if(player.get(i).getClientID() == ID){
-                serverRMI.getServer().addPlayer(player.get(i));
                 this.player.get(i).setPlayerCharacter(Figure.fromString(name));
                 this.player.get(i).setIfCharacter(true);
+                this.serverRMI.getServer().addPlayer(player.get(i));
                 this.serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addGameCharacter(new GameCharacter(Figure.fromString(name)));
             }
             System.out.println("For now I have received client number " +player.get(i).getClientID());
@@ -236,16 +269,21 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public boolean addMapPlayer(int clientID) throws RemoteException{
-        serverRMI.addMapClient(clientID);
+        serverRMI.addMapClient(getPlayer(clientID));
         System.out.println("Added the map of the client and of the player");
         return true;
     }
 
     @Override
+    public List<PlayerAbstract> getPlayerList() throws RemoteException{
+        return player;
+    }
+
+    @Override
     public PlayerAbstract getPlayer(int clientID) throws RemoteException{
-        for(int i = 0; i < player.size(); i++){
-            if(player.get(i).getClientID() == clientID)
-                return player.get(i);
+        for(PlayerAbstract p:player){
+            if(p.getClientID() == clientID)
+                return p;
         }
         return null;
     }

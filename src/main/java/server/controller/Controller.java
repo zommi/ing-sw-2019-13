@@ -80,14 +80,14 @@ public class Controller {
         return this.grenadeID;
     }
 
-    public void nextCurrentID(){
+    /*public void nextCurrentID(){
         if(currentID == currentGame.getActivePlayers().size() - 1){
             currentID = 0;
         }
         else{
             this.currentID = currentID + 1;
         }
-    }
+    }*/
 
 
 
@@ -268,7 +268,6 @@ public class Controller {
             System.out.println("We are in the end turn");
             turnHandler.nextPhase();
             System.out.println("Turning next phase");
-            this.nextCurrentID();
             System.out.println("Number of actions ended " +turnHandler.getCurrentPhase());
             //ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
             //server.sendToEverybodyRMI(change);
@@ -308,6 +307,9 @@ public class Controller {
         return this.currentGame;
     }
 
+    public void setCurrentID(int i){
+        this.currentID = i;
+    }
 
     public void addClientInMap(PlayerAbstract player){
         try{
@@ -358,6 +360,10 @@ public class Controller {
             }
         }
         return needToSpawn;
+    }
+
+    public List<PlayerAbstract> getPlayersToSpawn(){
+        return playersToSpawn;
     }
 
     private void sendSpawnAnswer(PlayerAbstract playerAbstract) {

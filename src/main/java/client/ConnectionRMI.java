@@ -4,6 +4,7 @@ import exceptions.GameAlreadyStartedException;
 import server.GameProxyInterface;
 import server.model.map.GameMap;
 import server.model.player.Figure;
+import server.model.player.PlayerAbstract;
 import view.ServerAnswer;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
@@ -248,7 +250,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         System.out.println("I am exporting the remote object...");
         (ReceiverInterface) UnicastRemoteObject.exportObject(this, 1000)*/
 
-        gameProxy.setClientRMI(this);
         try{
             gameProxy.register(this);
         }
@@ -257,6 +258,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             return null;
         }
         setClientID(gameProxy.getClientID());
+        gameProxy.setClientRMI(clientID, this);
         this.gameModel.setClientID(clientID);
 
         System.out.println("Your ClientID is " + this.clientID);
@@ -278,6 +280,17 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
                 re.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String getCharacterName(int clientID){
+        try{
+            return gameProxy.getCharacterName(clientID);
+        }
+        catch (RemoteException e){
+            e.printStackTrace();
+        }
+        return "No name yet";
     }
 
     public void startTimer() {
@@ -311,6 +324,8 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
                 System.out.println("Remote Exception");
             }
         }
+
+        //devo guardare che non ci sia già.
 
         System.out.println("Trying to send your name to the server...");
         while (!playerNameSet) {

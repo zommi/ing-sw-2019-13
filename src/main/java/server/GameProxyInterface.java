@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface GameProxyInterface extends Remote {
@@ -22,6 +23,8 @@ public interface GameProxyInterface extends Remote {
     public boolean askClient(int ID) throws RemoteException;
 
     public Info getGrenadeAction(int grenadeID) throws RemoteException;
+
+    public String getCharacterName(int clientID) throws RemoteException;
 
     //public void setClientHasChosenPowerup() throws RemoteException;
 
@@ -39,7 +42,7 @@ public interface GameProxyInterface extends Remote {
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
 
-    public List<ReceiverInterface> getClientRMIadded() throws RemoteException;
+    public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
 
@@ -53,7 +56,7 @@ public interface GameProxyInterface extends Remote {
 
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 
-    public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException;
+    public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException;
 
     public boolean sendPlayer(String name, int ID) throws RemoteException;
 
@@ -61,4 +64,5 @@ public interface GameProxyInterface extends Remote {
 
     public PlayerAbstract getPlayer(int clientID) throws RemoteException;
 
+    public List<PlayerAbstract> getPlayerList() throws RemoteException;
 }

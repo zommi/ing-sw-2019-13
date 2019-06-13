@@ -207,34 +207,40 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         /*String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
         List<String> cnList = Arrays.asList(characterNames);*/
-        int choice;
-        boolean set = false;
-        String stringChoice;
-        characterName = "";
+        if(connection.getCharacterName(connection.getClientID()).equals("No name yet")){
+            int choice;
+            boolean set = false;
+            String stringChoice;
+            characterName = "";
 
-        do{
-            System.out.println(">Choose your character:");
-            for(int i = 0; i< Figure.values().length; i++){
-                System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
-            }
-            try {
-                stringChoice =  myObj.nextLine();
-                choice = Integer.parseInt(stringChoice) - 1;
-                if(choice < Figure.values().length && choice >= 0){
-                    set = true;
-                    characterName = Figure.values()[choice].name();
-                    this.characterName = characterName;
+            do{
+                System.out.println(">Choose your character:");
+                for(int i = 0; i< Figure.values().length; i++){
+                    System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
                 }
-                else{
-                    System.out.println("Error: insert a valid number!");
+                try {
+                    stringChoice =  myObj.nextLine();
+                    choice = Integer.parseInt(stringChoice) - 1;
+                    if(choice < Figure.values().length && choice >= 0){
+                        set = true;
+                        characterName = Figure.values()[choice].name();
+                        this.characterName = characterName;
+                    }
+                    else{
+                        System.out.println("Error: insert a valid number!");
+                    }
+                } catch(NumberFormatException e){
+                    System.out.println("Error: insert a valid number");
                 }
-            } catch(NumberFormatException e){
-                System.out.println("Error: insert a valid number");
-            }
-        } while (!set || (!connection.CharacterChoice(characterName)));
+            } while (!set || (!connection.CharacterChoice(characterName)));
 
-        System.out.println("Name is: " +characterName.toUpperCase());
-        connection.addPlayerCharacter(characterName);
+            System.out.println("Name is: " +characterName.toUpperCase());
+            connection.addPlayerCharacter(characterName);
+        }
+        else{
+            this.characterName = connection.getCharacterName(connection.getClientID());
+        }
+
 
         /*if(gameModel.getClientID() == 0){
             System.out.println("Waiting 30 seconds for the others to join the game");

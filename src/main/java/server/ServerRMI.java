@@ -45,12 +45,8 @@ public class ServerRMI implements Runnable, ServerInterface {
         return this.server.addClient(client);
     }
 
-    public void addMapClient(int clientID) {
-        try {
-            System.out.println("Trying to add the client to the map ");
-            controller.addClientInMap(gameProxy.getPlayer(clientID));
-        } catch (RemoteException re) {
-            System.out.println("Could not add the client to the map ");
-        }
+    public void addMapClient(PlayerAbstract p) {
+        System.out.println("Trying to add the client to the map ");
+        controller.addClientInMap(p);
     }
 }
