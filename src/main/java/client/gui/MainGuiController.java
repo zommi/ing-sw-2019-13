@@ -9,6 +9,8 @@ import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
 import constants.Direction;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -30,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
@@ -256,7 +259,6 @@ public class MainGuiController implements GuiController {
         }
     }
 
-
     @FXML
     void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiWeaponCard cardToDiscard, GuiSpawnPoint sp) {
         if(weaponHandSize == 3) return;
@@ -298,12 +300,14 @@ public class MainGuiController implements GuiController {
             weapon.setOnMousePressed(e -> {
                 weapon.setPreserveRatio(true);
                 alert.close();
-                if(weaponHandSize < 3){
-                    drawWeapon(e,weapon,null,spawnPoint);
-                }else{
-                    GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
-                    drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
-                }
+                Platform.runLater(() -> {
+                    if(weaponHandSize < 3){
+                        drawWeapon(e,weapon,null,spawnPoint);
+                    }else{
+                        GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
+                        drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
+                    }
+                });
                 spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
             });
             cards.add(weapon,i,0);
@@ -377,7 +381,6 @@ public class MainGuiController implements GuiController {
             logText("You first need to spawn!\n");
         }
     }
-
 
     public void enablePowerup(MouseEvent mouseEvent){
         if(!this.model.getToSpawn()){
@@ -688,22 +691,19 @@ public class MainGuiController implements GuiController {
     }
 
     public List<PowerUpCard> askPowerups() {
-        try {
-            TimeUnit.MILLISECONDS.sleep(250);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
         AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
-        if(model != null && !model.getPlayerHand().getPowerupHand().isEmpty()) {
+        if(!listToAsk.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setGraphic(null);
-            List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
             if (listToAsk.isEmpty()) return Collections.emptyList();
             List<CheckBox> checkBoxList = new ArrayList<>();
             alert.setTitle("CHOOSE POWERUPS");
             alert.setHeaderText("Select optional powerups to use as ammo");
 
             VBox box = new VBox();
+            alert.getDialogPane().setContent(box);
+
             for (PowerUpCard card : listToAsk) {
                 CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
                 choice.setId(String.valueOf(card.getCardId()));
@@ -711,7 +711,6 @@ public class MainGuiController implements GuiController {
                 checkBoxList.add(choice);
             }
 
-            alert.getDialogPane().setContent(box);
             alert.setOnCloseRequest(e -> {
                 result.set(getCheckBoxInput(checkBoxList, listToAsk));
             });
@@ -754,6 +753,8 @@ public class MainGuiController implements GuiController {
                 }
             });
             alert.showAndWait();
+        }else{
+            return Collections.emptyList();
         }
         return result;
     }
