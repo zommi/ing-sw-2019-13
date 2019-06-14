@@ -125,6 +125,10 @@ public class Server {
         }
     }
 
+    public void addClientsDisconnected(int id){
+        this.listOfClients.add(id);
+    }
+
 
     public int addClient(ReceiverInterface client){
         if(listOfClients.size() == 0){
@@ -172,6 +176,7 @@ public class Server {
                             System.out.println("Disconnected the player: " +idToDisconnect);
                         }
                     }
+                    game.getCurrentGameBoard().getHashMap().remove(idToDisconnect);
                 }
             }
             catch(RemoteException re){
@@ -184,6 +189,7 @@ public class Server {
     public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
         try {
             HashMap<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            System.out.println("Sending the update to: "+clientID);
             for (Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
                 ReceiverInterface value = entry.getValue();
                 idToDisconnect = entry.getKey();  //when it catches the exception we know which id is the one
@@ -217,6 +223,7 @@ public class Server {
                             System.out.println("Disconnected the player: " +idToDisconnect);
                         }
                     }
+                    game.getCurrentGameBoard().getHashMap().remove(idToDisconnect);
                 }
             }
             catch(RemoteException re){

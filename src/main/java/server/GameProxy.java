@@ -5,9 +5,13 @@ import client.Info;
 import client.ReceiverInterface;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
+import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.player.*;
+import view.GameBoardAnswer;
+import view.PlayerHandAnswer;
 import view.ServerAnswer;
+import view.SetSpawnAnswer;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -140,9 +144,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
-        if(serverRMI.getServer().getStartGame() == 1){
-            throw new GameAlreadyStartedException();
-        };
+        //if(serverRMI.getServer().getStartGame() == 1){
+        //    throw new GameAlreadyStartedException();
+        //}
         this.clientIDadded = serverRMI.addClient(client);
         System.out.println("Added client number: " +clientIDadded);
 
@@ -171,8 +175,10 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
+        SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(false);
         for(PlayerAbstract p:player){
             if((p.getName().equals(name))&&(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+                System.out.println("This player was disconnected before");
                 int damage = p.getPlayerBoard().getDamageTaken();
                 if((damage > Constants.BETTERCOLLECTDAMAGE)&&(damage <= Constants.BETTERSHOOTDAMAGE)){
                     p.setState(PlayerState.BETTER_COLLECT);
@@ -182,15 +188,35 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
                 }
                 else if((p.getPosition().getRow() == -1000)&&(p.getPosition().getCol() == -1000)){
                     p.setState(PlayerState.TOBESPAWNED);
+                    setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
                 }
                 else
                     p.setState(PlayerState.NORMAL);
+
+                ((ConcretePlayer)p).setClientID(clientID);
+                serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addPlayerBoard((ConcretePlayer) p);
+                System.out.println("So his new clientID is: "+clientID);
+
+                GameBoard currentGameBoard = serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard();
+                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
+                List<PlayerAbstract> playerInServer = serverRMI.getServer().getController().getPlayers();
+
+                for(PlayerAbstract player:playerInServer){
+                    if(player.getClientID() == clientID){
+                        PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
+                        serverRMI.getServer().sendToSpecificRMI(playerHandAnswer, clientID);
+                    }
+                }
+                System.out.println("Sending the game board to the new client");
+                serverRMI.getServer().sendToSpecificRMI(gameBoardAnswer, clientID);
+                serverRMI.getServer().sendToSpecificRMI(setSpawnAnswer, clientID);
                 return true;
             }
             else if((p.getName().equals(name))&&!(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
                 name = name + clientID;
             }
         }
+        System.out.println("Adding: "+name);
         if(player.size() == 5)
             return false;
         PlayerAbstract playerToAdd = new ConcretePlayer(name);

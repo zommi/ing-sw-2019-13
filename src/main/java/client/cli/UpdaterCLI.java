@@ -239,6 +239,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         else{
             this.characterName = connection.getCharacterName(connection.getClientID());
+            System.out.println("Playing with..." +this.characterName);
         }
 
 
@@ -292,11 +293,12 @@ public class UpdaterCLI  implements Updater,Runnable{
         ActionParser actionParser = new ActionParser(this);
 
 
-
+        //TODO MANCA LA RICEZIONE DI RISPOSTE !!!!
         while (alwaysTrue) {
             //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
+                System.out.println("Game is already started");
                 actionParser.addGameModel(gameModel, name);
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
@@ -335,6 +337,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println();
                     }
 
+                    System.out.println("Checking if you need to be spawn");
                     if(gameModel.getToSpawn()){
                         powerups = this.spawn(powerups, playerHand, actionParser);
                     }

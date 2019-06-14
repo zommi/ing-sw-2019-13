@@ -365,6 +365,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
+    public void setClientIDExisting(int idAlreadyExisting) throws RemoteException{
+        this.clientID = idAlreadyExisting;
+    }
+
+    @Override
     public String getMapName() {
         try{
             return gameProxy.getMapName();

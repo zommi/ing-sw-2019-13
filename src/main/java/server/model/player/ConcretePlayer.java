@@ -173,7 +173,6 @@ public class ConcretePlayer extends PlayerAbstract {
         playerBoard.spawn(getPosition().getRow(), getPosition().getCol());
     }
 
-
     public Color getColor(){
         return this.gameCharacter.getColor();
     }
