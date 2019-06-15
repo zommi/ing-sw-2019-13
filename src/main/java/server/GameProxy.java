@@ -179,19 +179,22 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         for(PlayerAbstract p:player){
             if((p.getName().equals(name))&&(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
                 System.out.println("This player was disconnected before");
-                int damage = p.getPlayerBoard().getDamageTaken();
-                if((damage > Constants.BETTERCOLLECTDAMAGE)&&(damage <= Constants.BETTERSHOOTDAMAGE)){
-                    p.setState(PlayerState.BETTER_COLLECT);
-                }
-                else if((damage > Constants.BETTERSHOOTDAMAGE) && (damage <= Constants.DEATH_THRESHOLD)){
-                    p.setState(PlayerState.BETTER_SHOOT);
-                }
-                else if((p.getPosition().getRow() == -1000)&&(p.getPosition().getCol() == -1000)){
+                if(p.getPosition() == null){
+                    setSpawnAnswer = new SetSpawnAnswer(true);
                     p.setState(PlayerState.TOBESPAWNED);
-                    setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
                 }
-                else
-                    p.setState(PlayerState.NORMAL);
+                else {
+                    int damage = p.getPlayerBoard().getDamageTaken();
+                    if ((damage > Constants.BETTERCOLLECTDAMAGE) && (damage <= Constants.BETTERSHOOTDAMAGE)) {
+                        p.setState(PlayerState.BETTER_COLLECT);
+                    } else if ((damage > Constants.BETTERSHOOTDAMAGE) && (damage <= Constants.DEATH_THRESHOLD)) {
+                        p.setState(PlayerState.BETTER_SHOOT);
+                    } else if ((p.getPosition().getRow() == -1000) && (p.getPosition().getCol() == -1000)) {
+                        p.setState(PlayerState.TOBESPAWNED);
+                        setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
+                    } else
+                        p.setState(PlayerState.NORMAL);
+                }
 
                 ((ConcretePlayer)p).setClientID(clientID);
                 serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addPlayerBoard((ConcretePlayer) p);
