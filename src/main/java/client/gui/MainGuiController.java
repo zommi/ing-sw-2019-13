@@ -9,6 +9,8 @@ import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
 import constants.Direction;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -24,11 +26,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
@@ -255,7 +259,6 @@ public class MainGuiController implements GuiController {
         }
     }
 
-
     @FXML
     void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiWeaponCard cardToDiscard, GuiSpawnPoint sp) {
         if(weaponHandSize == 3) return;
@@ -297,12 +300,14 @@ public class MainGuiController implements GuiController {
             weapon.setOnMousePressed(e -> {
                 weapon.setPreserveRatio(true);
                 alert.close();
-                if(weaponHandSize < 3){
-                    drawWeapon(e,weapon,null,spawnPoint);
-                }else{
-                    GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
-                    drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
-                }
+                Platform.runLater(() -> {
+                    if(weaponHandSize < 3){
+                        drawWeapon(e,weapon,null,spawnPoint);
+                    }else{
+                        GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
+                        drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
+                    }
+                });
                 spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
             });
             cards.add(weapon,i,0);
@@ -376,7 +381,6 @@ public class MainGuiController implements GuiController {
             logText("You first need to spawn!\n");
         }
     }
-
 
     public void enablePowerup(MouseEvent mouseEvent){
         if(!this.model.getToSpawn()){
@@ -687,28 +691,33 @@ public class MainGuiController implements GuiController {
     }
 
     public List<PowerUpCard> askPowerups() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setGraphic(null);
         List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
-        if(listToAsk.isEmpty()) return Collections.emptyList();
         AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
-        List<CheckBox> checkBoxList = new ArrayList<>();
-        alert.setTitle("CHOOSE POWERUPS");
-        alert.setHeaderText("Select optional powerups to use as ammo");
+        if(!listToAsk.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setGraphic(null);
+            if (listToAsk.isEmpty()) return Collections.emptyList();
+            List<CheckBox> checkBoxList = new ArrayList<>();
+            alert.setTitle("CHOOSE POWERUPS");
+            alert.setHeaderText("Select optional powerups to use as ammo");
 
-        VBox box = new VBox();
-        for(PowerUpCard card : listToAsk){
-            CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
-            choice.setId(String.valueOf(card.getCardId()));
-            box.getChildren().add(choice);
-            checkBoxList.add(choice);
+            VBox box = new VBox();
+            alert.getDialogPane().setContent(box);
+
+            for (PowerUpCard card : listToAsk) {
+                CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor().toString());
+                choice.setId(String.valueOf(card.getCardId()));
+                box.getChildren().add(choice);
+                checkBoxList.add(choice);
+            }
+
+            alert.setOnCloseRequest(e -> {
+                result.set(getCheckBoxInput(checkBoxList, listToAsk));
+            });
+            alert.showAndWait();
+        }else {
+            return Collections.emptyList();
         }
-
-        alert.getDialogPane().setContent(box);
-        alert.setOnCloseRequest(e -> {
-            result.set(getCheckBoxInput(checkBoxList, listToAsk));
-        });
-        alert.showAndWait();
         return result.get();
     }
 
@@ -744,6 +753,8 @@ public class MainGuiController implements GuiController {
                 }
             });
             alert.showAndWait();
+        }else{
+            return Collections.emptyList();
         }
         return result;
     }
@@ -836,18 +847,21 @@ public class MainGuiController implements GuiController {
             if(!card.isReady())notAllReady = true;
         }
         if(notAllReady){
-            Stage empytStage = new Stage(StageStyle.TRANSPARENT);
-            empytStage.initModality(Modality.NONE);
-            List<WeaponCard> weaponCards = askWeaponsToReload(empytStage);
-            empytStage.showAndWait();
-            List<PowerUpCard> powerUpCards = askPowerups();
-
+            List<WeaponCard> weaponCards = askWeaponsToReload();
+            List<PowerUpCard> powerUpCards;
+            if(!weaponCards.isEmpty()){
+                powerUpCards = askPowerups();
+            }else{
+                powerUpCards = Collections.emptyList();
+            }
             this.gui.getConnection().send(actionParser.createReloadEvent(weaponCards,powerUpCards));
 
+        } else {
+            this.gui.getConnection().send(actionParser.createReloadEvent(Collections.emptyList(),Collections.emptyList()));
         }
     }
 
-    private List<WeaponCard> askWeaponsToReload(Stage stage) {
+    private List<WeaponCard> askWeaponsToReload() {
         List<WeaponCard> result = new ArrayList<>();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -874,7 +888,6 @@ public class MainGuiController implements GuiController {
                     }
                 }
             }
-            stage.close();
         });
 
         alert.getDialogPane().setContent(box);

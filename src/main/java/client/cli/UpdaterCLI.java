@@ -322,7 +322,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println("You have no powerups!");
                     } else {
                         for (PowerUpCard powerUpCard : powerups) {
-                            System.out.println("> " + powerUpCard);
+                            System.out.println("> " + powerUpCard.printOnCli());
                         }
                     }
 
@@ -505,7 +505,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
             gameModel.getMap().printOnCLI();
 
-            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to reload" +
+            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
                     "\nMAP to show the map");
             read = myObj.nextLine();
             int result = -1;
@@ -690,7 +690,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             else if(read.equalsIgnoreCase("r")){        //reload
                 List<WeaponCard> weaponCards = new ArrayList<>();
                 List<PowerUpCard> powerUpCards = new ArrayList<>();
-                if(!gameModel.getMyPlayer().getHand().areAllWeaponsLoaded()) {
+                if(!gameModel.getPlayerHand().getPlayerHand().areAllWeaponsLoaded()) {
                     System.out.println("Do you want to reload any weapon? [y]");
                     if (myObj.nextLine().equalsIgnoreCase("y")) {
                         weaponCards = askWeaponsToReload(myObj);
@@ -755,7 +755,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         List<WeaponCard> cardsToAsk = new ArrayList<>();
 
         //will ask only for unloaded weapons
-        for(WeaponCard weaponCard : gameModel.getMyPlayer().getHand().getWeaponHand()){
+        for(WeaponCard weaponCard : gameModel.getPlayerHand().getPlayerHand().getWeaponHand()){
             if(!weaponCard.isReady())
                 cardsToAsk.add(weaponCard);
         }
