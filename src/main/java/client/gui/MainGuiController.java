@@ -69,8 +69,6 @@ public class MainGuiController implements GuiController {
 
     private GameModel model;
 
-    boolean iteration = true;
-
     private int weaponHandSize = 0;
 
     private UpdaterGui gui;
@@ -814,11 +812,12 @@ public class MainGuiController implements GuiController {
                 });
                 alert.getDialogPane().setContent(box);
                 alert.showAndWait();
+                List<Info> infoList = new ArrayList<>();
                 for(PowerUpCard card : activatedGrenades.get()){
-                    Info info = actionParser.createPowerUpEvent(card);
-                    this.model.setGrenadeAction(info);
+                    infoList.add(actionParser.createPowerUpEvent(card));
                     logText("Grenade used\n");
                 }
+                this.model.setGrenadeAction(infoList);
             }
             this.model.setClientChoice(true);
         }else{
