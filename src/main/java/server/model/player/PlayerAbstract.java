@@ -33,7 +33,7 @@ public abstract class PlayerAbstract implements Serializable {
      * @return the figure the player selected
      */
     public Figure chooseFigure(Figure selection) {
-        System.out.println("You chose: " + selection +". Great Choice!");
+        //System.out.println("You chose: " + selection +". Great Choice!");
         GameCharacter.setTaken(selection);
         return selection;
     }
@@ -44,12 +44,6 @@ public abstract class PlayerAbstract implements Serializable {
      * @param sp SpawnPoint in which the player wants to place its character
      */
     public abstract void spawn(SquareAbstract sp);
-
-    /**
-     *Moves the character linked to the player by one square at a time
-     * @param direction direction to follow
-     */
-    public abstract void move(Direction direction);
 
     public void shoot() {
     }
@@ -96,15 +90,9 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void setState(PlayerState state);
 
-    public abstract boolean canPay(ArrayList<AmmoCube> cost);
-
     public abstract boolean canPay(Cost cost);
 
     public abstract String getName();
-
-    public abstract void setOldPosition();
-
-    public abstract SquareAbstract getOldPosition();
 
     public abstract void addDamage(int damage, Color color);
 
@@ -129,6 +117,4 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean isOverkilled();
 
     public abstract Color getKillerColor();
-
-    public abstract void setHand(PlayerHand hand);
 }

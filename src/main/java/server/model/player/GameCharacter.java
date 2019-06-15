@@ -50,7 +50,6 @@ public class GameCharacter implements Serializable {
     }
 
     public ConcretePlayer getConcretePlayer(){
-        //TODO implement with clone
         return concretePlayer;
     }
 

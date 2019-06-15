@@ -38,46 +38,5 @@ class ConcretePlayerTest {
 
     }
 
-    @Test
-    public void moveTest(){
-        GameBoard testGb = new GameBoard(1,8);
-        PlayerAbstract player1 = new ConcretePlayer("Pippo");
-        player1.setPlayerCharacter(Figure.DESTRUCTOR);
-
-        player1.spawn(testGb.getMap().getSpawnPoint(Color.BLUE));
-        SquareAbstract currentSquare = testGb.getMap().getSpawnPoint(Color.BLUE);
-
-        ArrayList<GameCharacter> testList1 = new ArrayList<GameCharacter>();
-        testList1.add(player1.getGameCharacter());
-
-        assertEquals(testGb.getMap().getSpawnPoint(Color.BLUE).getCharacters(),testList1);
-        assertEquals(testGb.getMap().getSpawnPoint(Color.BLUE),player1.getGameCharacter().getPosition());
-
-        player1.move(Direction.SOUTH);
-        currentSquare = currentSquare.getsSquare();
-
-        assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
-
-        player1.move(Direction.WEST);
-        currentSquare = currentSquare.getwSquare();
-
-        assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
-
-        player1.move(Direction.EAST);
-        currentSquare = currentSquare.geteSquare();
-
-        assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
-
-        player1.move(Direction.NORTH);
-        currentSquare = currentSquare.getnSquare();
-
-        assertEquals(currentSquare.getCharacters(),testList1);
-        assertEquals(currentSquare,player1.getGameCharacter().getPosition());
-
-        testGb.getMap().getSpawnPoint(Color.BLUE).removeCharacter(player1.getGameCharacter());
-    }
 
 }

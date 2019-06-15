@@ -17,46 +17,29 @@ import java.util.*;
 public class ConcretePlayer extends PlayerAbstract {
 
     private String name;
+
     private GameCharacter gameCharacter;
+
     private transient PlayerHand hand;
+
     private PlayerBoard playerBoard;
+
     private transient Game currentGame;
+
     private PlayerState state;
+
     private int clientID;
+
     private boolean ifCharacter;
 
     //added after createCopy
-    private PlayerAbstract justDamagedBy;       //TODO check create copy
+    private PlayerAbstract justDamagedBy;
 
     public ConcretePlayer(String name) {
         this.name = name;
         this.hand = new PlayerHand(this);
         this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
-    }
-
-    public void setCurrentGame(Game game){
-        this.currentGame = game;
-    }
-
-    public void setIfCharacter(boolean choice){
-        this.ifCharacter = choice;
-    }
-
-    public boolean getIfCharacter(){
-        return this.ifCharacter;
-    }
-
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
-    }
-
-    public int getClientID(){
-        return this.clientID;
-    }
-
-    public PlayerHand getHand() {
-        return hand;
     }
 
     @Override
@@ -96,40 +79,6 @@ public class ConcretePlayer extends PlayerAbstract {
         this.playerBoard.setCharacterName(figure.toString());
     }
 
-    public GameCharacter getGameCharacter(){
-        return gameCharacter;
-    }
-
-    public PlayerBoard getPlayerBoard(){return playerBoard;}
-
-    public Game getCurrentGame(){return this.currentGame;}
-
-
-    /**
-     * Moves the gameCharacter to an adjacent square in a direction
-     * @param direction direction to follow
-     */
-    public void move(Direction direction) {
-        SquareAbstract currentPos = gameCharacter.getPosition();
-        switch (direction){
-            case NORTH:
-                gameCharacter.move(currentPos.getnSquare());
-                break;
-            case SOUTH:
-                gameCharacter.move(currentPos.getsSquare());
-                break;
-            case EAST:
-                gameCharacter.move(currentPos.geteSquare());
-                break;
-            case WEST:
-                gameCharacter.move(currentPos.getwSquare());
-                break;
-            default:
-                break;
-            }
-    }
-
-
     /**
      * Uses a powerup in the player's hand
      * @param powerupIndex int between 0 and 2 corresponding to a powerupCard
@@ -146,23 +95,6 @@ public class ConcretePlayer extends PlayerAbstract {
     public void collect(SpawnPoint spawnPoint, int choice){
         this.hand.addCard(spawnPoint.getWeaponCards().get(choice));
     }
-
-
-    /**
-     * Shows a player his own hand
-     */
-    public void showHand(){
-        System.out.println(hand.toString());
-    }
-
-    /**
-     * @return
-     */
-    public PlayerState getPlayerState() {
-        return this.state;
-    }
-
-    public SquareAbstract getPosition(){ return this.gameCharacter.getPosition();}
 
     /**
      * Places a gameCharacter in a Spawnpoint
@@ -189,35 +121,11 @@ public class ConcretePlayer extends PlayerAbstract {
         }
     }
 
-
-    public void setState(PlayerState state){
-        this.state = state;
-    }
-
     @Override
-    public boolean canPay(ArrayList<AmmoCube> cost) {
-        return this.playerBoard.canPay(cost);
-    }
-
-    @Override
-    public boolean canPay(Cost cost) {      //TODO
+    public boolean canPay(Cost cost) {
         return this.playerBoard.getRedAmmo() >= cost.getRed() &&
                 this.playerBoard.getBlueAmmo() >= cost.getBlue() &&
                 this.playerBoard.getYellowAmmo() >= cost.getYellow();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setOldPosition() {
-        this.gameCharacter.setOldPosition();
-    }
-
-    @Override
-    public SquareAbstract getOldPosition() {
-        return this.gameCharacter.getOldPosition();
     }
 
     @Override
@@ -235,16 +143,6 @@ public class ConcretePlayer extends PlayerAbstract {
         this.gameCharacter.getPosition().removeCharacter(this.gameCharacter);
         this.gameCharacter.setPosition(square);
         this.playerBoard.setPosition(square.getRow(), square.getCol());
-    }
-
-    @Override
-    public PlayerAbstract getJustDamagedBy() {
-        return justDamagedBy;
-    }
-
-    @Override
-    public void setJustDamagedBy(PlayerAbstract justDamagedBy) {
-        this.justDamagedBy = justDamagedBy;
     }
 
     @Override
@@ -332,7 +230,58 @@ public class ConcretePlayer extends PlayerAbstract {
         return this.playerBoard.getKillerColor();
     }
 
-    public void setHand(PlayerHand hand) {
-        this.hand = hand;
+    public void setCurrentGame(Game game){
+        this.currentGame = game;
     }
+
+    public void setIfCharacter(boolean choice){
+        this.ifCharacter = choice;
+    }
+
+    public boolean getIfCharacter(){
+        return this.ifCharacter;
+    }
+
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
+    }
+
+    public int getClientID(){
+        return this.clientID;
+    }
+
+    public PlayerHand getHand() {
+        return hand;
+    }
+
+    @Override
+    public PlayerAbstract getJustDamagedBy() {
+        return justDamagedBy;
+    }
+
+    @Override
+    public void setJustDamagedBy(PlayerAbstract justDamagedBy) {
+        this.justDamagedBy = justDamagedBy;
+    }
+
+    public void setState(PlayerState state){
+        this.state = state;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public PlayerState getPlayerState() {
+        return this.state;
+    }
+
+    public SquareAbstract getPosition(){ return this.gameCharacter.getPosition();}
+
+    public GameCharacter getGameCharacter(){
+        return gameCharacter;
+    }
+
+    public PlayerBoard getPlayerBoard(){return playerBoard;}
 }
