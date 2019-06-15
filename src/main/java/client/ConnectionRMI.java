@@ -115,9 +115,13 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return gameModel.getClientChoice();
     }
 
+    @Override
+    public int getNumberOfGrenades(){
+        return gameModel.getNumberOfGrenades();
+    }
 
     @Override
-    public Info getGrenadeAction(){
+    public List<Info> getGrenadeAction(){
         return gameModel.getGrenadeAction();
     }
 

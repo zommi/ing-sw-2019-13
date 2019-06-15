@@ -22,7 +22,7 @@ public interface GameProxyInterface extends Remote {
 
     public boolean askClient(int ID) throws RemoteException;
 
-    public Info getGrenadeAction(int grenadeID) throws RemoteException;
+    public List<Info> getGrenadeAction(int grenadeID) throws RemoteException;
 
     public String getCharacterName(int clientID) throws RemoteException;
 

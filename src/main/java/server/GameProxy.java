@@ -76,8 +76,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         this.serverRMI.getServer().getController().setClientHasChosen();
     }*/
 
+
     @Override
-    public Info getGrenadeAction(int ID) throws RemoteException{
+    public List<Info> getGrenadeAction(int ID) throws RemoteException{
         for (int k = 0; k < clientRMIadded.size(); k++) {
             try {
                 int clientID = clientRMIadded.get(k).getClientID();

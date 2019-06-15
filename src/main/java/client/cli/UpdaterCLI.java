@@ -29,6 +29,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     private boolean alwaysTrue = true;
 
     private GameModel gameModel;
+    private boolean clientChoice;
 
     private static final int MIN_SKULL = 5;
     private static final int MAX_SKULL = 8;
@@ -49,6 +50,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
             gameModel.getMap().printOnCLI();
+        }
+        if(object.equals("reset")){
+            System.out.println("Tagback worked well");
+            this.clientChoice = false;
         }
 
         if(object.equals("Change player")){
@@ -363,7 +368,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Ok you can use the tagback grenade towards the shooter");
                             System.out.println("Which tagback do you want to use?");
 
-                            //initialize cards to ask
                             List<PowerUpCard> listTagback = new ArrayList<>();
                             for (PowerUpCard powerUpCard : gameModel.getPlayerHand().getPowerupHand()) {
                                 if (powerUpCard.getName().equals("Tagback Grenade")) {
@@ -371,30 +375,51 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 }
                             }
 
-                            for(int i = 0; i<listTagback.size(); i++){
-                                System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
-                            }
 
-                            read = myObj.nextLine();
-                            int choice = 0;
+                            List<Integer> tagbackChosen = new ArrayList<>();
                             boolean chosenPowerup = false;
+                            int choice = 0;
+                            //initialize cards to ask
                             while(!chosenPowerup) {
+
+                                for(int i = 0; i<listTagback.size(); i++){
+                                    System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
+                                }
+                                int size = listTagback.size()+1;
+                                System.out.println("Stop ("  +size +")");
+
+                                read = myObj.nextLine();
+
                                 try {
                                      choice = Integer.parseInt(read) - 1;
-                                    if (choice >= 0 && choice < listTagback.size())
-                                        chosenPowerup = true;
-                                    else
+                                     if(tagbackChosen.contains(choice)){
+                                         System.out.println("You already chose this tagback");
+                                     }
+                                     else if ((choice+1 != size) && (!tagbackChosen.contains(choice)) && (choice >= 0) && (choice < size-1)) {
+                                        tagbackChosen.add(choice);
+                                     }
+                                     else if (choice+1  == size){
+                                         chosenPowerup = true;
+                                     }
+                                     else
                                         System.out.println("You chose a number not available");
                                 } catch (NumberFormatException e) {
                                     System.out.println("Please insert a valid number.");
                                 }
                             }
+
+                            List<Info> tagbackActions = new ArrayList<>();
+                            Info action;
                             System.out.println("Test");
-                            Info action = actionParser.createPowerUpEvent(listTagback.get(choice));
+                            for(Integer i:tagbackChosen){
+                                action = actionParser.createPowerUpEvent(listTagback.get(i));
+                                tagbackActions.add(action);
+                            }
                             System.out.println("Test 1");
-                            gameModel.setGrenadeAction(action);
+                            gameModel.setGrenadeAction(tagbackActions);
                             gameModel.setClientChoice(true);
-                            while(gameModel.getClientChoice()){
+                            while(this.clientChoice){
+                                System.out.println("waiting for the tagcback to work");
                             }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");

@@ -227,7 +227,6 @@ public class Controller {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }*/
-                                    System.out.println("ciaoo ");
                                     try {
                                         System.out.println(" " + grenadeID);
                                         clientHasChosen = server.getGameProxy().askClient(grenadeID);
@@ -235,14 +234,21 @@ public class Controller {
                                         if (clientHasChosen) {
                                             int IDShooter = grenadeID;
                                             grenadeID = -1;
-                                            Info actionGrenade = server.getGameProxy().getGrenadeAction(grenadeID);
+                                            System.out.println("test");
+                                            List<Info> actionGrenade = server.getGameProxy().getGrenadeAction(IDShooter);
+                                            System.out.println("The shooter decided to play with "+actionGrenade.size() + "powerups");
                                             PlayerAbstract playerShooter = null;
                                             for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
                                                 if (currentGame.getActivePlayers().get(b).getClientID() == IDShooter)
                                                     playerShooter = currentGame.getActivePlayers().get(b);
                                             }
-                                            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) actionGrenade, currentGame, playerShooter);
-                                            turnHandler.setAndDoAction(powerUpAction);
+                                            System.out.println("The shooter is "+playerShooter.getName());
+                                            for(Info a:actionGrenade){
+                                                System.out.println("test");
+                                                PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) a, currentGame, playerShooter);
+                                                turnHandler.setAndDoAction(powerUpAction);
+                                                System.out.println("Playing the tagback of color: "+((PowerUpPack) a).getPowerupCard().getColor());
+                                            }
                                             sendCollectShootAnswersRMI(currentPlayer, IDShooter);
                                             ResetAnswer resetChoice = new ResetAnswer();
                                             server.sendToSpecificRMI(resetChoice, IDShooter);
@@ -257,6 +263,7 @@ public class Controller {
                             grenadeID = -1;
                             System.out.println("The player did the action ");
                         }
+                        break;
                     }
                 }
                 listOfPlayers.get(i).setJustDamagedBy(null);
