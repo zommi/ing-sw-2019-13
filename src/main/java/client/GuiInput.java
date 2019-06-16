@@ -54,12 +54,12 @@ public class GuiInput extends InputAbstract {
 
     @Override
     public List<String> askPlayers(int maxTargetPlayerSize) {
-        return this.guiController.askPlayersOrRooms(maxTargetPlayerSize,playersNames,roomsNames,true);
+        return this.guiController.askPlayersOrRooms(maxTargetPlayerSize,true);
     }
 
     @Override
     public List<String> askRooms(int maxTargetRoomSize) {
-        return this.guiController.askPlayersOrRooms(maxTargetRoomSize,playersNames,roomsNames,false);
+        return this.guiController.askPlayersOrRooms(maxTargetRoomSize,false);
     }
 
     @Override

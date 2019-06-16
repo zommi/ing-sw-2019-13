@@ -36,10 +36,9 @@ import javafx.util.Duration;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
-import server.model.map.GameMap;
-import server.model.map.SpawnPoint;
-import server.model.map.Square;
-import server.model.map.SquareAbstract;
+import server.model.game.Game;
+import server.model.map.*;
+import server.model.player.GameCharacter;
 import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
@@ -622,10 +621,9 @@ public class MainGuiController implements GuiController {
         return result.get();
     }
 
-    public List<String> askPlayersOrRooms(int maxTargetPlayerSize, List<String> players,List<String> rooms, boolean askedPlayers) {
+    public List<String> askPlayersOrRooms(int maxTargetPlayerSize, boolean askedPlayers) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
-        List<String> listToAsk = askedPlayers ? players : rooms;
         String playersOrRooms = askedPlayers ? "players" : "rooms";
         List<String> result = new ArrayList<>();
         List<CheckBox> checkBoxList = new ArrayList<>();
@@ -633,10 +631,20 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText("Select up to " + maxTargetPlayerSize + " " + playersOrRooms + " then press OK");
 
         VBox box = new VBox();
-        for(String name : listToAsk){
-            CheckBox choice = new CheckBox(name);
-            box.getChildren().add(choice);
-            checkBoxList.add(choice);
+        if(askedPlayers){
+            List<GameCharacter> characters = this.model.getGameBoard().getResult().getActiveCharacters();
+            for(GameCharacter character: characters){
+                CheckBox choice = new CheckBox(character.getConcretePlayer().getName());
+                box.getChildren().add(choice);
+                checkBoxList.add(choice);
+            }
+        }else{
+            List<Room> rooms = this.model.getGameBoard().getResult().getMap().getRooms();
+            for(Room room: rooms){
+                CheckBox choice = new CheckBox(room.toString());
+                box.getChildren().add(choice);
+                checkBoxList.add(choice);
+            }
         }
 
         alert.getDialogPane().setContent(box);
