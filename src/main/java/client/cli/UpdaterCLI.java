@@ -2,12 +2,10 @@ package client.cli;
 
 
 import client.*;
-import client.powerups.PowerUpPack;
 import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
-import server.controller.playeraction.Action;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
@@ -46,7 +44,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void update(Observable obs, Object object){
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
-            gameModel.getMap().printOnCLI();
+            //gameModel.getMap().printOnCLI();
         }
         if(object.equals("reset")){
             System.out.println("Tagback worked well");
@@ -55,6 +53,11 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         if(object.equals("Change player")){
             System.out.println("Next player");
+            if(connection.getClientID() == connection.getCurrentID()){
+                System.out.println("It's your turn!");
+            }else{
+                System.out.println("It's " + connection.getCurrentCharacterName() + "'s turn!");
+            }
         }
 
         if(object.equals("Spawn")){
@@ -78,8 +81,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
 
         if(object.equals("Message")){
-            System.out.println("New message from the server:\n" +
-                gameModel.getMessage());
+            System.out.println(Color.RED.getAnsi() + "New message from the server:\n" +
+                gameModel.getMessage() + Constants.ANSI_RESET);
 
         }
     }
@@ -433,8 +436,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 else{
                     System.out.println("For now it is not your turn: " +
-                            getCharacter(connection.getCurrentCharacter()).getColor().getAnsi() +
-                            connection.getCurrentCharacter() + Constants.ANSI_RESET + " is playing");
+                            getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
+                            connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
                     try{
                         TimeUnit.SECONDS.sleep(5);
                     }

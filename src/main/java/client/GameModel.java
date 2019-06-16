@@ -18,13 +18,8 @@ public class GameModel extends Observable implements Serializable {
 
 
     private GameBoardAnswer gameBoard;
-    private MapAnswer map;
-    private int mapnum;
-    private PlayerBoardAnswer playerBoard;
     private PlayerHandAnswer playerHand;
-    private List<Weapon> weapons;
     private int clientID;
-    private static int lastClientID = 0;
     private ListOfWeaponsAnswer weaponList;
     public boolean toSpawn;
     private boolean clientChoice;
@@ -32,9 +27,6 @@ public class GameModel extends Observable implements Serializable {
     private int numberOfGrenades;
 
     private String message;
-
-    private final Object lock = new Object();
-
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
@@ -47,10 +39,6 @@ public class GameModel extends Observable implements Serializable {
 
     public List<Info> getGrenadeAction(){
         return this.grenadeAction;
-    }
-
-    public Object getLock() {
-        return lock;
     }
 
     public int getNumberOfGrenades(){
@@ -81,12 +69,6 @@ public class GameModel extends Observable implements Serializable {
         this.clientChoice = choice;
     }
 
-
-    public static int getNextClientID(){
-        return lastClientID;
-    }
-
-
     public Integer getClientID(){
         return clientID;
     }
@@ -108,22 +90,10 @@ public class GameModel extends Observable implements Serializable {
         }
 
         else if (answer instanceof InitialMapAnswer) {
-            mapnum = ((InitialMapAnswer) answer).getNumMap();
             setChanged();
             notifyObservers("Initialized Map");
         }
 
-        else if (answer instanceof MapAnswer) {
-            map = ((MapAnswer) answer);
-            setChanged();
-            notifyObservers("Map");
-        }
-
-        /*if (answer instanceof PlayerBoardAnswer) {
-            playerBoard = (PlayerBoardAnswer) answer;
-            setChanged();
-            notifyObservers("PlayerBoard");
-        }*/
         else if (answer instanceof SetSpawnAnswer) {
             setToSpawn(((SetSpawnAnswer) answer).getResult());
             setChanged();

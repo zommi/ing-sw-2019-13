@@ -42,7 +42,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         this.gameModel = new GameModel();
     }
 
-    public String getCurrentCharacter(){
+    public String getCurrentCharacterName(){
         try{
             return gameProxy.getCurrentCharacter();
         }

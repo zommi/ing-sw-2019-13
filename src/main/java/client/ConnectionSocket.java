@@ -112,14 +112,14 @@ public class ConnectionSocket implements Connection {
     public int getClientID(){
         try {
             while (clientID == -1)
-                Thread.sleep(1000);
+                Thread.sleep(500);
         }catch(InterruptedException e){
             System.out.println("Interrupted exception");
         }
         return this.clientID;
     }
 
-    public String getCurrentCharacter(){
+    public String getCurrentCharacterName(){
         return currentCharacter;
     }
 

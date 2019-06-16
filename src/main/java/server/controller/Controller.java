@@ -91,7 +91,7 @@ public class Controller {
 
 
 
-    public String getCurrentCharacter(){
+    public String getCurrentCharacterName(){
         for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
             if(playerAbstract.getClientID() == currentID)
                 //return playerAbstract.getName() + ", " + playerAbstract.getCharacterName();

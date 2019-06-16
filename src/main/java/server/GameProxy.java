@@ -1,6 +1,5 @@
 package server;
 
-import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
 import constants.Constants;
@@ -42,7 +41,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     public String getCurrentCharacter() throws RemoteException{
-        return this.serverRMI.getServer().getController().getCurrentCharacter();
+        return this.serverRMI.getServer().getController().getCurrentCharacterName();
     }
 
     public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException{

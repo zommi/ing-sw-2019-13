@@ -47,8 +47,10 @@ public class ListenerSocketThread implements Runnable{
     }
 
     private void processSocketInfo(SocketInfo socketInfo){
-        if(socketInfo.getClientID() != -1)
+        if(socketInfo.getClientID() != -1) {
             connectionSocket.setClientID(socketInfo.getClientID());
+            gameModel.setClientID(socketInfo.getClientID());
+        }
         if(socketInfo.getMapNum() != -1)
             connectionSocket.setMapNum(socketInfo.getMapNum());
         if(socketInfo.getInitialSkulls() != -1)
@@ -64,9 +66,7 @@ public class ListenerSocketThread implements Runnable{
         if(socketInfo.getCurrentCharacter() != null)
             connectionSocket.setCurrentCharacter(socketInfo.getCurrentCharacter());
 
-        if(socketInfo.getServerAnswer() != null && !(socketInfo.getServerAnswer() instanceof ChangeCurrentPlayerAnswer))
-            gameModel.saveAnswer(socketInfo.getServerAnswer());
-        if(socketInfo.getServerAnswer() != null && (socketInfo.getServerAnswer() instanceof ChangeCurrentPlayerAnswer))
+        if(socketInfo.getServerAnswer() != null)
             gameModel.saveAnswer(socketInfo.getServerAnswer());
 
     }
