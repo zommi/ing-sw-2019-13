@@ -53,21 +53,21 @@ public class TurnHandler {
         return this.currentPhase;
     }
 
-    public void setAndDoAction(Action action){
+    public boolean setAndDoAction(Action action){
+        boolean actionValid = false;
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION || currentPhase == TurnPhase.POWERUP_TURN) {
             this.action = action;
-            boolean actionValid = this.action.execute(controller);
+            actionValid = this.action.execute(controller);
             if(actionValid &&
                     ((action instanceof ShootAction) ||
                     (action instanceof CollectAction) ||
                     (action instanceof MoveAction) ||
                     (action instanceof ReloadAction))) {//if it is a draw or a spawn it is not counted as an action
                 nextPhase();
-            } else {
-                //mandare al client messaggio di errore //TODO
             }
         }
+        return actionValid;
     }
 
     public void setAndDoSpawn(Action action){

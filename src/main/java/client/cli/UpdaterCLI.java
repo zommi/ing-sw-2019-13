@@ -140,7 +140,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         //    throw new GameAlreadyStartedException();
 
         int mapNumber = 0;
-        if(connection.getClientID() == 0) {//only if it is the first client! //TODO change gameModel with connection
+        if(connection.getClientID() == 0) {//only if it is the first client!
             do{
                 String stringChoice = "";
                 int choice;
@@ -209,8 +209,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         connection.add(playerName, mapNumber, initialSkulls);
 
-        /*String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
-        List<String> cnList = Arrays.asList(characterNames);*/
         if(connection.getCharacterName().equals("No name yet")){
             int choice;
             boolean set = false;
