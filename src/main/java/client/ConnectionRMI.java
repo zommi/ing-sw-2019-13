@@ -217,8 +217,8 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
-    public void publishMessage(ServerAnswer answer) throws RemoteException{
-        this.gameModel.saveAnswer(answer);
+    public void publishMessage(ServerAnswer answer){
+        gameModel.saveAnswer(answer);
     }
 
     @Override

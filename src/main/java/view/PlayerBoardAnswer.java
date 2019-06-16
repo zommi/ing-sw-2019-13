@@ -14,15 +14,6 @@ public class PlayerBoardAnswer implements ServerAnswer{
         return this.result;
     }
 
-    public int getRedAmmo(){
-        return result.getRedAmmo();
-    }
-    public int getBlueAmmo(){
-        return result.getBlueAmmo();
-    }
-    public int getYellowAmmo(){
-        return result.getYellowAmmo();
-    }
     public String getCharacterName(){
         return result.getCharacterName();
     }

@@ -13,7 +13,6 @@ import java.util.List;
 public class ServerRMI implements Runnable {
 
     private Server server;
-    private Controller controller;
     private GameProxyInterface gameProxy = null;
 
 
@@ -47,16 +46,12 @@ public class ServerRMI implements Runnable {
         }
     }
 
-    protected void setController(Controller controller){
-        this.controller = controller;
-    }
-
     public int addClient(ReceiverInterface client){
         return this.server.addClient(client);
     }
 
     public void addMapClient(PlayerAbstract p) {
         System.out.println("Trying to add the client to the map ");
-        controller.addClientInMap(p);
+        server.getController().addClientInMap(p);
     }
 }

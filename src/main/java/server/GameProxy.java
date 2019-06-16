@@ -23,10 +23,8 @@ import java.util.List;
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
     private ReceiverInterface clientRMI;
-    private int startGame;
     private GameMap map;
     private int numMap;
-    private String playerName;
     private ServerRMI serverRMI;
     private List<PlayerAbstract> player = new ArrayList();
     private int clientIDadded;
@@ -277,8 +275,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public int getInitialSkulls() throws RemoteException{
-        return this.initialSkulls;
+    public int getInitialSkulls(){
+        return serverRMI.getServer().getInitialSkulls();
     }
 
     /*
@@ -296,7 +294,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         //System.out.println("Test 0"); //this works
         serverRMI.getServer().setMap(numMap); //then the problem is here
         //System.out.println("Test 1"); //this doesn't work
-        serverRMI.setController(serverRMI.getServer().getController());
         System.out.println("Controller set for serverRMI");
         return true;
     }

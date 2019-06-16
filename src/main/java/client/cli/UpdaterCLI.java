@@ -10,6 +10,7 @@ import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
 import server.model.player.GameCharacter;
+import server.model.player.PlayerHand;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -290,9 +291,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerUpCard> powerups;
-        int ammoRED;
-        int ammoBLUE;
-        int ammoYELLOW;
+
         try {
             this.set();
         }
@@ -347,9 +346,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println();
                     }
 
-                    System.out.println("Checking if you need to be spawn");
+                    System.out.println("Checking if you need to spawn");
                     if(gameModel.getToSpawn()){
-                        powerups = this.spawn(powerups, playerHand, actionParser);
+                        spawn(actionParser);
                     }
                     this.startInput(actionParser);
                 }
@@ -464,7 +463,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
 
-    public List<PowerUpCard> spawn(List<PowerUpCard> powerups, PlayerHandAnswer playerHand, ActionParser actionParser){
+    public void spawn(ActionParser actionParser){
         String read;
         Scanner myObj = new Scanner(System.in);
         System.out.println("Creating the action of drawing");
@@ -473,13 +472,11 @@ public class UpdaterCLI  implements Updater,Runnable{
         connection.send(action);//TODO is it instant as an action?
 
 
-        playerHand = gameModel.getPlayerHand();
-        powerups = playerHand.getPowerupHand();
+        List<PowerUpCard> powerups = gameModel.getPlayerHand().getPowerupHand();
         System.out.println(">You have the following powerups: ");
         while ((powerups == null) || (powerups.isEmpty())) {
             System.out.println(">You have no powerups. There's a problem as you should have drawn them");
-            playerHand = gameModel.getPlayerHand();
-            powerups = playerHand.getPowerupHand();
+            powerups = gameModel.getPlayerHand().getPowerupHand();
             try{
                 TimeUnit.SECONDS.sleep(5);
             }
@@ -512,7 +509,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         connection.send(action1);
         System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(spawnChoice).getColor());
         System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
-        return powerups;
     }
 
 
@@ -524,8 +520,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         while(ask) {
             ask = false;
             String read;
-            int row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
-            int col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+            int row;
+            int col;
             System.out.println(" Client ID: " +connection.getClientID());
             System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
             System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
@@ -533,7 +529,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             Scanner myObj = new Scanner(System.in);
             int collectDecision = 0;
             boolean collectChosen = false;
-            boolean powerupChosen = false;
             printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
 
             gameModel.getMap().printOnCLI();

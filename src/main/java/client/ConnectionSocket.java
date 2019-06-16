@@ -18,21 +18,15 @@ public class ConnectionSocket implements Connection {
     private int mapNum;
     private String mapChoice;
 
-    private GameMap map;
     private GameModel gameModel;
     private int initialSkulls;
-    private boolean isConnected;
     private int startGame = 0;
     private boolean error = false;
 
     private String characterName;
 
-    private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private ListenerSocketThread listenerSocketThread;
-
-    private Object monitor;
-
 
     private static final String SERVER_ADDRESS  = "localhost";
     private static final int REGISTRATION_PORT = 1337;
@@ -41,10 +35,8 @@ public class ConnectionSocket implements Connection {
     public ConnectionSocket(int clientID){
         this.clientID = clientID;
         this.gameModel = new GameModel();
-        this.isConnected = false;
         this.socket = null;
         this.characterName = "No name yet";
-        monitor = new Object();
     }
 
     public void setCurrentID(int currentID) {
@@ -71,14 +63,6 @@ public class ConnectionSocket implements Connection {
         send(new SetupInfo(name));
     }
 
-    public void startTimer() {
-
-    }
-
-    public void saveAnswer(ServerAnswer answer) {
-
-    }
-
     public boolean isCharacterChosen(String name){
         return Figure.fromString(name) != null;
         //doesn't check if character is taken by another player, in that case it will be assigned random
@@ -103,10 +87,6 @@ public class ConnectionSocket implements Connection {
             return "Map 4";
         else
             return "No one has chosen yet";
-    }
-
-    public String getMapChoice() {
-        return mapChoice;
     }
 
     public int getClientID(){
@@ -139,10 +119,6 @@ public class ConnectionSocket implements Connection {
         return this.startGame;
     }
 
-    public void sendConnection() {
-
-    }
-
     //must get client id from the server and set it
     public void configure(){
         try {
@@ -153,7 +129,7 @@ public class ConnectionSocket implements Connection {
             listenerSocketThread = new ListenerSocketThread(gameModel, socket, this);
             Thread thread = new Thread(listenerSocketThread);
             thread.start();
-            //inputStream = new ObjectInputStream(socket.getInputStream());
+
         } catch (IOException e) {
             System.out.println("SOCKET CONFIGURATION FAILED");
             e.printStackTrace();
@@ -175,10 +151,6 @@ public class ConnectionSocket implements Connection {
     public void sendAsynchronous(Info action) {
         AsynchronousInfo asynchronousInfo = new AsynchronousInfo(action);
         send(asynchronousInfo);
-    }
-
-    public void initializeSocket(){
-
     }
 
     public GameModel getGameModel(){
