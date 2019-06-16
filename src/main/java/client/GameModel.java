@@ -28,7 +28,8 @@ public class GameModel extends Observable implements Serializable {
     private ListOfWeaponsAnswer weaponList;
     public boolean toSpawn;
     private boolean clientChoice;
-    private Info grenadeAction;
+    private List<Info> grenadeAction = new ArrayList<>();
+    private int numberOfGrenades;
 
     private final Object lock = new Object();
 
@@ -38,16 +39,20 @@ public class GameModel extends Observable implements Serializable {
         toSpawn = true;
     }
 
-    public void setGrenadeAction(Info action){
+    public void setGrenadeAction(List<Info> action){
         this.grenadeAction = action;
     }
 
-    public Info getGrenadeAction(){
+    public List<Info> getGrenadeAction(){
         return this.grenadeAction;
     }
 
     public Object getLock() {
         return lock;
+    }
+
+    public int getNumberOfGrenades(){
+        return this.numberOfGrenades;
     }
 
     public void setToSpawn(boolean decision){
@@ -91,6 +96,7 @@ public class GameModel extends Observable implements Serializable {
         if(answer instanceof ResetAnswer) {
             clientChoice = false;
             setChanged();
+            notifyObservers("reset");
         }
 
         else if (answer instanceof GameBoardAnswer) {

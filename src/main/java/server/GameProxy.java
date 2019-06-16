@@ -3,16 +3,22 @@ package server;
 import client.Connection;
 import client.Info;
 import client.ReceiverInterface;
+import constants.Constants;
 import exceptions.GameAlreadyStartedException;
+import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.player.*;
+import view.GameBoardAnswer;
+import view.PlayerHandAnswer;
 import view.ServerAnswer;
+import view.SetSpawnAnswer;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
@@ -26,7 +32,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private List<PlayerAbstract> player = new ArrayList();
     private int clientIDadded;
     private int initialSkulls;
-    private List<ReceiverInterface> clientRMIadded = new ArrayList<>();
+    private HashMap<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
 
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
@@ -39,8 +45,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.serverRMI.getServer().getController().getCurrentCharacter();
     }
 
-    public List<ReceiverInterface> getClientsRMIadded(){
+    public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException{
         return this.clientRMIadded;
+    }
+
+    @Override
+    public List<ReceiverInterface> getClientsRMIadded() throws RemoteException {
+        return new ArrayList<>(clientRMIadded.values());
     }
 
     @Override
@@ -70,8 +81,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         this.serverRMI.getServer().getController().setClientHasChosen();
     }*/
 
+
     @Override
-    public Info getGrenadeAction(int ID) throws RemoteException{
+    public List<Info> getGrenadeAction(int ID) throws RemoteException{
         for (int k = 0; k < clientRMIadded.size(); k++) {
             try {
                 int clientID = clientRMIadded.get(k).getClientID();
@@ -83,6 +95,17 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
             }
         }
         return null;
+    }
+
+    @Override
+    public String getCharacterName(int clientID) throws RemoteException{
+        for(PlayerAbstract p:player){
+            if(p.getGameCharacter() != null){ //if the character has already been assigned it means that the player already exists in the list and it's completed, otherwise the player still does not have a character
+                if(p.getClientID() == clientID)
+                    return p.getCharacterName();
+            }
+        }
+        return "No name yet";
     }
 
     @Override
@@ -106,8 +129,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return true;
     }
 
-    public void addClientRMI(ReceiverInterface receiver){
-        this.clientRMIadded.add(receiver);
+    public void addClientRMI(int id, ReceiverInterface receiver){
+        this.clientRMIadded.put(id, receiver);
     }
 
     @Override
@@ -127,9 +150,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
-        if(serverRMI.getServer().getStartGame() == 1){
-            throw new GameAlreadyStartedException();
-        }
+        //if(serverRMI.getServer().getStartGame() == 1){
+        //    throw new GameAlreadyStartedException();
+        //}
         this.clientIDadded = serverRMI.addClient(client);
         System.out.println("Added client number: " +clientIDadded);
 
@@ -147,17 +170,62 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void setClientRMI(ReceiverInterface clientRMI) throws RemoteException{
+    public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
         this.clientRMI = clientRMI;
         //clientRMI.print();
-        this.addClientRMI(clientRMI);
+        this.addClientRMI(id, clientRMI);
         System.out.println("I just connected to the client");
     }
 
     @Override
     public boolean sendPlayer(String name, int clientID)  throws RemoteException{
         System.out.println("Name received");
+        SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(false);
+        for(PlayerAbstract p:player){
+            if((p.getName().equals(name))&&(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+                System.out.println("This player was disconnected before");
+                if(p.getPosition() == null){
+                    setSpawnAnswer = new SetSpawnAnswer(true);
+                    p.setState(PlayerState.TOBESPAWNED);
+                }
+                else {
+                    int damage = p.getPlayerBoard().getDamageTaken();
+                    if ((damage > Constants.BETTERCOLLECTDAMAGE) && (damage <= Constants.BETTERSHOOTDAMAGE)) {
+                        p.setState(PlayerState.BETTER_COLLECT);
+                    } else if ((damage > Constants.BETTERSHOOTDAMAGE) && (damage <= Constants.DEATH_THRESHOLD)) {
+                        p.setState(PlayerState.BETTER_SHOOT);
+                    } else if ((p.getPosition().getRow() == -1000) && (p.getPosition().getCol() == -1000)) {
+                        p.setState(PlayerState.TOBESPAWNED);
+                        setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
+                    } else
+                        p.setState(PlayerState.NORMAL);
+                }
+
+                ((ConcretePlayer)p).setClientID(clientID);
+                serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addPlayerBoard((ConcretePlayer) p);
+                System.out.println("So his new clientID is: "+clientID);
+
+                GameBoard currentGameBoard = serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard();
+                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
+                List<PlayerAbstract> playerInServer = serverRMI.getServer().getController().getPlayers();
+
+                for(PlayerAbstract player:playerInServer){
+                    if(player.getClientID() == clientID){
+                        PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
+                        serverRMI.getServer().sendToSpecificRMI(playerHandAnswer, clientID);
+                    }
+                }
+                System.out.println("Sending the game board to the new client");
+                serverRMI.getServer().sendToSpecificRMI(gameBoardAnswer, clientID);
+                serverRMI.getServer().sendToSpecificRMI(setSpawnAnswer, clientID);
+                return true;
+            }
+            else if((p.getName().equals(name))&&!(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+                name = name + clientID;
+            }
+        }
+        System.out.println("Adding: "+name);
         if(player.size() == 5)
             return false;
         PlayerAbstract playerToAdd = new ConcretePlayer(name);
@@ -169,12 +237,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean addPlayerCharacter(String name, int id) throws RemoteException{
+    public boolean addPlayerCharacter(String name, int ID) throws RemoteException{
         for(int i = 0; i < player.size(); i++){
-            if(player.get(i).getClientID() == id){
-                serverRMI.getServer().addPlayer(player.get(i));
+            if(player.get(i).getClientID() == ID){
                 this.player.get(i).setPlayerCharacter(Figure.fromString(name));
                 this.player.get(i).setIfCharacter(true);
+                this.serverRMI.getServer().addPlayer(player.get(i));
                 this.serverRMI.getServer().getController().getCurrentGame().getCurrentGameBoard().addGameCharacter(new GameCharacter(Figure.fromString(name)));
             }
             System.out.println("For now I have received client number " +player.get(i).getClientID());
@@ -236,16 +304,21 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public boolean addMapPlayer(int clientID) throws RemoteException{
-        serverRMI.addMapClient(clientID);
+        serverRMI.addMapClient(getPlayer(clientID));
         System.out.println("Added the map of the client and of the player");
         return true;
     }
 
     @Override
+    public List<PlayerAbstract> getPlayerList() throws RemoteException{
+        return player;
+    }
+
+    @Override
     public PlayerAbstract getPlayer(int clientID) throws RemoteException{
-        for(int i = 0; i < player.size(); i++){
-            if(player.get(i).getClientID() == clientID)
-                return player.get(i);
+        for(PlayerAbstract p:player){
+            if(p.getClientID() == clientID)
+                return p;
         }
         return null;
     }

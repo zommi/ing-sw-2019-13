@@ -94,11 +94,11 @@ public class TurnHandler {
                 this.currentPhase = TurnPhase.SECOND_ACTION;
                 break;
             case SECOND_ACTION:
-                this.currentPhase = TurnPhase.POWERUP_TURN;
-                break;
-            case POWERUP_TURN:
                 this.currentPhase = TurnPhase.END_TURN;
                 break;
+            //case POWERUP_TURN:
+            //    this.currentPhase = TurnPhase.END_TURN;
+            //    break;
             case END_TURN:
                 System.out.println("restored squares");
                 controller.restoreSquares();
@@ -108,7 +108,7 @@ public class TurnHandler {
                     this.currentPhase = TurnPhase.SPAWN_PHASE;
                 }else {
                     try {
-                        controller.getCurrentGame().nextPlayer();
+                        controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                         System.out.println("changed player in game");
                         controller.sendChangeCurrentPlayer();
                     } catch (WrongGameStateException e) {
@@ -119,7 +119,7 @@ public class TurnHandler {
                 break;
             case SPAWN_PHASE:
                 try {
-                    controller.getCurrentGame().nextPlayer();
+                    controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                     System.out.println("changed player in game");
                     controller.sendChangeCurrentPlayer();
                 } catch (WrongGameStateException e) {

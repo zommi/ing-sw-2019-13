@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class SocketClientHandler implements Runnable, ReceiverInterface {
     private Socket clientSocket;
@@ -154,7 +155,17 @@ public class SocketClientHandler implements Runnable, ReceiverInterface {
     }
 
     @Override
-    public Info getGrenadeAction() throws RemoteException {
+    public List<Info> getGrenadeAction() throws RemoteException {
         return null;
+    }
+
+    @Override
+    public int getNumberOfGrenades() throws RemoteException {
+        return 0;
+    }
+
+    @Override
+    public void setClientIDExisting(int idAlreadyExisting) throws RemoteException {
+
     }
 }

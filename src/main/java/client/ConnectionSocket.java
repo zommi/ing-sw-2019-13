@@ -63,6 +63,12 @@ public class ConnectionSocket implements Connection {
         return this.error;
     }
 
+    @Override
+    public String getCharacterName(int clientID){
+        //TODO
+        return null;
+    }
+
     public void addPlayerCharacter(String name){
         send(new SetupInfo(name));
     }

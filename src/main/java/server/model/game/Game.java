@@ -114,18 +114,20 @@ public class Game {
         else throw new WrongGameStateException();
     }
 
-    public void nextPlayer() throws WrongGameStateException{
+    public int nextPlayer() throws WrongGameStateException{
         if((this.currentState == GameState.NORMAL_TURN)
                 || (this.currentState == GameState.FINAL_FRENZY)) {
-            if (currentPlayerIndex < this.activePlayers.size() - 1) {
-                this.currentPlayerIndex++;
+            do{
+                if (currentPlayerIndex < this.activePlayers.size() - 1)
+                    this.currentPlayerIndex++;
+                else
+                    this.currentPlayerIndex = 0;
             }
-            else {
-                this.currentPlayerIndex = 0;
-            }
+            while(getCurrentPlayer().getPlayerState() == PlayerState.DISCONNECTED);
         }else {
             throw new WrongGameStateException();
         }
+        return getCurrentPlayer().getClientID();
     }
 
 

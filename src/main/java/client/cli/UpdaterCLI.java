@@ -2,10 +2,12 @@ package client.cli;
 
 
 import client.*;
+import client.powerups.PowerUpPack;
 import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
+import server.controller.playeraction.Action;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
@@ -30,9 +32,13 @@ public class UpdaterCLI  implements Updater,Runnable{
     ExecutorService executorService;
 
     private GameModel gameModel;
+    private boolean clientChoice;
 
     private static final int MIN_SKULL = 5;
     private static final int MAX_SKULL = 8;
+
+    private String name;
+    private String characterName;
 
 
     public UpdaterCLI(){
@@ -47,6 +53,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
             gameModel.getMap().printOnCLI();
+        }
+        if(object.equals("reset")){
+            System.out.println("Tagback worked well");
+            this.clientChoice = false;
         }
 
         if(object.equals("Change player")){
@@ -84,6 +94,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
+        String read;
         String playerName;
         String methodChosen;
         boolean mapChosen = false;
@@ -100,6 +111,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             playerName = myObj.nextLine();
         } while (playerName.equals(""));
 
+        this.name = playerName;
         System.out.println("Name is: " +playerName);
 
         do {
@@ -206,33 +218,41 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         /*String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
         List<String> cnList = Arrays.asList(characterNames);*/
-        int choice;
-        boolean set = false;
-        String stringChoice;
-        characterName = "";
+        if(connection.getCharacterName(connection.getClientID()).equals("No name yet")){
+            int choice;
+            boolean set = false;
+            String stringChoice;
+            characterName = "";
 
-        do{
-            System.out.println(">Choose your character:");
-            for(int i = 0; i< Figure.values().length; i++){
-                System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
-            }
-            try {
-                stringChoice =  myObj.nextLine();
-                choice = Integer.parseInt(stringChoice) - 1;
-                if(choice < Figure.values().length && choice >= 0){
-                    set = true;
-                    characterName = Figure.values()[choice].name();
+            do{
+                System.out.println(">Choose your character:");
+                for(int i = 0; i< Figure.values().length; i++){
+                    System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
                 }
-                else{
-                    System.out.println("Error: insert a valid number!");
+                try {
+                    stringChoice =  myObj.nextLine();
+                    choice = Integer.parseInt(stringChoice) - 1;
+                    if(choice < Figure.values().length && choice >= 0){
+                        set = true;
+                        characterName = Figure.values()[choice].name();
+                        this.characterName = characterName;
+                    }
+                    else{
+                        System.out.println("Error: insert a valid number!");
+                    }
+                } catch(NumberFormatException e){
+                    System.out.println("Error: insert a valid number");
                 }
-            } catch(NumberFormatException e){
-                System.out.println("Error: insert a valid number");
-            }
-        } while (!set || (!connection.isCharacterChosen(characterName)));
+            } while (!set || (!connection.isCharacterChosen(characterName)));
 
-        System.out.println("Name is: " +characterName.toUpperCase());
-        connection.addPlayerCharacter(characterName);
+            System.out.println("Name is: " +characterName.toUpperCase());
+            connection.addPlayerCharacter(characterName);
+        }
+        else{
+            this.characterName = connection.getCharacterName(connection.getClientID());
+            System.out.println("Playing with..." +this.characterName);
+        }
+
 
         /*if(gameModel.getClientID() == 0){
             System.out.println("Waiting 30 seconds for the others to join the game");
@@ -271,6 +291,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerUpCard> powerups;
+        int ammoRED;
+        int ammoBLUE;
+        int ammoYELLOW;
         try {
             this.set();
         }
@@ -281,11 +304,13 @@ public class UpdaterCLI  implements Updater,Runnable{
         ActionParser actionParser = new ActionParser(this);
 
 
-
+        //TODO MANCA LA RICEZIONE DI RISPOSTE !!!!
         while (alwaysTrue) {
+            //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel);
+                System.out.println("Game is already started");
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
                 if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
@@ -323,8 +348,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println();
                     }
 
+                    System.out.println("Checking if you need to be spawn");
                     if(gameModel.getToSpawn()){
-                        spawn(powerups, playerHand, actionParser);
+                        powerups = this.spawn(powerups, playerHand, actionParser);
                     }
                     this.startInput(actionParser);
                 }
@@ -356,30 +382,51 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 }
                             }
 
-                            for(int i = 0; i<listTagback.size(); i++){
-                                System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
-                            }
 
-                            read = myObj.nextLine();
-                            int choice = 0;
+                            List<Integer> tagbackChosen = new ArrayList<>();
                             boolean chosenPowerup = false;
+                            int choice = 0;
+                            //initialize cards to ask
                             while(!chosenPowerup) {
+
+                                for(int i = 0; i<listTagback.size(); i++){
+                                    System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
+                                }
+                                int size = listTagback.size()+1;
+                                System.out.println("Stop ("  +size +")");
+
+                                read = myObj.nextLine();
+
                                 try {
                                      choice = Integer.parseInt(read) - 1;
-                                    if (choice >= 0 && choice < listTagback.size())
-                                        chosenPowerup = true;
-                                    else
+                                     if(tagbackChosen.contains(choice)){
+                                         System.out.println("You already chose this tagback");
+                                     }
+                                     else if ((choice+1 != size) && (!tagbackChosen.contains(choice)) && (choice >= 0) && (choice < size-1)) {
+                                        tagbackChosen.add(choice);
+                                     }
+                                     else if (choice+1  == size){
+                                         chosenPowerup = true;
+                                     }
+                                     else
                                         System.out.println("You chose a number not available");
                                 } catch (NumberFormatException e) {
                                     System.out.println("Please insert a valid number.");
                                 }
                             }
+
+                            List<Info> tagbackActions = new ArrayList<>();
+                            Info action;
                             System.out.println("Test");
-                            Info action = actionParser.createPowerUpEvent(listTagback.get(choice));
+                            for(Integer i:tagbackChosen){
+                                action = actionParser.createPowerUpEvent(listTagback.get(i));
+                                tagbackActions.add(action);
+                            }
                             System.out.println("Test 1");
-                            gameModel.setGrenadeAction(action);
+                            gameModel.setGrenadeAction(tagbackActions);
                             gameModel.setClientChoice(true);
-                            while(gameModel.getClientChoice()){
+                            while(this.clientChoice){
+                                System.out.println("waiting for the tagcback to work");
                             }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");
