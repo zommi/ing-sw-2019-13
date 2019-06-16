@@ -238,7 +238,7 @@ public class Server {
         }
     }
 
-    private void sendToEverybodyRMI(ServerAnswer serverAnswer) {
+    public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
         try {
             HashMap<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
             for(Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
