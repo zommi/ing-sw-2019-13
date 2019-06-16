@@ -31,6 +31,8 @@ public class GameModel extends Observable implements Serializable {
     private List<Info> grenadeAction = new ArrayList<>();
     private int numberOfGrenades;
 
+    private String message;
+
     private final Object lock = new Object();
 
 
@@ -154,12 +156,20 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("Spawn phase");
         }
+        else if(answer instanceof MessageAnswer){
+            message = ((MessageAnswer) answer).getMessage();
+            setChanged();
+            notifyObservers("Message");
+        }
     }
 
     public boolean getToSpawn(){
         return this.toSpawn;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
     public GameMap getMap(){
         return gameBoard.getResult().getMap();

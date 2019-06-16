@@ -76,6 +76,12 @@ public class UpdaterCLI  implements Updater,Runnable{
         if(object.equals("PlayerHand")) {
             System.out.println("New Update of the playerhand");
         }
+
+        if(object.equals("Message")){
+            System.out.println("New message from the server:\n" +
+                gameModel.getMessage());
+
+        }
     }
 
 
