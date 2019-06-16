@@ -239,56 +239,60 @@ public class Controller {
 
 
                 for (int i = 0; i < listOfPlayers.size(); i++) {
-                    for (int j = 0; j < listOfPlayers.get(i).getHand().getPowerupHand().size(); j++) {
-                        if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
-                            System.out.println("Found a player that has the tagback grenade");
-                            if (listOfPlayers.get(i).getJustDamagedBy() != null) {
-                                if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
-                                    grenadeID = listOfPlayers.get(i).getClientID();
-                                    sendGrenadeAnswer();
-                                    while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
-                                        System.out.println("Waiting for the other player to do the action");/*try {
+                    if(listOfPlayers.get(i).getPlayerState() != PlayerState.DISCONNECTED) {
+                        int j = 0;
+                        while (j < listOfPlayers.get(i).getHand().getPowerupHand().size()) {
+                            if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
+                                System.out.println("Found a player that has the tagback grenade");
+                                if (listOfPlayers.get(i).getJustDamagedBy() != null) {
+                                    if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
+                                        grenadeID = listOfPlayers.get(i).getClientID();
+                                        sendGrenadeAnswer();
+                                        while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
+                                            System.out.println("Waiting for the other player to do the action");/*try {
                                             TimeUnit.SECONDS.sleep(5000)
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }*/
-                                        try {
-                                            System.out.println(" " + grenadeID);
-                                            clientHasChosen = server.getGameProxy().askClient(grenadeID);
-                                            System.out.println("Client has chosen: " + clientHasChosen);
-                                            if (clientHasChosen) {
-                                                int IDShooter = grenadeID;
-                                                grenadeID = -1;
-                                                System.out.println("test");
-                                                List<Info> actionGrenade = server.getGameProxy().getGrenadeAction(IDShooter);
-                                                System.out.println("The shooter decided to play with " + actionGrenade.size() + "powerups");
-                                                PlayerAbstract playerShooter = null;
-                                                for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
-                                                    if (currentGame.getActivePlayers().get(b).getClientID() == IDShooter)
-                                                        playerShooter = currentGame.getActivePlayers().get(b);
-                                                }
-                                                System.out.println("The shooter is " + playerShooter.getName());
-                                                for (Info a : actionGrenade) {
+                                            try {
+                                                System.out.println(" " + grenadeID);
+                                                clientHasChosen = server.getGameProxy().askClient(grenadeID);
+                                                System.out.println("Client has chosen: " + clientHasChosen);
+                                                if (clientHasChosen) {
+                                                    int IDShooter = grenadeID;
+                                                    grenadeID = -1;
                                                     System.out.println("test");
-                                                    PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) a, currentGame, playerShooter);
-                                                    turnHandler.setAndDoAction(powerUpAction);
-                                                    System.out.println("Playing the tagback of color: " + ((PowerUpPack) a).getPowerupCard().getColor());
+                                                    List<Info> actionGrenade = server.getGameProxy().getGrenadeAction(IDShooter);
+                                                    System.out.println("The shooter decided to play with " + actionGrenade.size() + "powerups");
+                                                    PlayerAbstract playerShooter = null;
+                                                    for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
+                                                        if (currentGame.getActivePlayers().get(b).getClientID() == IDShooter)
+                                                            playerShooter = currentGame.getActivePlayers().get(b);
+                                                    }
+                                                    System.out.println("The shooter is " + playerShooter.getName());
+                                                    for (Info a : actionGrenade) {
+                                                        System.out.println("test");
+                                                        PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) a, currentGame, playerShooter);
+                                                        turnHandler.setAndDoAction(powerUpAction);
+                                                        System.out.println("Playing the tagback of color: " + ((PowerUpPack) a).getPowerupCard().getColor());
+                                                    }
+                                                    sendCollectShootAnswersRMI(currentPlayer, IDShooter);
+                                                    ResetAnswer resetChoice = new ResetAnswer();
+                                                    server.sendToSpecificRMI(resetChoice, IDShooter);
                                                 }
-                                                sendCollectShootAnswersRMI(currentPlayer, IDShooter);
-                                                ResetAnswer resetChoice = new ResetAnswer();
-                                                server.sendToSpecific(resetChoice, IDShooter);
+                                            } catch (RemoteException e) {
+                                                e.printStackTrace();
                                             }
-                                        } catch (RemoteException e) {
-                                            e.printStackTrace();
                                         }
-                                    }
 
+                                    }
+                                    clientHasChosen = false;
+                                    grenadeID = -1;
+                                    System.out.println("The player did the action ");
                                 }
-                                clientHasChosen = false;
-                                grenadeID = -1;
-                                System.out.println("The player did the action ");
+                                j = Constants.CHOICE;
                             }
-                            break;
+                            j++;
                         }
                     }
                     listOfPlayers.get(i).setJustDamagedBy(null);

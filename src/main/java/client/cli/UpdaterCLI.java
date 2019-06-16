@@ -245,8 +245,8 @@ public class UpdaterCLI  implements Updater,Runnable{
             connection.addPlayerCharacter(characterName);
         }
         else{
-            /*this.characterName = connection.getCharacterName(connection.getClientID());
-            System.out.println("Playing with..." +this.characterName);*/
+            characterName = connection.getCharacterName();
+            System.out.println("Playing with..." +characterName);
         }
 
 
@@ -422,7 +422,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             gameModel.setGrenadeAction(tagbackActions);
                             gameModel.setClientChoice(true);
                             while(this.clientChoice){
-                                System.out.println("waiting for the tagcback to work");
+                                System.out.println("waiting for the tagback to work");
                             }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
                             //actionParser.createPowerUpEvent("Tagback Grenade");

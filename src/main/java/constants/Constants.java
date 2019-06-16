@@ -44,6 +44,7 @@ public class Constants {
     public static final String TARGETING_SCOPE = "Targeting Scope";
 
     public static final int NO_CHOICE = -99999;
+    public static final int CHOICE = 99999;
 
     public static final String ANSI_RESET = "\u001B[0m";
 
