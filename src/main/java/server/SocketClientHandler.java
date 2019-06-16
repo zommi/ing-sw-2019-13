@@ -18,9 +18,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.List;
 
-public class SocketClientHandler implements Runnable, ReceiverInterface {
+public class SocketClientHandler implements Runnable {
     private Socket clientSocket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -128,8 +127,7 @@ public class SocketClientHandler implements Runnable, ReceiverInterface {
     }
 
 
-    @Override
-    public void publishMessage(ServerAnswer answer) {
+    public void publishSocketMessage(ServerAnswer answer) {
         //sends the answer to the client through the output stream, encapsulating the answer in a SocketInfo object
         //if the match is started, various IDs are added to the SocketInfo object to let the client know about the match status
 
@@ -144,28 +142,7 @@ public class SocketClientHandler implements Runnable, ReceiverInterface {
 
     }
 
-    @Override
-    public int getClientID() throws RemoteException {
+    public int getClientID() {
         return clientID;
-    }
-
-    @Override
-    public boolean askClient() throws RemoteException {
-        return false;
-    }
-
-    @Override
-    public List<Info> getGrenadeAction() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public int getNumberOfGrenades() throws RemoteException {
-        return 0;
-    }
-
-    @Override
-    public void setClientIDExisting(int idAlreadyExisting) throws RemoteException {
-
     }
 }

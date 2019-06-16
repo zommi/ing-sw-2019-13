@@ -12,11 +12,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SocketServer implements ServerInterface{
+public class SocketServer implements Runnable{
     private ServerSocket serverSocket;
     private int port;
     private Game game;
-    private List<ReceiverInterface> clientsAdded;
+    private List<SocketClientHandler> clientsAdded;
     private ExecutorService executorService;
     private Server server;
 
@@ -34,9 +34,9 @@ public class SocketServer implements ServerInterface{
             System.out.println("SOCKET SERVER RUNNING");
             serverSocket = new ServerSocket(port);
             while(true){    //NOSONAR
-                ReceiverInterface receiverInterface = new SocketClientHandler(serverSocket.accept(), server);
-                clientsAdded.add(receiverInterface);
-                executorService.submit((SocketClientHandler)receiverInterface);
+                SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
+                clientsAdded.add(socketClientHandler);
+                executorService.submit((SocketClientHandler)socketClientHandler);
             }
         } catch (IOException e) {
             System.out.println("ERROR DURING SOCKET INITIALIZATION");
@@ -44,8 +44,7 @@ public class SocketServer implements ServerInterface{
         }
     }
 
-    @Override
-    public List<ReceiverInterface> getClientsAdded() {
+    public List<SocketClientHandler> getClientsAdded() {
         return clientsAdded;
     }
 

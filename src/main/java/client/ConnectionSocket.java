@@ -25,6 +25,8 @@ public class ConnectionSocket implements Connection {
     private int startGame = 0;
     private boolean error = false;
 
+    private String characterName;
+
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private ListenerSocketThread listenerSocketThread;
@@ -41,13 +43,9 @@ public class ConnectionSocket implements Connection {
         this.gameModel = new GameModel();
         this.isConnected = false;
         this.socket = null;
+        this.characterName = "No name yet";
         monitor = new Object();
     }
-
-    /*@Override
-    public void setClientHasChosen(){
-
-    }*/
 
     public void setCurrentID(int currentID) {
         this.currentID = currentID;
@@ -64,9 +62,9 @@ public class ConnectionSocket implements Connection {
     }
 
     @Override
-    public String getCharacterName(int clientID){
-        //TODO
-        return null;
+    public String getCharacterName(){
+        return characterName;
+
     }
 
     public void addPlayerCharacter(String name){

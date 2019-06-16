@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface ReceiverInterface extends Remote  {
+public interface ReceiverInterface extends Remote {
     public void publishMessage(ServerAnswer answer) throws RemoteException;
 
     public int getClientID() throws RemoteException;

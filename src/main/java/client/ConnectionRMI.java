@@ -317,7 +317,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
-    public String getCharacterName(int clientID){
+    public String getCharacterName(){
         try{
             return gameProxy.getCharacterName(clientID);
         }

@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class ServerRMI implements Runnable, ServerInterface {
+public class ServerRMI implements Runnable {
 
     private Server server;
     private Controller controller;
@@ -38,7 +38,6 @@ public class ServerRMI implements Runnable, ServerInterface {
         }
     }
 
-    @Override
     public List<ReceiverInterface> getClientsAdded() {
         try {
             return gameProxy.getClientsRMIadded();

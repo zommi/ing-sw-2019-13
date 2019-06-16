@@ -34,12 +34,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     private GameModel gameModel;
     private boolean clientChoice;
 
-    private static final int MIN_SKULL = 5;
-    private static final int MAX_SKULL = 8;
-
-    private String name;
-    private String characterName;
-
 
     public UpdaterCLI(){
         super();
@@ -111,7 +105,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             playerName = myObj.nextLine();
         } while (playerName.equals(""));
 
-        this.name = playerName;
         System.out.println("Name is: " +playerName);
 
         do {
@@ -152,11 +145,11 @@ public class UpdaterCLI  implements Updater,Runnable{
                 String stringChoice = "";
                 int choice;
                 System.out.println(">Choose the number of skulls (MIN: " +
-                        MIN_SKULL + ", MAX: " + MAX_SKULL + "): ");
+                        Constants.MIN_SKULLS + ", MAX: " + Constants.MAX_SKULLS + "): ");
                 try{
                     stringChoice = myObj.nextLine();
                     choice = Integer.parseInt(stringChoice);
-                    if(choice < MIN_SKULL || choice > MAX_SKULL)
+                    if(choice < Constants.MIN_SKULLS || choice > Constants.MAX_SKULLS)
                         System.out.println("Please insert a valid number.");
                     else {
                         initialSkullsChosen = true;
@@ -218,7 +211,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         /*String[] characterNames = {"SPROG", "VIOLET", "DESTRUCTOR", "DOZER", "BANSHEE"};
         List<String> cnList = Arrays.asList(characterNames);*/
-        if(connection.getCharacterName(connection.getClientID()).equals("No name yet")){
+        if(connection.getCharacterName().equals("No name yet")){
             int choice;
             boolean set = false;
             String stringChoice;
@@ -235,7 +228,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     if(choice < Figure.values().length && choice >= 0){
                         set = true;
                         characterName = Figure.values()[choice].name();
-                        this.characterName = characterName;
                     }
                     else{
                         System.out.println("Error: insert a valid number!");
@@ -249,8 +241,8 @@ public class UpdaterCLI  implements Updater,Runnable{
             connection.addPlayerCharacter(characterName);
         }
         else{
-            this.characterName = connection.getCharacterName(connection.getClientID());
-            System.out.println("Playing with..." +this.characterName);
+            /*this.characterName = connection.getCharacterName(connection.getClientID());
+            System.out.println("Playing with..." +this.characterName);*/
         }
 
 

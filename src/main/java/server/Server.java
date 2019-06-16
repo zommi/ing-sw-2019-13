@@ -35,8 +35,8 @@ public class Server {
     private List<PlayerAbstract> playerList = new ArrayList<>();
     private List<PlayerAbstract> playerDisconnectedList = new ArrayList<>();
 
-    private ServerInterface serverRMI;
-    private ServerInterface socketServer;
+    private ServerRMI serverRMI;
+    private SocketServer socketServer;
 
 
     public Server() throws RemoteException{
@@ -79,33 +79,30 @@ public class Server {
             }
 
             System.out.println("Created the game");
-            //does it work with socket too? we have to test the clienID with socket too.
-            //ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());
             System.out.println("Now I will send the map to the client");
-            try{ //TODO WITH SOCKET CONNECTION!!!!!
-                InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
-                HashMap<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
-                //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
-                GameBoard currentGameBoard = controller.getCurrentGame().getCurrentGameBoard();
-                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
-                SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
-                for(Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
-                    ReceiverInterface value = entry.getValue();
-                    System.out.println("Found a connection whose client is: " + value.getClientID());
-                    value.publishMessage(temp0);
-                    value.publishMessage(gameBoardAnswer);
-                    //temp.get(i).publishMessage(mapAnswer);
-                    value.publishMessage(setSpawnAnswer);
+
+            //prepares initial info
+            InitialMapAnswer initialMapAnswer = new InitialMapAnswer(mapChoice);
+            GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
+            SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
+
+            //sends initial info with RMI
+            try{
+                HashMap<Integer, ReceiverInterface> clientRMIaddedMap = gameProxy.getClientRMIadded();
+                for(Map.Entry<Integer, ReceiverInterface> clientRMIadded : clientRMIaddedMap.entrySet()) {
+                    ReceiverInterface clientRMI = clientRMIadded.getValue();
+                    System.out.println("Found a connection whose client is: " + clientRMI.getClientID());
+                    clientRMI.publishMessage(initialMapAnswer);
+                    clientRMI.publishMessage(gameBoardAnswer);
+                    clientRMI.publishMessage(setSpawnAnswer);
                     System.out.println("Sent the map to the connection RMI");
-                    //temp.get(i).publishMessage(temp1);
-                    //System.out.println("Sent the weapon card list to the client RMI");
-                    System.out.println(" " +value.getClientID());
+                    System.out.println(" " + clientRMI.getClientID());
                     System.out.println("Sending the players their player hands");
                     for(int k = 0; k < controller.getPlayers().size(); k++){
-                        if(controller.getPlayers().get(k).getClientID() == value.getClientID()){
+                        if(controller.getPlayers().get(k).getClientID() == clientRMI.getClientID()){
                             PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(controller.getPlayers().get(k).getHand());
                             try{
-                                value.publishMessage(playerHandAnswer);
+                                clientRMI.publishMessage(playerHandAnswer);
                                 System.out.println("player hand sent");
                             }
                             catch(RemoteException e){
@@ -118,6 +115,16 @@ public class Server {
             catch(RemoteException e){
                 System.out.println("Exception caught");
                 e.printStackTrace();
+            }
+
+            //sends initial info with socket
+            sendToEverybodySocket(initialMapAnswer);
+            sendToEverybodySocket(gameBoardAnswer);
+            sendToEverybodySocket(setSpawnAnswer);
+            for(SocketClientHandler socketClientHandler : socketServer.getClientsAdded()){
+                PlayerHand playerHand = controller.getCurrentGame().getPlayerFromId(socketClientHandler.getClientID()).getHand();
+                PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(playerHand);
+                socketClientHandler.publishSocketMessage(playerHandAnswer);
             }
 
             startGame = 1;
@@ -190,38 +197,34 @@ public class Server {
         return lastClientIdAdded;
     }
 
-    /*public void sendToEverybody(ServerAnswer serverAnswer){
-        List<ReceiverInterface> temp = new ArrayList<>()
-        try{
-            for(ReceiverInterface receiverInterface : )
+    public int addClient(SocketClientHandler client){
+        if(listOfClients.isEmpty()){
+            listOfClients.add(0);
+            this.lastClientIdAdded = 0;
         }
-    }*/
+        else{ //it is not the first element added in the list so it is not the first client.
+            listOfClients.add(lastClientIdAdded +1);
+            this.lastClientIdAdded = lastClientIdAdded + 1;
+        }
+        System.out.println("Added the clientID ");
+        return lastClientIdAdded;
+    }
 
-    private ReceiverInterface getReceiverFromID(int clientID){
-        try {
-            for (ReceiverInterface receiverInterface : socketServer.getClientsAdded()) {
-                if (receiverInterface.getClientID() == clientID)
-                    return receiverInterface;
-            }
-            for (ReceiverInterface receiverInterface : gameProxy.getClientsRMIadded()) {
-                if (receiverInterface.getClientID() == clientID)
-                    return receiverInterface;
-            }
-            return null;
-        }catch(RemoteException e){
-            e.printStackTrace();
-            return null;
+    private SocketClientHandler getSocketClientFromID(int clientID){
+        for(SocketClientHandler socketClientHandler : socketServer.getClientsAdded()){
+            if(socketClientHandler.getClientID() == clientID)
+                return socketClientHandler;
         }
+
+        return null;
     }
 
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
-        try {
-            getReceiverFromID(clientID).publishMessage(serverAnswer);
-        }catch(RemoteException e){
-            e.printStackTrace();
-        }catch(NullPointerException npe){
-            System.out.println("No client with clientID: " + clientID);
-        }
+        SocketClientHandler socketClientHandler = getSocketClientFromID(clientID);
+        if(socketClientHandler == null)
+            sendToSpecificRMI(serverAnswer, clientID);
+        else
+            socketClientHandler.publishSocketMessage(serverAnswer);
     }
 
     public void sendToEverybody(ServerAnswer serverAnswer){
@@ -230,21 +233,8 @@ public class Server {
     }
 
     private void sendToEverybodySocket(ServerAnswer serverAnswer){
-        for(ReceiverInterface receiverInterface : socketServer.getClientsAdded()){
-            ((SocketClientHandler)receiverInterface).publishMessage(serverAnswer);
-        }
-    }
-
-    private void sendToSpecificSocket(ServerAnswer serverAnswer, int clientID){
-        try {
-            for (ReceiverInterface receiverInterface : socketServer.getClientsAdded()) {
-                if (receiverInterface.getClientID() == clientID) {
-                    receiverInterface.publishMessage(serverAnswer);
-                    return;
-                }
-            }
-        }catch(RemoteException e){
-            //this should never happen, socket connection!
+        for(SocketClientHandler socketClientHandler : socketServer.getClientsAdded()){
+            socketClientHandler.publishSocketMessage(serverAnswer);
         }
     }
 
