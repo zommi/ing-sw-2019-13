@@ -3,6 +3,12 @@ package constants;
 import java.io.File;
 
 public class Constants {
+    public static final int MIN_PLAYERS = 2;
+    public static final int MAX_PLAYERS = 5;
+
+    public static final int MIN_SKULLS = 5;
+    public static final int MAX_SKULLS = 8;
+
     public static final int MAX_HP = 12;
     public static final int MAX_MARKS = 3;
     public static final int NUM_FIGURES = 5;
@@ -22,9 +28,6 @@ public class Constants {
     public static final int BETTERCOLLECTDAMAGE = 2;
     public static final int BETTERSHOOTDAMAGE = 5;
 
-    public static final int FIRST_POWERUP_EXTRA = 0;
-    public static final int SECOND_POWERUP_EXTRA = 1;
-    public static final int THIRD_POWERUP_EXTRA = 2;
     public static final int MAX_MOVES_BETTER_COLLECT = 2;
 
     public static final int MAX_MOVES_NORMAL_COLLECT = 1;
@@ -76,5 +79,6 @@ public class Constants {
 
     public static final String PATH_TO_MAP_22 = PATH_TO_RESOURCES_FOLDER +
             File.separatorChar + "maps" + File.separatorChar + "map22.txt";
+
 
 }

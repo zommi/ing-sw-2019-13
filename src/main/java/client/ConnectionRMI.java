@@ -93,6 +93,36 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         this.clientID = clientID;
     }
 
+    @Override
+    public void setMapNum(int mapNum) {
+
+    }
+
+    @Override
+    public void setInitialSkulls(int initialSkulls) {
+
+    }
+
+    @Override
+    public void setStartGame(int startGame) {
+
+    }
+
+    @Override
+    public void setGrenadeID(int grenadeID) {
+
+    }
+
+    @Override
+    public void setCurrentID(int currentID) {
+
+    }
+
+    @Override
+    public void setCurrentCharacter(String currentCharacter) {
+
+    }
+
     public GameProxyInterface getGameProxy(){
         return this.gameProxy;
     }
@@ -132,7 +162,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
 
     @Override
-    public boolean CharacterChoice(String name) {
+    public boolean isCharacterChosen(String name) {
         boolean found = false;
         for(Figure figure : Figure.values()){
             if(figure.name().equalsIgnoreCase(name))

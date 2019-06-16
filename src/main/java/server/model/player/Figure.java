@@ -19,6 +19,8 @@ public enum Figure {
         this.owner = null;
     }
 
+
+
     public String fromFigure(){
         if(this.equals(DESTRUCTOR))
             return "DESTRUCTOR";

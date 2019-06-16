@@ -2,12 +2,10 @@ package client.cli;
 
 
 import client.*;
-import client.powerups.PowerUpPack;
 import constants.Color;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
-import server.controller.playeraction.Action;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
@@ -27,6 +25,9 @@ public class UpdaterCLI  implements Updater,Runnable{
 
     private Connection connection;
     private boolean alwaysTrue = true;
+
+
+    ExecutorService executorService;
 
     private GameModel gameModel;
 
@@ -68,7 +69,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the map");
         }
 
-        if(object.equals("PlayerHand")){
+        if(object.equals("PlayerHand")) {
             System.out.println("New Update of the playerhand");
         }
     }
@@ -83,7 +84,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
-        String read;
         String playerName;
         String methodChosen;
         boolean mapChosen = false;
@@ -120,19 +120,22 @@ public class UpdaterCLI  implements Updater,Runnable{
             connection = new ConnectionRMI(lastClientID);
             System.out.println("RMI connection was set up");
         } else{
-            connection = new ConnectionSocket(lastClientID);
+            connection = new ConnectionSocket(-1);
             System.out.println("Socket connection was set up");
         }
         gameModel = connection.getGameModel();
         //because the gameModel is instantiated in the connection when it is started.
         // this way both socket and RMI can read it
         gameModel.addObserver(this);
+
+        //this sets the client ID and add a ReceiverInterface as a client added in the server
         connection.configure();
+
         //if(connection.getError() == true)
         //    throw new GameAlreadyStartedException();
 
         int mapNumber = 0;
-        if(gameModel.getClientID() == 0) {//only if it is the first client!
+        if(connection.getClientID() == 0) {//only if it is the first client! //TODO change gameModel with connection
             do{
                 String stringChoice = "";
                 int choice;
@@ -189,7 +192,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             } while (!mapChosen);
             System.out.println(">You have chosen the map: " +mapName);
         }
-        else
+        else        //if it's not the first client
         {
             do{
                 mapName = connection.getMapName();
@@ -226,7 +229,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             } catch(NumberFormatException e){
                 System.out.println("Error: insert a valid number");
             }
-        } while (!set || (!connection.CharacterChoice(characterName)));
+        } while (!set || (!connection.isCharacterChosen(characterName)));
 
         System.out.println("Name is: " +characterName.toUpperCase());
         connection.addPlayerCharacter(characterName);
@@ -268,9 +271,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerUpCard> powerups;
-        int ammoRED;
-        int ammoBLUE;
-        int ammoYELLOW;
         try {
             this.set();
         }
@@ -283,7 +283,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
         while (alwaysTrue) {
-            //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
                 actionParser.addGameModel(gameModel);
@@ -325,7 +324,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
 
                     if(gameModel.getToSpawn()){
-                        powerups = this.spawn(powerups, playerHand, actionParser);
+                        spawn(powerups, playerHand, actionParser);
                     }
                     this.startInput(actionParser);
                 }
@@ -426,6 +425,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         DrawInfo action = new DrawInfo();
         System.out.println("Sending the action of spawning to the server");
         connection.send(action);//TODO is it instant as an action?
+
+
         playerHand = gameModel.getPlayerHand();
         powerups = playerHand.getPowerupHand();
         System.out.println(">You have the following powerups: ");

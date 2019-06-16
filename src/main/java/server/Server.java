@@ -1,10 +1,12 @@
 package server;
 
 import client.ReceiverInterface;
+import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
+import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 import view.*;
 
@@ -28,6 +30,7 @@ public class Server {
     private int startGame = 0;
     private List<Integer> listOfClients = new ArrayList<>();
     private List<PlayerAbstract> playerList = new ArrayList<>();
+
     private ServerInterface serverRMI;
     private ServerInterface socketServer;
 
@@ -44,12 +47,20 @@ public class Server {
         return gameProxy;
     }
 
+    public int getInitialSkulls() {
+        return initialSkulls;
+    }
+
     public int startMatch(){ //TODO here we have a problem: what if the player does not choose the character in time?
-        if(listOfClients.size() < 3){ //if after 30 seconds we have less than 3 players, the game does not start
+        if(listOfClients.size() < Constants.MIN_PLAYERS){ //if after 30 seconds we have less than 3 players, the game does not start
             System.out.println("The game still has less than 3 players");
             listOfClients = null;
             game = null;
             startGame = 2;
+
+            //informs socket clients
+            sendToEverybodySocket(null);
+
             return 2;
         }
         //now we have to start the game!
@@ -64,27 +75,23 @@ public class Server {
 
             System.out.println("Created the game");
             //does it work with socket too? we have to test the clienID with socket too.
-            //ServerAnswer mapAnswer = new MapAnswer(this.game.getCurrentGameMap());
             System.out.println("Now I will send the map to the client");
             try{ //TODO WITH SOCKET CONNECTION!!!!!
-                InitialMapAnswer temp0 = new InitialMapAnswer(mapChoice);
+                InitialMapAnswer initialMapAnswer = new InitialMapAnswer(mapChoice);
 
                 //adding all rmi and socket clients
                 List<ReceiverInterface> clientsAdded = new ArrayList<>(gameProxy.getClientsRMIadded());
-                //clientsAdded.addAll(SOCKET)
+                clientsAdded.addAll(socketServer.getClientsAdded());
 
-                //ListOfWeaponsAnswer temp1 = controller.getCurrentGame().getWeaponList(); //piazzare una lista di socket e aggiornarla
                 GameBoard currentGameBoard = controller.getCurrentGame().getCurrentGameBoard();
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(currentGameBoard);
                 SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
                 for(int i = 0; i < clientsAdded.size(); i++){
                     System.out.println("Found a connection whose client is: " + clientsAdded.get(i).getClientID());
-                    clientsAdded.get(i).publishMessage(temp0);
+                    clientsAdded.get(i).publishMessage(initialMapAnswer);
                     clientsAdded.get(i).publishMessage(gameBoardAnswer);
-                    //clientsAdded.get(i).publishMessage(mapAnswer);
                     clientsAdded.get(i).publishMessage(setSpawnAnswer);
                     System.out.println("Sent the map to the connection RMI");
-                    //clientsAdded.get(i).publishMessage(temp1);
                     //System.out.println("Sent the weapon card list to the client RMI");
                     System.out.println(" " +clientsAdded.get(i).getClientID());
                     System.out.println(" " +controller.getCurrentID());
@@ -110,6 +117,10 @@ public class Server {
             }
 
             startGame = 1;
+
+            //informs socket client
+            sendToEverybodySocket(null);
+
             System.out.println("The game is starting");
             try{
                 game.nextState();
@@ -124,12 +135,37 @@ public class Server {
 
     public void addPlayer(PlayerAbstract player){
         playerList.add(player);
-        if(playerList.size() == 3){ //start timer di N secondi
+        if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
             TimerTask timerTask = new MyTimerTask(this);
             Timer timer = new Timer(true);
             timer.schedule(timerTask, 0);
             System.out.println("Task started");
         }
+    }
+
+    public Figure getFreeFigure(){
+
+        //assuming maximum number of player has not been reached
+
+        for(Figure figure : Figure.values()){
+            if(!isCharacterTaken(figure.name()))
+                return figure;
+        }
+        return null; //this should never happen
+    }
+
+    public boolean isCharacterTaken(String nameChar){
+        System.out.println("Checking if the character is already taken by someone else");
+        System.out.println("In my list I have " +playerList.size() +"players, i will check if they already have chosen their characters");
+        for(int i = 0; i < playerList.size(); i++){
+            if((playerList.get(i).getIfCharacter() == true)&&(playerList.get(i).getCharacterName().equalsIgnoreCase(nameChar))){
+                System.out.println("Found " +playerList.get(i).getCharacterName());
+                System.out.println("The character is already taken by someone else");
+                return true;
+            }
+        }
+        System.out.println("The character name you chose is ok");
+        return false;
     }
 
 
@@ -153,7 +189,56 @@ public class Server {
         }
     }*/
 
-    public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
+    private ReceiverInterface getReceiverFromID(int clientID){
+        try {
+            for (ReceiverInterface receiverInterface : socketServer.getClientsAdded()) {
+                if (receiverInterface.getClientID() == clientID)
+                    return receiverInterface;
+            }
+            for (ReceiverInterface receiverInterface : gameProxy.getClientsRMIadded()) {
+                if (receiverInterface.getClientID() == clientID)
+                    return receiverInterface;
+            }
+            return null;
+        }catch(RemoteException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
+        try {
+            getReceiverFromID(clientID).publishMessage(serverAnswer);
+        }catch(RemoteException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendToEverybody(ServerAnswer serverAnswer){
+        sendToEverybodySocket(serverAnswer);
+        sendToEverybodyRMI(serverAnswer);
+    }
+
+    private void sendToEverybodySocket(ServerAnswer serverAnswer){
+        for(ReceiverInterface receiverInterface : socketServer.getClientsAdded()){
+            ((SocketClientHandler)receiverInterface).publishMessage(serverAnswer);
+        }
+    }
+
+    private void sendToSpecificSocket(ServerAnswer serverAnswer, int clientID){
+        try {
+            for (ReceiverInterface receiverInterface : socketServer.getClientsAdded()) {
+                if (receiverInterface.getClientID() == clientID) {
+                    receiverInterface.publishMessage(serverAnswer);
+                    return;
+                }
+            }
+        }catch(RemoteException e){
+            //this should never happen, socket connection!
+        }
+    }
+
+    private void sendToEverybodyRMI(ServerAnswer serverAnswer) {
         try {
             for (ReceiverInterface receiverInterface : gameProxy.getClientsRMIadded()) {
                 receiverInterface.publishMessage(serverAnswer);
@@ -165,7 +250,7 @@ public class Server {
         }
     }
 
-    public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
+    private void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
         try {
             List<ReceiverInterface> temp = gameProxy.getClientsRMIadded();
             for (int i = 0; i < temp.size(); i++) {
@@ -194,7 +279,18 @@ public class Server {
     }
 
     public void setInitialSkulls(int initialSkulls){
-        this.initialSkulls = initialSkulls;
+        if(initialSkulls >= Constants.MIN_SKULLS && initialSkulls <= Constants.MAX_SKULLS)
+            this.initialSkulls = initialSkulls;
+        else
+            this.initialSkulls = Constants.MIN_SKULLS;
+    }
+
+    public int getMapChoice() {
+        return mapChoice;
+    }
+
+    public void setMapChoice(int mapChoice) {
+        this.mapChoice = mapChoice;
     }
 
     public void setMap(int numMap){
@@ -204,7 +300,6 @@ public class Server {
     }
 
     public void setController(int numMap, int initialSkulls){
-        //System.out.println("Test");
         controller = new Controller(numMap, initialSkulls, this);
         System.out.println("Controller created");
     }
@@ -221,7 +316,7 @@ public class Server {
         Server server = new Server();
         ExecutorService executor = Executors.newCachedThreadPool();
 
-        server.socketServer = new SocketServer(1337);
+        server.socketServer = new SocketServer(1337, server);
         server.serverRMI = new ServerRMI(server);
 
         executor.submit(server.serverRMI);

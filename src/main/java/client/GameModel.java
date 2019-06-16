@@ -30,6 +30,8 @@ public class GameModel extends Observable implements Serializable {
     private boolean clientChoice;
     private Info grenadeAction;
 
+    private final Object lock = new Object();
+
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
@@ -42,6 +44,10 @@ public class GameModel extends Observable implements Serializable {
 
     public Info getGrenadeAction(){
         return this.grenadeAction;
+    }
+
+    public Object getLock() {
+        return lock;
     }
 
     public void setToSpawn(boolean decision){
@@ -87,19 +93,19 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
         }
 
-        if (answer instanceof GameBoardAnswer) {
+        else if (answer instanceof GameBoardAnswer) {
             gameBoard = (GameBoardAnswer) answer;
             setChanged();
             notifyObservers("GameBoard");
         }
 
-        if (answer instanceof InitialMapAnswer) {
+        else if (answer instanceof InitialMapAnswer) {
             mapnum = ((InitialMapAnswer) answer).getNumMap();
             setChanged();
             notifyObservers("Initialized Map");
         }
 
-        if (answer instanceof MapAnswer) {
+        else if (answer instanceof MapAnswer) {
             map = ((MapAnswer) answer);
             setChanged();
             notifyObservers("Map");
@@ -110,35 +116,35 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("PlayerBoard");
         }*/
-        if (answer instanceof SetSpawnAnswer) {
+        else if (answer instanceof SetSpawnAnswer) {
             setToSpawn(((SetSpawnAnswer) answer).getResult());
             setChanged();
             notifyObservers("Spawn");
         }
 
-        if (answer instanceof PlayerHandAnswer) {
+        else if (answer instanceof PlayerHandAnswer) {
             playerHand = (PlayerHandAnswer) answer;
             setChanged();
             notifyObservers("PlayerHand");
         }
 
-        if(answer instanceof  ChangeCurrentPlayerAnswer) {
+        else if(answer instanceof  ChangeCurrentPlayerAnswer) {
             setChanged();
             notifyObservers("Change player");
         }
 
-        if(answer instanceof ListOfWeaponsAnswer) {
+        else if(answer instanceof ListOfWeaponsAnswer) {
             weaponList = (ListOfWeaponsAnswer) answer;
             setChanged();
             notifyObservers("Weapons list");
         }
 
-        if(answer instanceof PlayerDiedAnswer) {
+        else if(answer instanceof PlayerDiedAnswer) {
             setChanged();
             notifyObservers("Player died");
         }
 
-        if(answer instanceof SpawnCommandAnswer) {
+        else if(answer instanceof SpawnCommandAnswer) {
             setChanged();
             notifyObservers("Spawn phase");
         }

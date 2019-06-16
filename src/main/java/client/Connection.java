@@ -10,9 +10,7 @@ public interface Connection extends Serializable {
 
     public void addPlayerCharacter(String name);
 
-    //public void setClientHasChosen();
-
-    public boolean CharacterChoice(String name);
+    public boolean isCharacterChosen(String name);
 
     public int getCurrentID();
 
@@ -39,4 +37,12 @@ public interface Connection extends Serializable {
     public GameModel getGameModel();
 
     public void add(String playerName, int map, int initialSkulls);
+
+    void setClientID(int clientID);
+    void setMapNum(int mapNum);
+    void setInitialSkulls(int initialSkulls);
+    void setStartGame(int startGame);
+    void setGrenadeID(int grenadeID);
+    void setCurrentID(int currentID);
+    void setCurrentCharacter(String currentCharacter);
 }

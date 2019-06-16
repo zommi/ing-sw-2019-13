@@ -104,9 +104,9 @@ public class StartMenuController implements GuiController {
         this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
         this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
-        if(!this.gui.getConnection().CharacterChoice(characterChosen)){
+        if(!this.gui.getConnection().isCharacterChosen(characterChosen)){
             for(Figure figure : Figure.values()){
-                if(this.gui.getConnection().CharacterChoice(figure.toString())){
+                if(this.gui.getConnection().isCharacterChosen(figure.toString())){
                     characterChosen = figure.toString();
                     break;
                 }
