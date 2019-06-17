@@ -46,8 +46,8 @@ public class ServerRMI implements Runnable {
         }
     }
 
-    public int addClient(ReceiverInterface client){
-        return this.server.addClient(client);
+    public int addClient(){
+        return this.server.addClient();
     }
 
     public void addMapClient(PlayerAbstract p) {

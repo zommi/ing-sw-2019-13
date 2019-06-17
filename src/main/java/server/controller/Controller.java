@@ -162,7 +162,7 @@ public class Controller {
 
         //checks and executes actions
 
-        Boolean actionOk;
+        boolean actionOk;
 
         if(action instanceof ReloadInfo){
 

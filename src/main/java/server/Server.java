@@ -5,7 +5,6 @@ import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
-import server.model.gameboard.GameBoard;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerHand;
@@ -88,7 +87,7 @@ public class Server {
 
             //sends initial info with RMI
             try{
-                HashMap<Integer, ReceiverInterface> clientRMIaddedMap = gameProxy.getClientRMIadded();
+                Map<Integer, ReceiverInterface> clientRMIaddedMap = gameProxy.getClientRMIadded();
                 for(Map.Entry<Integer, ReceiverInterface> clientRMIadded : clientRMIaddedMap.entrySet()) {
                     ReceiverInterface clientRMI = clientRMIadded.getValue();
                     System.out.println("Found a connection whose client is: " + clientRMI.getClientID());
@@ -183,21 +182,7 @@ public class Server {
         return false;
     }
 
-
-    public int addClient(ReceiverInterface client){
-        if(listOfClients.isEmpty()){
-            listOfClients.add(0);
-            this.lastClientIdAdded = 0;
-        }
-        else{ //it is not the first element added in the list so it is not the first client.
-            listOfClients.add(lastClientIdAdded +1);
-            this.lastClientIdAdded = lastClientIdAdded + 1;
-        }
-        System.out.println("Added the clientID ");
-        return lastClientIdAdded;
-    }
-
-    public int addClient(SocketClientHandler client){
+    public int addClient(){
         if(listOfClients.isEmpty()){
             listOfClients.add(0);
             this.lastClientIdAdded = 0;
@@ -240,7 +225,7 @@ public class Server {
 
     public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
         try {
-            HashMap<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            Map<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
             for(Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
                 ReceiverInterface value = entry.getValue();
                 idToDisconnect = entry.getKey();  //when it catches the exception we know which id is the one
@@ -283,7 +268,7 @@ public class Server {
 
     public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
         try {
-            HashMap<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            Map<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
             System.out.println("Sending the update to: "+clientID);
             for (Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
                 ReceiverInterface value = entry.getValue();
@@ -329,11 +314,11 @@ public class Server {
     }
 
     public int getLastClientIdAdded(){
-        return this.lastClientIdAdded;
+        return lastClientIdAdded;
     }
 
     public Controller getController(){
-        return this.controller;
+        return controller;
     }
 
     public void setGameProxy(GameProxyInterface gameProxy){
@@ -356,19 +341,17 @@ public class Server {
     }
 
     public void setMap(int numMap){
-        this.mapChoice = numMap;
-        System.out.println("Instantiating the controller");
-        this.setController(numMap, initialSkulls);
+        mapChoice = numMap;
     }
 
-    public void setController(int numMap, int initialSkulls){
-        //System.out.println("Test");
-        controller = new Controller(numMap, initialSkulls, this);
+    public void createController(){
+        System.out.println("Instantiating the controller");
+        controller = new Controller(mapChoice, initialSkulls, this);
         System.out.println("Controller created");
     }
 
     public Registry getRegistry(){
-        return this.registry;
+        return registry;
     }
 
     public String getRemoteObjectName(){  //RETURNS the name of the remote object

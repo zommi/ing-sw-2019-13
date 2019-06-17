@@ -2,14 +2,11 @@ package server;
 
 
 import client.AsynchronousInfo;
-import client.ReceiverInterface;
 import client.SetupInfo;
 import client.Info;
 import exceptions.WrongGameStateException;
-import server.model.game.Game;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
-import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
 import view.ServerAnswer;
 
@@ -17,7 +14,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
 
 public class SocketClientHandler implements Runnable {
     private Socket clientSocket;
@@ -45,7 +41,7 @@ public class SocketClientHandler implements Runnable {
 
         //sends clientID
         SocketInfo socketInfo = new SocketInfo();
-        clientID = server.addClient(this);
+        clientID = server.addClient();
         System.out.println("Thread started, added client " + clientID);
         socketInfo.setClientID(clientID);
         if(clientID != 0){      //sends mapName and initialSkulls
@@ -75,12 +71,14 @@ public class SocketClientHandler implements Runnable {
         if(info instanceof SetupInfo){
             SetupInfo setupInfo = (SetupInfo) info;
             if(server.getController() == null) {
-                server.setController(setupInfo.getMapChoice(), setupInfo.getInitialSkulls());
                 server.setInitialSkulls(setupInfo.getInitialSkulls());
                 server.setMapChoice(setupInfo.getMapChoice());
+
+                //now we can call createController because map and skulls have been set
+                server.createController();
+
             }
             if(setupInfo.isCharacterSetup()){
-                //dentro setupinfo c'è un metodo che prende un clientId e un personaggio
                 if(Figure.fromString(setupInfo.getCharacterChosen()) != null && !server.isCharacterTaken(setupInfo.getCharacterChosen())){
                     //player in Game has already been created
                     server.getController().getCurrentGame().getPlayerFromId(clientID).

@@ -18,9 +18,7 @@ import java.util.List;
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
     private GameProxyInterface gameProxy;
-    private String name = "rmiconnection";
     private String mapChoice;
-    private GameMap map;
     private int initialSkulls;
 
     private boolean error = false;
@@ -35,7 +33,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private static final String SERVER_ADDRESS  = "localhost";
     private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private static final int REGISTRATION_PORT = 1099;
-    private int startGame = 0;
 
     public ConnectionRMI(int clientID) throws RemoteException{
         this.clientID = clientID;

@@ -13,6 +13,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface GameProxyInterface extends Remote {
 
@@ -42,7 +43,7 @@ public interface GameProxyInterface extends Remote {
 
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
 
-    public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
+    public Map<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
     public List<ReceiverInterface> getClientsRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;

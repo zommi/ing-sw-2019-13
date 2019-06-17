@@ -19,6 +19,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
@@ -26,10 +27,10 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private GameMap map;
     private int numMap;
     private ServerRMI serverRMI;
-    private List<PlayerAbstract> player = new ArrayList();
+    private List<PlayerAbstract> player = new ArrayList<>();
     private int clientIDadded;
     private int initialSkulls;
-    private HashMap<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
+    private Map<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
 
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
@@ -42,7 +43,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return this.serverRMI.getServer().getController().getCurrentCharacterName();
     }
 
-    public HashMap<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException{
+    public Map<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException{
         return this.clientRMIadded;
     }
 
@@ -150,7 +151,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         //if(serverRMI.getServer().getStartGame() == 1){
         //    throw new GameAlreadyStartedException();
         //}
-        this.clientIDadded = serverRMI.addClient(client);
+        clientIDadded = serverRMI.addClient();
         System.out.println("Added client number: " +clientIDadded);
 
 
@@ -291,9 +292,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean sendMap(int numMap)  throws RemoteException{
         System.out.println("Map choice received");
         this.numMap = numMap;
-        //System.out.println("Test 0"); //this works
-        serverRMI.getServer().setMap(numMap); //then the problem is here
-        //System.out.println("Test 1"); //this doesn't work
+        serverRMI.getServer().setMap(numMap);
+        serverRMI.getServer().createController();
         System.out.println("Controller set for serverRMI");
         return true;
     }
