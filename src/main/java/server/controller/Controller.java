@@ -3,12 +3,9 @@ package server.controller;
 import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
-import constants.Color;
 import constants.Constants;
 import exceptions.WrongGameStateException;
-import server.MyTimerTask;
-import server.Server;
+import server.GameManager;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
@@ -19,7 +16,6 @@ import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
-import server.model.gameboard.GameBoard;
 import server.model.map.GameMap;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
@@ -32,9 +28,7 @@ import view.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
+
 public class Controller {
 
     private int currentID;
@@ -47,16 +41,16 @@ public class Controller {
 
     private boolean clientHasChosen;
 
-    private Server server;
+    private GameManager gameManager;
 
     private List<SquareAbstract> squaresToUpdate;
 
     private List<PlayerAbstract> playersToSpawn;
 
-    public Controller(int mapChoice, int initialSkulls, Server server){
+    public Controller(int mapChoice, int initialSkulls, GameManager gameManager){
         this.currentGame = new Game(mapChoice, initialSkulls);
         this.currentMap = this.currentGame.getCurrentGameMap();
-        this.server = server;
+        this.gameManager = gameManager;
         this.currentID = 0;
         this.grenadeID = -1;
         this.squaresToUpdate = new ArrayList<>();
@@ -107,9 +101,9 @@ public class Controller {
         if(action instanceof SpawnInfo){
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, player, currentGame.getCurrentGameBoard());
             turnHandler.setAndDoSpawn(spawnAction);
-            server.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-            server.sendToSpecific(new SetSpawnAnswer(false), clientID);
-            server.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
+            gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+            gameManager.sendToSpecific(new SetSpawnAnswer(false), clientID);
+            gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
             this.playersToSpawn.remove(currentGame.getPlayerFromId(clientID));
             if(this.playersToSpawn.isEmpty()){
                 turnHandler.nextPhase();
@@ -119,7 +113,7 @@ public class Controller {
         if(action instanceof DrawInfo){
             DrawAction drawAction = new DrawAction(player, currentGame);
             turnHandler.setAndDoSpawn(drawAction);
-            server.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
+            gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
             System.out.println("sending the playerhand to the clientID: " + clientID);
         }
     }
@@ -173,8 +167,8 @@ public class Controller {
             ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
             actionOk = turnHandler.setAndDoAction(reloadAction);
             if(actionOk){
-                server.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
-                server.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+                gameManager.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
+                gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
             }else{
                 sendErrorMessage(clientID);
             }
@@ -193,7 +187,7 @@ public class Controller {
             DrawAction drawAction = new DrawAction(currentPlayer, currentGame);
             if(turnHandler.setAndDoAction(drawAction)) {
                 PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(currentPlayer.getHand());
-                server.sendToSpecific(playerHandAnswer, currentID);
+                gameManager.sendToSpecific(playerHandAnswer, currentID);
                 System.out.println("sending the playerhand to the clientID: " + currentID);
             }else{
                 sendErrorMessage(clientID);
@@ -203,9 +197,9 @@ public class Controller {
         else if(action instanceof SpawnInfo){
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, currentPlayer, currentGame.getCurrentGameBoard());
             if(turnHandler.setAndDoAction(spawnAction)) {
-                server.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-                server.sendToSpecific(new SetSpawnAnswer(false), currentID);
-                server.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
+                gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+                gameManager.sendToSpecific(new SetSpawnAnswer(false), currentID);
+                gameManager.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
             }else{
                 sendErrorMessage(clientID);
             }
@@ -215,7 +209,7 @@ public class Controller {
             MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer, currentMap);
             if(turnHandler.setAndDoAction(moveAction)) {
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-                server.sendToEverybody(gameBoardAnswer);
+                gameManager.sendToEverybody(gameBoardAnswer);
             }else{
                 sendErrorMessage(clientID);
             }
@@ -256,13 +250,13 @@ public class Controller {
                                         }*/
                                             try {
                                                 System.out.println(" " + grenadeID);
-                                                clientHasChosen = server.getGameProxy().askClient(grenadeID);
+                                                clientHasChosen = gameManager.getGameProxy().askClient(grenadeID);
                                                 System.out.println("Client has chosen: " + clientHasChosen);
                                                 if (clientHasChosen) {
                                                     int IDShooter = grenadeID;
                                                     grenadeID = -1;
                                                     System.out.println("test");
-                                                    List<Info> actionGrenade = server.getGameProxy().getGrenadeAction(IDShooter);
+                                                    List<Info> actionGrenade = gameManager.getGameProxy().getGrenadeAction(IDShooter);
                                                     System.out.println("The shooter decided to play with " + actionGrenade.size() + "powerups");
                                                     PlayerAbstract playerShooter = null;
                                                     for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
@@ -278,7 +272,7 @@ public class Controller {
                                                     }
                                                     sendCollectShootAnswersRMI(currentPlayer, IDShooter);
                                                     ResetAnswer resetChoice = new ResetAnswer();
-                                                    server.sendToSpecificRMI(resetChoice, IDShooter);
+                                                    gameManager.sendToSpecificRMI(resetChoice, IDShooter);
                                                 }
                                             } catch (RemoteException e) {
                                                 e.printStackTrace();
@@ -315,11 +309,11 @@ public class Controller {
     }
 
     private void sendErrorMessage(int clientID) {
-        server.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientID);
+        gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientID);
     }
 
     private void sendGrenadeAnswer() {
-    server.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+    gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
     }
     /*public void setClientHasChosen(){
         this.clientHasChosen = true;
@@ -328,18 +322,18 @@ public class Controller {
 
     public void sendChangeCurrentPlayer(){
         ChangeCurrentPlayerAnswer changeAnswer = new ChangeCurrentPlayerAnswer();
-        server.sendToEverybody(changeAnswer);
+        gameManager.sendToEverybody(changeAnswer);
     }
 
     public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
-        server.sendToEverybody(gameBoardAnswer);
-        server.sendToSpecific(playerHandAnswer, clientID);
+        gameManager.sendToEverybody(gameBoardAnswer);
+        gameManager.sendToSpecific(playerHandAnswer, clientID);
     }
 
     public void sendSquaresRestored(){
-        server.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+        gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
     }
 
     public Game getCurrentGame(){
@@ -407,14 +401,14 @@ public class Controller {
 
     private void sendSpawnAnswer(PlayerAbstract playerAbstract) {
         this.playersToSpawn.add(playerAbstract);
-        server.sendToSpecific(new SetSpawnAnswer(true),playerAbstract.getClientID());
-        server.sendToEverybody(new PlayerDiedAnswer());
-        server.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+        gameManager.sendToSpecific(new SetSpawnAnswer(true),playerAbstract.getClientID());
+        gameManager.sendToEverybody(new PlayerDiedAnswer());
+        gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
     }
 
     public void sendSpawnRequest() {
         for(PlayerAbstract player : this.playersToSpawn){
-            server.sendToSpecific(new SpawnCommandAnswer(), player.getClientID());
+            gameManager.sendToSpecific(new SpawnCommandAnswer(), player.getClientID());
         }
     }
 }

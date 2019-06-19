@@ -8,7 +8,7 @@
     <artifactId>ing-sw-2019-13</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- da aggiungere per creare il server locale sonarQube -->
+    <!-- da aggiungere per creare il gameManager locale sonarQube -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>

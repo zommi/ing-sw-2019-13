@@ -5,7 +5,6 @@ import client.weapons.Weapon;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
-import server.model.items.AmmoCube;
 import server.model.map.*;
 import constants.*;
 
@@ -32,7 +31,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     private int clientID;
 
-    private boolean ifCharacter;
+    private boolean characterChosen;
 
     //added after createCopy
     private PlayerAbstract justDamagedBy;
@@ -247,12 +246,12 @@ public class ConcretePlayer extends PlayerAbstract {
         this.currentGame = game;
     }
 
-    public void setIfCharacter(boolean choice){
-        this.ifCharacter = choice;
+    public void setCharacterChosen(boolean choice){
+        this.characterChosen = choice;
     }
 
-    public boolean getIfCharacter(){
-        return this.ifCharacter;
+    public boolean isCharacterChosen(){
+        return this.characterChosen;
     }
 
     public void setClientID(int clientID) {

@@ -48,9 +48,9 @@ public abstract class PlayerAbstract implements Serializable {
     public void shoot() {
     }
 
-    public abstract void setIfCharacter(boolean choice);
+    public abstract void setCharacterChosen(boolean choice);
 
-    public abstract boolean getIfCharacter();
+    public abstract boolean isCharacterChosen();
 
     public abstract int getClientID();
 

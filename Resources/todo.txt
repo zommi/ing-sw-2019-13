@@ -34,8 +34,14 @@ mandare carte respawn automaticamente?
 controllo per sparare quando si hanno solo armi scariche(si blocca senza via d'uscita)
 nella makeAction non trovo il punto in cui si controlla che l'id passato è effettivamente quello corrente
 da qualche parte si controlla che tipo non puoi sparare se la fase è POWERUP
+
 mandare messaggio d'errore se azione fallisce
 
 
+
 SOCKET:
-controllare se personaggio già usato
+
+CONNESSIONE E DISCONNESSIONE:
+disconnettere client con nomi esistenti gia connessi
+settare Figure occupata direttamente dentro figure e non controllare player uno a uno
+

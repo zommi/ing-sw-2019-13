@@ -1,17 +1,12 @@
 package server.controller.turns;
 
-import client.CollectInfo;
-import client.MoveInfo;
 import exceptions.WrongGameStateException;
-import server.Server;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
-import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
-import view.ChangeCurrentPlayerAnswer;
 
 public class TurnHandler {
 

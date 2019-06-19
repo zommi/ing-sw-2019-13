@@ -41,7 +41,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     public String getCurrentCharacterName(){
         try{
-            return gameProxy.getCurrentCharacter();
+            return gameProxy.getCurrentCharacter(clientID);
         }
         catch(RemoteException e){
             System.out.println("Exception caught");
@@ -62,7 +62,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public int getStartGame(){
         try{
-            return gameProxy.getStartGame();
+            return gameProxy.getStartGame(clientID);
         }
         catch(RemoteException e)
         {
@@ -117,7 +117,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public int getGrenadeID(){
         try{
-            return gameProxy.getGrenadeID();
+            return gameProxy.getGrenadeID(clientID);
         }
         catch(RemoteException e){
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public int getCurrentID(){
         try{
-            return gameProxy.getCurrentID();
+            return gameProxy.getCurrentID(clientID);
         }
         catch(RemoteException e){
             e.printStackTrace();
@@ -161,7 +161,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
         if (found) {
             try{
-                if(gameProxy.isCharacterTaken(name)){
+                if(gameProxy.isCharacterTaken(name, clientID)){
                     return false;
                 }
                 else {
@@ -215,7 +215,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public int getInitialSkulls(){
         try {
-            return gameProxy.getInitialSkulls();
+            return gameProxy.getInitialSkulls(clientID);
         }
         catch (RemoteException re){
             System.out.println("Could not get the initial skulls from the server");
@@ -329,7 +329,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             System.out.println("Trying to send your choice of initial skulls to the server...");
             while (!initialSkullsSet) {
                 try {
-                    initialSkullsSet = gameProxy.sendInitialSkulls(initialSkulls);
+                    initialSkullsSet = gameProxy.sendInitialSkulls(initialSkulls, clientID);
                     initialSkullsSet = true;
                 } catch (RemoteException re) {
                     System.out.println("Could not send the initial skulls");
@@ -337,7 +337,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
                 }
             }
             try{
-                this.initialSkulls = gameProxy.getInitialSkulls();
+                this.initialSkulls = gameProxy.getInitialSkulls(clientID);
             }
             catch(RemoteException e){
                 System.out.println("Remote Exception");
@@ -363,7 +363,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             System.out.println("Sending your chosen map to the server...");
             while(!mapSet){
                 try{
-                    mapSet = gameProxy.sendMap(mapClient);
+                    mapSet = gameProxy.sendMap(mapClient, clientID);
                     mapSet = true;
                 }
                 catch(RemoteException re){

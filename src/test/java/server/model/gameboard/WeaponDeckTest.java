@@ -1,8 +1,7 @@
 package server.model.gameboard;
 
 import constants.*;
-import server.Server;
-import server.ServerRMI;
+import server.GameManager;
 import server.controller.Controller;
 import server.model.cards.WeaponCard;
 import server.model.map.*;
@@ -24,8 +23,8 @@ class WeaponDeckTest {
     public void drawTest(){
         WeaponDeck testDeck = new WeaponDeck();
         GameMap testGameMap = new GameMap(1);
-        Server server = null;
-        Controller controller = new Controller(1,8,server);
+        GameManager gameManager = null;
+        Controller controller = new Controller(1,8, gameManager);
 
         System.out.println(testDeck);
 

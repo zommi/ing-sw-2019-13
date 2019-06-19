@@ -17,9 +17,9 @@ import java.util.Map;
 
 public interface GameProxyInterface extends Remote {
 
-    public int getStartGame() throws RemoteException;
+    public int getStartGame(int clientID) throws RemoteException;
 
-    public String getCurrentCharacter() throws RemoteException;
+    public String getCurrentCharacter(int clientID) throws RemoteException;
 
     public boolean askClient(int ID) throws RemoteException;
 
@@ -29,9 +29,9 @@ public interface GameProxyInterface extends Remote {
 
     //public void setClientHasChosenPowerup() throws RemoteException;
 
-    public int getCurrentID() throws RemoteException;
+    public int getCurrentID(int clientID) throws RemoteException;
 
-    public int getGrenadeID() throws RemoteException;
+    public int getGrenadeID(int clientID) throws RemoteException;
 
     public String getMapName() throws RemoteException;
 
@@ -39,16 +39,19 @@ public interface GameProxyInterface extends Remote {
 
     public boolean addMapPlayer(int clientID) throws RemoteException;
 
-    public boolean isCharacterTaken(String nameChar) throws RemoteException;
+    public boolean isCharacterTaken(String nameChar, int clientID) throws RemoteException;
 
+    public ReceiverInterface getReceiverInterface(int clientID);
+
+/*
     public Map<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
-
+*/
 
     public List<ReceiverInterface> getClientsRMIadded() throws RemoteException;
 
-    public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;
+    public boolean sendInitialSkulls(int initialSkulls, int clientID) throws RemoteException;
 
-    public int getInitialSkulls() throws RemoteException;
+    public int getInitialSkulls(int clientID) throws RemoteException;
 
     public boolean makeAction(int clientID, Info action) throws RemoteException;
 
@@ -56,13 +59,15 @@ public interface GameProxyInterface extends Remote {
 
     public int getClientID() throws RemoteException;
 
+    public int getClientID(ReceiverInterface receiverInterface);
+
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 
     public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException;
 
     public boolean sendPlayer(String name, int ID) throws RemoteException;
 
-    public boolean sendMap(int numMap) throws RemoteException;
+    public boolean sendMap(int numMap, int clientID) throws RemoteException;
 
     public PlayerAbstract getPlayer(int clientID) throws RemoteException;
 
