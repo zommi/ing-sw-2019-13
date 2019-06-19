@@ -128,13 +128,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     @Override
     public int getGrenadeID(){
-        try{
-            return gameProxy.getGrenadeID();
-        }
-        catch(RemoteException e){
-            e.printStackTrace();
-        }
-        return -1;
+            return gameModel.getGrenade();
     }
 
     @Override
@@ -142,10 +136,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return gameModel.getClientChoice();
     }
 
-    @Override
-    public int getNumberOfGrenades(){
-        return gameModel.getNumberOfGrenades();
-    }
 
     @Override
     public List<Info> getGrenadeAction(){
@@ -395,10 +385,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         //TODO manca la parte in cui salvo le scelte del client!
     }
 
-    @Override
-    public void setClientIDExisting(int idAlreadyExisting) throws RemoteException{
-        this.clientID = idAlreadyExisting;
-    }
 
     @Override
     public String getMapName() {

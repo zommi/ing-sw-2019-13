@@ -47,6 +47,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the gameboard");
             //gameModel.getMap().printOnCLI();
         }
+
         if(object.equals("reset")){
             System.out.println("Tagback worked well");
             this.clientChoice = false;
@@ -59,6 +60,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             }else{
                 System.out.println("It's " + connection.getCurrentCharacterName() + "'s turn!");
             }
+        }
+
+        if(object.equals("Grenade")){
+            System.out.println("Grenade");
         }
 
         if(object.equals("Spawn")){
@@ -423,7 +428,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Test 1");
                             gameModel.setGrenadeAction(tagbackActions);
                             gameModel.setClientChoice(true);
-                            while(this.clientChoice){
+                            while(gameModel.getClientChoice()){
                                 System.out.println("waiting for the tagback to work");
                             }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello

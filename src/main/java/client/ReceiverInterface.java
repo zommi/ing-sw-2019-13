@@ -14,8 +14,4 @@ public interface ReceiverInterface extends Remote {
     boolean askClient() throws RemoteException;
 
     List<Info> getGrenadeAction() throws RemoteException;
-
-    int  getNumberOfGrenades() throws RemoteException;
-
-    void setClientIDExisting(int idAlreadyExisting) throws RemoteException;
 }
