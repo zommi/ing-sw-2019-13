@@ -1,21 +1,14 @@
 package server;
 
-import client.Connection;
-import client.ReceiverInterface;
-import server.model.game.Game;
-
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SocketServer implements Runnable{
-    private ServerSocket serverSocket;
     private int port;
-    private Game game;
     private List<SocketClientHandler> clientsAdded;
     private ExecutorService executorService;
     private Server server;
@@ -32,11 +25,11 @@ public class SocketServer implements Runnable{
     public void run(){
         try {
             System.out.println("SOCKET SERVER RUNNING");
-            serverSocket = new ServerSocket(port);
+            ServerSocket serverSocket = new ServerSocket(port);
             while(true){    //NOSONAR
                 SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
                 clientsAdded.add(socketClientHandler);
-                executorService.submit((SocketClientHandler)socketClientHandler);
+                executorService.submit(socketClientHandler);
             }
         } catch (IOException e) {
             System.out.println("ERROR DURING SOCKET INITIALIZATION");

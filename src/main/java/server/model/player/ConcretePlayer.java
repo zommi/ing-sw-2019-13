@@ -16,6 +16,8 @@ import java.util.*;
  */
 public class ConcretePlayer extends PlayerAbstract {
 
+    private boolean connected;
+
     private String name;
 
     private GameCharacter gameCharacter;
@@ -40,6 +42,17 @@ public class ConcretePlayer extends PlayerAbstract {
         this.hand = new PlayerHand(this);
         this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
+        connected = true;
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connected;
+    }
+
+    @Override
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     @Override

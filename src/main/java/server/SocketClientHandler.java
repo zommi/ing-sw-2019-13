@@ -79,7 +79,8 @@ public class SocketClientHandler implements Runnable {
 
             }
             if(setupInfo.isCharacterSetup()){
-                if(Figure.fromString(setupInfo.getCharacterChosen()) != null && !server.isCharacterTaken(setupInfo.getCharacterChosen())){
+                if(Figure.fromString(setupInfo.getCharacterChosen()) != null &&
+                        !server.isCharacterTaken(setupInfo.getCharacterChosen())){
                     //player in Game has already been created
                     server.getController().getCurrentGame().getPlayerFromId(clientID).
                             setPlayerCharacter(Figure.fromString(setupInfo.getCharacterChosen()));

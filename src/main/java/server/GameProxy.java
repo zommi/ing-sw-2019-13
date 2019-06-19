@@ -23,19 +23,15 @@ import java.util.Map;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
-    private ReceiverInterface clientRMI;
-    private GameMap map;
     private int numMap;
     private ServerRMI serverRMI;
     private List<PlayerAbstract> player = new ArrayList<>();
     private int clientIDadded;
-    private int initialSkulls;
     private Map<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
 
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI = serverRMI;
-        this.serverRMI.getServer().setGameProxy(this);
         UnicastRemoteObject.exportObject(this, 1099);
     }
 
@@ -170,9 +166,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException{
         System.out.println("Trying to connect the server to the client");
-        this.clientRMI = clientRMI;
-        //clientRMI.print();
-        this.addClientRMI(id, clientRMI);
+        addClientRMI(id, clientRMI);
         System.out.println("I just connected to the client");
     }
 
@@ -181,7 +175,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         System.out.println("Name received");
         SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(false);
         for(PlayerAbstract p:player){
-            if((p.getName().equals(name))&&(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+            if(p.getName().equals(name) && !p.isConnected()){
                 System.out.println("This player was disconnected before");
                 if(p.getPosition() == null){
                     setSpawnAnswer = new SetSpawnAnswer(true);
@@ -219,7 +213,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
                 serverRMI.getServer().sendToSpecificRMI(setSpawnAnswer, clientID);
                 return true;
             }
-            else if((p.getName().equals(name))&&!(p.getPlayerState().equals(PlayerState.DISCONNECTED))){
+            else if(p.getName().equals(name) && p.isConnected()){
                 name = name + clientID;
             }
         }
@@ -249,11 +243,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public GameMap getMap() throws RemoteException{
-        return this.map;
-    }
-
-    @Override
     public String getMapName() throws RemoteException{
         if(this.numMap == 0)
             return "Map 1";
@@ -269,7 +258,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
 
     @Override
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException{
-        this.initialSkulls = initialSkulls;
         serverRMI.getServer().setInitialSkulls(initialSkulls);
         System.out.println("Initial skulls choice received");
         return true;

@@ -153,9 +153,9 @@ public class Controller {
             }
         }
 
-        if ((currentPlayer.getPlayerState().equals(PlayerState.DISCONNECTED)) ||
-                (currentPlayer.getPlayerState().equals(PlayerState.DEAD)) ||
-                (currentGame.getCurrentState().equals(GameState.END_GAME))) {
+        if (  !currentPlayer.isConnected() ||
+                currentPlayer.getPlayerState().equals(PlayerState.DEAD) ||
+                currentGame.getCurrentState().equals(GameState.END_GAME)) {
             return false;
         }
 
@@ -239,7 +239,7 @@ public class Controller {
 
 
                 for (int i = 0; i < listOfPlayers.size(); i++) {
-                    if(listOfPlayers.get(i).getPlayerState() != PlayerState.DISCONNECTED) {
+                    if(listOfPlayers.get(i).isConnected()) {
                         int j = 0;
                         while (j < listOfPlayers.get(i).getHand().getPowerupHand().size()) {
                             if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {

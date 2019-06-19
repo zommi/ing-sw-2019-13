@@ -35,8 +35,6 @@ public interface GameProxyInterface extends Remote {
 
     public String getMapName() throws RemoteException;
 
-    public GameMap getMap() throws RemoteException;
-
     public boolean addPlayerCharacter(String name, int ID) throws RemoteException;
 
     public boolean addMapPlayer(int clientID) throws RemoteException;
@@ -44,6 +42,8 @@ public interface GameProxyInterface extends Remote {
     public boolean isCharacterTaken(String nameChar) throws RemoteException;
 
     public Map<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
+
+
     public List<ReceiverInterface> getClientsRMIadded() throws RemoteException;
 
     public boolean sendInitialSkulls(int initialSkulls) throws RemoteException;

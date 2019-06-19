@@ -55,6 +55,9 @@ public class Constants {
 
 
 
+    public static final String REGISTRATION_ROOM_NAME = "gameproxy";
+
+
 
     /////////////////////////////////////////////////////////////////////////////////
 

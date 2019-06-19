@@ -4,7 +4,6 @@ package server.model.player;
  *
  */
 public enum PlayerState {
-    DISCONNECTED,
 
     TOBESPAWNED,
 
@@ -16,6 +15,4 @@ public enum PlayerState {
 
     DEAD,
 
-
-    PlayerState() {}
 }
