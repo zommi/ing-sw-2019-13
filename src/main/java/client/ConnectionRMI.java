@@ -49,18 +49,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return null;
     }
 
-
-    public GameMap getMap(){
-        try{
-            return gameProxy.getMap();
-        }
-        catch (RemoteException re){
-            System.out.println("Could not take the map from the server");
-            re.printStackTrace();
-        }
-        return null;
-    }
-
     /*@Override
     public void setClientHasChosen(){
         try{

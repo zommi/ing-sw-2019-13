@@ -8,22 +8,16 @@ import server.model.game.Game;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerHand;
-import server.model.player.PlayerState;
 import view.*;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
-    private final Registry registry;
-    private GameProxyInterface gameProxy;
     private Game game;
-    private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private int mapChoice;
     private Controller controller;
     private int idToDisconnect = -1;
@@ -38,19 +32,15 @@ public class Server {
     private SocketServer socketServer;
 
 
-    public Server() throws RemoteException{
-        this.registry = LocateRegistry.createRegistry(1099);
-    }
-
-
     public int getStartGame(){
         return this.startGame;
     }
+
     public GameProxyInterface getGameProxy(){
-        return gameProxy;
+        return serverRMI.getGameProxy();
     }
 
-    public int getInitialSkulls() {
+    public synchronized int getInitialSkulls() {
         return initialSkulls;
     }
 
@@ -87,7 +77,7 @@ public class Server {
 
             //sends initial info with RMI
             try{
-                Map<Integer, ReceiverInterface> clientRMIaddedMap = gameProxy.getClientRMIadded();
+                Map<Integer, ReceiverInterface> clientRMIaddedMap = getGameProxy().getClientRMIadded();
                 for(Map.Entry<Integer, ReceiverInterface> clientRMIadded : clientRMIaddedMap.entrySet()) {
                     ReceiverInterface clientRMI = clientRMIadded.getValue();
                     System.out.println("Found a connection whose client is: " + clientRMI.getClientID());
@@ -128,7 +118,7 @@ public class Server {
 
             startGame = 1;
 
-            //informs socket client
+            //informs socket clients that startGame has changed
             sendToEverybodySocket(null);
 
             System.out.println("The game is starting");
@@ -143,7 +133,7 @@ public class Server {
         }
     }
 
-    public void addPlayer(PlayerAbstract player){
+    public synchronized void addPlayer(PlayerAbstract player){
         playerList.add(player);
         if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
             TimerTask timerTask = new MyTimerTask(this);
@@ -168,7 +158,7 @@ public class Server {
         return null; //this should never happen
     }
 
-    public boolean isCharacterTaken(String nameChar){
+    public synchronized boolean isCharacterTaken(String nameChar){
         System.out.println("Checking if the character is already taken by someone else");
         System.out.println("In my list I have " +playerList.size() +"players, i will check if they already have chosen their characters");
         for(int i = 0; i < playerList.size(); i++){
@@ -182,7 +172,7 @@ public class Server {
         return false;
     }
 
-    public int addClient(){
+    public synchronized int addClient(){
         if(listOfClients.isEmpty()){
             listOfClients.add(0);
             this.lastClientIdAdded = 0;
@@ -225,7 +215,7 @@ public class Server {
 
     public void sendToEverybodyRMI(ServerAnswer serverAnswer) {
         try {
-            Map<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            Map<Integer, ReceiverInterface> temp = getGameProxy().getClientRMIadded();
             for(Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
                 ReceiverInterface value = entry.getValue();
                 idToDisconnect = entry.getKey();  //when it catches the exception we know which id is the one
@@ -248,11 +238,11 @@ public class Server {
                 else
                 {
                     System.out.println("Disconnecting the player: "+idToDisconnect);
-                    gameProxy.getClientRMIadded().remove(idToDisconnect); //ELIMINATES THE CONNECTION FROM THE CONNECTION HASMAP
+                    getGameProxy().getClientRMIadded().remove(idToDisconnect); //ELIMINATES THE CONNECTION FROM THE CONNECTION HASMAP
                     for(PlayerAbstract p:playerList){
                         if(p.getClientID() == idToDisconnect){   //ELIMINATES THE PLAYER FROM THE LIST IN SERVER
                             playerDisconnectedList.add(p);
-                            p.setState(PlayerState.DISCONNECTED);
+                            p.setConnected(false);
                             System.out.println("Disconnected the player: " +idToDisconnect);
                         }
                     }
@@ -268,7 +258,7 @@ public class Server {
 
     public void sendToSpecificRMI(ServerAnswer serverAnswer, int clientID){
         try {
-            Map<Integer, ReceiverInterface> temp = gameProxy.getClientRMIadded();
+            Map<Integer, ReceiverInterface> temp = getGameProxy().getClientRMIadded();
             System.out.println("Sending the update to: "+clientID);
             for (Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
                 ReceiverInterface value = entry.getValue();
@@ -295,11 +285,11 @@ public class Server {
                 else
                 {
                     System.out.println("Disconnecting the player: " +idToDisconnect);
-                    gameProxy.getClientRMIadded().remove(idToDisconnect); //ELIMINATES THE CONNECTION FROM THE CONNECTION HASMAP
+                    getGameProxy().getClientRMIadded().remove(idToDisconnect); //ELIMINATES THE CONNECTION FROM THE CONNECTION HASMAP
                     for(PlayerAbstract p:playerList){
                         if(p.getClientID() == idToDisconnect){   //ELIMINATES THE PLAYER FROM THE LIST IN SERVER
                             playerDisconnectedList.add(p);
-                            p.setState(PlayerState.DISCONNECTED);
+                            p.setConnected(false);
                             System.out.println("Disconnected the player: " +idToDisconnect);
                         }
                     }
@@ -319,10 +309,6 @@ public class Server {
 
     public Controller getController(){
         return controller;
-    }
-
-    public void setGameProxy(GameProxyInterface gameProxy){
-        this.gameProxy = gameProxy;
     }
 
     public void setInitialSkulls(int initialSkulls){
@@ -348,14 +334,6 @@ public class Server {
         System.out.println("Instantiating the controller");
         controller = new Controller(mapChoice, initialSkulls, this);
         System.out.println("Controller created");
-    }
-
-    public Registry getRegistry(){
-        return registry;
-    }
-
-    public String getRemoteObjectName(){  //RETURNS the name of the remote object
-        return REGISTRATION_ROOM_NAME;
     }
 
     public static void main(String[] args) throws RemoteException{

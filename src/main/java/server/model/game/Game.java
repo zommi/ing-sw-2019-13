@@ -123,7 +123,7 @@ public class Game {
                 else
                     this.currentPlayerIndex = 0;
             }
-            while(getCurrentPlayer().getPlayerState() == PlayerState.DISCONNECTED);
+            while(!getCurrentPlayer().isConnected());
         }else {
             throw new WrongGameStateException();
         }

@@ -35,10 +35,7 @@ controllo per sparare quando si hanno solo armi scariche(si blocca senza via d'u
 nella makeAction non trovo il punto in cui si controlla che l'id passato è effettivamente quello corrente
 da qualche parte si controlla che tipo non puoi sparare se la fase è POWERUP
 mandare messaggio d'errore se azione fallisce
-else if controller instanceof
 
 
 SOCKET:
-cambiare send to specific
-
-change gamemodel with connection
+controllare se personaggio già usato

@@ -117,4 +117,8 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean isOverkilled();
 
     public abstract Color getKillerColor();
+
+    public abstract boolean isConnected();
+
+    public abstract void setConnected(boolean connected);
 }
