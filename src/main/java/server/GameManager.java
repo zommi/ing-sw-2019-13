@@ -1,6 +1,5 @@
 package server;
 
-import client.ReceiverInterface;
 import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
@@ -18,30 +17,42 @@ public class GameManager {
     private Game game;
     private int mapChoice;
     private Controller controller;
-    private int idToDisconnect = -1;
     private int initialSkulls;
-    private int lastClientIdAdded;
     private int startGame = 0;
     private List<Integer> listOfClients = new ArrayList<>();
     private List<PlayerAbstract> playerList = new ArrayList<>();
-    private List<PlayerAbstract> playerDisconnectedList = new ArrayList<>();
-
-    private boolean firstPlayerDesigned;
+    private boolean noPlayer;
+    private boolean setupComplete;
 
     private Server server;
 
 
     public GameManager(Server server){
         this.server = server;
-        firstPlayerDesigned = false;
+        setupComplete = false;
+        noPlayer = true;
     }
 
-    public synchronized boolean isFirstPlayerDesigned() {
-        return firstPlayerDesigned;
+    public synchronized boolean isSetupComplete() {
+        return setupComplete;
     }
 
-    public synchronized void setFirstPlayerDesigned(boolean firstPlayerDesigned) {
-        this.firstPlayerDesigned = firstPlayerDesigned;
+    public synchronized void setSetupComplete(boolean setupComplete) {
+        this.setupComplete = setupComplete;
+    }
+
+    public synchronized boolean isNoPlayer() {
+        return noPlayer;
+    }
+
+    public synchronized void setNoPlayer(boolean noPlayer) {
+        this.noPlayer = noPlayer;
+    }
+
+    public void defaultSetup(){
+        initialSkulls = Constants.MIN_SKULLS;
+        mapChoice = 0;
+        setSetupComplete(true);
     }
 
     public Server getServer() {
@@ -62,7 +73,9 @@ public class GameManager {
 
     //posso far partire un thread del game passandogli playerList, controller, gameproxy
     public int startMatch(){ //TODO here we have a problem: what if the player does not choose the character in time?
-        if(listOfClients.size() < Constants.MIN_PLAYERS){ //if after 30 seconds we have less than 3 players, the game does not start
+        if(playerList.size() < Constants.MIN_PLAYERS){ //if after 30 seconds we have less than 3 players, the game does not start
+
+            //todo throws null pointer exception when calling sendtoeverybody, change also listOfClients
             System.out.println("The game still has less than 3 players");
             listOfClients = null;
             game = null;
@@ -128,10 +141,6 @@ public class GameManager {
         }
     }
 
-    public void addClientsDisconnected(int id){
-        this.listOfClients.add(id);
-    }
-
     public synchronized Figure getFreeFigure(){
 
         //assuming maximum number of player has not been reached
@@ -157,7 +166,12 @@ public class GameManager {
     }
 
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
-        server.getClientFromId(clientID).send(serverAnswer);
+        try {
+            server.getClientFromId(clientID).send(serverAnswer);
+        }catch(RemoteException e){
+            game.getPlayerFromId(clientID).setConnected(false);
+            server.disconnect(clientID);
+        }
     }
 
     public void sendToEverybody(ServerAnswer serverAnswer){
@@ -212,10 +226,6 @@ public class GameManager {
 
         }
     }*/
-
-    public int getLastClientIdAdded(){
-        return lastClientIdAdded;
-    }
 
     public Controller getController(){
         return controller;

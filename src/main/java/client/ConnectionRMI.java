@@ -110,6 +110,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     }
 
+    @Override
+    public void sendName(String name) {
+        //todo
+    }
+
     public GameProxyInterface getGameProxy(){
         return this.gameProxy;
     }

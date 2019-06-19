@@ -2,6 +2,7 @@ package server;
 
 
 import client.AsynchronousInfo;
+import client.NameInfo;
 import client.SetupInfo;
 import client.Info;
 import exceptions.WrongGameStateException;
@@ -9,6 +10,7 @@ import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
 import view.ServerAnswer;
+import view.SetupAnswer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,19 +18,18 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class SocketClientHandler implements Runnable {
-    private Socket clientSocket;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private int clientID;
+    private Integer clientID;
     private GameManager gameManager;
+    private boolean firstPlayer;
 
 
     public SocketClientHandler(Socket socket, GameManager gameManager){
         try {
-            this.clientSocket = socket;
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
-            this.gameManager = gameManager;
+            this.gameManager = gameManager;     //could be changed later
         } catch (IOException e) {
             System.console().printf("ERROR DURING INITIALIZATION PROCESS");
             e.printStackTrace();
@@ -37,23 +38,12 @@ public class SocketClientHandler implements Runnable {
 
     @Override
     public void run() {
-        Info infoRead;
-
-        //sends clientID
-        SocketInfo socketInfo = new SocketInfo();
-        clientID = gameManager.getServer().addClient(gameManager);
-        System.out.println("Thread started, added client " + clientID);
-        socketInfo.setClientID(clientID);
-        if(gameManager.isFirstPlayerDesigned()){      //sends mapName and initialSkulls
-            socketInfo.setMapNum(gameManager.getMapChoice());
-            socketInfo.setInitialSkulls(gameManager.getInitialSkulls());
-        }
-        writeToStream(socketInfo);
 
         //the following loop waits for client action
+        //the first thing required is the name
         while(true){ //NOSONAR
             try {
-                infoRead = (Info) inputStream.readObject();
+                Info infoRead = (Info) inputStream.readObject();
                 processAction(infoRead);
             } catch (IOException e) {
                 System.out.println("CLIENT HAS DISCONNECTED");
@@ -69,7 +59,49 @@ public class SocketClientHandler implements Runnable {
     }
 
     private void processAction(Info info) throws WrongGameStateException, IOException{
-        if(info instanceof SetupInfo){
+        if(info instanceof NameInfo){
+            NameInfo nameInfo = (NameInfo) info;
+            SetupAnswer setupAnswer = new SetupAnswer();
+
+            clientID = gameManager.getServer().getIdFromName(nameInfo.getName());
+            if(clientID == null){
+                //player has never connected before
+                clientID = gameManager.getServer().addClient();     //just gets the id
+                Client client = new Client(clientID, gameManager);
+                client.setSocketClientHandler(this);
+                gameManager.getServer().addClient(client);          //adds client to the hashmap
+
+                if(gameManager.isNoPlayer()){                       //decides skulls and map
+                    gameManager.setNoPlayer(false);
+                    setupAnswer.setFirstPlayer(true);
+                    firstPlayer = true;
+                }
+
+                setupAnswer.setGameCharacter(true);
+
+            }else{
+                //player is reconnecting right now
+
+                //setting real and old gameManager
+                gameManager = gameManager.getServer().getGameManagerFromId(clientID);
+
+                //reconnecting (with socket)
+                gameManager.getServer().getClientFromId(clientID).setSocketClientHandler(this);
+                gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setConnected(true);
+            }
+
+            //sends confirm
+            SocketInfo socketInfo = new SocketInfo();
+            socketInfo.setServerAnswer(setupAnswer);
+            socketInfo.setClientID(clientID);
+            if(gameManager.isSetupComplete()){      //sends mapName and initialSkulls
+                socketInfo.setMapNum(gameManager.getMapChoice());
+                socketInfo.setInitialSkulls(gameManager.getInitialSkulls());
+            }
+            writeToStream(socketInfo);
+        }
+
+        else if(info instanceof SetupInfo){
             SetupInfo setupInfo = (SetupInfo) info;
             if(gameManager.getController() == null) {
                 gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
@@ -92,7 +124,7 @@ public class SocketClientHandler implements Runnable {
                             setPlayerCharacter(gameManager.getFreeFigure());
                     gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setCharacterChosen(true);
                 }
-                //now we can add the complete player to the list in server, because its size will be
+                //now we can add the complete player to the list in gameManager, because its size will be
                 //checked for starting the game
                 gameManager.addPlayer(gameManager.getController().getCurrentGame().getPlayerFromId(clientID));
 

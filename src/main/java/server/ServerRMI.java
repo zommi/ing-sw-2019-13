@@ -52,7 +52,7 @@ public class ServerRMI implements Runnable {
     }
 
     public int addClient(){
-        return server.addClient(server.getCurrentGameManager());
+        return server.addClient();
     }
 
     public void addMapClient(PlayerAbstract p) {
@@ -66,5 +66,9 @@ public class ServerRMI implements Runnable {
 
     public GameManager getGameManagerFromId(int clientID){
         return server.getGameManagerFromId(clientID);
+    }
+
+    public Server getServer() {
+        return server;
     }
 }

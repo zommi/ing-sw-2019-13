@@ -20,6 +20,9 @@ public class SetupInfo implements Info, Serializable {
         this.playerName = playerName;
     }
 
+    public SetupInfo(){
+    }
+
     public boolean isCharacterSetup() {
         return characterSetup;
     }
@@ -45,4 +48,7 @@ public class SetupInfo implements Info, Serializable {
         return characterChosen;
     }
 
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 }

@@ -47,4 +47,7 @@ public interface Connection extends Serializable {
     void setGrenadeID(int grenadeID);
     void setCurrentID(int currentID);
     void setCurrentCharacter(String currentCharacter);
+
+
+    void sendName(String name);
 }

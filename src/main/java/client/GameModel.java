@@ -27,10 +27,12 @@ public class GameModel extends Observable implements Serializable {
     private int numberOfGrenades;
 
     private String message;
+    private SetupAnswer setupAnswer;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
         toSpawn = true;
+        setupAnswer = null;
     }
 
     public void setGrenadeAction(List<Info> action){
@@ -73,11 +75,21 @@ public class GameModel extends Observable implements Serializable {
         return clientID;
     }
 
+    public SetupAnswer getSetupAnswer() {
+        return setupAnswer;
+    }
+
     public void saveAnswer(ServerAnswer answer) {
 
         //the GameModel will save the answer of the Server
         // updating the model elements needed and notifying the observers
-        if(answer instanceof ResetAnswer) {
+        if(answer instanceof SetupAnswer){
+            setupAnswer = (SetupAnswer) answer;
+            setChanged();
+            notifyObservers("setup");
+        }
+
+        else if(answer instanceof ResetAnswer) {
             clientChoice = false;
             setChanged();
             notifyObservers("reset");

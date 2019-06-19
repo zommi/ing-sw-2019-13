@@ -48,6 +48,11 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
+    @Override
+    public void sendName(String name) {
+        send(new NameInfo(name));
+    }
+
 
     public boolean getError(){
         return this.error;

@@ -9,13 +9,21 @@ public class Client {
     private int clientID;
     private SocketClientHandler socketClientHandler;
     private ReceiverInterface receiverInterface;
+    private GameManager gameManager;
 
-    public Client(int clientID){
+    public Client(int clientID, GameManager gameManager){
         this.clientID = clientID;
+        socketClientHandler = null;
+        receiverInterface = null;
+        this.gameManager = gameManager;
     }
 
     public int getClientID() {
         return clientID;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 
     public ReceiverInterface getReceiverInterface() {
@@ -39,15 +47,10 @@ public class Client {
         receiverInterface = null;
     }
 
-    public void send(ServerAnswer serverAnswer){
+    public void send(ServerAnswer serverAnswer) throws RemoteException{
         if(socketClientHandler != null)
             socketClientHandler.publishSocketMessage(serverAnswer);
-        else {
-            try {
-                receiverInterface.publishMessage(serverAnswer);
-            } catch (RemoteException e) {
-                //disconnects client todo
-            }
-        }
+        else
+            receiverInterface.publishMessage(serverAnswer);
     }
 }

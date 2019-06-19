@@ -41,8 +41,6 @@ public interface GameProxyInterface extends Remote {
 
     public boolean isCharacterTaken(String nameChar, int clientID) throws RemoteException;
 
-    public ReceiverInterface getReceiverInterface(int clientID);
-
 /*
     public Map<Integer, ReceiverInterface> getClientRMIadded() throws RemoteException;
 */
@@ -59,7 +57,7 @@ public interface GameProxyInterface extends Remote {
 
     public int getClientID() throws RemoteException;
 
-    public int getClientID(ReceiverInterface receiverInterface);
+    public int getClientID(ReceiverInterface receiverInterface) throws RemoteException;
 
     public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 

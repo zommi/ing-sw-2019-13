@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 
 public class SocketServer implements Runnable{
     private int port;
-    private List<SocketClientHandler> clientsAdded;
     private ExecutorService executorService;
     private Server server;
 
@@ -18,7 +17,6 @@ public class SocketServer implements Runnable{
         this.port = port;
         this.server = server;
         executorService = Executors.newCachedThreadPool();
-        clientsAdded = new ArrayList<>();
     }
 
     @Override
@@ -28,7 +26,6 @@ public class SocketServer implements Runnable{
             ServerSocket serverSocket = new ServerSocket(port);
             while(true){    //NOSONAR
                 SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server.getCurrentGameManager());
-                clientsAdded.add(socketClientHandler);
                 executorService.submit(socketClientHandler);
             }
         } catch (IOException e) {
@@ -36,13 +33,4 @@ public class SocketServer implements Runnable{
             e.printStackTrace();
         }
     }
-
-    public List<SocketClientHandler> getClientsAdded() {
-        return clientsAdded;
-    }
-
-
-    //public int addClient(ReceiverInterface client) {
-    //    return 0;
-    //}
 }

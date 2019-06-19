@@ -35,9 +35,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         return serverRMI.getGameManagerFromId(clientID).getController().getCurrentCharacterName();
     }
 
-    public ReceiverInterface getReceiverInterface(int clientID){
-        return clientRMIadded.get(clientID);
-    }
 
     public int getClientID(ReceiverInterface receiverInterface){
         for(Map.Entry<Integer, ReceiverInterface> entry : clientRMIadded.entrySet()){
@@ -140,20 +137,17 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException{
+    public void register(ReceiverInterface receiverInterface) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
-        //if(serverRMI.getServer().getStartGame() == 1){
-        //    throw new GameAlreadyStartedException();
-        //}
+
         clientIDadded = serverRMI.addClient();
+
+ /*       //adding to map                   todo
+        Client client = new Client(clientIDadded, );
+        client.setReceiverInterface(receiverInterface);
+        serverRMI.getServer().addClient(client);*/
+
         System.out.println("Added client number: " +clientIDadded);
-
-
-        /*System.out.println("I am trying to connect to the client");
-        Registry registryClient = LocateRegistry.getRegistry("localhost",1000);
-
-        client = (ReceiverInterface) registryClient.lookup("rmiconnection");
-        System.out.println("I just connected to the client");*/
     }
 
     @Override
@@ -203,12 +197,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
                 for(PlayerAbstract player:playerInServer){
                     if(player.getClientID() == clientID){
                         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
-                        serverRMI.getGameManagerFromId(clientID).sendToSpecificRMI(playerHandAnswer, clientID);
+                        serverRMI.getGameManagerFromId(clientID).sendToSpecific(playerHandAnswer, clientID);
                     }
                 }
                 System.out.println("Sending the game board to the new client");
-                serverRMI.getGameManagerFromId(clientID).sendToSpecificRMI(gameBoardAnswer, clientID);
-                serverRMI.getGameManagerFromId(clientID).sendToSpecificRMI(setSpawnAnswer, clientID);
+                serverRMI.getGameManagerFromId(clientID).sendToSpecific(gameBoardAnswer, clientID);
+                serverRMI.getGameManagerFromId(clientID).sendToSpecific(setSpawnAnswer, clientID);
                 return true;
             }
             else if(p.getName().equals(name) && p.isConnected()){

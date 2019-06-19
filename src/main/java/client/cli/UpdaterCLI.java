@@ -98,7 +98,6 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
-        String read;
         String playerName;
         String methodChosen;
         boolean mapChosen = false;
@@ -146,11 +145,25 @@ public class UpdaterCLI  implements Updater,Runnable{
         //this sets the client ID and add a ReceiverInterface as a client added in the server
         connection.configure();
 
+        //sends the name to the server
+        connection.sendName(playerName);
+
+        //waiting for setupAnswer to arrive
+        while(gameModel.getSetupAnswer() == null) {
+            try {
+                Thread.sleep(300);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+
+        //now we know what we have to ask to the user: it's all written into the setupAnswer
+
         //if(connection.getError() == true)
         //    throw new GameAlreadyStartedException();
 
         int mapNumber = 0;
-        if(connection.getClientID() == 0) {//only if it is the first client!
+        if(gameModel.getSetupAnswer().isFirstPlayer()) {//only if it is the first client!
             do{
                 String stringChoice = "";
                 int choice;
@@ -209,17 +222,17 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
         else        //if it's not the first client
         {
-            do{
+            /*do{
                 mapName = connection.getMapName();
                 initialSkulls = connection.getInitialSkulls();
             } while((mapName.equals("No one has chosen yet"))||(initialSkulls == 0));
             System.out.println(">Your friend has chosen the map: " +mapName);
-            System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);
+            System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);*/
         }
 
         connection.add(playerName, mapNumber, initialSkulls);
 
-        if(connection.getCharacterName().equals("No name yet")){
+        if(gameModel.getSetupAnswer().isGameCharacter()){
             int choice;
             boolean set = false;
             String stringChoice;

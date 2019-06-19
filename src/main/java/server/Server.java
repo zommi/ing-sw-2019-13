@@ -21,15 +21,15 @@ public class Server {
     private List<GameManager> gameManagerList;
     private GameManager currentGameManager;
 
-    private Map<Integer, GameManager> idToGameManager;
-
     private Map<Integer, Client> idToClient;
+
+    private Map<String, Integer> nameToId;
 
 
     public Server() throws RemoteException{
 
-        idToGameManager = new HashMap<>();
         idToClient = new HashMap<>();
+        nameToId = new HashMap<>();
 
         gameManagerList = new ArrayList<>();
         currentGameManager = new GameManager(this);
@@ -43,12 +43,15 @@ public class Server {
         return idToClient.get(clientID);
     }
 
+    public Integer getIdFromName(String name){
+        return nameToId.get(name);
+    }
 
     public GameProxyInterface getGameProxy(){
         return serverRMI.getGameProxy();
     }
 
-    public synchronized int addClient(GameManager gameManager){
+    public synchronized int addClient(){
         if(listOfClients.isEmpty()){
             listOfClients.add(0);
             lastClientIdAdded = 0;
@@ -59,14 +62,15 @@ public class Server {
         }
         System.out.println("Added the clientID " + lastClientIdAdded);
 
-        //add entry to hashmap
-        idToGameManager.put(lastClientIdAdded, gameManager);
-
         return lastClientIdAdded;
     }
 
+    public synchronized void addClient(Client client){
+        idToClient.put(client.getClientID(), client);
+    }
+
     public GameManager getGameManagerFromId(int clientID){
-        return idToGameManager.get(clientID);
+        return idToClient.get(clientID).getGameManager();
     }
 
     public GameManager getCurrentGameManager() {
@@ -79,7 +83,7 @@ public class Server {
     }
 
     public void disconnect(int clientID){
-
+        getClientFromId(clientID).disconnect();
     }
 
     public static void main(String[] args) throws RemoteException {

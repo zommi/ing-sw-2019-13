@@ -272,7 +272,7 @@ public class Controller {
                                                     }
                                                     sendCollectShootAnswersRMI(currentPlayer, IDShooter);
                                                     ResetAnswer resetChoice = new ResetAnswer();
-                                                    gameManager.sendToSpecificRMI(resetChoice, IDShooter);
+                                                    gameManager.sendToSpecific(resetChoice, IDShooter);
                                                 }
                                             } catch (RemoteException e) {
                                                 e.printStackTrace();
