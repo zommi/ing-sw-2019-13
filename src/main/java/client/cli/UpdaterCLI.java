@@ -143,10 +143,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel.addObserver(this);
 
         //this sets the client ID and add a ReceiverInterface as a client added in the server
-        connection.configure();
+        connection.configure(playerName);
 
         //sends the name to the server
-        connection.sendName(playerName);
 
         //waiting for setupAnswer to arrive
         while(gameModel.getSetupAnswer() == null) {

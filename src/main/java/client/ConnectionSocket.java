@@ -48,11 +48,6 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
-    @Override
-    public void sendName(String name) {
-        send(new NameInfo(name));
-    }
-
 
     public boolean getError(){
         return this.error;
@@ -125,7 +120,7 @@ public class ConnectionSocket implements Connection {
     }
 
     //must get client id from the server and set it
-    public void configure(){
+    public void configure(String name){
         try {
             System.out.println("Configuring socket connection...");
             this.socket = new Socket(SERVER_ADDRESS, REGISTRATION_PORT);

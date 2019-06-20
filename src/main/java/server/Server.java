@@ -69,6 +69,10 @@ public class Server {
         idToClient.put(client.getClientID(), client);
     }
 
+    public Map<String, Integer> getNameToId(){
+        return this.nameToId;
+    }
+
     public GameManager getGameManagerFromId(int clientID){
         return idToClient.get(clientID).getGameManager();
     }

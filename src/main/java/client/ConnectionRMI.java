@@ -110,10 +110,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     }
 
-    @Override
-    public void sendName(String name) {
-        //todo
-    }
 
     public GameProxyInterface getGameProxy(){
         return this.gameProxy;
@@ -244,9 +240,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
-    public void configure() {
+    public void configure(String name) {
         try{
-            this.game = initializeRMI();
+            this.game = initializeRMI(name);
             if(game == null)
                 this.error = true;
         }
@@ -260,7 +256,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
 
-    public GameProxyInterface initializeRMI() throws RemoteException, NotBoundException {
+    public GameProxyInterface initializeRMI(String name) throws RemoteException, NotBoundException {
         System.out.println("Connecting to the Remote Object... ");
 
         System.out.println("Connecting to the registry... ");
@@ -274,8 +270,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         System.out.println("I am exporting the remote object...");
         (ReceiverInterface) UnicastRemoteObject.exportObject(this, 1000)*/
 
+        Info action = new NameInfo(name);
         try{
-            gameProxy.register(this);
+            gameProxy.register(action, this);
         }
         catch(GameAlreadyStartedException e){
             System.out.println("The Game already started!");

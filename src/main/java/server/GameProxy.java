@@ -1,15 +1,13 @@
 package server;
 
 import client.Info;
+import client.NameInfo;
 import client.ReceiverInterface;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import server.model.gameboard.GameBoard;
 import server.model.player.*;
-import view.GameBoardAnswer;
-import view.PlayerHandAnswer;
-import view.ServerAnswer;
-import view.SetSpawnAnswer;
+import view.*;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;
@@ -22,7 +20,9 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     private int numMap;
     private ServerRMI serverRMI;
     private List<PlayerAbstract> player = new ArrayList<>();
-    private int clientIDadded;
+    private Integer clientIDadded;
+    private boolean firstPlayer;
+    private GameManager gameManager;
     private Map<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
 
 
@@ -34,6 +34,7 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public String getCurrentCharacter(int clientID) throws RemoteException{
         return serverRMI.getGameManagerFromId(clientID).getController().getCurrentCharacterName();
     }
+
 
 
     public int getClientID(ReceiverInterface receiverInterface){
@@ -137,16 +138,35 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public void register(ReceiverInterface receiverInterface) throws RemoteException, NotBoundException, GameAlreadyStartedException{
+    public void register(Info action, ReceiverInterface receiverInterface) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
+        NameInfo nameInfo = (NameInfo) action;
+        SetupAnswer setupAnswer = new SetupAnswer();
 
-        clientIDadded = serverRMI.addClient();
+        clientIDadded = serverRMI.getServer().getIdFromName(nameInfo.getName());
+        if(clientIDadded == null){
+            clientIDadded = serverRMI.getServer().addClient();     //just gets the id
+            gameManager = serverRMI.getServer().getCurrentGameManager();
+            Client client = new Client(clientIDadded, gameManager);
+            client.setReceiverInterface(receiverInterface);
+            serverRMI.getServer().addClient(client);          //adds client to the hashmap
 
- /*       //adding to map                   todo
-        Client client = new Client(clientIDadded, );
-        client.setReceiverInterface(receiverInterface);
-        serverRMI.getServer().addClient(client);*/
+            if(gameManager.isNoPlayer()){                       //decides skulls and map
+                gameManager.setNoPlayer(false);
+                setupAnswer.setFirstPlayer(true);
+                firstPlayer = true;
+            }
+            serverRMI.getServer().getNameToId().put(nameInfo.getName(), clientIDadded);
+            setupAnswer.setGameCharacter(true);
+        }
+        else{
+            gameManager = gameManager.getServer().getGameManagerFromId(clientIDadded);
 
+            //reconnecting (with socket)
+            gameManager.getServer().getClientFromId(clientIDadded).setReceiverInterface(receiverInterface);
+            gameManager.getController().getCurrentGame().getPlayerFromId(clientIDadded).setConnected(true);
+        }
+        receiverInterface.publishMessage(setupAnswer);
         System.out.println("Added client number: " +clientIDadded);
     }
 
