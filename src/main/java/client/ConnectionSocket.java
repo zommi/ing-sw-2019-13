@@ -48,6 +48,7 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
+
     public boolean getError(){
         return this.error;
     }

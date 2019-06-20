@@ -59,7 +59,7 @@ public interface GameProxyInterface extends Remote {
 
     public int getClientID(ReceiverInterface receiverInterface) throws RemoteException;
 
-    public void register(ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
+    public void register(Info action, ReceiverInterface client) throws RemoteException, NotBoundException, GameAlreadyStartedException;
 
     public void setClientRMI(int id, ReceiverInterface clientRMI) throws RemoteException;
 
