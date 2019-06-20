@@ -48,12 +48,6 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
-    @Override
-    public void sendName(String name) {
-        send(new NameInfo(name));
-    }
-
-
     public boolean getError(){
         return this.error;
     }
@@ -64,8 +58,9 @@ public class ConnectionSocket implements Connection {
 
     }
 
-    public void addPlayerCharacter(String name){
-        send(new SetupInfo(name));
+    @Override
+    public void addPlayerCharacter(String name) {
+
     }
 
     public boolean isCharacterChosen(String name){
@@ -96,12 +91,12 @@ public class ConnectionSocket implements Connection {
 
     public int getClientID(){
         try {
-            while (clientID == -1)
+            while (gameModel.getSetupRequestAnswer() == null)
                 Thread.sleep(500);
         }catch(InterruptedException e){
             System.out.println("Interrupted exception");
         }
-        return this.clientID;
+        return gameModel.getSetupRequestAnswer().getClientID();
     }
 
     public String getCurrentCharacterName(){
@@ -125,7 +120,7 @@ public class ConnectionSocket implements Connection {
     }
 
     //must get client id from the server and set it
-    public void configure(){
+    public void configure(String name){
         try {
             System.out.println("Configuring socket connection...");
             this.socket = new Socket(SERVER_ADDRESS, REGISTRATION_PORT);
@@ -134,6 +129,9 @@ public class ConnectionSocket implements Connection {
             listenerSocketThread = new ListenerSocketThread(gameModel, socket, this);
             Thread thread = new Thread(listenerSocketThread);
             thread.start();
+
+            //sending name
+            send(new NameInfo(name));
 
         } catch (IOException e) {
             System.out.println("SOCKET CONFIGURATION FAILED");
@@ -162,8 +160,13 @@ public class ConnectionSocket implements Connection {
         return this.gameModel;
     }
 
-    public void add(String playerName, int map, int initialSkulls){
-        send(new SetupInfo(map,initialSkulls,playerName));
+    @Override
+    public void add(String name, int map, int initialSkulls) {
+
+    }
+
+    public void add(int map, int initialSkulls){
+        send(new SetupInfo());
     }
 
     public int getInitialSkulls(){

@@ -10,7 +10,6 @@ import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
 import server.model.player.GameCharacter;
-import server.model.player.PlayerHand;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -104,7 +103,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         int initialSkulls = -1;
         boolean initialSkullsChosen = false;
 
-        String characterName;
+        String characterName = "";
         String mapName = "No one has chosen yet";
 
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
@@ -143,13 +142,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel.addObserver(this);
 
         //this sets the client ID and add a ReceiverInterface as a client added in the server
-        connection.configure();
-
-        //sends the name to the server
-        connection.sendName(playerName);
+        connection.configure(playerName);
 
         //waiting for setupAnswer to arrive
-        while(gameModel.getSetupAnswer() == null) {
+        while(gameModel.getSetupRequestAnswer() == null) {
             try {
                 Thread.sleep(300);
             }catch(InterruptedException e){
@@ -163,7 +159,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         //    throw new GameAlreadyStartedException();
 
         int mapNumber = 0;
-        if(gameModel.getSetupAnswer().isFirstPlayer()) {//only if it is the first client!
+        if(gameModel.getSetupRequestAnswer().isFirstPlayer()) {//only if it is the first client!
             do{
                 String stringChoice = "";
                 int choice;
@@ -230,13 +226,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);*/
         }
 
-        connection.add(playerName, mapNumber, initialSkulls);
-
-        if(gameModel.getSetupAnswer().isGameCharacter()){
+        if(gameModel.getSetupRequestAnswer().isGameCharacter()){
             int choice;
             boolean set = false;
             String stringChoice;
-            characterName = "";
 
             do{
                 System.out.println(">Choose your character:");
@@ -256,46 +249,36 @@ public class UpdaterCLI  implements Updater,Runnable{
                 } catch(NumberFormatException e){
                     System.out.println("Error: insert a valid number");
                 }
-            } while (!set || (!connection.isCharacterChosen(characterName)));
+            } while (!set);
 
             System.out.println("Name is: " +characterName.toUpperCase());
-            connection.addPlayerCharacter(characterName);
+            //connection.addPlayerCharacter(characterName);
         }
         else{
-            characterName = connection.getCharacterName();
-            System.out.println("Playing with..." +characterName);
+            /*characterName = connection.getCharacterName();
+            System.out.println("Playing with..." +characterName);*/
         }
 
+        //prepares and sends setupInfo
+        SetupInfo setupInfo = new SetupInfo();
 
-        /*if(gameModel.getClientID() == 0){
-            System.out.println("Waiting 30 seconds for the others to join the game");
-            startTimer();
-            System.out.println("Waited 30 seconds for the others to join the game");
-            connection.startMatch();
-        }*/
+        if(gameModel.getSetupRequestAnswer().isGameCharacter())
+            setupInfo.setCharacterName(characterName);
+        if(gameModel.getSetupRequestAnswer().isFirstPlayer()){
+            setupInfo.setInitialSkulls(initialSkulls);
+            setupInfo.setMapChoice(mapNumber);
+        }
+
+        connection.send(setupInfo);
+
+        //connection.add(playerName, mapNumber, initialSkulls);
+
 
         if(connection.getStartGame() == 2){
             System.out.println("Unfortunately, not enough people joined the game so you will be disconnected. Bye");
             throw new NotEnoughPlayersException();
         }
     }
-
-    /*public void startTimer(){
-        try{
-            TimeUnit.SECONDS.sleep(30);
-        }
-        catch(InterruptedException e)
-        {
-            System.out.println("Exception thrown");
-        }
-        System.out.println("I waited 30 seconds");
-    }*/
-
-
-
-
-
-
 
 
     @Override

@@ -88,13 +88,19 @@ public class GameManager {
         }
         //now we have to start the game!
         else{
-            game = controller.getCurrentGame();
             game.setPlayersNames();
+
+            for(PlayerAbstract playerAbstract : playerList){
+                game.addPlayer(playerAbstract);
+            }
 
             //adding active characters to the gameboard
             for(PlayerAbstract playerAbstract : game.getActivePlayers()){
                 game.getCurrentGameBoard().getActiveCharacters().add(playerAbstract.getGameCharacter());
             }
+
+            //setting first client id
+            controller.setCurrentID(game.getActivePlayers().get(game.getCurrentPlayerIndex()).getClientID());
 
             System.out.println("Created the game");
             System.out.println("Now I will send the map to the client");
@@ -166,12 +172,8 @@ public class GameManager {
     }
 
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
-        try {
             server.getClientFromId(clientID).send(serverAnswer);
-        }catch(RemoteException e){
-            game.getPlayerFromId(clientID).setConnected(false);
-            server.disconnect(clientID);
-        }
+
     }
 
     public void sendToEverybody(ServerAnswer serverAnswer){
@@ -243,7 +245,10 @@ public class GameManager {
     }
 
     public void setMapChoice(int mapChoice) {
-        this.mapChoice = mapChoice;
+        if(mapChoice >= Constants.FIRST_MAP && mapChoice <= Constants.LAST_MAP)
+            this.mapChoice = mapChoice;
+        else
+            this.mapChoice = Constants.FIRST_MAP;
     }
 
     public void setMap(int numMap){
@@ -254,5 +259,6 @@ public class GameManager {
         System.out.println("Instantiating the controller");
         controller = new Controller(mapChoice, initialSkulls, this);
         System.out.println("Controller created");
+        game = controller.getCurrentGame();
     }
 }

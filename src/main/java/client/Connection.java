@@ -34,11 +34,11 @@ public interface Connection extends Serializable {
 
     public String getMapName();
 
-    public void configure();
+    public void configure(String name);
 
     public GameModel getGameModel();
 
-    public void add(String playerName, int map, int initialSkulls);
+    public void add(String name, int map, int initialSkulls);
 
     void setClientID(int clientID);
     void setMapNum(int mapNum);
@@ -48,6 +48,4 @@ public interface Connection extends Serializable {
     void setCurrentID(int currentID);
     void setCurrentCharacter(String currentCharacter);
 
-
-    void sendName(String name);
 }

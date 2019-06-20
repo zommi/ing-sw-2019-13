@@ -91,11 +91,11 @@ public class Game {
     }
 
 
-    public void addPlayer(PlayerAbstract player) throws WrongGameStateException { //TODO pay attention this throws an exception if the client insert the name after the start of the game
+    public void addPlayer(PlayerAbstract player) {
         if (this.currentState == GameState.SETUP) {
             this.activePlayers.add(player);
             this.currentGameBoard.addPlayerBoard((ConcretePlayer) player);
-        }else throw new WrongGameStateException();
+        }
     }
 
     public void removePlayer(PlayerAbstract player) throws WrongGameStateException{
@@ -112,6 +112,10 @@ public class Game {
         if(this.currentState == GameState.SETUP)
             this.firstPlayerIndex = index;
         else throw new WrongGameStateException();
+    }
+
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
     }
 
     public int nextPlayer() throws WrongGameStateException{

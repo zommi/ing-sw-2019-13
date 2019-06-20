@@ -103,7 +103,8 @@ public class TurnHandler {
                     this.currentPhase = TurnPhase.SPAWN_PHASE;
                 }else {
                     try {
-                        controller.setCurrentID(controller.getCurrentGame().nextPlayer());
+                        controller.setCurrentID(controller.getCurrentGame().getActivePlayers().
+                                get(controller.getCurrentGame().nextPlayer()).getClientID());
                         System.out.println("changed player in game");
                         controller.sendChangeCurrentPlayer();
                     } catch (WrongGameStateException e) {

@@ -57,7 +57,7 @@ public class ServerRMI implements Runnable {
 
     public void addMapClient(PlayerAbstract p) {
         System.out.println("Trying to add the client to the map ");
-        server.getGameManagerFromId(p.getClientID()).getController().addClientInMap(p);
+        //server.getGameManagerFromId(p.getClientID()).getController().addClientInMap(p);
     }
 
     public GameProxyInterface getGameProxy() {

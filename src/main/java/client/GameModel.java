@@ -1,12 +1,10 @@
 package client;
 
-import client.weapons.Weapon;
 import server.controller.PlayerDiedAnswer;
 import server.controller.SpawnCommandAnswer;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerBoard;
 import view.*;
 
 import java.io.Serializable;
@@ -27,12 +25,12 @@ public class GameModel extends Observable implements Serializable {
     private int numberOfGrenades;
 
     private String message;
-    private SetupAnswer setupAnswer;
+    private SetupRequestAnswer setupRequestAnswer;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
         toSpawn = true;
-        setupAnswer = null;
+        setupRequestAnswer = null;
     }
 
     public void setGrenadeAction(List<Info> action){
@@ -75,16 +73,16 @@ public class GameModel extends Observable implements Serializable {
         return clientID;
     }
 
-    public SetupAnswer getSetupAnswer() {
-        return setupAnswer;
+    public SetupRequestAnswer getSetupRequestAnswer() {
+        return setupRequestAnswer;
     }
 
     public void saveAnswer(ServerAnswer answer) {
 
         //the GameModel will save the answer of the Server
         // updating the model elements needed and notifying the observers
-        if(answer instanceof SetupAnswer){
-            setupAnswer = (SetupAnswer) answer;
+        if(answer instanceof SetupRequestAnswer){
+            setupRequestAnswer = (SetupRequestAnswer) answer;
             setChanged();
             notifyObservers("setup");
         }

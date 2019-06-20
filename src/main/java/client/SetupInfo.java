@@ -7,30 +7,8 @@ public class SetupInfo implements Info, Serializable {
 
     private int initialSkulls;
 
-    private String playerName;
+    private String characterName;
 
-    private String characterChosen;
-
-    private boolean characterSetup;
-
-    public SetupInfo(int mapChoice, int initialSkulls,
-                     String playerName) {
-        this.mapChoice = mapChoice;
-        this.initialSkulls = initialSkulls;
-        this.playerName = playerName;
-    }
-
-    public SetupInfo(){
-    }
-
-    public boolean isCharacterSetup() {
-        return characterSetup;
-    }
-
-    public SetupInfo(String characterChosen) {
-        this.characterChosen = characterChosen;
-        this.characterSetup = true;
-    }
 
     public int getMapChoice() {
         return mapChoice;
@@ -40,15 +18,19 @@ public class SetupInfo implements Info, Serializable {
         return initialSkulls;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getCharacterName() {
+        return characterName;
     }
 
-    public String getCharacterChosen() {
-        return characterChosen;
+    public void setMapChoice(int mapChoice) {
+        this.mapChoice = mapChoice;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setInitialSkulls(int initialSkulls) {
+        this.initialSkulls = initialSkulls;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
     }
 }

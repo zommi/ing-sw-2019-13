@@ -344,18 +344,6 @@ public class Controller {
         this.currentID = i;
     }
 
-    public void addClientInMap(PlayerAbstract player){
-        try{
-            ((ConcretePlayer)player).setCurrentGame(currentGame);
-            this.currentGame.addPlayer(player);
-        }
-        catch(WrongGameStateException e){
-            System.out.println("Wrong game state exception");
-            e.printStackTrace();
-        }
-    }
-
-
     public List<PlayerAbstract> getPlayers(){
         return currentGame.getActivePlayers();
     }

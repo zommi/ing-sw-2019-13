@@ -28,6 +28,7 @@ public class ListenerSocketThread implements Runnable{
             System.out.println("Got input stream");
         }catch(IOException e){
             System.out.println("Error while getting inputStream");
+            return;
         }
 
         while(true){ //NOSONAR
@@ -40,8 +41,10 @@ public class ListenerSocketThread implements Runnable{
 
             }catch (IOException e) {
                 System.out.println("Error while reading input");
+                return;
             } catch (ClassNotFoundException e) {
                 System.out.println("Error while reading input, class not found exception");
+                return;
             }
         }
     }

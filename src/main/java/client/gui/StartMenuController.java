@@ -100,7 +100,7 @@ public class StartMenuController implements GuiController {
         this.gui.changeStage("loading_screen.fxml");
         this.gui.setModel();
         this.gui.attachToObserver();
-        this.gui.getConnection().configure();
+        this.gui.getConnection().configure(gui.getPlayerName());
         this.gui.setCharacter((String)this.characterBox.getValue());
         this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
         this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);

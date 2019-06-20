@@ -25,7 +25,7 @@ public class SocketServer implements Runnable{
             System.out.println("SOCKET SERVER RUNNING");
             ServerSocket serverSocket = new ServerSocket(port);
             while(true){    //NOSONAR
-                SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server.getCurrentGameManager());
+                SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
                 executorService.submit(socketClientHandler);
             }
         } catch (IOException e) {

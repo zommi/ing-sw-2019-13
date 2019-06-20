@@ -110,11 +110,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     }
 
-    @Override
-    public void sendName(String name) {
-        //todo
-    }
-
     public GameProxyInterface getGameProxy(){
         return this.gameProxy;
     }
@@ -216,6 +211,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return this.gameModel;
     }
 
+    @Override
+    public void add(String name, int map, int initialSkulls) {
+
+    }
+
 
     @Override
     public int getInitialSkulls(){
@@ -244,7 +244,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     @Override
-    public void configure() {
+    public void configure(String name) {
         try{
             this.game = initializeRMI();
             if(game == null)
@@ -326,8 +326,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
 
-    @Override
-    public void add(String playerName, int mapClient, int initialSkulls){
+    public void add(int mapClient, int initialSkulls){
         //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
 
         if(clientID == 0) {
@@ -354,7 +353,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         System.out.println("Trying to send your name to the server...");
         while (!playerNameSet) {
             try{
-                playerNameSet = gameProxy.sendPlayer(playerName, clientID);
+                playerNameSet = gameProxy.sendPlayer(null, clientID);
             }
             catch(RemoteException re){
                 System.out.println("Could not send the player");

@@ -5,12 +5,7 @@ import client.AsynchronousInfo;
 import client.NameInfo;
 import client.SetupInfo;
 import client.Info;
-import exceptions.WrongGameStateException;
-import server.model.player.ConcretePlayer;
-import server.model.player.Figure;
-import server.model.player.PlayerState;
 import view.ServerAnswer;
-import view.SetupAnswer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,15 +16,17 @@ public class SocketClientHandler implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private Integer clientID;
-    private GameManager gameManager;
     private boolean firstPlayer;
 
+    private Server server;
 
-    public SocketClientHandler(Socket socket, GameManager gameManager){
+
+    public SocketClientHandler(Socket socket, Server server){
         try {
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
-            this.gameManager = gameManager;     //could be changed later
+            this.server = server;
+            clientID = -1;
         } catch (IOException e) {
             System.console().printf("ERROR DURING INITIALIZATION PROCESS");
             e.printStackTrace();
@@ -47,106 +44,37 @@ public class SocketClientHandler implements Runnable {
                 processAction(infoRead);
             } catch (IOException e) {
                 System.out.println("CLIENT HAS DISCONNECTED");
-                //Disconnects player todo
+                try{
+                    if(clientID != -1)
+                        server.getClientFromId(clientID).disconnect();
+                }catch(NullPointerException npe){
+                    //do nothing
+                }
                 break;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (WrongGameStateException e){
-                System.out.println("ACTION NOT ALLOWED, PLAYER IS BANNED");
-                break;
             }
         }
     }
 
-    private void processAction(Info info) throws WrongGameStateException, IOException{
+    private void processAction(Info info) {
         if(info instanceof NameInfo){
             NameInfo nameInfo = (NameInfo) info;
-            SetupAnswer setupAnswer = new SetupAnswer();
 
-            clientID = gameManager.getServer().getIdFromName(nameInfo.getName());
-            if(clientID == null){
-                //player has never connected before
-                clientID = gameManager.getServer().addClient();     //just gets the id
-                Client client = new Client(clientID, gameManager);
-                client.setSocketClientHandler(this);
-                gameManager.getServer().addClient(client);          //adds client to the hashmap
-
-                if(gameManager.isNoPlayer()){                       //decides skulls and map
-                    gameManager.setNoPlayer(false);
-                    setupAnswer.setFirstPlayer(true);
-                    firstPlayer = true;
-                }
-
-                setupAnswer.setGameCharacter(true);
-
-            }else{
-                //player is reconnecting right now
-
-                //setting real and old gameManager
-                gameManager = gameManager.getServer().getGameManagerFromId(clientID);
-
-                //reconnecting (with socket)
-                gameManager.getServer().getClientFromId(clientID).setSocketClientHandler(this);
-                gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setConnected(true);
-            }
-
-            //sends confirm
-            SocketInfo socketInfo = new SocketInfo();
-            socketInfo.setServerAnswer(setupAnswer);
-            socketInfo.setClientID(clientID);
-            if(gameManager.isSetupComplete()){      //sends mapName and initialSkulls
-                socketInfo.setMapNum(gameManager.getMapChoice());
-                socketInfo.setInitialSkulls(gameManager.getInitialSkulls());
-            }
-            writeToStream(socketInfo);
+            clientID = server.addConnection(nameInfo.getName(), "socket",
+                    this, null);        //automatically sends setupAnswer
         }
 
         else if(info instanceof SetupInfo){
             SetupInfo setupInfo = (SetupInfo) info;
-            if(gameManager.getController() == null) {
-                gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
-                gameManager.setMapChoice(setupInfo.getMapChoice());
-
-                //now we can call createController because map and skulls have been set
-                gameManager.createController();
-
-            }
-            if(setupInfo.isCharacterSetup()){
-                if(Figure.fromString(setupInfo.getCharacterChosen()) != null &&
-                        !gameManager.isCharacterTaken(setupInfo.getCharacterChosen())){
-                    //player in Game has already been created
-                    gameManager.getController().getCurrentGame().getPlayerFromId(clientID).
-                            setPlayerCharacter(Figure.fromString(setupInfo.getCharacterChosen()));
-                    gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setCharacterChosen(true);
-                }
-                else{
-                    gameManager.getController().getCurrentGame().getPlayerFromId(clientID).
-                            setPlayerCharacter(gameManager.getFreeFigure());
-                    gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setCharacterChosen(true);
-                }
-                //now we can add the complete player to the list in gameManager, because its size will be
-                //checked for starting the game
-                gameManager.addPlayer(gameManager.getController().getCurrentGame().getPlayerFromId(clientID));
-
-            } else{
-                //adding a player to activePlayerList in Game
-                //they are without their GameCharacter for now, it will be added later
-                ConcretePlayer concretePlayer = new ConcretePlayer(setupInfo.getPlayerName());
-                concretePlayer.setClientID(clientID);
-                concretePlayer.setState(PlayerState.TOBESPAWNED);
-                gameManager.getController().getCurrentGame().addPlayer(concretePlayer);
-            }
-            //sends an answer with updated data
-            SocketInfo socketInfo = new SocketInfo();
-            socketInfo.setStartGame(gameManager.getStartGame());
-            writeToStream(socketInfo);
-
+            server.setupPlayer(clientID, setupInfo);
         }
         else if(info instanceof AsynchronousInfo){
-            gameManager.getController().makeAsynchronousAction(clientID, ((AsynchronousInfo) info).getInfo());
+            server.getGameManagerFromId(clientID).getController()
+                    .makeAsynchronousAction(clientID, ((AsynchronousInfo) info).getInfo());
         }
         else{
-            gameManager.getController().makeAction(clientID, info);
+            server.getGameManagerFromId(clientID).getController().makeAction(clientID, info);
         }
     }
 
@@ -156,7 +84,7 @@ public class SocketClientHandler implements Runnable {
             outputStream.writeObject(socketInfo);
             outputStream.flush();
         }catch(IOException e){
-            //Disconnects client todo
+            server.getClientFromId(clientID).disconnect();
         }
 
     }
@@ -169,19 +97,22 @@ public class SocketClientHandler implements Runnable {
         //this method will only be called by the controller's thread
         SocketInfo socketInfo = new SocketInfo();
         socketInfo.setServerAnswer(answer);
-        socketInfo.setStartGame(gameManager.getStartGame());
-        socketInfo.setCurrentID(gameManager.getController().getCurrentGame().getCurrentPlayer().getClientID());
-        socketInfo.setGrenadeID(gameManager.getController().getGrenadeID());
-        socketInfo.setCurrentCharacter(gameManager.getController().getCurrentGame().getCurrentPlayer().getCharacterName());
+
+        try{
+            GameManager gameManager = server.getGameManagerFromId(clientID);
+
+            socketInfo.setStartGame(gameManager.getStartGame());
+            socketInfo.setCurrentID(gameManager.getController().getCurrentGame().getCurrentPlayer().getClientID());
+            socketInfo.setGrenadeID(gameManager.getController().getGrenadeID());
+            socketInfo.setCurrentCharacter(gameManager.getController().getCurrentGame().getCurrentPlayer().getCharacterName());
+        }catch(NullPointerException e){
+            //dont't send
+        }
         writeToStream(socketInfo);
 
     }
 
     public int getClientID() {
         return clientID;
-    }
-
-    public GameManager getGameManager() {
-        return gameManager;
     }
 }
