@@ -97,7 +97,7 @@ public class MainGuiController implements GuiController {
         this.actionParser.addGameModel(this.model);
         textLogger.setText(log);
         textLogger.setWrapText(true);
-        logText("Welcome " + this.model.getMyPlayer().getName() + ", you chose " + this.gui.getCharacter() + "\n");
+        logText("Welcome " + this.model.getMyPlayer().getName() + ", you chose " + this.gui.getCharacter() + "\n"); //todo getMyPlayer could throw exception
         this.textLogger.setEditable(false);
     }
 

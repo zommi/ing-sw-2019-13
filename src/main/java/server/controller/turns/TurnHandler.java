@@ -16,7 +16,7 @@ public class TurnHandler {
 
     private Controller controller;
 
-    private Action action;
+
 
     public void setCurrentPlayer(PlayerAbstract currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -52,8 +52,7 @@ public class TurnHandler {
         boolean actionValid = false;
         if(currentPhase == TurnPhase.FIRST_ACTION
                 || currentPhase == TurnPhase.SECOND_ACTION || currentPhase == TurnPhase.POWERUP_TURN) {
-            this.action = action;
-            actionValid = this.action.execute(controller);
+            actionValid = action.execute(controller);
             if(actionValid &&
                     ((action instanceof ShootAction) ||
                     (action instanceof CollectAction) ||
@@ -67,8 +66,7 @@ public class TurnHandler {
 
     public void setAndDoSpawn(Action action){
         if(currentPhase == TurnPhase.SPAWN_PHASE){
-            this.action = action;
-            boolean actionValid = this.action.execute(controller);
+            boolean actionValid = action.execute(controller);
             if(actionValid && action instanceof SpawnAction){
 
             }else{
@@ -86,31 +84,32 @@ public class TurnHandler {
     public void nextPhase(){
         switch (currentPhase){
             case FIRST_ACTION:
-                this.currentPhase = TurnPhase.SECOND_ACTION;
+                System.out.println("First action done, moving to second action");
+                currentPhase = TurnPhase.SECOND_ACTION;
                 break;
             case SECOND_ACTION:
-                this.currentPhase = TurnPhase.END_TURN;
+                System.out.println("Second action done, moving to next phase");
+                currentPhase = TurnPhase.END_TURN;
                 break;
             //case POWERUP_TURN:
             //    this.currentPhase = TurnPhase.END_TURN;
             //    break;
             case END_TURN:
-                System.out.println("restored squares");
                 controller.restoreSquares();
+                System.out.println("restored squares");
                 controller.sendSquaresRestored();
                 if(controller.handleDeaths()){
                     controller.sendSpawnRequest();
-                    this.currentPhase = TurnPhase.SPAWN_PHASE;
+                    currentPhase = TurnPhase.SPAWN_PHASE;
                 }else {
                     try {
-                        controller.setCurrentID(controller.getCurrentGame().getActivePlayers().
-                                get(controller.getCurrentGame().nextPlayer()).getClientID());
+                        controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                         System.out.println("changed player in game");
                         controller.sendChangeCurrentPlayer();
                     } catch (WrongGameStateException e) {
                         e.printStackTrace();
                     }
-                    this.currentPhase = TurnPhase.FIRST_ACTION;
+                    currentPhase = TurnPhase.FIRST_ACTION;
                 }
                 break;
             case SPAWN_PHASE:
@@ -121,7 +120,7 @@ public class TurnHandler {
                 } catch (WrongGameStateException e) {
                     e.printStackTrace();
                 }
-                this.currentPhase = TurnPhase.FIRST_ACTION;
+                currentPhase = TurnPhase.FIRST_ACTION;
                 break;
             default: break;
         }

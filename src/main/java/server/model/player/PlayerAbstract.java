@@ -6,6 +6,7 @@ import constants.Direction;
 import client.weapons.Cost;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
+import server.model.game.Game;
 import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
@@ -53,6 +54,8 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean isCharacterChosen();
 
     public abstract int getClientID();
+
+    public abstract void setCurrentGame(Game game);
 
     public abstract void setPlayerCharacter(Figure figure);
 

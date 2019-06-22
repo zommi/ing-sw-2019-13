@@ -26,11 +26,13 @@ public class GameModel extends Observable implements Serializable {
 
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
+    private SetupConfirmAnswer setupConfirmAnswer;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
-        toSpawn = true;
         setupRequestAnswer = null;
+        setupConfirmAnswer = null;
+        clientID = -9;
     }
 
     public void setGrenadeAction(List<Info> action){
@@ -83,8 +85,16 @@ public class GameModel extends Observable implements Serializable {
         // updating the model elements needed and notifying the observers
         if(answer instanceof SetupRequestAnswer){
             setupRequestAnswer = (SetupRequestAnswer) answer;
+            clientID = setupRequestAnswer.getClientID();
             setChanged();
             notifyObservers("setup");
+        }
+
+        if(answer instanceof SetupConfirmAnswer){
+            setupConfirmAnswer = (SetupConfirmAnswer) answer;
+            toSpawn = ((SetupConfirmAnswer) answer).isSpawn();
+            setChanged();
+            notifyObservers("setupConfirm");
         }
 
         else if(answer instanceof ResetAnswer) {

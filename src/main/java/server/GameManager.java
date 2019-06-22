@@ -9,7 +9,6 @@ import server.model.player.PlayerAbstract;
 import server.model.player.PlayerHand;
 import view.*;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class GameManager {
@@ -22,23 +21,26 @@ public class GameManager {
     private List<Integer> listOfClients = new ArrayList<>();
     private List<PlayerAbstract> playerList = new ArrayList<>();
     private boolean noPlayer;
-    private boolean setupComplete;
+    private boolean mapSkullsSet;
+    private boolean maxPlayersReached;
 
     private Server server;
 
 
     public GameManager(Server server){
         this.server = server;
-        setupComplete = false;
+        mapSkullsSet = false;
         noPlayer = true;
+        maxPlayersReached = false;
     }
 
-    public synchronized boolean isSetupComplete() {
-        return setupComplete;
+
+    public synchronized boolean isMapSkullsSet() {
+        return mapSkullsSet;
     }
 
-    public synchronized void setSetupComplete(boolean setupComplete) {
-        this.setupComplete = setupComplete;
+    public synchronized void setMapSkullsSet(boolean mapSkullsSet) {
+        this.mapSkullsSet = mapSkullsSet;
     }
 
     public synchronized boolean isNoPlayer() {
@@ -52,7 +54,7 @@ public class GameManager {
     public void defaultSetup(){
         initialSkulls = Constants.MIN_SKULLS;
         mapChoice = 0;
-        setSetupComplete(true);
+        setMapSkullsSet(true);
     }
 
     public Server getServer() {
@@ -137,14 +139,22 @@ public class GameManager {
         }
     }
 
-    public synchronized void addPlayer(PlayerAbstract player){
+    public synchronized boolean addPlayer(PlayerAbstract player){
+        if(maxPlayersReached)
+            return false;   //player is not added
+
         playerList.add(player);
+        player.setCurrentGame(game);
         if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
             TimerTask timerTask = new MyTimerTask(this);
             Timer timer = new Timer(true);
             timer.schedule(timerTask, 0);
             System.out.println("Task started");
         }
+        else if(playerList.size() == Constants.MAX_PLAYERS)
+            maxPlayersReached = true;     //no more players will be added
+
+        return true;
     }
 
     public synchronized Figure getFreeFigure(){

@@ -18,4 +18,6 @@ public interface ReceiverInterface extends Remote {
     int  getNumberOfGrenades() throws RemoteException;
 
     void setClientIDExisting(int idAlreadyExisting) throws RemoteException;
+
+    void setClientId(int clientId) throws RemoteException;
 }

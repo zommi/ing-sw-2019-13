@@ -6,6 +6,8 @@ import server.model.game.GameState;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
+import view.GameBoardAnswer;
+import view.PlayerHandAnswer;
 import view.SetupRequestAnswer;
 import view.SetupConfirmAnswer;
 
@@ -118,12 +120,15 @@ public class Server {
             //it may be already disconnected or still active
 
             Client client = getClientFromId(clientID);
-            if(!client.isConnected()){
-                if(connectionType.equalsIgnoreCase("socket"))
-                    client.setSocketClientHandler(socketClientHandler);
-                else if(connectionType.equalsIgnoreCase("rmi"))
-                    client.setReceiverInterface(receiverInterface);
-            }
+
+            if(client.isConnected())       //client with the same name trying to connect 2 times simultaneously
+                return null;
+
+
+            if(connectionType.equalsIgnoreCase("socket"))
+                client.setSocketClientHandler(socketClientHandler);
+            else if(connectionType.equalsIgnoreCase("rmi"))
+                client.setReceiverInterface(receiverInterface);
 
             //setting player connected so that his turn will be played
             client.getGameManager().getController().getCurrentGame().getPlayerFromId(clientID).setConnected(true);
@@ -140,12 +145,24 @@ public class Server {
 
         Client client = getClientFromId(clientId);
         GameManager gameManager = client.getGameManager();
+        SetupConfirmAnswer setupConfirmAnswer = new SetupConfirmAnswer();
 
-        if(client.isPlayerSetupComplete() || (gameManager.isSetupComplete() &&
-                gameManager.getController().getCurrentGame().getCurrentState() != GameState.SETUP))
+
+
+        if(client.isPlayerSetupComplete() || (gameManager.isMapSkullsSet() &&
+                gameManager.getController().getCurrentGame().getCurrentState() != GameState.SETUP)){
+            setupConfirmAnswer.setCharacterName(client.getGameManager().getController().getCurrentGame().getPlayer(client.getName()).getCharacterName());
+            setupConfirmAnswer.setSkullNum(client.getGameManager().getInitialSkulls());
+            setupConfirmAnswer.setMapNum(client.getGameManager().getMapChoice());
+            if(client.getPlayer().getPlayerState() == PlayerState.TOBESPAWNED)
+                setupConfirmAnswer.setSpawn(true);
+            client.send(new GameBoardAnswer(client.getGameManager().getController().getCurrentGame().getCurrentGameBoard()));
+            client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
+            client.send(setupConfirmAnswer);
             return;
+        }
 
-        if(client.isFirstPlayer() && !gameManager.isSetupComplete()) {
+        if(client.isFirstPlayer() && !gameManager.isMapSkullsSet()) {
             //the gamemanager will manage illegal values
             gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
             gameManager.setMapChoice(setupInfo.getMapChoice());
@@ -153,12 +170,13 @@ public class Server {
             //now we can call createController because map and skulls have been set
             gameManager.createController();
 
-            gameManager.setSetupComplete(true);
+            gameManager.setMapSkullsSet(true);
         }
 
         ConcretePlayer concretePlayer = new ConcretePlayer(client.getName());
         concretePlayer.setClientID(clientId);
         concretePlayer.setState(PlayerState.TOBESPAWNED);
+        setupConfirmAnswer.setSpawn(true);
 
         if(Figure.fromString(setupInfo.getCharacterName()) != null && !gameManager.isCharacterTaken(setupInfo.getCharacterName())){
             //player in Game has already been created
@@ -169,16 +187,24 @@ public class Server {
         }
 
         //adding the player to the game
-        gameManager.addPlayer(concretePlayer);
+        boolean added = gameManager.addPlayer(concretePlayer);
+
+        while(!added){
+            try{
+                Thread.sleep(2000);
+                added = currentGameManager.addPlayer(concretePlayer);   //in the meantime, a new GameManager should have been created
+            }catch(InterruptedException e){
+                //do nothing
+            }
+        }
 
         //player setup is ok
         client.setPlayerSetupComplete(true);
 
         //sends an answer with updated data
-        SetupConfirmAnswer setupConfirmAnswer = new SetupConfirmAnswer();
         setupConfirmAnswer.setCharacterName(concretePlayer.getCharacterName());
 
-        if(gameManager.isSetupComplete()){
+        if(gameManager.isMapSkullsSet()){
             //sends game related info
             setupConfirmAnswer.setMapNum(gameManager.getMapChoice());
             setupConfirmAnswer.setSkullNum(gameManager.getInitialSkulls());

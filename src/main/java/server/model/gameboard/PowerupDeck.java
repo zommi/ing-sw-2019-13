@@ -110,8 +110,8 @@ public class PowerupDeck implements Serializable {
      */
     public void restore(){
         if(deck.isEmpty()) {
-            this.deck.addAll(this.discardedCards);
-            this.discardedCards.clear();
+            deck.addAll(discardedCards);
+            discardedCards.clear();
             shuffle();
         }
     }
@@ -129,8 +129,9 @@ public class PowerupDeck implements Serializable {
      * @return the first card on the deck
      */
     public PowerUpCard draw(){
-        if(this.deck.isEmpty())restore();
-        return this.deck.pop();
+        if(deck.isEmpty())
+            restore();
+        return deck.pop();
     }
 
     public List<PowerUpCard> getDeck() {

@@ -1,6 +1,7 @@
 package server;
 
 import client.ReceiverInterface;
+import server.model.player.PlayerAbstract;
 import view.PingAnswer;
 import view.ServerAnswer;
 
@@ -51,6 +52,10 @@ public class Client {
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public PlayerAbstract getPlayer(){
+        return gameManager.getController().getCurrentGame().getPlayer(name);
     }
 
     public ReceiverInterface getReceiverInterface() {

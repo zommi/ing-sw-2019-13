@@ -20,6 +20,8 @@ public class SocketClientHandler implements Runnable {
 
     private Server server;
 
+    private boolean keepThreadAlive;
+
 
     public SocketClientHandler(Socket socket, Server server){
         try {
@@ -27,6 +29,7 @@ public class SocketClientHandler implements Runnable {
             this.inputStream = new ObjectInputStream(socket.getInputStream());
             this.server = server;
             clientID = -1;
+            keepThreadAlive = true;
         } catch (IOException e) {
             System.console().printf("ERROR DURING INITIALIZATION PROCESS");
             e.printStackTrace();
@@ -38,7 +41,7 @@ public class SocketClientHandler implements Runnable {
 
         //the following loop waits for client action
         //the first thing required is the name
-        while(true){ //NOSONAR
+        while(keepThreadAlive){ //NOSONAR
             try {
                 Info infoRead = (Info) inputStream.readObject();
                 processAction(infoRead);
@@ -63,6 +66,9 @@ public class SocketClientHandler implements Runnable {
 
             clientID = server.addConnection(nameInfo.getName(), "socket",
                     this, null);        //automatically sends setupAnswer
+
+            if(clientID == null)            //client is already connected from another client, stops the thread
+                keepThreadAlive = false;
         }
 
         else if(info instanceof SetupInfo){
@@ -105,7 +111,7 @@ public class SocketClientHandler implements Runnable {
             socketInfo.setCurrentID(gameManager.getController().getCurrentGame().getCurrentPlayer().getClientID());
             socketInfo.setGrenadeID(gameManager.getController().getGrenadeID());
             socketInfo.setCurrentCharacter(gameManager.getController().getCurrentGame().getCurrentPlayer().getCharacterName());
-        }catch(NullPointerException e){
+        }catch(NullPointerException|IndexOutOfBoundsException e){
             //dont't send
         }
         writeToStream(socketInfo);

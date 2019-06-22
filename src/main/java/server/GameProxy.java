@@ -1,8 +1,6 @@
 package server;
 
-import client.Info;
-import client.NameInfo;
-import client.ReceiverInterface;
+import client.*;
 import constants.Constants;
 import exceptions.GameAlreadyStartedException;
 import server.model.gameboard.GameBoard;
@@ -63,6 +61,23 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public boolean makeAction(int clientID, Info action)  throws RemoteException{
         serverRMI.getGameManagerFromId(clientID).getController().makeAction(clientID, action);
         return true;
+    }
+
+    @Override
+    public void saveName(ReceiverInterface receiverInterface, Info info) throws RemoteException {
+        NameInfo nameInfo = (NameInfo) info;
+
+        Integer clientID = serverRMI.getServer().addConnection(nameInfo.getName(), "rmi",
+                null, receiverInterface);        //automatically sends setupAnswer
+        if(clientID != null){
+            receiverInterface.setClientId(clientID);
+        }
+    }
+
+    @Override
+    public void saveSetup(ReceiverInterface receiverInterface, Info info) throws RemoteException {
+        SetupInfo setupInfo = (SetupInfo) info;
+        serverRMI.getServer().setupPlayer(receiverInterface.getClientID(), setupInfo);
     }
 
     /*
@@ -141,13 +156,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public void register(Info action, ReceiverInterface receiverInterface) throws RemoteException, NotBoundException, GameAlreadyStartedException{
         System.out.println("Adding the client to the server...");
         NameInfo nameInfo = (NameInfo) action;
-        SetupAnswer setupAnswer = new SetupAnswer();
+        SetupRequestAnswer setupAnswer = new SetupRequestAnswer();
 
         clientIDadded = serverRMI.getServer().getIdFromName(nameInfo.getName());
         if(clientIDadded == null){
             clientIDadded = serverRMI.getServer().addClient();     //just gets the id
             gameManager = serverRMI.getServer().getCurrentGameManager();
-            Client client = new Client(clientIDadded, gameManager);
+            Client client = new Client(clientIDadded, gameManager, nameInfo.getName());
             client.setReceiverInterface(receiverInterface);
             serverRMI.getServer().addClient(client);          //adds client to the hashmap
 

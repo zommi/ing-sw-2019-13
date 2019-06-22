@@ -289,12 +289,13 @@ public class UpdaterCLI  implements Updater,Runnable{
         List<PowerUpCard> powerups;
 
         try {
-            this.set();
+            set();
         }
         catch(NotBoundException|RemoteException|NotEnoughPlayersException|GameAlreadyStartedException nbe) {
             System.out.println("Exception caught");
             return;
         }
+
         ActionParser actionParser = new ActionParser(this);
 
 
@@ -430,9 +431,9 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                 }
                 else{
-                    System.out.println("For now it is not your turn: " +
-                            getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
-                            connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
+                    System.out.println("For now it is not your turn: ");// +
+                           // getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
+                           // connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
                     try{
                         TimeUnit.SECONDS.sleep(5);
                     }

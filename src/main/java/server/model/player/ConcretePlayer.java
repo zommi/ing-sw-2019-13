@@ -128,33 +128,33 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void drawPowerup() {
-        if(!this.hand.powerupsFull()) {
-            this.hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
+        if(!hand.powerupsFull()) {
+            hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
         }
     }
 
     @Override
     public boolean canPay(Cost cost) {
-        return this.playerBoard.getRedAmmo() >= cost.getRed() &&
-                this.playerBoard.getBlueAmmo() >= cost.getBlue() &&
-                this.playerBoard.getYellowAmmo() >= cost.getYellow();
+        return playerBoard.getRedAmmo() >= cost.getRed() &&
+                playerBoard.getBlueAmmo() >= cost.getBlue() &&
+                playerBoard.getYellowAmmo() >= cost.getYellow();
     }
 
     @Override
     public void addDamage(int damage, Color color) {
-        this.playerBoard.addDamage(damage, color);
+        playerBoard.addDamage(damage, color);
     }
 
     @Override
     public void addMarks(int marks, Color color) {
-        this.playerBoard.addMarks(marks, color);
+        playerBoard.addMarks(marks, color);
     }
 
     @Override
     public void setPosition(SquareAbstract square) {
-        this.gameCharacter.getPosition().removeCharacter(this.gameCharacter);
-        this.gameCharacter.setPosition(square);
-        this.playerBoard.setPosition(square.getRow(), square.getCol());
+        gameCharacter.getPosition().removeCharacter(gameCharacter);
+        gameCharacter.setPosition(square);
+        playerBoard.setPosition(square.getRow(), square.getCol());
     }
 
     @Override

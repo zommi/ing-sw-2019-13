@@ -5,6 +5,19 @@ public class SetupConfirmAnswer implements ServerAnswer {
     private int skullNum;
     private int mapNum;
     private String characterName;
+    private boolean spawn;
+
+    public SetupConfirmAnswer(){
+        spawn = false;
+    }
+
+    public boolean isSpawn() {
+        return spawn;
+    }
+
+    public void setSpawn(boolean spawn) {
+        this.spawn = spawn;
+    }
 
     public String getCharacterName() {
         return characterName;

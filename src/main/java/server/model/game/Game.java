@@ -120,37 +120,37 @@ public class Game {
 
     public int nextPlayer() throws WrongGameStateException{
         if((this.currentState == GameState.NORMAL_TURN)
-                || (this.currentState == GameState.FINAL_FRENZY)) {
+                || (currentState == GameState.FINAL_FRENZY)) {
             do{
                 if (currentPlayerIndex < this.activePlayers.size() - 1)
-                    this.currentPlayerIndex++;
+                    currentPlayerIndex++;
                 else
-                    this.currentPlayerIndex = 0;
+                    currentPlayerIndex = 0;
             }
             while(!getCurrentPlayer().isConnected());
         }else {
             throw new WrongGameStateException();
         }
-        return getCurrentPlayer().getClientID();
+        return activePlayers.get(currentPlayerIndex).getClientID();
     }
 
 
     public void nextState() throws WrongGameStateException{
-        switch (this.currentState){
+        switch (currentState){
             case START_MENU:
-                this.currentState = GameState.SETUP;
+                currentState = GameState.SETUP;
                 break;
             case SETUP:
-                this.currentState = GameState.NORMAL_TURN;
+                currentState = GameState.NORMAL_TURN;
                 break;
             case NORMAL_TURN:
-                this.currentState = GameState.FINAL_FRENZY;
+                currentState = GameState.FINAL_FRENZY;
                 break;
             case FINAL_FRENZY:
-                this.currentState = GameState.END_GAME;
+                currentState = GameState.END_GAME;
                 break;
             case END_GAME:
-                this.currentState = GameState.START_MENU;
+                currentState = GameState.START_MENU;
                 break;
             default:
                 throw new WrongGameStateException();

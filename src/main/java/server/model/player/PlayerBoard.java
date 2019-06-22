@@ -120,12 +120,12 @@ public class PlayerBoard implements Serializable {
         int marksActivated = getMarksOfAColor(color);
         removeMarksOfAColor(color);
         for(int i = 0; i < marksActivated && i < Constants.MAX_HP;i++){
-            this.damage.add(color);
+            damage.add(color);
         }
     }
 
     public void processDeath() {
-        this.damage.clear();
+        damage.clear();
         currentPointValueCursor++;
         player.setState(PlayerState.TOBESPAWNED);
     }
@@ -162,23 +162,12 @@ public class PlayerBoard implements Serializable {
 
     public void processAmmoTile(AmmoTile ammoTile) {
         for(AmmoCube cube : ammoTile.getContent()){
-            if(this.ammo[cube.getColor().getIndex()] < 3)this.ammo[cube.getColor().getIndex()]++;
+            if(this.ammo[cube.getColor().getIndex()] < 3)
+                this.ammo[cube.getColor().getIndex()]++;
         }
         if(ammoTile.hasPowerup()){
-            this.player.drawPowerup();
+            player.drawPowerup();
         }
-    }
-
-    public boolean canPay(List<AmmoCube> cost) {
-        int[] counter = new int[3];
-
-        for(AmmoCube cube : cost){
-            counter[cube.getColor().getIndex()]++;
-            if(counter[cube.getColor().getIndex()] > ammo[cube.getColor().getIndex()]){
-                return false;
-            }
-        }
-        return true;
     }
 
     public void decreaseAmmo(Color color){

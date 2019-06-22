@@ -27,7 +27,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private boolean characterNameSet = false;
     private boolean mapSet = false;
     private GameModel gameModel;
-    private GameProxyInterface game;
     private int clientID;
     //private static final String SERVER_ADDRESS  = "192.168.43.66";
     private static final String SERVER_ADDRESS  = "localhost";
@@ -182,18 +181,27 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     public void send(Info action){
-        try{
-            game.makeAction(this.clientID, action);
+        try {
+            if (action instanceof NameInfo) {
+                gameProxy.saveName(this, action);
+            }
+            else if(action instanceof SetupInfo){
+                gameProxy.saveSetup(this, action);
+            }
+            else{
+                gameProxy.makeAction(clientID, action);
+
+            }
+        }catch(RemoteException e){
+            System.out.println("Remote exception caught");
+            e.printStackTrace();
         }
-        catch(Exception re){
-            System.out.println("Could not make the action");
-            re.printStackTrace();
-        }
+
     }
 
     public void sendAsynchronous(Info action){
         try{
-            game.makeAsynchronousAction(this.clientID, action);
+            gameProxy.makeAsynchronousAction(this.clientID, action);
         }
         catch(Exception re){
             System.out.println("Could not make the action");
@@ -223,16 +231,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
-    /*@Override
-    public void startMatch(){
-        try{
-            gameProxy.startMatch();
-        }
-        catch (RemoteException e){
-            System.out.println("Exception while starting the timer");
-        }
-    }*/
-
     public boolean getError(){
         return this.error;
     }
@@ -240,49 +238,23 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public void configure(String name) {
         try{
-            this.game = initializeRMI(name);
-            if(game == null)
+            System.out.println("Connecting to the Remote Object... ");
+
+            System.out.println("Connecting to the registry... ");
+            Registry registry = LocateRegistry.getRegistry(SERVER_ADDRESS,REGISTRATION_PORT);
+            gameProxy = (GameProxyInterface) registry.lookup(REGISTRATION_ROOM_NAME);
+
+            System.out.println("Registering... ");
+
+            if(gameProxy == null)
                 this.error = true;
+
+            gameProxy.saveName(this, new NameInfo(name));
+
         }
         catch(RemoteException|NotBoundException re){
             System.out.println("Exception while initializing");
         }
-    }
-
-    public void print() throws RemoteException{
-        System.out.println("Test Connection");
-    }
-
-
-    public GameProxyInterface initializeRMI(String name) throws RemoteException, NotBoundException {
-        System.out.println("Connecting to the Remote Object... ");
-
-        System.out.println("Connecting to the registry... ");
-        Registry registry = LocateRegistry.getRegistry(SERVER_ADDRESS,REGISTRATION_PORT);
-        gameProxy = (GameProxyInterface) registry.lookup(REGISTRATION_ROOM_NAME);
-
-        System.out.println("Registering... ");
-
-        /*Registry registryClient = LocateRegistry.createRegistry(1000);
-        registryClient.bind(this.name, this);
-        System.out.println("I am exporting the remote object...");
-        (ReceiverInterface) UnicastRemoteObject.exportObject(this, 1000)*/
-
-        Info action = new NameInfo(name);
-        try{
-            gameProxy.register(action, this);
-        }
-        catch(GameAlreadyStartedException e){
-            System.out.println("The Game already started!");
-            return null;
-        }
-        setClientID(gameProxy.getClientID());
-        gameProxy.setClientRMI(clientID, this);
-        this.gameModel.setClientID(clientID);
-
-        System.out.println("Your ClientID is " + this.clientID);
-
-        return gameProxy;
     }
 
     public void addPlayerCharacter(String name){
@@ -311,15 +283,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
         return "No name yet";
     }
-
-    public void startTimer() {
-
-    }
-
-    public void saveAnswer(ServerAnswer answer) {
-
-    }
-
 
     @Override
     public void add(String playerName, int mapClient, int initialSkulls){
@@ -386,6 +349,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public void setClientIDExisting(int idAlreadyExisting) throws RemoteException{
         this.clientID = idAlreadyExisting;
+    }
+
+    @Override
+    public void setClientId(int clientId) {
+        this.clientID = clientId;
     }
 
     @Override
