@@ -5,6 +5,7 @@ import client.Connection;
 import client.GameModel;
 import client.Updater;
 import client.gui.guielements.GuiController;
+import client.gui.guielements.GuiPowerupCard;
 import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import javafx.application.Application;
@@ -120,6 +121,17 @@ public class UpdaterGui extends Application implements Updater {
     @Override
     public void update(Observable gameModel, Object object) {
 
+        if(object.equals("setup")){
+            Platform.runLater(() -> {
+                StartMenuController controller = (StartMenuController)getControllerFromString("start_menu.fxml");
+                if(model.getSetupRequestAnswer().isFirstPlayer()){
+                    controller.createGame();
+                }else{
+                    controller.connect();
+                }
+            });
+        }
+
         if(object.equals("GameBoard") && mapInitialized){
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
@@ -141,7 +153,6 @@ public class UpdaterGui extends Application implements Updater {
             });
             handleTurn();
         }
-
 
         if(object.equals("GameBoard") && !mapInitialized){
             System.out.println("Game initialised");

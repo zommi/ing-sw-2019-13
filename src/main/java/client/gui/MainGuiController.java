@@ -431,7 +431,7 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText(null);
         alert.setOnCloseRequest(e -> alert.close());
         GridPane box = new GridPane();
-        for(int i = 0; i < this.gui.getGameModel().getGameBoard().getCharacterNames().size() ; i++){
+        for(int i = 0; i < this.gui.getGameModel().getGameBoard().getResult().getActiveCharacters().size() ; i++){
             box.add(new GuiPlayerBoard(this.gui.getGameModel().getGameBoard().getPlayerBoard(i)),0,i);
         }
         alert.getDialogPane().setContent(box);
@@ -529,9 +529,12 @@ public class MainGuiController implements GuiController {
     public void updateGameboard() {
         if(this.model != null) {
             //update position of players
-            for (int i = 0; i < this.model.getPlayersNames().size(); i++) {
+            for (int i = 0; i < this.model.getGameBoard().getResult().getActiveCharacters().size(); i++) {
                 if (this.idClientGuiCharacterMap.get((Object) i) == null) {
-                    this.idClientGuiCharacterMap.put(i, spawnEnemy(this.model.getPlayerBoard(i),model.getPlayersNames().get(i)));
+                    this.idClientGuiCharacterMap.put(i, spawnEnemy(
+                            this.model.getPlayerBoard(i),
+                            model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getName())
+                    );
                 } else {
                     this.idClientGuiCharacterMap.get(i).setPosition(getTile(
                             this.model.getPlayerBoard(i).getRow(),
@@ -890,7 +893,7 @@ public class MainGuiController implements GuiController {
             for(CheckBox choice : checkBoxList){
                 if(choice.isSelected()){
                     String id = choice.getId();
-                    for(WeaponCard card : this.model.getMyPlayer().getHand().getWeaponHand()){
+                    for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){ //TODO
                         if(card.getId() == Integer.valueOf(id)) result.add(card);
                     }
                 }

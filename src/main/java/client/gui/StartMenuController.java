@@ -2,6 +2,7 @@ package client.gui;
 
 import client.ConnectionRMI;
 import client.ConnectionSocket;
+import client.SetupInfo;
 import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -58,18 +59,15 @@ public class StartMenuController implements GuiController {
         init();
     }
 
-    @FXML
-    public void createGame() throws RemoteException {
-        this.gui.setPlayerName(this.nameField.getText());
-        this.gui.setConnection(
-                this.connectionBox.getValue().toString().equals("RMI") ?
-                new ConnectionRMI(0) :
-                new ConnectionSocket(0)
-        );
+    public void createGame(){
         this.gui.changeStage("map_selection.fxml");
-        this.gui.setCharacter((String)this.characterBox.getValue());
-        this.gui.setModel();
-        this.gui.attachToObserver();
+    }
+
+    public void connect(){
+        this.gui.changeStage("loading_screen.fxml");
+        SetupInfo setupInfo = new SetupInfo();
+        setupInfo.setCharacterName(this.gui.getCharacter());
+        this.gui.getConnection().send(setupInfo);
     }
 
     public void setGui(UpdaterGui updaterGui) {
@@ -87,32 +85,17 @@ public class StartMenuController implements GuiController {
         characterBox.getItems().addAll("DESTRUCTOR","VIOLET","BANSHEE","DOZER","SPROG");
     }
 
-    public void connectGame(MouseEvent mouseEvent) throws RemoteException{
-
-        String characterChosen = (String)this.characterBox.getValue();
-
+    public void start(MouseEvent mouseEvent) throws RemoteException{
         this.gui.setPlayerName(this.nameField.getText());
         this.gui.setConnection(
                 this.connectionBox.getValue().toString().equals("RMI") ?
                         new ConnectionRMI(0) :
                         new ConnectionSocket(0)
         );
-        this.gui.changeStage("loading_screen.fxml");
         this.gui.setModel();
         this.gui.attachToObserver();
         this.gui.getConnection().configure(gui.getPlayerName());
         this.gui.setCharacter((String)this.characterBox.getValue());
-        this.gui.setInitialSkulls(this.gui.getConnection().getInitialSkulls());
-        this.gui.getConnection().add(this.gui.getPlayerName(), 0,0);
-        if(!this.gui.getConnection().isCharacterChosen(characterChosen)){
-            for(Figure figure : Figure.values()){
-                if(this.gui.getConnection().isCharacterChosen(figure.toString())){
-                    characterChosen = figure.toString();
-                    break;
-                }
-            }
-        }
-        this.gui.getConnection().addPlayerCharacter(characterChosen);
     }
 
     @Override

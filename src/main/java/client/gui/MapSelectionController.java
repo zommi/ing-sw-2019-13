@@ -1,5 +1,6 @@
 package client.gui;
 
+import client.SetupInfo;
 import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -60,11 +61,11 @@ public class MapSelectionController implements GuiController {
             }
             this.gui.changeStage("loading_screen.fxml");
             this.gui.setInitialSkulls((int)skullBox.getValue());
-            this.gui.getConnection().configure(gui.getPlayerName());
-            this.gui.getConnection().add(this.gui.getPlayerName(),this.gui.getMapIndex(),this.gui.getInitialSkulls());
-            this.gui.getConnection().addPlayerCharacter(this.gui.getCharacter());
-            this.gui.setPlayerId(this.gui.getConnection().getClientID());
-            this.gui.getConnection().addPlayerCharacter(this.gui.getCharacter());
+            SetupInfo setupInfo = new SetupInfo();
+            setupInfo.setCharacterName(this.gui.getCharacter());
+            setupInfo.setInitialSkulls(this.gui.getInitialSkulls());
+            setupInfo.setMapChoice(this.gui.getMapIndex());
+            this.gui.getConnection().send(setupInfo);
         }
     }
 

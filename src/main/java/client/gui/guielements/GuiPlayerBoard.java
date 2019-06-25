@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import server.model.cards.WeaponCard;
 import view.PlayerBoardAnswer;
 
 public class GuiPlayerBoard extends StackPane {
@@ -104,17 +105,19 @@ public class GuiPlayerBoard extends StackPane {
         ammoGrid.add(yellowLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,2);
 
         GridPane unloadedWeaponsGrid = new GridPane();
-        for(int i = 0; i < playerBoard.getResult().getUnloadedWeapons().size(); i++){
+        int index = 0;
+        for(WeaponCard card : playerBoard.getResult().getUnloadedWeapons()){
             GuiWeaponCard cardToAdd = new GuiWeaponCard(
-                    playerBoard.getResult().getUnloadedWeapons().get(i),
-                    i,
-                    getClass().getResource(playerBoard.getResult().getUnloadedWeapons().get(i).getPath()).toExternalForm());
-            cardToAdd.setFitWidth(COLUMN / 3.0);
-            cardToAdd.setFitHeight(ROW);
+                    card,
+                    index,
+                    getClass().getResource(card.getPath()).toExternalForm());
+            cardToAdd.setFitWidth(200.0 / 3.0);
+            cardToAdd.setFitHeight(100.0 / 2.0);
             cardToAdd.setPreserveRatio(true);
             unloadedWeaponsGrid.add(cardToAdd,
-                    i,
+                    index,
                     0);
+            index++;
         }
 
 

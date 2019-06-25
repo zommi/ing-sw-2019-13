@@ -77,6 +77,7 @@
         "description" : "Choose 1 or 2 targets you can see and deal 1 damage to each.",
         "microEffects" : [
           {
+            "damage" : 1,
             "mandatory" : true,
             "maxTargetPlayerSize" : 2,
             "policies" : [
