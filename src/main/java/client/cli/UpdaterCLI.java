@@ -420,7 +420,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println("Test 1");
                             gameModel.setGrenadeAction(tagbackActions);
                             gameModel.setClientChoice(true);
-                            while(this.clientChoice){
+                            while(gameModel.getClientChoice()){
                                 System.out.println("waiting for the tagback to work");
                             }
                             //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
