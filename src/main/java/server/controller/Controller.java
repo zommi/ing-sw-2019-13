@@ -241,20 +241,17 @@ public class Controller {
                                 if (listOfPlayers.get(i).getJustDamagedBy() != null) {
                                     if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
                                         grenadeID = listOfPlayers.get(i).getClientID();
+                                        int IDShooter = grenadeID;
+                                        GrenadeAnswer grenadeChanged = new GrenadeAnswer(grenadeID);
+                                        gameManager.sendToEverybody(grenadeChanged);
                                         sendGrenadeAnswer();
                                         while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
-                                            System.out.println("Waiting for the other player to do the action");/*try {
-                                            TimeUnit.SECONDS.sleep(5000)
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }*/
+                                            System.out.println("Waiting for the other player to do the action");
                                             try {
-                                                System.out.println(" " + grenadeID);
-                                                clientHasChosen = gameManager.getGameProxy().askClient(grenadeID);
+                                                System.out.println(" " + IDShooter);
+                                                clientHasChosen = gameManager.getGameProxy().askClient(IDShooter);
                                                 System.out.println("Client has chosen: " + clientHasChosen);
                                                 if (clientHasChosen) {
-                                                    int IDShooter = grenadeID;
-                                                    grenadeID = -1;
                                                     System.out.println("test");
                                                     List<Info> actionGrenade = gameManager.getGameProxy().getGrenadeAction(IDShooter);
                                                     System.out.println("The shooter decided to play with " + actionGrenade.size() + "powerups");
@@ -270,6 +267,9 @@ public class Controller {
                                                         turnHandler.setAndDoAction(powerUpAction);
                                                         System.out.println("Playing the tagback of color: " + ((PowerUpPack) a).getPowerupCard().getColor());
                                                     }
+                                                    grenadeID = -1;
+                                                    GrenadeAnswer grenadeDone = new GrenadeAnswer(-1);
+                                                    gameManager.sendToEverybody(grenadeDone);
                                                     sendCollectShootAnswersRMI(currentPlayer, IDShooter);
                                                     ResetAnswer resetChoice = new ResetAnswer();
                                                     gameManager.sendToSpecific(resetChoice, IDShooter);
@@ -281,15 +281,14 @@ public class Controller {
 
                                     }
                                     clientHasChosen = false;
-                                    grenadeID = -1;
                                     System.out.println("The player did the action ");
+                                    listOfPlayers.get(i).setJustDamagedBy(null);
                                 }
                                 j = Constants.CHOICE;
                             }
                             j++;
                         }
                     }
-                    listOfPlayers.get(i).setJustDamagedBy(null);
                 }
             }else{      //shoot action not valid
                 sendErrorMessage(clientID);

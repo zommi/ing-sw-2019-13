@@ -19,6 +19,7 @@ public class GameModel extends Observable implements Serializable {
     private PlayerHandAnswer playerHand;
     private int clientID;
     private ListOfWeaponsAnswer weaponList;
+    private int grenade = -1;
     public boolean toSpawn;
     private boolean clientChoice;
     private List<Info> grenadeAction = new ArrayList<>();
@@ -33,6 +34,10 @@ public class GameModel extends Observable implements Serializable {
         setupRequestAnswer = null;
         setupConfirmAnswer = null;
         clientID = -9;
+    }
+
+    public int getGrenade(){
+        return grenade;
     }
 
     public void setGrenadeAction(List<Info> action){
@@ -120,6 +125,12 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Spawn");
         }
 
+        else if (answer instanceof GrenadeAnswer) {
+            setGrenade(((GrenadeAnswer) answer).getResult());
+            setChanged();
+            notifyObservers("Grenade");
+        }
+
         else if (answer instanceof PlayerHandAnswer) {
             playerHand = (PlayerHandAnswer) answer;
             setChanged();
@@ -178,6 +189,10 @@ public class GameModel extends Observable implements Serializable {
     }
 
     public ListOfWeaponsAnswer getWeaponList() {return weaponList; }
+
+    public void setGrenade(int i){
+        this.grenade = i;
+    }
 
     public PlayerAbstract getMyPlayer(){
         for(GameCharacter gameCharacter : gameBoard.getResult().getActiveCharacters()){
