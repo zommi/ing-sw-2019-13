@@ -457,6 +457,8 @@ public class MainGuiController implements GuiController {
             cardToAdd.setFitHeight(weaponHand.getHeight());
             if(!card.isReady()){
                 cardToAdd.setOpacity(0.6);
+            }else{
+                cardToAdd.setOpacity(1.0);
             }
             GuiWeaponCard finalCardToAdd = cardToAdd;
             cardToAdd.setOnMousePressed(e -> {

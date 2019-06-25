@@ -9,8 +9,8 @@ public class Constants {
     public static final int MIN_SKULLS = 5;
     public static final int MAX_SKULLS = 8;
 
-    public static final int FIRST_MAP = 0;
-    public static final int LAST_MAP = 3;
+    public static final int FIRST_MAP = 1;
+    public static final int LAST_MAP = 4;
 
     public static final int MAX_HP = 12;
     public static final int MAX_MARKS = 3;

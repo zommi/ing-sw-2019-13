@@ -50,14 +50,17 @@ public class TurnHandler {
 
     public boolean setAndDoAction(Action action){
         boolean actionValid = false;
-        if(currentPhase == TurnPhase.FIRST_ACTION
-                || currentPhase == TurnPhase.SECOND_ACTION || currentPhase == TurnPhase.POWERUP_TURN) {
+        if(currentPhase == TurnPhase.FIRST_ACTION || currentPhase == TurnPhase.SECOND_ACTION) {
             actionValid = action.execute(controller);
             if(actionValid &&
                     ((action instanceof ShootAction) ||
                     (action instanceof CollectAction) ||
-                    (action instanceof MoveAction) ||
-                    (action instanceof ReloadAction))) {//if it is a draw or a spawn it is not counted as an action
+                    (action instanceof MoveAction))) {//if it is a draw or a spawn it is not counted as an action
+                nextPhase();
+            }
+        }else if (currentPhase == TurnPhase.END_TURN && action instanceof ReloadAction){
+            actionValid = action.execute(controller);
+            if(actionValid){
                 nextPhase();
             }
         }

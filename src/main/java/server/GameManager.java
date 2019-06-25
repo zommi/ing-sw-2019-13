@@ -118,8 +118,7 @@ public class GameManager {
 
             //send playerhands to every player
             for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()){
-                PlayerHand playerHand = controller.getCurrentGame().getPlayerFromId(playerAbstract.getClientID()).getHand();
-                sendToSpecific(new PlayerHandAnswer(playerHand), playerAbstract.getClientID());
+                sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
             }
 
             startGame = 1;
