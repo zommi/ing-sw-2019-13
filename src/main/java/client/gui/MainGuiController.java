@@ -9,7 +9,6 @@ import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
 import constants.Direction;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -26,17 +25,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
-import server.model.game.Game;
 import server.model.map.*;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerState;
@@ -425,6 +421,8 @@ public class MainGuiController implements GuiController {
 
     @FXML
     public void showScoreboard(MouseEvent mouseEvent) {
+        final int PLAYERBOARDS_OFFSET = 1;
+        final int KILLSHOT_TRACK_INDEX = 0;
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
         alert.setTitle("SCOREBOARD");
@@ -432,8 +430,9 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText(null);
         alert.setOnCloseRequest(e -> alert.close());
         GridPane box = new GridPane();
+        box.add(new GuiKillshotTrack(this.gui.getGameModel().getGameBoard().getResult().getTrack()),0,KILLSHOT_TRACK_INDEX);
         for(int i = 0; i < this.gui.getGameModel().getGameBoard().getResult().getActiveCharacters().size() ; i++){
-            box.add(new GuiPlayerBoard(this.gui.getGameModel().getGameBoard().getPlayerBoard(i)),0,i);
+            box.add(new GuiPlayerBoard(this.gui.getGameModel().getGameBoard().getPlayerBoard(i)),0,i + PLAYERBOARDS_OFFSET);
         }
         alert.getDialogPane().setContent(box);
         alert.setOnCloseRequest(e -> alert.close());
@@ -823,9 +822,7 @@ public class MainGuiController implements GuiController {
                     box.getChildren().add(choice);
                 }
 
-                alert.setOnCloseRequest(e -> {
-                    activatedGrenades.set(getCheckBoxInput(checkBoxList, grenadeList));
-                });
+                alert.setOnCloseRequest(e -> activatedGrenades.set(getCheckBoxInput(checkBoxList, grenadeList)));
                 alert.getDialogPane().setContent(box);
                 alert.showAndWait();
                 List<Info> infoList = new ArrayList<>();
@@ -898,7 +895,7 @@ public class MainGuiController implements GuiController {
             for(CheckBox choice : checkBoxList){
                 if(choice.isSelected()){
                     String id = choice.getId();
-                    for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){ //TODO
+                    for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){
                         if(card.getId() == Integer.valueOf(id)) result.add(card);
                     }
                 }

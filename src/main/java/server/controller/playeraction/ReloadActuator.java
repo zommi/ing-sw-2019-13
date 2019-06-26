@@ -11,6 +11,7 @@ public class ReloadActuator {
             for(WeaponCard cardInHand : playerAbstract.getHand().getWeaponHand()){
                 if(cardInHand.getId() == weaponCard.getId()){
                     cardInHand.setReady(true);
+                    playerAbstract.getPlayerBoard().removeUnloadedWeapon(cardInHand);
                     break;
                 }
             }
