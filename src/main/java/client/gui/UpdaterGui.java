@@ -129,6 +129,11 @@ public class UpdaterGui extends Application implements Updater {
                 }else{
                     controller.connect();
                 }
+                if(model.getSetupRequestAnswer().isReconnection()){
+                    mainGuiController.restoreSquares();
+                    mainGuiController.updateGameboard();
+                    //mainGuiController.updateHand();
+                }
             });
         }
 
@@ -159,6 +164,9 @@ public class UpdaterGui extends Application implements Updater {
             Platform.runLater(() -> {
                 getControllerFromString("gui.fxml").init();
                 changeStage("gui.fxml");
+                mainGuiController.restoreSquares();
+                mainGuiController.updateGameboard();
+                mainGuiController.updateHand();
                 mapInitialized = true;
             });
             handleTurn();

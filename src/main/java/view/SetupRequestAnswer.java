@@ -6,6 +6,8 @@ public class SetupRequestAnswer implements ServerAnswer {
 
     private int clientID;
 
+    private boolean reconnection;
+
     public int getClientID() {
         return clientID;
     }
@@ -28,6 +30,12 @@ public class SetupRequestAnswer implements ServerAnswer {
 
     public void setGameCharacter(boolean gameCharacter) {
         this.gameCharacter = gameCharacter;
+    }
+
+    public void setReconnection(){this.reconnection = true;}
+
+    public boolean isReconnection() {
+        return reconnection;
     }
 }
 

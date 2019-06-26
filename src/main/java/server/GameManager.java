@@ -181,13 +181,16 @@ public class GameManager {
     }
 
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
-            server.getClientFromId(clientID).send(serverAnswer);
-
+            if(server.getClientFromId(clientID) != null){
+                server.getClientFromId(clientID).send(serverAnswer);
+            }
     }
 
     public void sendToEverybody(ServerAnswer serverAnswer){
-        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-            sendToSpecific(serverAnswer, playerAbstract.getClientID());
+        if(game != null) {
+            for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
+                sendToSpecific(serverAnswer, playerAbstract.getClientID());
+            }
         }
     }
 

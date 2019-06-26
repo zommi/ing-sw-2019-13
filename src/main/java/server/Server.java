@@ -135,6 +135,7 @@ public class Server {
 
             //empty setupAnswer
             setupRequestAnswer.setClientID(clientID);
+            setupRequestAnswer.setReconnection();
             client.send(setupRequestAnswer);
         }
 
@@ -211,6 +212,10 @@ public class Server {
         }
 
         client.send(setupConfirmAnswer);
+        if(gameManager.getStartGame()==1){
+            client.send(new GameBoardAnswer(gameManager.getController().getCurrentGame().getCurrentGameBoard()));
+            client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
+        }
     }
 
     public GameManager getGameManagerFromId(int clientID){

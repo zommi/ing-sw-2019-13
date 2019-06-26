@@ -26,7 +26,7 @@ public class MyTimerTask extends TimerTask {
     private void start() {
         try {
             //assuming it takes 20 secs to complete the task
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

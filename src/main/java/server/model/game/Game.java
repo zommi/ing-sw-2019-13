@@ -2,7 +2,7 @@ package server.model.game;
 
 import client.weapons.Weapon;
 import exceptions.*;
-import javafx.scene.paint.Color;
+import constants.Color;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
@@ -214,6 +214,13 @@ public class Game {
         for(PlayerAbstract playerAbstract : activePlayers){
             if(playerAbstract.getName().equalsIgnoreCase(string))
                 return playerAbstract;
+        }
+        return null;
+    }
+
+    public PlayerAbstract getPlayerFromColor(Color color){
+        for(PlayerAbstract player : activePlayers){
+            if(player.getColor() == color) return player;
         }
         return null;
     }

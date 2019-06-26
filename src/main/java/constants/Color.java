@@ -98,4 +98,5 @@ public enum Color implements Serializable {
     public boolean isCharacterColor() {
         return characterColor;
     }
+
 }

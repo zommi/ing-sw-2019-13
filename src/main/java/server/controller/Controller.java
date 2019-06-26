@@ -3,6 +3,7 @@ package server.controller;
 import client.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
+import constants.Color;
 import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.GameManager;
@@ -26,8 +27,7 @@ import server.model.player.PlayerState;
 import view.*;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Controller {
 
@@ -366,9 +366,14 @@ public class Controller {
     public boolean handleDeaths() {
         int skullsToAdd;
         boolean needToSpawn = false;
+        boolean doubleKill = false;
         PlayerBoard board;
         for(PlayerAbstract player : this.currentGame.getActivePlayers()){
             if(player.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD){
+                distributePoints(player);
+                if(doubleKill){
+                    currentGame.getPlayerFromColor(player.getKillerColor()).addPoints(1);
+                }
                 player.die();
                 skullsToAdd = player.isOverkilled() ? 2 : 1;
                 this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
@@ -378,9 +383,69 @@ public class Controller {
                     board.addMarks(1,player.getColor());
                 }
                 needToSpawn = true;
+                doubleKill = true;
             }
         }
         return needToSpawn;
+    }
+
+    private void distributePoints(PlayerAbstract player) {
+        final int FIRST_DAMAGE = 0;
+        //first blood gets 1 point more
+        currentGame.getPlayerFromColor(player.getPlayerBoard().getDamage().get(FIRST_DAMAGE)).addPoints(1);
+
+        //most damage dealt gets max points
+        //tie breaker: if 2 or more dealt the same amount then the first to deal damage gets the most points
+        List<PlayerAbstract> attackers = getAttackers(player);
+        int i = 0;
+        for(PlayerAbstract attacker : attackers){
+            attacker.addPoints(player.getPlayerBoard().getPointValueArray()[player.getPlayerBoard().getCurrentPointValueCursor() + i]);
+            i++;
+        }
+        //double kills give 1 point more
+    }
+
+    private List<PlayerAbstract> getAttackers(PlayerAbstract player) {
+        List<PlayerAbstract> playersInOrder = new ArrayList<>();
+        Map<Color,Integer> colorIntegerMap = new EnumMap<>(Color.class);
+        int damage;
+        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+            damage = player.getPlayerBoard().getDamageOfAColor(playerAbstract.getColor());
+            if(damage > 0){
+                colorIntegerMap.put(playerAbstract.getColor(),damage);
+            }
+        }
+        List<PlayerAbstract> players = new ArrayList<>();
+        while(!colorIntegerMap.isEmpty()) {
+            int max = 0;
+            for (Map.Entry<Color, Integer> entry : colorIntegerMap.entrySet()) {
+                if (entry.getValue() > max) {
+                    players.clear();
+                    max = entry.getValue();
+                    players.add(currentGame.getPlayerFromColor(entry.getKey()));
+                }else if(entry.getValue() == max){
+                    players.add(currentGame.getPlayerFromColor(entry.getKey()));
+                }
+            }
+            for(PlayerAbstract playersToRemove : players){
+                colorIntegerMap.remove(playersToRemove.getColor());
+            }
+            if(players.size() > 1){
+                playersInOrder.addAll(tieBreaker(player,players));
+            }else{
+                playersInOrder.add(players.get(0));
+            }
+        }
+        return playersInOrder;
+    }
+
+    private List<PlayerAbstract> tieBreaker(PlayerAbstract player, List<PlayerAbstract> attackers) {
+        List<PlayerAbstract> result = new ArrayList<>();
+        List<Color> attackersInOrder = player.getPlayerBoard().getAttackersInOrder();
+        for(Color c : attackersInOrder){
+            if(attackers.contains(currentGame.getPlayerFromColor(c)))result.add(currentGame.getPlayerFromColor(c));
+        }
+        return result;
     }
 
     public List<PlayerAbstract> getPlayersToSpawn(){

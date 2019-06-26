@@ -16,13 +16,13 @@ public class GuiCharacter extends StackPane {
 
     private Text name;
 
-    public GuiCharacter(GuiSpawnPoint spawnPoint, PlayerBoard playerBoard, String playerName){
+    public GuiCharacter(GuiTile tile, PlayerBoard playerBoard, String playerName){
         super();
         circle = new Circle();
         name = new Text(playerName);
-        this.position = spawnPoint;
-        spawnPoint.getChildren().add(this);
-        center(spawnPoint);
+        this.position = tile;
+        tile.getChildren().add(this);
+        center(tile);
         circle.setStrokeWidth(2.0);
         circle.setStroke(Paint.valueOf("#000000"));
         circle.setFill(Paint.valueOf(Color.fromCharacter(playerBoard.getCharacterName()).getNormalColor()));

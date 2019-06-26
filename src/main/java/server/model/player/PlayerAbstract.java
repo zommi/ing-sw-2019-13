@@ -49,6 +49,8 @@ public abstract class PlayerAbstract implements Serializable {
     public void shoot() {
     }
 
+    public abstract int getPoints();
+
     public abstract void setCharacterChosen(boolean choice);
 
     public abstract boolean isCharacterChosen();
@@ -124,4 +126,7 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean isConnected();
 
     public abstract void setConnected(boolean connected);
+
+    public abstract void addPoints(int i);
+
 }

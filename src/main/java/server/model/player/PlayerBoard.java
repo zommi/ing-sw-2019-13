@@ -143,6 +143,24 @@ public class PlayerBoard implements Serializable {
         return counter;
     }
 
+    public int getDamageOfAColor(Color color){
+        int counter = 0;
+        for(Color c : damage){
+            if (c == color) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public List<Color> getAttackersInOrder(){
+        List<Color> result = new ArrayList<>();
+        for(Color c: damage){
+            if(!result.contains(c))result.add(c);
+        }
+        return result;
+    }
+
     //add mark on playerboard, if size > 3 then don't add
     public void addMarks(int marks, Color color)
              {

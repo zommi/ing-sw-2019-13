@@ -33,6 +33,8 @@ public class ConcretePlayer extends PlayerAbstract {
 
     private boolean characterChosen;
 
+    private int points;
+
     //added after createCopy
     private PlayerAbstract justDamagedBy;
 
@@ -41,6 +43,7 @@ public class ConcretePlayer extends PlayerAbstract {
         this.hand = new PlayerHand(this);
         this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
+        this.points = 0;
         connected = true;
     }
 
@@ -52,6 +55,16 @@ public class ConcretePlayer extends PlayerAbstract {
     @Override
     public void setConnected(boolean connected) {
         this.connected = connected;
+    }
+
+    @Override
+    public void addPoints(int i) {
+        points+=i;
+    }
+
+    @Override
+    public int getPoints(){
+        return points;
     }
 
     @Override

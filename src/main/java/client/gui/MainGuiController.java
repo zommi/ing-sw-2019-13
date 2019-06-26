@@ -39,6 +39,7 @@ import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.map.*;
 import server.model.player.GameCharacter;
+import server.model.player.PlayerState;
 import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
@@ -173,7 +174,7 @@ public class MainGuiController implements GuiController {
                 GuiSquare square = new GuiSquare(currentSquare.getRow(),currentSquare.getCol(),
                         side,side,Paint.valueOf(currentSquare.getColor().getTileColor()));
                 square.setCursor(Cursor.HAND);
-                square.setAmmo(new GuiAmmoTile(squareConverted.getAmmoTile().getPath()));
+                if(squareConverted.getAmmoTile() != null)square.setAmmo(new GuiAmmoTile(squareConverted.getAmmoTile().getPath()));
                 squares.add(square);
                 tiles.add(square);
                 square.setSquare((Square) currentSquare);
@@ -532,16 +533,18 @@ public class MainGuiController implements GuiController {
         if(this.model != null) {
             //update position of players
             for (int i = 0; i < this.model.getGameBoard().getResult().getActiveCharacters().size(); i++) {
-                if (this.idClientGuiCharacterMap.get((Object) i) == null) {
-                    this.idClientGuiCharacterMap.put(i, spawnEnemy(
-                            this.model.getPlayerBoard(i),
-                            model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getName())
-                    );
-                } else {
-                    this.idClientGuiCharacterMap.get(i).setPosition(getTile(
-                            this.model.getPlayerBoard(i).getRow(),
-                            this.model.getPlayerBoard(i).getCol()
-                            ));
+                if(this.model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
+                    if (this.idClientGuiCharacterMap.get((Object) i) == null) {
+                        this.idClientGuiCharacterMap.put(i, placeEnemy(
+                                this.model.getPlayerBoard(i),
+                                model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getName())
+                        );
+                    } else {
+                        this.idClientGuiCharacterMap.get(i).setPosition(getTile(
+                                this.model.getPlayerBoard(i).getRow(),
+                                this.model.getPlayerBoard(i).getCol()
+                        ));
+                    }
                 }
             }
 
@@ -549,10 +552,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    private GuiCharacter spawnEnemy(PlayerBoardAnswer playerBoard, String name) {
-        for(GuiSpawnPoint sp : spawnPoints){
-            if(sp.getCol() == playerBoard.getCol() && sp.getRow() == playerBoard.getRow()){
-                return new GuiCharacter(sp,playerBoard.getResult(),name);
+    private GuiCharacter placeEnemy(PlayerBoardAnswer playerBoard, String name) {
+        for(GuiTile tile : tiles){
+            if(tile.getCol() == playerBoard.getCol() && tile.getRow() == playerBoard.getRow()){
+                return new GuiCharacter(tile,playerBoard.getResult(),name);
             }
         }
         return null;
