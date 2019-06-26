@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class KillshotTrack implements Serializable {
 
+    private int initialSkulls;
+
     /**
      * int containing the number of skulls remaining in a given game
      */
@@ -32,6 +34,7 @@ public class KillshotTrack implements Serializable {
      * @param initialSkull number of skulls in a game
      */
     public KillshotTrack(int initialSkull) {
+        this.initialSkulls = initialSkull;
         this.remainingSkulls = initialSkull;
         this.multiciplityToken = new int[initialSkull];
         this.damageTokens = new Color[initialSkull];
@@ -79,4 +82,7 @@ public class KillshotTrack implements Serializable {
         remainingSkulls--;
     }
 
+    public int getInitialSkulls() {
+        return initialSkulls;
+    }
 }

@@ -54,6 +54,7 @@ class ControllerTest {
 
     }
 
+    /*
     @Test
     public void doublekillTest() throws RemoteException{
         Controller controller = new Controller(1,5,new GameManager(new Server()));
@@ -75,4 +76,5 @@ class ControllerTest {
 
         assertEquals(19,mimmo.getPoints()); //8+8+1+1+1
     }
+    */
 }

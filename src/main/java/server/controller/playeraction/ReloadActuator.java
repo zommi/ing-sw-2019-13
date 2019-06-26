@@ -8,7 +8,13 @@ public class ReloadActuator {
 
     public void actuate(ReloadInfo reloadInfo, PlayerAbstract playerAbstract){
         for(WeaponCard weaponCard : reloadInfo.getWeaponCards()){
-            weaponCard.setReady(true);
+            for(WeaponCard cardInHand : playerAbstract.getHand().getWeaponHand()){
+                if(cardInHand.getId() == weaponCard.getId()){
+                    cardInHand.setReady(true);
+                    playerAbstract.getPlayerBoard().removeUnloadedWeapon(cardInHand);
+                    break;
+                }
+            }
         }
 
         playerAbstract.payWithPowerUps(reloadInfo.getCost(), reloadInfo.getPowerUpCards());
