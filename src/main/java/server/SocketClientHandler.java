@@ -13,10 +13,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class SocketClientHandler implements Runnable {
+
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+
     private Integer clientID;
-    private boolean firstPlayer;
 
     private Server server;
 
@@ -120,5 +121,17 @@ public class SocketClientHandler implements Runnable {
 
     public int getClientID() {
         return clientID;
+    }
+
+    public void setKeepThreadAlive(boolean keepThreadAlive) {
+        this.keepThreadAlive = keepThreadAlive;
+    }
+
+    public ObjectInputStream getInputStream() {
+        return inputStream;
+    }
+
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
     }
 }

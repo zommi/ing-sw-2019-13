@@ -155,6 +155,7 @@ public class GameModel extends Observable implements Serializable {
 
         else if(answer instanceof SpawnCommandAnswer) {
             setChanged();
+            toSpawn = true;
             notifyObservers("Spawn phase");
         }
         else if(answer instanceof MessageAnswer){

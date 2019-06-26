@@ -3,11 +3,11 @@ package server;
 import java.util.Date;
 import java.util.TimerTask;
 
-public class MyTimerTask extends TimerTask {
+public class GameStartTimer extends TimerTask {
 
     private GameManager gameManager;
 
-    public MyTimerTask(GameManager gameManager){
+    public GameStartTimer(GameManager gameManager){
         this.gameManager = gameManager;
     }
 

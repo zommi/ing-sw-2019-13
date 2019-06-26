@@ -74,6 +74,10 @@ public class Controller {
         return this.grenadeID;
     }
 
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
     /*public void nextCurrentID(){
         if(currentID == currentGame.getActivePlayers().size() - 1){
             currentID = 0;
@@ -133,8 +137,8 @@ public class Controller {
         //    currentGame.nextState();
         //}
 
-        if((turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN))&&(!(action instanceof PowerUpPack) &&
-                !(action instanceof ReloadInfo)))
+        if(turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
+                !(action instanceof ReloadInfo))
             return false;
 
         if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){

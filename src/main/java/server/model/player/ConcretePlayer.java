@@ -102,6 +102,7 @@ public class ConcretePlayer extends PlayerAbstract {
         this.gameCharacter = new GameCharacter(chooseFigure(figure));
         this.gameCharacter.setConcretePlayer(this);
         this.playerBoard.setCharacterName(figure.toString());
+        characterChosen = true;
     }
 
     /**

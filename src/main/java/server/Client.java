@@ -93,6 +93,12 @@ public class Client {
     }
 
     public void disconnect(){
+        if(socketClientHandler != null) {
+            socketClientHandler.setKeepThreadAlive(false);
+            //socketClientHandler.getInputStream().
+        }
+
+
         socketClientHandler = null;
         receiverInterface = null;
         try{
@@ -106,8 +112,9 @@ public class Client {
         try {
             if (socketClientHandler != null)
                 socketClientHandler.publishSocketMessage(serverAnswer);
-            else
+            else if(receiverInterface != null)
                 receiverInterface.publishMessage(serverAnswer);
+
         }catch(RemoteException e){
             disconnect();
         }

@@ -60,6 +60,8 @@ public class Constants {
 
     public static final String REGISTRATION_ROOM_NAME = "gameproxy";
 
+    public static final long ACTION_TIMEOUT_SEC = 60;
+
 
 
     /////////////////////////////////////////////////////////////////////////////////

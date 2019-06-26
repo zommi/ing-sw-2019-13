@@ -1,12 +1,17 @@
 package server.controller.turns;
 
 import exceptions.WrongGameStateException;
+import server.GameStartTimer;
+import server.NextPlayerTimer;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.model.player.PlayerAbstract;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TurnHandler {
 
@@ -15,6 +20,8 @@ public class TurnHandler {
     private TurnPhase currentPhase;
 
     private Controller controller;
+
+    private TimerTask timerTask;
 
 
 
@@ -84,11 +91,21 @@ public class TurnHandler {
         }
     }
 
+    public void setCurrentPhase(TurnPhase currentPhase) {
+        this.currentPhase = currentPhase;
+    }
+
     public void nextPhase(){
         switch (currentPhase){
             case FIRST_ACTION:
                 System.out.println("First action done, moving to second action");
                 currentPhase = TurnPhase.SECOND_ACTION;
+
+                //starting timer
+                timerTask = new NextPlayerTimer(controller);
+                Timer timer = new Timer(true);
+                timer.schedule(timerTask, 0);
+
                 break;
             case SECOND_ACTION:
                 System.out.println("Second action done, moving to next phase");
@@ -105,29 +122,23 @@ public class TurnHandler {
                     controller.sendSpawnRequest();
                     currentPhase = TurnPhase.SPAWN_PHASE;
                 }else {
-                    try {
                         controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                         System.out.println("changed player in game");
                         controller.sendChangeCurrentPlayer();
-                    } catch (WrongGameStateException e) {
-                        e.printStackTrace();
-                    }
                     currentPhase = TurnPhase.FIRST_ACTION;
                 }
                 break;
             case SPAWN_PHASE:
-                try {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                     System.out.println("changed player in game");
                     controller.sendChangeCurrentPlayer();
-                } catch (WrongGameStateException e) {
-                    e.printStackTrace();
-                }
                 currentPhase = TurnPhase.FIRST_ACTION;
                 break;
             default: break;
         }
     }
+
+
 
 
 

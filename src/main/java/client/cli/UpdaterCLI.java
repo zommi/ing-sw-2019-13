@@ -25,6 +25,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
     private Connection connection;
     private boolean alwaysTrue = true;
+    private boolean justDidMyTurn;
 
 
     ExecutorService executorService;

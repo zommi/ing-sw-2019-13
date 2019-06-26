@@ -6,7 +6,6 @@ import server.controller.Controller;
 import server.model.game.Game;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerHand;
 import view.*;
 
 import java.util.*;
@@ -145,7 +144,7 @@ public class GameManager {
         playerList.add(player);
         player.setCurrentGame(game);
         if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
-            TimerTask timerTask = new MyTimerTask(this);
+            TimerTask timerTask = new GameStartTimer(this);
             Timer timer = new Timer(true);
             timer.schedule(timerTask, 0);
             System.out.println("Task started");
