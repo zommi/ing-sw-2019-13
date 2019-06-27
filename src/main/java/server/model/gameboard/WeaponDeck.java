@@ -9,9 +9,7 @@ import client.weapons.Weapon;
 import server.model.cards.WeaponCard;
 import constants.Constants;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 
@@ -38,13 +36,15 @@ public class WeaponDeck implements Serializable {
      * initializes the deck by creating all the different cards
      */
     private void initializeDeck() throws ReadJsonErrorException {
-         ObjectMapper mapper = new ObjectMapper();
-        File file = new File(Constants.PATH_TO_WEAPONS_JSON);
+        ObjectMapper mapper = new ObjectMapper();
+        //File file = new File(Constants.PATH_TO_WEAPONS_JSON);
+        InputStream weaponStream = getClass().getResourceAsStream(Constants.PATH_TO_WEAPONS_JSON);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(weaponStream));
 
         Weapon[] arrayOfWeapons = new Weapon[0];
 
         try{
-            arrayOfWeapons = mapper.readValue(file, Weapon[].class);
+            arrayOfWeapons = mapper.readValue(reader, Weapon[].class);
         } catch (IOException e){
             e.printStackTrace();
         }

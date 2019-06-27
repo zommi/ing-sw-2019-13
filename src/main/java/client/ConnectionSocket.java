@@ -1,11 +1,13 @@
 package client;
 
+import constants.Constants;
 import server.model.map.GameMap;
 import server.model.player.Figure;
 import view.ServerAnswer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Properties;
 
 public class ConnectionSocket implements Connection {
 
@@ -29,7 +31,9 @@ public class ConnectionSocket implements Connection {
     private ListenerSocketThread listenerSocketThread;
 
     private static final String SERVER_ADDRESS  = "localhost";
+    private String serverAddress;
     private static final int REGISTRATION_PORT = 1337;
+    private int registrationPort;
     private String currentCharacter;
 
     public ConnectionSocket(int clientID){
@@ -37,6 +41,22 @@ public class ConnectionSocket implements Connection {
         this.gameModel = new GameModel();
         this.socket = null;
         this.characterName = "No name yet";
+        getProperties();
+    }
+
+    private void getProperties() {
+        Properties properties = new Properties();
+        try {
+            FileInputStream file = new FileInputStream(Constants.PATH_TO_CONFIG);
+            properties.load(file);
+            file.close();
+            serverAddress = properties.getProperty("app.serverIp");
+            registrationPort = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
+        } catch (IOException e) {
+            System.out.println("File not found, given default values");
+            serverAddress = SERVER_ADDRESS;
+            registrationPort = REGISTRATION_PORT;
+        }
     }
 
     public void setCurrentID(int currentID) {
@@ -94,7 +114,7 @@ public class ConnectionSocket implements Connection {
     public void configure(String name){
         try {
             System.out.println("Configuring socket connection...");
-            this.socket = new Socket(SERVER_ADDRESS, REGISTRATION_PORT);
+            this.socket = new Socket(serverAddress, registrationPort);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
 
             listenerSocketThread = new ListenerSocketThread(gameModel, socket, this);

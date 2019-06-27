@@ -71,26 +71,19 @@ public class Constants {
     public static final String PATH_TO_RESOURCES_FOLDER = "." + File.separatorChar + "src" +
             File.separatorChar + "main" + File.separatorChar + "resources";
 
-    public static final String PATH_TO_AMMOTILE_JSON =  PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "ammo_tiles.json";
+    public static final String PATH_TO_AMMOTILE_JSON = File.separatorChar + "ammo_tiles.json";
 
-    public static final String PATH_TO_POWERUP_JSON =  PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "powerups.json";
+    public static final String PATH_TO_POWERUP_JSON = File.separatorChar + "powerups.json";
 
-    public static final String PATH_TO_WEAPONS_JSON =  PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "weapons.json";
+    public static final String PATH_TO_WEAPONS_JSON = File.separatorChar + "weapons.json";
 
-    public static final String PATH_TO_MAP_11 = PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "maps" + File.separatorChar + "map11.txt";
+    public static final String PATH_TO_MAP_11 = File.separatorChar + "maps" + File.separatorChar + "map11.txt";
 
-    public static final String PATH_TO_MAP_12 = PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "maps" + File.separatorChar + "map12.txt";
+    public static final String PATH_TO_MAP_12 = File.separatorChar + "maps" + File.separatorChar + "map12.txt";
 
-    public static final String PATH_TO_MAP_21 = PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "maps" + File.separatorChar + "map21.txt";
+    public static final String PATH_TO_MAP_21 = File.separatorChar + "maps" + File.separatorChar + "map21.txt";
 
-    public static final String PATH_TO_MAP_22 = PATH_TO_RESOURCES_FOLDER +
-            File.separatorChar + "maps" + File.separatorChar + "map22.txt";
+    public static final String PATH_TO_MAP_22 = File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 
-
+    public static final String PATH_TO_CONFIG = File.separatorChar + "config.properties";
 }

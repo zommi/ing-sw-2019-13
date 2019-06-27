@@ -26,7 +26,7 @@ public class GameStartTimer extends TimerTask {
     private void start() {
         try {
             //assuming it takes 20 secs to complete the task
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

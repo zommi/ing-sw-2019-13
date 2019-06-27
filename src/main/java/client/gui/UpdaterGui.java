@@ -14,7 +14,16 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.*;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.TimeUnit;
@@ -70,14 +79,25 @@ public class UpdaterGui extends Application implements Updater {
 
     public void set(){
         try {
-            File fxmlDir = new File(getClass().getResource("/fxml").toURI());
-            for(File file: fxmlDir.listFiles()) {
-                String[] subDir = file.getPath().split("/");
-                FXMLLoader loader = new FXMLLoader((getClass().getResource(
-                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length - 1])));
-                this.sceneMap.put(file.getName(), loader.load());
+//            List<Path> files = new ArrayList<>();
+//            Files.newDirectoryStream(Paths.get(getClass().getResource("/fxml").toURI()),path -> path.toFile().isFile()).forEach(files::add);
+//            //File fxmlDir = new File(getClass().getResourceAsStream(File.separatorChar + "fxml"));
+//            for(Path path: files) {
+//                String[] subDir = path.toString().split("/");
+//                FXMLLoader loader = new FXMLLoader((getClass().getResource(
+//                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length - 1])));
+//                this.sceneMap.put(path.getFileName().toString(), loader.load());
+//                GuiController controller = loader.getController();
+//                this.controllerMap.put(path.getFileName().toString(), controller);
+//                this.currentController = controller;
+//                controller.addGui(this);
+//            }
+            List<String> fxmls = new ArrayList<String>(Arrays.asList("gui.fxml","loading_screen.fxml","map_selection.fxml","start_menu.fxml"));
+            for(String path: fxmls) {
+                FXMLLoader loader = new FXMLLoader((getClass().getResource(File.separatorChar + "fxml" + File.separatorChar +path)));
+                this.sceneMap.put(path, loader.load());
                 GuiController controller = loader.getController();
-                this.controllerMap.put(file.getName(), controller);
+                this.controllerMap.put(path, controller);
                 this.currentController = controller;
                 controller.addGui(this);
             }

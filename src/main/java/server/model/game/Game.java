@@ -42,10 +42,6 @@ public class Game {
 
     private AmmoTileDeck ammoTileDeck;
 
-    private Map<Integer, PlayerAbstract> clientToPlayer;
-    private Map<PlayerAbstract, Integer> playerToClient;
-
-
     public Game(int mapChoice, int skullChoice) {
         this.currentState = GameState.SETUP;
         this.currentGameBoard = new GameBoard(mapChoice,skullChoice);
