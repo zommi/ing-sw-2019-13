@@ -74,4 +74,6 @@ public interface GameProxyInterface extends Remote {
     public PlayerAbstract getPlayer(int clientID) throws RemoteException;
 
     public List<PlayerAbstract> getPlayerList() throws RemoteException;
+
+    void reconnect(int clientId) throws RemoteException;
 }

@@ -326,6 +326,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
+    public void reconnect(int clientId) {
+        Client client = serverRMI.getServer().getClientFromId(clientId);
+        client.getGameManager().reconnect(client.getPlayer());
+    }
+
+    @Override
     public PlayerAbstract getPlayer(int clientID) throws RemoteException{
         for(PlayerAbstract p:player){
             if(p.getClientID() == clientID)

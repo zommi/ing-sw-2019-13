@@ -20,7 +20,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
     public static final String ANSI_RESET = "\u001B[0m";
 
     private List<SpawnPoint> spawnPoints = new ArrayList<>();
-    private ArrayList<ArrayList<SquareAbstract>> squares = new ArrayList<>();
+    private List<ArrayList<SquareAbstract>> squares = new ArrayList<>();
     private List<Room> rooms = new ArrayList<>();
     private List<Color> roomsToBuild = new ArrayList<>();
     private boolean valid;
@@ -300,7 +300,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
         return squareList;
     }
 
-    public ArrayList<ArrayList<SquareAbstract>> getSquares() {
+    public List<ArrayList<SquareAbstract>> getSquares() {
         return squares;
     }
 
@@ -315,6 +315,19 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
     @Override
     public Iterator<SquareAbstract> iterator() {
         return new MapIterator();
+    }
+
+    public SquareAbstract getRandomSpawnpoint() {
+        int i = (int) (Math.random() * 3);
+        Color color;
+        switch(i){
+            case 0: color = Color.BLUE; break;
+            case 1: color = Color.RED; break;
+            case 2: color = Color.YELLOW; break;
+            default: color = Color.BLUE; break;
+
+        }
+        return getSpawnPoint(color);
     }
 
     private class MapIterator implements Iterator<SquareAbstract>{

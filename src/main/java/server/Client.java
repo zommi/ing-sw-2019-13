@@ -93,16 +93,10 @@ public class Client {
     }
 
     public void disconnect(){
-        if(socketClientHandler != null) {
-            socketClientHandler.setKeepThreadAlive(false);
-            //socketClientHandler.getInputStream().
-        }
-
-
         socketClientHandler = null;
         receiverInterface = null;
         try{
-            gameManager.getController().getCurrentGame().getPlayerFromId(clientID).setConnected(false);
+            gameManager.disconnect(getPlayer());
         }catch(NullPointerException e){
             //do nothing
         }

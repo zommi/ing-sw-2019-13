@@ -5,9 +5,6 @@ import client.Connection;
 import client.GameModel;
 import client.Updater;
 import client.gui.guielements.GuiController;
-import client.gui.guielements.GuiPowerupCard;
-import exceptions.GameAlreadyStartedException;
-import exceptions.NotEnoughPlayersException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import server.model.player.PlayerAbstract;
 
 import java.io.File;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.TimeUnit;
@@ -214,7 +208,7 @@ public class UpdaterGui extends Application implements Updater {
             }
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.mainGuiController.enableAll();
-                if (this.model.getToSpawn()){
+                if (this.model.isToSpawn()){
                     mainGuiController.spawn();
                 }
             } else {

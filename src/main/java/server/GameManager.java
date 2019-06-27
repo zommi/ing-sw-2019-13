@@ -1,5 +1,6 @@
 package server;
 
+import constants.Color;
 import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
@@ -23,6 +24,8 @@ public class GameManager {
     private boolean mapSkullsSet;
     private boolean maxPlayersReached;
 
+    private int activePlayersNum;
+
     private Server server;
 
 
@@ -33,6 +36,29 @@ public class GameManager {
         maxPlayersReached = false;
     }
 
+    public void disconnect(PlayerAbstract playerAbstract){
+        playerAbstract.setConnected(false);
+        if(startGame == 1) {
+            activePlayersNum--;
+            if (activePlayersNum < Constants.MIN_PLAYERS) {
+                endGame();
+            }
+        }
+    }
+
+    public void reconnect(PlayerAbstract playerAbstract){
+        playerAbstract.setConnected(true);
+        if(startGame == 1)
+            activePlayersNum++;
+    }
+
+    public void endGame(){
+        //todo
+        for(int i = 0; i<10; i++)
+            System.out.println(Color.RED.getAnsi() + "GAME OVER" + Constants.ANSI_RESET);
+
+        startGame = 2;
+    }
 
     public synchronized boolean isMapSkullsSet() {
         return mapSkullsSet;
@@ -73,7 +99,7 @@ public class GameManager {
     }
 
     //posso far partire un thread del game passandogli playerList, controller, gameproxy
-    public int startMatch(){ //TODO here we have a problem: what if the player does not choose the character in time?
+    public int startMatch(){
         if(playerList.size() < Constants.MIN_PLAYERS){ //if after 30 seconds we have less than 3 players, the game does not start
 
             //todo throws null pointer exception when calling sendtoeverybody, change also listOfClients
@@ -94,6 +120,8 @@ public class GameManager {
             for(PlayerAbstract playerAbstract : playerList){
                 game.addPlayer(playerAbstract);
             }
+
+            activePlayersNum = game.getActivePlayers().size();
 
             //adding active characters to the gameboard
             for(PlayerAbstract playerAbstract : game.getActivePlayers()){
@@ -120,7 +148,7 @@ public class GameManager {
                 sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
             }
 
-            startGame = 1;
+            startGame = 1;  //game is started
 
             //informs socket clients that startGame has changed
             sendToEverybody(null);
@@ -192,53 +220,6 @@ public class GameManager {
             }
         }
     }
-
-/*
-        try {
-            Map<Integer, ReceiverInterface> temp = getGameProxy().getClientRMIadded();
-            System.out.println("Sending the update to: "+clientID);
-            for (Map.Entry<Integer, ReceiverInterface> entry : temp.entrySet()) {
-                ReceiverInterface value = entry.getValue();
-                idToDisconnect = entry.getKey();  //when it catches the exception we know which id is the one
-                if(value.getClientID() == clientID){
-                    temp.get(idToDisconnect).publishMessage(serverAnswer);
-                    System.out.println("Sent an update to a client");
-                    break;
-                }
-            }
-        }
-        catch(RemoteException e){
-            System.out.println("A client has been disconnected");
-            try{
-                for(int i = 0; i < listOfClients.size(); i++){
-                    if(listOfClients.get(i) == idToDisconnect){
-                        listOfClients.remove(i);
-                    }
-                }
-                if(listOfClients.size() < 3){
-                    //TODO termina la partita
-                    System.out.println("The game is ended. We are now proceeding in proclaiming the winner");
-                }
-                else
-                {
-                    System.out.println("Disconnecting the player: " +idToDisconnect);
-                    getGameProxy().getClientRMIadded().remove(idToDisconnect); //ELIMINATES THE CONNECTION FROM THE CONNECTION HASMAP
-                    for(PlayerAbstract p:playerList){
-                        if(p.getClientID() == idToDisconnect){   //ELIMINATES THE PLAYER FROM THE LIST IN SERVER
-                            playerDisconnectedList.add(p);
-                            p.setConnected(false);
-                            System.out.println("Disconnected the player: " +idToDisconnect);
-                        }
-                    }
-                    game.getCurrentGameBoard().getHashMap().remove(idToDisconnect);
-                }
-            }
-            catch(RemoteException re){
-                re.printStackTrace();
-            }
-
-        }
-    }*/
 
     public Controller getController(){
         return controller;

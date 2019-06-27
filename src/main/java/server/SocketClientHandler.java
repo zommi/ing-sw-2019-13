@@ -1,10 +1,7 @@
 package server;
 
 
-import client.AsynchronousInfo;
-import client.NameInfo;
-import client.SetupInfo;
-import client.Info;
+import client.*;
 import view.ServerAnswer;
 
 import java.io.IOException;
@@ -79,6 +76,9 @@ public class SocketClientHandler implements Runnable {
         else if(info instanceof AsynchronousInfo){
             server.getGameManagerFromId(clientID).getController()
                     .makeAsynchronousAction(clientID, ((AsynchronousInfo) info).getInfo());
+        }
+        else if(info instanceof ReconnectInfo){
+            server.getGameManagerFromId(clientID).reconnect(server.getClientFromId(clientID).getPlayer());
         }
         else{
             server.getGameManagerFromId(clientID).getController().makeAction(clientID, info);

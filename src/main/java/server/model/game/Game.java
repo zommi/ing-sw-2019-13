@@ -105,7 +105,7 @@ public class Game {
     }
 
     public PlayerAbstract getCurrentPlayer(){
-        return this.activePlayers.get(currentPlayerIndex);
+        return activePlayers.get(currentPlayerIndex);
     }
 
     public void setFirstPlayer(int index) throws WrongGameStateException{

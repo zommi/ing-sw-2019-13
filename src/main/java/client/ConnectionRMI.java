@@ -188,6 +188,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             else if(action instanceof SetupInfo){
                 gameProxy.saveSetup(this, action);
             }
+            else if(action instanceof ReconnectInfo){
+                gameProxy.reconnect(((ReconnectInfo) action).getClientId());
+            }
             else{
                 gameProxy.makeAction(clientID, action);
 

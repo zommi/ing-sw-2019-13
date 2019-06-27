@@ -233,7 +233,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             String stringChoice;
 
             do{
-                System.out.println(">Choose your character:");
+                System.out.println(">Choose your fighter:");
                 for(int i = 0; i< Figure.values().length; i++){
                     System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
                 }
@@ -300,7 +300,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         ActionParser actionParser = new ActionParser(this);
 
 
-        //TODO MANCA LA RICEZIONE DI RISPOSTE !!!!
         while (alwaysTrue) {
             //gameModel.setClientChoice(false);
             System.out.println("entering the alwaysTrue cycle");
@@ -345,7 +344,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
 
                     System.out.println("Checking if you need to spawn");
-                    if(gameModel.getToSpawn()){
+                    if(gameModel.isToSpawn()){
                         spawn(actionParser);
                     }
                     this.startInput(actionParser);

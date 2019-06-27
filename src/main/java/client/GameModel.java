@@ -25,6 +25,8 @@ public class GameModel extends Observable implements Serializable {
     private List<Info> grenadeAction = new ArrayList<>();
     private int numberOfGrenades;
 
+    private boolean disconnected;
+
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
     private SetupConfirmAnswer setupConfirmAnswer;
@@ -54,6 +56,10 @@ public class GameModel extends Observable implements Serializable {
 
     public void setToSpawn(boolean decision){
         toSpawn = decision;
+    }
+
+    public boolean isDisconnected() {
+        return disconnected;
     }
 
     public List<String> getCharactersNames(){
@@ -95,7 +101,7 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("setup");
         }
 
-        if(answer instanceof SetupConfirmAnswer){
+        else if(answer instanceof SetupConfirmAnswer){
             setupConfirmAnswer = (SetupConfirmAnswer) answer;
             toSpawn = ((SetupConfirmAnswer) answer).isSpawn();
             setChanged();
@@ -154,8 +160,8 @@ public class GameModel extends Observable implements Serializable {
         }
 
         else if(answer instanceof SpawnCommandAnswer) {
-            setChanged();
             toSpawn = true;
+            setChanged();
             notifyObservers("Spawn phase");
         }
         else if(answer instanceof MessageAnswer){
@@ -163,9 +169,15 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("Message");
         }
+        else if(answer instanceof DisconnectAnswer){
+            disconnected = true;
+            setChanged();
+            notifyObservers("Disconnected");
+        }
+
     }
 
-    public boolean getToSpawn(){
+    public boolean isToSpawn(){
         return this.toSpawn;
     }
 

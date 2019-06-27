@@ -330,7 +330,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableMove(){
-        if(!this.model.getToSpawn()) {
+        if(!this.model.isToSpawn()) {
             for (GuiTile tile : tiles) {
                 tile.setOnMousePressed(e -> {
                     Info moveInfo = this.actionParser.createMoveEvent(tile.getRow(), tile.getCol());
@@ -345,7 +345,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableCollect(MouseEvent mouseEvent) {
-        if(!this.model.getToSpawn()) {
+        if(!this.model.isToSpawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
                     Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
@@ -366,7 +366,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableShoot(MouseEvent mouseEvent) {
-        if(!this.model.getToSpawn()){
+        if(!this.model.isToSpawn()){
             logText("Select a weapon to use!\n");
             for(Node card : weaponHand.getChildren()){
                 card.setDisable(false);
@@ -377,7 +377,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enablePowerup(MouseEvent mouseEvent){
-        if(!this.model.getToSpawn()){
+        if(!this.model.isToSpawn()){
             logText("Select a powerup to use! \n");
             for(Node card : powerupHand.getChildren()){
                 card.setDisable(false);
@@ -491,7 +491,7 @@ public class MainGuiController implements GuiController {
                 defaultCard.setCursor(Cursor.DEFAULT);
                 defaultCard.setFitWidth(powerupHand.getWidth() / 3);
                 defaultCard.setFitHeight(powerupHand.getHeight());
-                if(model.getToSpawn()){
+                if(model.isToSpawn()){
                     setSpawn(card);
                 }else{
                     Info info = this.actionParser.createPowerUpEvent(finalPowerupCard.getCard());
@@ -502,7 +502,7 @@ public class MainGuiController implements GuiController {
                 }
                 powerupHand.add(defaultCard, finalI, 0);
             });
-            if(!model.getToSpawn())powerupCard.setDisable(true);
+            if(!model.isToSpawn())powerupCard.setDisable(true);
             this.powerupHand.add(powerupCard,i,0);
             i++;
         }
