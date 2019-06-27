@@ -2,6 +2,7 @@ package server;
 
 
 import client.*;
+import server.model.game.GameState;
 import view.ServerAnswer;
 
 import java.io.IOException;
@@ -46,8 +47,16 @@ public class SocketClientHandler implements Runnable {
             } catch (IOException e) {
                 System.out.println("CLIENT HAS DISCONNECTED");
                 try{
-                    if(clientID != -1)
+                    if(clientID != -1){
+
                         server.getClientFromId(clientID).disconnect();
+
+
+                        if(server.getGameManagerFromId(clientID).getGameState() == GameState.GAME_OVER){
+                            keepThreadAlive = false;
+                        }
+
+                    }
                 }catch(NullPointerException npe){
                     //do nothing
                 }

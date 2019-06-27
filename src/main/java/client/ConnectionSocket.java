@@ -48,25 +48,8 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
-
     public boolean getError(){
         return this.error;
-    }
-
-    @Override
-    public String getCharacterName(){
-        return characterName;
-
-    }
-
-    @Override
-    public void addPlayerCharacter(String name) {
-
-    }
-
-    public boolean isCharacterChosen(String name){
-        return Figure.fromString(name) != null;
-        //doesn't check if character is taken by another player, in that case it will be assigned random
     }
 
     public void setMapNum(int mapNum) {
@@ -75,19 +58,6 @@ public class ConnectionSocket implements Connection {
 
     public void setInitialSkulls(int initialSkulls) {
         this.initialSkulls = initialSkulls;
-    }
-
-    public String getMapName() {
-        if(this.mapNum == 0)
-            return "Map 1";
-        else if(this.mapNum == 1)
-            return "Map 2";
-        else if(this.mapNum == 2)
-            return "Map 3";
-        else if(this.mapNum == 3)
-            return "Map 4";
-        else
-            return "No one has chosen yet";
     }
 
     public int getClientID(){
@@ -141,6 +111,7 @@ public class ConnectionSocket implements Connection {
     }
 
     public void send(Info info){
+        gameModel.setJustDidMyTurn(true);
         try {
             outputStream.reset();
             outputStream.writeObject(info);
@@ -148,6 +119,7 @@ public class ConnectionSocket implements Connection {
         } catch (IOException e) {
             System.console().printf("ERROR DURING SERIALIZATION\n");
             e.printStackTrace();
+            gameModel.setJustDidMyTurn(false);
         }
     }
 
@@ -159,19 +131,6 @@ public class ConnectionSocket implements Connection {
 
     public GameModel getGameModel(){
         return this.gameModel;
-    }
-
-    @Override
-    public void add(String name, int map, int initialSkulls) {
-
-    }
-
-    public void add(int map, int initialSkulls){
-        send(new SetupInfo());
-    }
-
-    public int getInitialSkulls(){
-        return this.initialSkulls;
     }
 
     public void setClientID(int clientID) {

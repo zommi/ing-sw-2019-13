@@ -19,10 +19,6 @@ public class ServerRMI implements Runnable {
     private final Registry registry;
 
 
-
-
-
-
     public ServerRMI(Server server) throws RemoteException{
 
         registry = LocateRegistry.createRegistry(1099);
@@ -40,19 +36,6 @@ public class ServerRMI implements Runnable {
             System.out.println("Exception caught while binding...");
             e.printStackTrace();
         }
-    }
-
-    public List<ReceiverInterface> getClientsAdded() {
-        try {
-            return gameProxy.getClientsRMIadded();
-        }
-        catch(RemoteException e){
-            return Collections.emptyList();
-        }
-    }
-
-    public int addClient(){
-        return server.addClient();
     }
 
     public void addMapClient(PlayerAbstract p) {

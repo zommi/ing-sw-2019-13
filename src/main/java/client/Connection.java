@@ -1,51 +1,36 @@
 package client;
 
-import server.model.map.GameMap;
-import view.ServerAnswer;
-
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
-public interface Connection extends Serializable {
+ public interface Connection extends Serializable {
 
-    public void addPlayerCharacter(String name);
+     int getCurrentID();
 
-    public boolean isCharacterChosen(String name);
+     int getGrenadeID();
 
-    public String getCharacterName();
+     String getCurrentCharacterName();
 
-    public int getCurrentID();
+     int getStartGame();
 
-    public int getGrenadeID();
+     int getClientID();
 
-    public String getCurrentCharacterName();
+     boolean getError();
 
-    public int getStartGame();
+     void send(Info action);
 
-    public int getInitialSkulls();
+     void sendAsynchronous(Info action);
 
-    public int getClientID();
+     void configure(String name);
 
-    public boolean getError();
+     GameModel getGameModel();
 
-    public void send(Info action);
-
-    public void sendAsynchronous(Info action);
-
-    public String getMapName();
-
-    public void configure(String name);
-
-    public GameModel getGameModel();
-
-    public void add(String name, int map, int initialSkulls);
-
-    void setClientID(int clientID);
-    void setMapNum(int mapNum);
-    void setInitialSkulls(int initialSkulls);
-    void setStartGame(int startGame);
-    void setGrenadeID(int grenadeID);
-    void setCurrentID(int currentID);
-    void setCurrentCharacter(String currentCharacter);
+     void setClientID(int clientID);
+     void setMapNum(int mapNum);
+     void setInitialSkulls(int initialSkulls);
+     void setStartGame(int startGame);
+     void setGrenadeID(int grenadeID);
+     void setCurrentID(int currentID);
+     void setCurrentCharacter(String currentCharacter);
 
 }

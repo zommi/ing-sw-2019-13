@@ -142,7 +142,7 @@ public class TurnHandler {
                     timer.schedule(timerTask, 0);
                 }else {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
-                    System.out.println("changed player in game");
+                    System.out.println("changed player in game, moving from endturn to firstAction");
                     controller.sendChangeCurrentPlayer();
                     currentPhase = TurnPhase.FIRST_ACTION;
 

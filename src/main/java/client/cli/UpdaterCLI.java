@@ -20,25 +20,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.invoke.MethodHandles.loop;
+
 public class UpdaterCLI  implements Updater,Runnable{
 
 
     private Connection connection;
     private boolean alwaysTrue = true;
-    private boolean justDidMyTurn;
 
 
     ExecutorService executorService;
 
     private GameModel gameModel;
     private boolean clientChoice;
+    private boolean keepThreadAlive;
 
 
     public UpdaterCLI(){
         super();
+        keepThreadAlive = true;
     }
-
-
 
 
     @Override
@@ -88,14 +89,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-
-
-
-
-
-
     @Override
-    public void set() throws NotBoundException, RemoteException, NotEnoughPlayersException, GameAlreadyStartedException {
+    public void set() throws RemoteException, NotEnoughPlayersException {
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
         String playerName;
@@ -253,11 +248,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             } while (!set);
 
             System.out.println("Name is: " +characterName.toUpperCase());
-            //connection.addPlayerCharacter(characterName);
-        }
-        else{
-            /*characterName = connection.getCharacterName();
-            System.out.println("Playing with..." +characterName);*/
         }
 
         //prepares and sends setupInfo
@@ -272,9 +262,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         connection.send(setupInfo);
 
-        //connection.add(playerName, mapNumber, initialSkulls);
-
-
         if(connection.getStartGame() == 2){
             System.out.println("Unfortunately, not enough people joined the game so you will be disconnected. Bye");
             throw new NotEnoughPlayersException();
@@ -284,26 +271,35 @@ public class UpdaterCLI  implements Updater,Runnable{
 
     @Override
     public void run(){
-        PlayerHandAnswer playerHand;
-        PlayerBoardAnswer playerBoard;
-        List<WeaponCard> weapons;
-        List<PowerUpCard> powerups;
 
         try {
             set();
         }
-        catch(NotBoundException|RemoteException|NotEnoughPlayersException|GameAlreadyStartedException nbe) {
+        catch(RemoteException|NotEnoughPlayersException nbe) {
             System.out.println("Exception caught");
             return;
         }
 
+        while(keepThreadAlive){
+            startLoop();
+        }
+
+    }
+
+    private void startLoop() {
+        PlayerHandAnswer playerHand;
+        PlayerBoardAnswer playerBoard;
+        List<WeaponCard> weapons;
+        List<PowerUpCard> powerups;
         ActionParser actionParser = new ActionParser(this);
 
-
-        while (alwaysTrue) {
-            //gameModel.setClientChoice(false);
+        while (!gameModel.isDisconnected()) {
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
+
+                //this is to avoid (printing wrong informations && blocking on input)
+                waitAfterAction();
+
                 actionParser.addGameModel(gameModel);
                 System.out.println("Game is already started");
 
@@ -347,6 +343,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                     if(gameModel.isToSpawn()){
                         spawn(actionParser);
                     }
+
+                    waitAfterAction();
+
                     this.startInput(actionParser);
                 }
                 else if(connection.getGrenadeID() != -1){
@@ -393,17 +392,17 @@ public class UpdaterCLI  implements Updater,Runnable{
                                 read = myObj.nextLine();
 
                                 try {
-                                     choice = Integer.parseInt(read) - 1;
-                                     if(tagbackChosen.contains(choice)){
-                                         System.out.println("You already chose this tagback");
-                                     }
-                                     else if ((choice+1 != size) && (!tagbackChosen.contains(choice)) && (choice >= 0) && (choice < size-1)) {
+                                    choice = Integer.parseInt(read) - 1;
+                                    if(tagbackChosen.contains(choice)){
+                                        System.out.println("You already chose this tagback");
+                                    }
+                                    else if ((choice+1 != size) && (!tagbackChosen.contains(choice)) && (choice >= 0) && (choice < size-1)) {
                                         tagbackChosen.add(choice);
-                                     }
-                                     else if (choice+1  == size){
-                                         chosenPowerup = true;
-                                     }
-                                     else
+                                    }
+                                    else if (choice+1  == size){
+                                        chosenPowerup = true;
+                                    }
+                                    else
                                         System.out.println("You chose a number not available");
                                 } catch (NumberFormatException e) {
                                     System.out.println("Please insert a valid number.");
@@ -432,8 +431,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
                 else{
                     System.out.println("For now it is not your turn: ");// +
-                           // getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
-                           // connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
+                    // getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
+                    // connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
                     try{
                         TimeUnit.SECONDS.sleep(5);
                     }
@@ -456,9 +455,31 @@ public class UpdaterCLI  implements Updater,Runnable{
                 return;
             }
         }
+
+        System.out.println("You have been disconnected! Press ENTER to reconnect");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        connection.send(new ReconnectInfo(connection.getClientID()));
+
+        while(gameModel.isDisconnected()){
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 
-
+    private void waitAfterAction() {
+        while(gameModel.isJustDidMyTurn()){
+            try {
+                System.out.println("Wait please");
+                TimeUnit.SECONDS.sleep(1);
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void spawn(ActionParser actionParser){
         String read;
@@ -508,10 +529,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
     }
 
-
-
-
-
     public void startInput(ActionParser actionParser){
         boolean ask = true;
         while(ask) {
@@ -533,6 +550,11 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
                     "\nMAP to show the map");
             read = myObj.nextLine();
+
+            //this is made to avoid asking for an action if player is disconnected
+            if(gameModel.isDisconnected())
+                break;
+
             int result = -1;
             if (read.equalsIgnoreCase("M")) {       //move
                 System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());

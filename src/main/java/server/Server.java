@@ -21,8 +21,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private int lastClientIdAdded;
-    private List<Integer> listOfClients = new ArrayList<>();
+    private int nextClientId;
 
     private ServerRMI serverRMI;
     private SocketServer socketServer;
@@ -48,6 +47,10 @@ public class Server {
         serverRMI = new ServerRMI(this);
     }
 
+    public void removeClient(int clientId){
+
+    }
+
     public Map<String, Integer> getNameToId() {
         return nameToId;
     }
@@ -68,18 +71,11 @@ public class Server {
         return serverRMI.getGameProxy();
     }
 
-    public synchronized int addClient(){
-        if(listOfClients.isEmpty()){
-            listOfClients.add(0);
-            lastClientIdAdded = 0;
-        }
-        else{ //it is not the first element added in the list so it is not the first client.
-            listOfClients.add(lastClientIdAdded +1);
-            lastClientIdAdded = lastClientIdAdded + 1;
-        }
-        System.out.println("Added the clientID " + lastClientIdAdded);
-
-        return lastClientIdAdded;
+    public synchronized int getNewClientId(){
+        int idToReturn = nextClientId;
+        System.out.println("Added the clientID " + nextClientId);
+        nextClientId++;
+        return idToReturn;
     }
 
     public synchronized void addClient(Client client){
@@ -92,7 +88,7 @@ public class Server {
         Integer clientID = getIdFromName(name);
         if(clientID == null){
             //player has never connected before
-            clientID = addClient();     //just gets the id
+            clientID = getNewClientId();     //just gets the id
             Client client = new Client(clientID, getCurrentGameManager(), name);
 
             if(connectionType.equalsIgnoreCase("socket"))

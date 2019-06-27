@@ -3,7 +3,6 @@ package server;
 import constants.Constants;
 import server.controller.Controller;
 import server.controller.turns.TurnPhase;
-import view.DisconnectAnswer;
 
 import java.util.Date;
 import java.util.TimerTask;
@@ -23,19 +22,24 @@ public class NextPlayerTimer extends TimerTask {
         start();
         System.out.println("Action timer task finished at: " + new Date());
 
-        if(!activated)
+        if(!activated) {
+            System.out.println("Timer not triggered");
             return;
+        }
 
         System.out.println("Timer expired, moving to END_TURN");
 
         //this just sets player as disconnected, but socket/rmi connection isn't stopped
         //it won't be taken into account when switching to next player
 
-        controller.getGameManager().sendToSpecific(new DisconnectAnswer(), controller.getCurrentID());
         controller.getGameManager().disconnect(controller.getCurrentGame().getCurrentPlayer());
-
-        controller.getCurrentGame().getTurnHandler().setCurrentPhase(TurnPhase.END_TURN);
-        controller.getCurrentGame().getTurnHandler().nextPhase();
+        if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
+            controller.getGameManager().endGame();
+        }
+        else {
+            controller.getCurrentGame().getTurnHandler().setCurrentPhase(TurnPhase.END_TURN);
+            controller.getCurrentGame().getTurnHandler().nextPhase();
+        }
     }
 
     private void start() {

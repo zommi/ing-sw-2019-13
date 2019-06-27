@@ -27,6 +27,8 @@ public class GameModel extends Observable implements Serializable {
 
     private boolean disconnected;
 
+    private boolean justDidMyTurn;
+
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
     private SetupConfirmAnswer setupConfirmAnswer;
@@ -36,6 +38,14 @@ public class GameModel extends Observable implements Serializable {
         setupRequestAnswer = null;
         setupConfirmAnswer = null;
         clientID = -9;
+    }
+
+    public boolean isJustDidMyTurn() {
+        return justDidMyTurn;
+    }
+
+    public void setJustDidMyTurn(boolean justDidMyTurn) {
+        this.justDidMyTurn = justDidMyTurn;
     }
 
     public int getGrenade(){
@@ -174,7 +184,13 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("Disconnected");
         }
+        else if(answer instanceof ReconnectAnswer){
+            disconnected = false;
+            setChanged();
+            notifyObservers("Reconnected");
+        }
 
+        justDidMyTurn = false;
     }
 
     public boolean isToSpawn(){

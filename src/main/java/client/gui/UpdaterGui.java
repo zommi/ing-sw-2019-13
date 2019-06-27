@@ -241,10 +241,6 @@ public class UpdaterGui extends Application implements Updater {
         return character;
     }
 
-    public void createGame(){
-        this.connection.add(this.playerName,this.mapIndex,this.initialSkulls);
-    }
-
     public void setPlayerName(String name) {
         this.playerName = name;
     }

@@ -1,6 +1,5 @@
 package server.model.game;
 
-import client.weapons.Weapon;
 import exceptions.*;
 import constants.Color;
 import server.controller.turns.TurnHandler;
@@ -12,7 +11,6 @@ import server.model.player.*;
 import server.model.map.*;
 import view.ListOfWeaponsAnswer;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -69,6 +67,10 @@ public class Game {
                 this.weaponList.add(temp1);
             }
         }
+    }
+
+    public void setCurrentState(GameState currentState) {
+        this.currentState = currentState;
     }
 
     public AmmoTile drawAmmo(){
@@ -133,20 +135,14 @@ public class Game {
 
     public void nextState() throws WrongGameStateException{
         switch (currentState){
-            case START_MENU:
-                currentState = GameState.SETUP;
-                break;
             case SETUP:
-                currentState = GameState.NORMAL_TURN;
+                currentState = GameState.NORMAL;
                 break;
-            case NORMAL_TURN:
+            case NORMAL:
                 currentState = GameState.FINAL_FRENZY;
                 break;
             case FINAL_FRENZY:
-                currentState = GameState.END_GAME;
-                break;
-            case END_GAME:
-                currentState = GameState.START_MENU;
+                currentState = GameState.GAME_OVER;
                 break;
             default:
                 throw new WrongGameStateException();

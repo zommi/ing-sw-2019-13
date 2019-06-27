@@ -137,26 +137,32 @@ public class Controller {
         //    currentGame.nextState();
         //}
 
-        if(turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
-                !(action instanceof ReloadInfo))
-            return false;
+        if (!currentPlayer.isConnected() ||
+            currentID != clientID ||
+            currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
+            sendErrorMessage(clientID, "It's not that easy to cheat here, try again!");
+                return false;
+        }
 
-        if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){
-            System.out.println("The game is finished, the winner is...");
+        if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){
+            sendErrorMessage(clientID, "You cannot do that now, game is over!");
+            return false;
+        }
+
+        if(turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
+                !(action instanceof ReloadInfo)){
+            sendErrorMessage(clientID);
+            return false;
+        }
+
+        /*if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){
             try{
                 currentGame.nextState();
             }
             catch(WrongGameStateException e){
                 e.printStackTrace();
             }
-        }
-
-        if (  !currentPlayer.isConnected() ||
-                currentPlayer.getPlayerState().equals(PlayerState.DEAD) ||
-                currentGame.getCurrentState().equals(GameState.END_GAME)) {
-            return false;
-        }
-
+        }*/
 
         //checks and executes actions
 
@@ -165,8 +171,10 @@ public class Controller {
         if(action instanceof ReloadInfo){
 
             //checks that it's not the wrong time to reload
-            if(turnHandler.getCurrentPhase() != TurnPhase.END_TURN)
+            if(turnHandler.getCurrentPhase() != TurnPhase.END_TURN) {
+                sendErrorMessage(clientID);
                 return false;
+            }
 
             ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
             actionOk = turnHandler.setAndDoAction(reloadAction);
@@ -295,6 +303,7 @@ public class Controller {
                         }
                     }
                 }
+
             }else{      //shoot action not valid
                 sendErrorMessage(clientID);
             }
@@ -312,8 +321,13 @@ public class Controller {
         return true;
     }
 
-    private void sendErrorMessage(int clientID) {
-        gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientID);
+    private void sendErrorMessage(int clientId) {
+        gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientId);
+    }
+
+    private void sendErrorMessage(int clientId, String message){
+        gameManager.sendToSpecific(new MessageAnswer(message), clientId);
+
     }
 
     private void sendGrenadeAnswer() {

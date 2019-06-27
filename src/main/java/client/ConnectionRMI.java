@@ -18,14 +18,8 @@ import java.util.List;
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
     private GameProxyInterface gameProxy;
-    private String mapChoice;
-    private int initialSkulls;
 
     private boolean error = false;
-    private boolean playerNameSet = false;
-    private boolean initialSkullsSet = false;
-    private boolean characterNameSet = false;
-    private boolean mapSet = false;
     private GameModel gameModel;
     private int clientID;
     //private static final String SERVER_ADDRESS  = "192.168.43.66";
@@ -47,16 +41,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
         return null;
     }
-
-    /*@Override
-    public void setClientHasChosen(){
-        try{
-            gameProxy.setClientHasChosenPowerup();
-        }
-        catch(RemoteException e){
-            e.printStackTrace();
-        }
-    }*/
 
     @Override
     public int getStartGame(){
@@ -150,37 +134,13 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
-
-    @Override
-    public boolean isCharacterChosen(String name) {
-        boolean found = false;
-        for(Figure figure : Figure.values()){
-            if(figure.name().equalsIgnoreCase(name))
-                found = true;
-        }
-        if (found) {
-            try{
-                if(gameProxy.isCharacterTaken(name, clientID)){
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            }
-            catch(RemoteException re){
-                System.out.println("Exception caught");
-            }
-        }
-        return false;
-    }
-
-
     @Override
     public int getClientID() {
         return clientID;
     }
 
     public void send(Info action){
+        gameModel.setJustDidMyTurn(true);
         try {
             if (action instanceof NameInfo) {
                 gameProxy.saveName(this, action);
@@ -198,6 +158,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }catch(RemoteException e){
             System.out.println("Remote exception caught");
             e.printStackTrace();
+            gameModel.setJustDidMyTurn(false);
         }
 
     }
@@ -220,18 +181,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public GameModel getGameModel(){
         return this.gameModel;
-    }
-
-    @Override
-    public int getInitialSkulls(){
-        try {
-            return gameProxy.getInitialSkulls(clientID);
-        }
-        catch (RemoteException re){
-            System.out.println("Could not get the initial skulls from the server");
-            re.printStackTrace();
-        }
-        return 0;
     }
 
     public boolean getError(){
@@ -260,95 +209,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
     }
 
-    public void addPlayerCharacter(String name){
-        System.out.println("Trying to send the name of your character to the server...");
-        while (!characterNameSet) {
-            try{
-                characterNameSet = gameProxy.addPlayerCharacter(name.toUpperCase(), clientID);
-                gameProxy.addMapPlayer(clientID);
-                characterNameSet = true;
-                System.out.println("Name sent to to the server!");
-            }
-            catch(RemoteException re){
-                System.out.println("Could not send the character");
-                re.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public String getCharacterName(){
-        try{
-            return gameProxy.getCharacterName(clientID);
-        }
-        catch (RemoteException e){
-            e.printStackTrace();
-        }
-        return "No name yet";
-    }
-
-    @Override
-    public void add(String playerName, int mapClient, int initialSkulls){
-        //gameProxy.addClient(player, this.clientID); //i add a line in the hashmap of the gameModel
-
-        if(clientID == 0) {
-            System.out.println("Trying to send your choice of initial skulls to the server...");
-            while (!initialSkullsSet) {
-                try {
-                    initialSkullsSet = gameProxy.sendInitialSkulls(initialSkulls, clientID);
-                    initialSkullsSet = true;
-                } catch (RemoteException re) {
-                    System.out.println("Could not send the initial skulls");
-                    re.printStackTrace();
-                }
-            }
-            try{
-                this.initialSkulls = gameProxy.getInitialSkulls(clientID);
-            }
-            catch(RemoteException e){
-                System.out.println("Remote Exception");
-            }
-        }
-
-        //devo guardare che non ci sia già.
-
-        System.out.println("Trying to send your name to the server...");
-        while (!playerNameSet) {
-            try{
-                playerNameSet = gameProxy.sendPlayer(null, clientID);
-            }
-            catch(RemoteException re){
-                System.out.println("Could not send the player");
-                re.printStackTrace();
-            }
-        }
-
-        System.out.println("The server received your name...");
-
-        if(clientID == 0){
-            System.out.println("Sending your chosen map to the server...");
-            while(!mapSet){
-                try{
-                    mapSet = gameProxy.sendMap(mapClient, clientID);
-                    mapSet = true;
-                }
-                catch(RemoteException re){
-                    System.out.println("Could not send the map");
-                }
-            }
-            System.out.println("The server received your choice of the map...");
-            try{
-                this.mapChoice = gameProxy.getMapName();
-            }
-            catch(RemoteException e){
-                System.out.println("Remote Exception caught");
-            }
-
-        }
-
-        //TODO manca la parte in cui salvo le scelte del client!
-    }
-
     @Override
     public void setClientIDExisting(int idAlreadyExisting) throws RemoteException{
         this.clientID = idAlreadyExisting;
@@ -357,18 +217,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public void setClientId(int clientId) {
         this.clientID = clientId;
-    }
-
-    @Override
-    public String getMapName() {
-        try{
-            return gameProxy.getMapName();
-        }
-        catch (RemoteException re){
-            System.out.println("Could not take the map name from the server");
-            re.printStackTrace();
-        }
-        return "No one has chosen yet";
     }
 }
 

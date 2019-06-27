@@ -5,6 +5,7 @@ import constants.Constants;
 import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
+import server.model.game.GameState;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 import view.*;
@@ -37,19 +38,22 @@ public class GameManager {
     }
 
     public void disconnect(PlayerAbstract playerAbstract){
+        sendToSpecific(new DisconnectAnswer(), controller.getCurrentID());
         playerAbstract.setConnected(false);
         if(startGame == 1) {
             activePlayersNum--;
-            if (activePlayersNum < Constants.MIN_PLAYERS) {
-                endGame();
-            }
         }
     }
 
     public void reconnect(PlayerAbstract playerAbstract){
+
         playerAbstract.setConnected(true);
+
         if(startGame == 1)
             activePlayersNum++;
+
+        //client has to be unlocked
+        sendToSpecific(new ReconnectAnswer(), playerAbstract.getClientID());
     }
 
     public void endGame(){
@@ -57,7 +61,15 @@ public class GameManager {
         for(int i = 0; i<10; i++)
             System.out.println(Color.RED.getAnsi() + "GAME OVER" + Constants.ANSI_RESET);
 
-        startGame = 2;
+        game.setCurrentState(GameState.GAME_OVER);
+    }
+
+    public int getActivePlayersNum() {
+        return activePlayersNum;
+    }
+
+    public GameState getGameState(){
+        return controller.getCurrentGame().getCurrentState();
     }
 
     public synchronized boolean isMapSkullsSet() {
