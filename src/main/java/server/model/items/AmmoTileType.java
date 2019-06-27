@@ -1,5 +1,6 @@
 package server.model.items;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,16 +11,19 @@ public class AmmoTileType {
     /**
      * number of red cubes in a tile
      */
+    @JsonProperty(value = "redCubes")
     private int redCubes;
 
     /**
      * number of blue cubes in a tile
      */
+    @JsonProperty(value = "blueCubes")
     private int blueCubes;
 
     /**
      * number of yellow cubes in a tile
      */
+    @JsonProperty(value = "yellowCubes")
     private int yellowCubes;
 
     /**
@@ -31,10 +35,13 @@ public class AmmoTileType {
     /**
      * number of tiles of the same type
      */
+    @JsonProperty
     private int numberOfCards;
 
+    @JsonProperty
     private String path;
 
+    @JsonCreator
     AmmoTileType(){
         this.redCubes = 0;
         this.blueCubes = 0;

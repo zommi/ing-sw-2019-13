@@ -3,9 +3,7 @@ package server.model.gameboard;
 import server.model.cards.*;
 import constants.Constants;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 import exceptions.ReadJsonErrorException;
@@ -46,12 +44,14 @@ public class PowerupDeck implements Serializable {
      */
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File(Constants.PATH_TO_POWERUP_JSON);
+        //File file = new File(Constants.PATH_TO_POWERUP_JSON);
+        InputStream powerupStream = getClass().getResourceAsStream(Constants.PATH_TO_POWERUP_JSON);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(powerupStream));
 
         PowerUp[] arrayOfPowerUps = new PowerUp[0];
 
         try {
-            arrayOfPowerUps = mapper.readValue(file, PowerUp[].class);
+            arrayOfPowerUps = mapper.readValue(reader, PowerUp[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }

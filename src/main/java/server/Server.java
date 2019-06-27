@@ -167,7 +167,7 @@ public class Server {
             //the gamemanager will manage illegal values
             gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
             gameManager.setMapChoice(setupInfo.getMapChoice());
-
+            System.out.println("CREO CONTROLLER"); //TODO togliere
             //now we can call createController because map and skulls have been set
             gameManager.createController();
 

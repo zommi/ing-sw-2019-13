@@ -6,6 +6,7 @@ import exceptions.NoSuchSquareException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -131,20 +132,16 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
      * @return a list with a string for every line of the text file
      */
     private List<String> generateSquareStructureFromFile(String path) {
-        Scanner scanner = null;
-        List<String> readInput = null;
-        try {
-            scanner = new Scanner(new File(path));
-            readInput = new ArrayList<>();
+        Scanner scanner;
+        List<String> readInput;
+        InputStream inputStream = getClass().getResourceAsStream(path);
+        scanner = new Scanner(inputStream);
+        readInput = new ArrayList<>();
 
-            while (scanner.hasNextLine()) {
-                readInput.add(scanner.nextLine());
-            }
-        } catch(FileNotFoundException e){
-            //TODO handle exception
-        } finally{
-            scanner.close();
+        while (scanner.hasNextLine()) {
+            readInput.add(scanner.nextLine());
         }
+        scanner.close();
 
         roomsToBuild = new ArrayList<>();
         squares = new ArrayList<>();

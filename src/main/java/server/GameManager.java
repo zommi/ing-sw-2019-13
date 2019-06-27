@@ -168,7 +168,7 @@ public class GameManager {
     public synchronized boolean addPlayer(PlayerAbstract player){
         if(maxPlayersReached)
             return false;   //player is not added
-
+        System.out.println("added " + player.getName());
         playerList.add(player);
         player.setCurrentGame(game);
         if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi

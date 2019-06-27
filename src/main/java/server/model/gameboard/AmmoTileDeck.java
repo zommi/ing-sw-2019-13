@@ -8,9 +8,7 @@ import server.model.items.AmmoCube;
 import server.model.items.AmmoTileType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -39,12 +37,14 @@ public class AmmoTileDeck implements Serializable {
      */
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File(Constants.PATH_TO_AMMOTILE_JSON);
+        //File file = new File(Constants.PATH_TO_AMMOTILE_JSON);
+        InputStream inputStream = getClass().getResourceAsStream(Constants.PATH_TO_AMMOTILE_JSON);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         AmmoTileType[] arrayOfTiles = new AmmoTileType[0];
 
         try {
-            arrayOfTiles = mapper.readValue(file, AmmoTileType[].class);
+            arrayOfTiles = mapper.readValue(reader, AmmoTileType[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }

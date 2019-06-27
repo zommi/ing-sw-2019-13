@@ -7,14 +7,19 @@ import server.model.items.AmmoCube;
 
 public class PowerUp {
 
+    @JsonProperty
     private int index;
 
+    @JsonProperty
     private String name;
 
+    @JsonProperty
     private Color value;
 
+    @JsonProperty
     private int numberOfCards;
 
+    @JsonProperty
     private String path;
 
 
