@@ -43,9 +43,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private void getProperties() {
         Properties properties = new Properties();
         try {
-            FileInputStream file = new FileInputStream(Constants.PATH_TO_CONFIG);
-            properties.load(file);
-            file.close();
+            properties.load(getClass().getResourceAsStream(Constants.PATH_TO_CONFIG));
             serverAddress = properties.getProperty("app.serverIp");
             registrationPort = Integer.valueOf(properties.getProperty("app.registryPort"));
             registrationRoom = properties.getProperty("app.registrationRoomName");
@@ -74,6 +72,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }
         catch(RemoteException e)
         {
+            e.printStackTrace();
             System.out.println("Exception while starting the game");
         }
         return 0;
@@ -218,8 +217,8 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             System.out.println("Connecting to the Remote Object... ");
 
             System.out.println("Connecting to the registry... ");
-            Registry registry = LocateRegistry.getRegistry(SERVER_ADDRESS,REGISTRATION_PORT);
-            gameProxy = (GameProxyInterface) registry.lookup(REGISTRATION_ROOM_NAME);
+            Registry registry = LocateRegistry.getRegistry(serverAddress,registrationPort);
+            gameProxy = (GameProxyInterface) registry.lookup(registrationRoom);
 
             System.out.println("Registering... ");
 
