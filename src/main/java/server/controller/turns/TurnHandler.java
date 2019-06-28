@@ -1,5 +1,6 @@
 package server.controller.turns;
 
+import constants.Constants;
 import server.NextPlayerTimer;
 import server.SpawnTimer;
 import server.controller.Controller;
@@ -22,6 +23,8 @@ public class TurnHandler {
 
     private Timer timer;
 
+    private int timerId;
+
     /*
     public void reloadWeapon(List<Weapon> weaponsToReload) throws InvalidMoveException{
         if(this.currentPhase == TurnPhase.END_TURN) {
@@ -35,6 +38,7 @@ public class TurnHandler {
     public TurnHandler(Controller controller){
         this.controller = controller;
         this.currentPhase = TurnPhase.FIRST_ACTION;
+        timerId = 0;
         timer = new Timer(true);
     }
 
@@ -73,7 +77,7 @@ public class TurnHandler {
         switch (currentPhase){
             case FIRST_ACTION:
                 //stopping first action timer
-                currentTimerTask = null;
+                currentTimerTask.cancel();
 
                 System.out.println("First action done, moving to second action");
                 currentPhase = TurnPhase.SECOND_ACTION;
@@ -85,8 +89,7 @@ public class TurnHandler {
 
             case SECOND_ACTION:
                 //stopping second action timer
-                currentTimerTask = null;
-
+                currentTimerTask.cancel();
 
                 System.out.println("Second action done, moving to next phase");
                 currentPhase = TurnPhase.END_TURN;
@@ -98,7 +101,7 @@ public class TurnHandler {
 
             case END_TURN:
                 //stopping reload timer, but also first and second action if they have been triggered(no problem)
-                currentTimerTask = null;
+                currentTimerTask.cancel();
 
                 controller.restoreSquares();
                 System.out.println("restored squares");
@@ -121,7 +124,7 @@ public class TurnHandler {
                 break;
             case SPAWN_PHASE:
                 //stopping spawn timer
-                currentTimerTask = null;
+                currentTimerTask.cancel();
 
                 controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                 System.out.println("changed player in game");
@@ -136,8 +139,9 @@ public class TurnHandler {
     }
 
     public void startNextPlayerTimer(){
-        currentTimerTask = new NextPlayerTimer(controller, controller.getCurrentGame().getCurrentPlayer());
-        timer.schedule(currentTimerTask, 0);
+        currentTimerTask = new NextPlayerTimer(controller, controller.getCurrentGame().getCurrentPlayer(), timerId);
+        timer.schedule(currentTimerTask, Constants.ACTION_TIMEOUT_MSEC);
+        timerId++;
     }
 
     public void startSpawnTimer(){

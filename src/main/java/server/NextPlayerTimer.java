@@ -18,23 +18,19 @@ import java.util.concurrent.TimeUnit;
 public class NextPlayerTimer extends TimerTask {
     private Controller controller;
     private PlayerAbstract playerAbstract;
+    private int id;
 
-    public NextPlayerTimer(Controller controller, PlayerAbstract playerAbstract){
+    public NextPlayerTimer(Controller controller, PlayerAbstract playerAbstract, int id){
         this.controller = controller;
         this.playerAbstract = playerAbstract;
+        this.id = id;
     }
 
     public void run(){
-        System.out.println("Action timer task started at: " + new Date());
-        start();
-        System.out.println("Action timer task finished at: " + new Date());
+        //System.out.println("Action timer " + id + " task started at: " + new Date());
+        //System.out.println("Action timer " + id + " triggered at: " + new Date());
 
-        if(controller.getCurrentGame().getTurnHandler().getCurrentTimerTask() != this) {
-            System.out.println("Timer not triggered");
-            return;
-        }
-
-        System.out.println("Timer expired, moving to END_TURN");
+        System.out.println("Timer " + id + " triggered, moving to END_TURN");
 
         //this just sets player as disconnected, but socket/rmi connection isn't stopped
         //it won't be taken into account when switching to next player
@@ -59,14 +55,6 @@ public class NextPlayerTimer extends TimerTask {
             }
             controller.getCurrentGame().getTurnHandler().setCurrentPhase(TurnPhase.END_TURN);
             controller.getCurrentGame().getTurnHandler().nextPhase();
-        }
-    }
-
-    private void start() {
-        try {
-            TimeUnit.SECONDS.sleep(Constants.ACTION_TIMEOUT_SEC);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
