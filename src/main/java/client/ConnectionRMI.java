@@ -18,6 +18,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
 
@@ -34,8 +35,8 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private static final int REGISTRATION_PORT = 1099;
     private int registrationPort;
 
-    public ConnectionRMI(int clientID) throws RemoteException{
-        this.clientID = clientID;
+    public ConnectionRMI() throws RemoteException{
+        this.clientID = -1;
         this.gameModel = new GameModel();
         getProperties();
     }
@@ -241,6 +242,34 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public void setClientId(int clientId) {
         this.clientID = clientId;
+        startPing();
+    }
+
+    @Override
+    public void ping() {
+        //
+    }
+
+    private void startPing() {
+        new Thread(){
+            private boolean keepThreadAlive = true;
+
+            @Override
+            public void run(){
+                while(keepThreadAlive) {
+                    try {
+                        gameProxy.ping();
+                        TimeUnit.SECONDS.sleep(Constants.PING_DELAY_SEC);
+                    } catch (RemoteException e) {
+                        System.out.println("Remote exception after ping");
+                        keepThreadAlive = false;
+                        gameModel.setServerOffline(true);
+                    }catch(InterruptedException e1){
+                        //
+                    }
+                }
+            }
+        }.start();
     }
 }
 

@@ -89,8 +89,8 @@ public class StartMenuController implements GuiController {
         this.gui.setPlayerName(this.nameField.getText());
         this.gui.setConnection(
                 this.connectionBox.getValue().toString().equals("RMI") ?
-                        new ConnectionRMI(0) :
-                        new ConnectionSocket(0)
+                        new ConnectionRMI() :
+                        new ConnectionSocket()
         );
         this.gui.setModel();
         this.gui.attachToObserver();

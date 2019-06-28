@@ -36,8 +36,8 @@ public class ConnectionSocket implements Connection {
     private int registrationPort;
     private String currentCharacter;
 
-    public ConnectionSocket(int clientID){
-        this.clientID = clientID;
+    public ConnectionSocket(){
+        this.clientID = -1;
         this.gameModel = new GameModel();
         this.socket = null;
         this.characterName = "No name yet";

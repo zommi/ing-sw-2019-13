@@ -3,7 +3,6 @@ testare arma che sceglie rooms
 mandare messaggi che informano client di cosa è successo nell'azione appena fatta, anche in caso di errore allo specifico client
     uno anche per il numero dell'azione da fare magari
 
-rendere metodi sendtospecific e everybody generici, per socket e rmi (ora nel controller sono specifici per rmi)
 
 togliere deck da carte
 
@@ -21,22 +20,18 @@ powerup dentro powerupcard UNDEFINED eppure stampa lo stesso il nome, metterli s
 mandare nomi dei character e non dei giocatori nella shootpack
 
 
-sistemare invio cose al client ripetute
 
 aggiungere alla cli le info degli altri giocatori, tipo danni marchi e armi scariche
 
 sparare senza far danno a nessuno?
 
-respawn cli
 
-mandare carte respawn automaticamente?
 
-controllo per sparare quando si hanno solo armi scariche(si blocca senza via d'uscita)
-nella makeAction non trovo il punto in cui si controlla che l'id passato è effettivamente quello corrente
 da qualche parte si controlla che tipo non puoi sparare se la fase è POWERUP
 
-mandare messaggio d'errore se azione fallisce
+TODOS
 
+respawn cli
 
 
 SOCKET:

@@ -17,13 +17,11 @@ import java.util.concurrent.TimeUnit;
 
 public class NextPlayerTimer extends TimerTask {
     private Controller controller;
-    private volatile boolean activated;
     private PlayerAbstract playerAbstract;
 
     public NextPlayerTimer(Controller controller, PlayerAbstract playerAbstract){
         this.controller = controller;
         this.playerAbstract = playerAbstract;
-        activated = true;
     }
 
     public void run(){
@@ -31,7 +29,7 @@ public class NextPlayerTimer extends TimerTask {
         start();
         System.out.println("Action timer task finished at: " + new Date());
 
-        if(!activated) {
+        if(controller.getCurrentGame().getTurnHandler().getCurrentTimerTask() != this) {
             System.out.println("Timer not triggered");
             return;
         }
@@ -40,6 +38,8 @@ public class NextPlayerTimer extends TimerTask {
 
         //this just sets player as disconnected, but socket/rmi connection isn't stopped
         //it won't be taken into account when switching to next player
+
+        System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
 
         controller.getGameManager().disconnect(playerAbstract);
         if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
@@ -70,7 +70,4 @@ public class NextPlayerTimer extends TimerTask {
         }
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
 }

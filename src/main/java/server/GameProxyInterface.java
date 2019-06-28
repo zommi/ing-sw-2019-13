@@ -42,4 +42,6 @@ import java.util.Map;
      PlayerAbstract getPlayer(int clientID) throws RemoteException;
 
      void reconnect(int clientId) throws RemoteException;
+
+     void ping() throws RemoteException;
 }

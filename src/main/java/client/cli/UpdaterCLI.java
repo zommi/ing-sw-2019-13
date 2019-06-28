@@ -4,7 +4,6 @@ package client.cli;
 import client.*;
 import constants.Color;
 import constants.Constants;
-import exceptions.GameAlreadyStartedException;
 import exceptions.NotEnoughPlayersException;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
@@ -13,14 +12,10 @@ import server.model.player.GameCharacter;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.invoke.MethodHandles.loop;
 
 public class UpdaterCLI  implements Updater,Runnable{
 
@@ -129,10 +124,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         int lastClientID = 0;
 
         if (methodChosen.equals("1")) {
-            connection = new ConnectionRMI(lastClientID);
+            connection = new ConnectionRMI();
             System.out.println("RMI connection was set up");
         } else{
-            connection = new ConnectionSocket(-1);
+            connection = new ConnectionSocket();
             System.out.println("Socket connection was set up");
         }
         gameModel = connection.getGameModel();
@@ -351,7 +346,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     waitAfterAction();
 
-                    this.startInput(actionParser);
+                    this.askInput(actionParser);
                 }
                 else if(connection.getGrenadeID() != -1){
                     if(connection.getClientID() != connection.getGrenadeID()){
@@ -532,231 +527,227 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
     }
 
-    public void startInput(ActionParser actionParser){
-        boolean ask = true;
-        while(ask) {
-            ask = false;
-            String read;
-            int row;
-            int col;
-            System.out.println(" Client ID: " +connection.getClientID());
-            System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
-            System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+    public void askInput(ActionParser actionParser){
+        String read;
+        int row;
+        int col;
+        System.out.println(" Client ID: " +connection.getClientID());
+        System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
+        System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
-            Scanner myObj = new Scanner(System.in);
-            int collectDecision = 0;
-            boolean collectChosen = false;
-            printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
+        Scanner myObj = new Scanner(System.in);
+        int collectDecision = 0;
+        boolean collectChosen = false;
+        printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
 
-            gameModel.getMap().printOnCLI();
+        gameModel.getMap().printOnCLI();
 
-            System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
-                    "\nMAP to show the map");
-            read = myObj.nextLine();
+        System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
+                "\nMAP to show the map");
+        read = myObj.nextLine();
 
-            //this is made to avoid asking for an action if player is disconnected
-            if(gameModel.isDisconnected())
-                break;
+        //this is made to avoid asking for an action if player is disconnected
+        if(gameModel.isDisconnected())
+            return;
 
-            int result = -1;
-            if (read.equalsIgnoreCase("M")) {       //move
-                System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());
+        int result = -1;
+        if (read.equalsIgnoreCase("M")) {       //move
+            System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
+            row = askCoordinate(myObj, "row");
+            col = askCoordinate(myObj, "col");
+
+            Info action = actionParser.createMoveEvent(row, col);
+            connection.send(action);
+        }
+        else if (read.equalsIgnoreCase("S")) {        //shoot
+            if(gameModel.getPlayerHand().getWeaponHand().isEmpty()){
+                System.out.println("You have no weapon! Sorry.");
+                return;
+            }
+            if(gameModel.getPlayerHand().getPlayerHand().areAllWeaponsUnloaded()){
+                System.out.println("You have no loaded weapons! You can reload at the end of your turn");
+            }
+            boolean askShoot = false;
+            String strChoice = "";
+            int choice = 0;
+            while (!askShoot) {
+                System.out.println(">Choose the name of the weapon: ");
+                for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                    System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
+                }
+                try {
+                    strChoice = myObj.nextLine();
+                    choice = Integer.parseInt(strChoice) - 1;
+                    if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
+                            gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
+                        askShoot = true;
+                    }else if(choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
+                            !gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
+                        System.out.println("The selected weapon is unloaded. Reload it at the end of your turn.");
+                    }
+                    else
+                        System.out.println("Please insert a valid number.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Please insert a valid number.");
+                }
+            }
+            Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
+            connection.send(action);
+        }
+        else if (read.equalsIgnoreCase("C")) {      //collect
+            do {
+                System.out.println(">Choose what you want to collect: ");
+                System.out.println("Weapon Card (1)"); //1 is to collect weapon
+                System.out.println("Ammo (2)"); //2 is to collect ammo
+                read = myObj.nextLine();
+                if (read.equals("1")) {
+                    collectDecision = 1;        //weapon
+                    collectChosen = true;
+                } else if (read.equals("2")) {
+                collectDecision = 2;            //ammo
+                    collectChosen = true;
+                }
+            } while (!collectChosen);
+
+            //ask for move
+            System.out.println(">Do you want to move before collecting? [y to move]");
+            if(myObj.nextLine().equalsIgnoreCase("y")){
                 row = askCoordinate(myObj, "row");
                 col = askCoordinate(myObj, "col");
-
-                Info action = actionParser.createMoveEvent(row, col);
-                connection.send(action);
             }
-            else if (read.equalsIgnoreCase("S")) {        //shoot
-                if(gameModel.getPlayerHand().getWeaponHand().isEmpty()){
-                    System.out.println("You have no weapon! Sorry.");
-                    ask = true;
-                    continue;
-                }
-                boolean askShoot = false;
-                String strChoice = "";
-                int choice = 0;
-                while (!askShoot) {
-                    System.out.println(">Choose the name of the weapon: ");
-                    for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
-                        System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
-                    }
-                    try {
-                        strChoice = myObj.nextLine();
-                        choice = Integer.parseInt(strChoice) - 1;
-                        if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
-                                gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
-                            askShoot = true;
-                        }else if(choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
-                                !gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
-                            System.out.println("The selected weapon is unloaded. Reload it at the end of your turn.");
+            else{
+                row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
+                col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+            }
+
+            if (collectDecision == 1) { //collect weapon
+                if (gameModel.getMap().getSquare(row, col) instanceof SpawnPoint) {     //collect weapon in a spawnpoint
+                    SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(row, col));
+
+                    //ask weapon
+                    boolean askWeapon = true;
+                    while(askWeapon) {
+                        System.out.println(">Choose which weapon you want to collect ");
+                        for (int i = 0; i < spawnPoint.getWeaponCards().size(); i++) {
+                            System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
                         }
-                        else
+                        try {
+                            result = Integer.parseInt(myObj.nextLine()) - 1;
+                            if(result>= 0 && result <spawnPoint.getWeaponCards().size())
+                                askWeapon = false;
+                            else
+                                System.out.println("Please insert a valid number.");
+                        }catch(NumberFormatException e){
                             System.out.println("Please insert a valid number.");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Please insert a valid number.");
+                        }
                     }
-                }
-                Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
-                connection.send(action);
-            }
-            else if (read.equalsIgnoreCase("C")) {      //collect
-                do {
-                    System.out.println(">Choose what you want to collect: ");
-                    System.out.println("Weapon Card (1)"); //1 is to collect weapon
-                    System.out.println("Ammo (2)"); //2 is to collect ammo
-                    read = myObj.nextLine();
-                    if (read.equals("1")) {
-                        collectDecision = 1;        //weapon
-                        collectChosen = true;
-                    } else if (read.equals("2")) {
-                    collectDecision = 2;            //ammo
-                        collectChosen = true;
-                    }
-                } while (!collectChosen);
 
-                //ask for move
-                System.out.println(">Do you want to move before collecting? [y to move]");
-                if(myObj.nextLine().equalsIgnoreCase("y")){
-                    row = askCoordinate(myObj, "row");
-                    col = askCoordinate(myObj, "col");
-                }
-                else{
-                    row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
-                    col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
-                }
-
-                if (collectDecision == 1) { //collect weapon
-                    if (gameModel.getMap().getSquare(row, col) instanceof SpawnPoint) {     //collect weapon in a spawnpoint
-                        SpawnPoint spawnPoint = ((SpawnPoint) gameModel.getMap().getSquare(row, col));
-
-                        //ask weapon
-                        boolean askWeapon = true;
-                        while(askWeapon) {
-                            System.out.println(">Choose which weapon you want to collect ");
-                            for (int i = 0; i < spawnPoint.getWeaponCards().size(); i++) {
-                                System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
+                    //checks max number of weapons reached and choose what to discard
+                    WeaponCard weaponToDiscard = null;
+                    if(gameModel.getPlayerHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
+                        int weaponToDiscardIndex = 0;
+                        askWeapon = true;
+                        while (askWeapon) {
+                            System.out.println(">Choose which weapon you want to discard ");
+                            for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
+                                System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i).getName() +
+                                        " (" + (i + 1) + ")");
                             }
                             try {
-                                result = Integer.parseInt(myObj.nextLine()) - 1;
-                                if(result>= 0 && result <spawnPoint.getWeaponCards().size())
+                                weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
+                                if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
                                     askWeapon = false;
                                 else
                                     System.out.println("Please insert a valid number.");
-                            }catch(NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 System.out.println("Please insert a valid number.");
                             }
                         }
-
-                        //checks max number of weapons reached and choose what to discard
-                        WeaponCard weaponToDiscard = null;
-                        if(gameModel.getPlayerHand().getWeaponHand().size() == Constants.MAX_WEAPON_HAND) {
-                            int weaponToDiscardIndex = 0;
-                            askWeapon = true;
-                            while (askWeapon) {
-                                System.out.println(">Choose which weapon you want to discard ");
-                                for (int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++) {
-                                    System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i).getName() +
-                                            " (" + (i + 1) + ")");
-                                }
-                                try {
-                                    weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
-                                    if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
-                                        askWeapon = false;
-                                    else
-                                        System.out.println("Please insert a valid number.");
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Please insert a valid number.");
-                                }
-                            }
-                            weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
-                        }
-
-                        //asking for powerup cards to pay with
-                        List<PowerUpCard> powerUpCards;
-                        if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
-                            powerUpCards = actionParser.getInput().askPowerUps();
-                        else
-                            powerUpCards = Collections.emptyList();
-
-
-                        Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard, powerUpCards);
-                        connection.send(action);
-                    } else {
-                        System.out.println("This is not a spawn point, you can't collect weapons");
-                        break;
+                        weaponToDiscard = gameModel.getPlayerHand().getWeaponHand().get(weaponToDiscardIndex);
                     }
-                } else  {       //collect ammo
-                    //if collectdecision == 2
-                    Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null, Collections.emptyList());
-                    connection.send(action);
-                }
-            }
-            else if (read.equalsIgnoreCase("P")) {      //powerUp
-                if(gameModel.getPlayerHand().getPowerupHand().isEmpty()){
-                    System.out.println("You have no powerUp! Sorry.");
-                    ask = true;
-                    continue;
-                }
 
-                String strChoice;
-                int choice = 0;
-                boolean askPowerUp = true;
-                boolean playPowerUp = false;
-                while (askPowerUp) {
-                    System.out.println(">Choose what powerup you want to use: ");
-                    for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
-                        PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
-                        System.out.println(powerUpCard.printOnCli() + " (" + (i + 1) + ")");
-                    }
-                    strChoice = myObj.nextLine();
-                    try {
-                        choice = Integer.parseInt(strChoice) - 1;
-                        if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
-                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade) &&
-                                !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)) {
-                            askPowerUp = false;
-                            playPowerUp = true;
-
-                        } else if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() && (
-                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade ||
-                                gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)){
-                            System.out.println("Oak's words echoed... There's a time and place for everything, but not now.");
-                            askPowerUp = false;
-                        }
-                        else
-                            System.out.println("Please insert a valid number.");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Please insert a valid number.");
-
-                    }
-                }
-                if(playPowerUp) {
-                    Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
-                    connection.send(action);
-                }
-            }
-            else if(read.equalsIgnoreCase("r")){        //reload
-                List<WeaponCard> weaponCards = new ArrayList<>();
-                List<PowerUpCard> powerUpCards = new ArrayList<>();
-                if(!gameModel.getPlayerHand().getPlayerHand().areAllWeaponsLoaded()) {
-                    System.out.println("Do you want to reload any weapon? [y]");
-                    if (myObj.nextLine().equalsIgnoreCase("y")) {
-                        weaponCards = askWeaponsToReload(myObj);
+                    //asking for powerup cards to pay with
+                    List<PowerUpCard> powerUpCards;
+                    if(!gameModel.getPlayerHand().getPowerupHand().isEmpty())
                         powerUpCards = actionParser.getInput().askPowerUps();
-                    }
+                    else
+                        powerUpCards = Collections.emptyList();
+
+
+                    Info action = actionParser.createCollectEvent(row, col, result, weaponToDiscard, powerUpCards);
+                    connection.send(action);
+                } else {
+                    System.out.println("This is not a spawn point, you can't collect weapons");
+                    return;
                 }
-                System.out.println("Ok, your turn is over.");
-                connection.send(actionParser.createReloadEvent(weaponCards, powerUpCards));
+            } else  {       //collect ammo
+                //if collectdecision == 2
+                Info action = actionParser.createCollectEvent(row, col, Constants.NO_CHOICE, null, Collections.emptyList());
+                connection.send(action);
             }
-            else if(read.equalsIgnoreCase("map")){
-                gameModel.getMap().printOnCLI();
+        }
+        else if (read.equalsIgnoreCase("P")) {      //powerUp
+            if(gameModel.getPlayerHand().getPowerupHand().isEmpty()){
+                System.out.println("You have no powerUp! Sorry.");
+                return;
             }
-            else {
-                System.out.println(">Please insert a valid action.");
-                ask = true;
+
+            String strChoice;
+            int choice = 0;
+            boolean askPowerUp = true;
+            boolean playPowerUp = false;
+            while (askPowerUp) {
+                System.out.println(">Choose what powerup you want to use: ");
+                for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
+                    PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
+                    System.out.println(powerUpCard.printOnCli() + " (" + (i + 1) + ")");
+                }
+                strChoice = myObj.nextLine();
+                try {
+                    choice = Integer.parseInt(strChoice) - 1;
+                    if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
+                            !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade) &&
+                            !(gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)) {
+                        askPowerUp = false;
+                        playPowerUp = true;
+
+                    } else if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() && (
+                            gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TagbackGrenade ||
+                            gameModel.getPlayerHand().getPowerupHand().get(choice).getPowerUp() instanceof TargetingScope)){
+                        System.out.println("Oak's words echoed... There's a time and place for everything, but not now.");
+                        askPowerUp = false;
+                    }
+                    else
+                        System.out.println("Please insert a valid number.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Please insert a valid number.");
+
+                }
             }
+            if(playPowerUp) {
+                Info action = actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
+                connection.send(action);
+            }
+        }
+        else if(read.equalsIgnoreCase("r")){        //reload
+            List<WeaponCard> weaponCards = new ArrayList<>();
+            List<PowerUpCard> powerUpCards = new ArrayList<>();
+            if(!gameModel.getPlayerHand().getPlayerHand().areAllWeaponsLoaded()) {
+                System.out.println("Do you want to reload any weapon? [y]");
+                if (myObj.nextLine().equalsIgnoreCase("y")) {
+                    weaponCards = askWeaponsToReload(myObj);
+                    powerUpCards = actionParser.getInput().askPowerUps();
+                }
+            }
+            System.out.println("Ok, your turn is over.");
+            connection.send(actionParser.createReloadEvent(weaponCards, powerUpCards));
+        }
+        else if(read.equalsIgnoreCase("map")){
+            gameModel.getMap().printOnCLI();
+        }
+        else {
+            System.out.println(">Please insert a valid action.");
         }
     }
 

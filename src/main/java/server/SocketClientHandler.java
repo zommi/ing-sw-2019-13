@@ -48,17 +48,12 @@ public class SocketClientHandler implements Runnable {
                 System.out.println("CLIENT HAS DISCONNECTED");
                 try{
                     if(clientID != -1){
-
                         server.getClientFromId(clientID).disconnect();
-
-
-                        if(server.getGameManagerFromId(clientID).getGameState() == GameState.GAME_OVER){
-                            keepThreadAlive = false;
-                        }
-
+                        keepThreadAlive = false;
                     }
                 }catch(NullPointerException npe){
                     //do nothing
+                    e.printStackTrace();
                 }
                 break;
             } catch (ClassNotFoundException e) {

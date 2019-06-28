@@ -13,11 +13,9 @@ import java.util.concurrent.TimeUnit;
 public class SpawnTimer extends TimerTask {
 
     private Controller controller;
-    private boolean activated;
 
     public SpawnTimer(Controller controller){
         this.controller = controller;
-        activated = true;
     }
 
     public void run(){
@@ -25,8 +23,11 @@ public class SpawnTimer extends TimerTask {
         start();
         System.out.println("Spawn timer task finished at: " + new Date());
 
-        if(!activated)
+        if(controller.getCurrentGame().getTurnHandler().getCurrentTimerTask() != this){
+            System.out.println("Spawn timer not triggered");
             return;
+        }
+
 
         System.out.println("Spawn timer expired, moving to FIRST_ACTION");
 
@@ -46,9 +47,5 @@ public class SpawnTimer extends TimerTask {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
     }
 }

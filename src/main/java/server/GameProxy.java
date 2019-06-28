@@ -12,6 +12,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
 
@@ -52,6 +53,25 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
                 null, receiverInterface);        //automatically sends setupAnswer
         if(clientID != null){
             receiverInterface.setClientId(clientID);
+                new Thread(){
+                    private boolean keepThreadAlive = true;
+
+                    @Override
+                    public void run(){
+                        while(keepThreadAlive) {
+                            try {
+                                receiverInterface.ping();
+                                TimeUnit.SECONDS.sleep(Constants.PING_DELAY_SEC);
+                            } catch (RemoteException e) {
+                                System.out.println("Remote exception after ping");
+                                keepThreadAlive = false;
+                                serverRMI.getServer().getClientFromId(clientID).disconnect();
+                            }catch(InterruptedException e1){
+                                //
+                            }
+                        }
+                    }
+                }.start();
         }
     }
 
@@ -126,6 +146,11 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     public void reconnect(int clientId) {
         Client client = serverRMI.getServer().getClientFromId(clientId);
         client.getGameManager().reconnect(client.getPlayer());
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+        //
     }
 
     @Override

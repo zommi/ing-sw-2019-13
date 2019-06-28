@@ -20,4 +20,6 @@ public interface ReceiverInterface extends Remote {
     void setClientIDExisting(int idAlreadyExisting) throws RemoteException;
 
     void setClientId(int clientId) throws RemoteException;
+
+    void ping() throws RemoteException;
 }

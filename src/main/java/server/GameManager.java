@@ -38,19 +38,32 @@ public class GameManager {
     }
 
     public void disconnect(PlayerAbstract playerAbstract){
+        if(!playerAbstract.isConnected()){
+            System.out.println(playerAbstract.getName() + " is already disconnected!");
+            return;
+        }
         sendToSpecific(new DisconnectAnswer(), controller.getCurrentID());
         playerAbstract.setConnected(false);
         if(startGame == 1) {
             activePlayersNum--;
         }
+
+        System.out.println(playerAbstract.getName() + " is inactive: his turns will be skipped");
     }
 
     public void reconnect(PlayerAbstract playerAbstract){
+
+        if(playerAbstract.isConnected()){
+            System.out.println(playerAbstract.getName() + " is already active!");
+            return;
+        }
 
         playerAbstract.setConnected(true);
 
         if(startGame == 1)
             activePlayersNum++;
+
+        System.out.println(playerAbstract.getName() + " is not inactive anymore, he will play his turns again");
 
         //client has to be unlocked
         sendToSpecific(new ReconnectAnswer(), playerAbstract.getClientID());

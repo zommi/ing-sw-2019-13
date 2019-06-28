@@ -122,4 +122,12 @@ public class PlayerHand implements Serializable {
         return true;
     }
 
+    public boolean areAllWeaponsUnloaded(){
+        for(WeaponCard weaponCard : weaponHand){
+            if(weaponCard.isReady())
+                return false;
+        }
+        return true;
+    }
+
 }

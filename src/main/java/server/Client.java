@@ -93,6 +93,8 @@ public class Client {
     }
 
     public void disconnect(){
+        System.out.println("Lost connection with " + name);
+
         socketClientHandler = null;
         receiverInterface = null;
         try{
@@ -100,6 +102,7 @@ public class Client {
         }catch(NullPointerException e){
             //do nothing
         }
+        System.out.println(name + " has successfully been disconnected from the server");
     }
 
     public void send(ServerAnswer serverAnswer){
