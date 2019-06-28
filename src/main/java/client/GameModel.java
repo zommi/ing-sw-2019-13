@@ -26,6 +26,7 @@ public class GameModel extends Observable implements Serializable {
     private int numberOfGrenades;
 
     private boolean disconnected;
+    private boolean serverOffline;
 
     private boolean justDidMyTurn;
 
@@ -38,6 +39,16 @@ public class GameModel extends Observable implements Serializable {
         setupRequestAnswer = null;
         setupConfirmAnswer = null;
         clientID = -9;
+    }
+
+    public void setServerOffline(boolean serverOffline) {
+        this.serverOffline = serverOffline;
+        setChanged();
+        notifyObservers("Server offline");
+    }
+
+    public boolean isServerOffline() {
+        return serverOffline;
     }
 
     public boolean isJustDidMyTurn() {

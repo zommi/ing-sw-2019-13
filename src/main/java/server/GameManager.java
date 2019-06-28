@@ -143,6 +143,22 @@ public class GameManager {
             //setting first client id
             controller.setCurrentID(game.getActivePlayers().get(game.getCurrentPlayerIndex()).getClientID());
 
+            //giving each player two cards
+            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+                playerAbstract.drawPowerup();
+                playerAbstract.drawPowerup();   //two cards to start
+            }
+
+            //moving to next phase
+            System.out.println("Moving to NORMAL GameState");
+            try{
+                game.nextState();
+            }
+            catch(WrongGameStateException e){
+                e.printStackTrace();
+            }
+            System.out.println("We are in the game state: " +game.getCurrentState());
+
             System.out.println("Created the game");
             System.out.println("Now I will send the map to the client");
 
@@ -165,14 +181,7 @@ public class GameManager {
             //informs socket clients that startGame has changed
             sendToEverybody(null);
 
-            System.out.println("The game is starting");
-            try{
-                game.nextState();
-            }
-            catch(WrongGameStateException e){
-                e.printStackTrace();
-            }
-            System.out.println("We are in the game state: " +game.getCurrentState());
+
             return 1; //not useful
         }
     }

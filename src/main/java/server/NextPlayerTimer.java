@@ -1,8 +1,15 @@
 package server;
 
+import client.SpawnInfo;
 import constants.Constants;
 import server.controller.Controller;
+import server.controller.playeraction.SpawnAction;
 import server.controller.turns.TurnPhase;
+import server.model.player.PlayerAbstract;
+import server.model.player.PlayerState;
+import view.GameBoardAnswer;
+import view.PlayerHandAnswer;
+import view.SetSpawnAnswer;
 
 import java.util.Date;
 import java.util.TimerTask;
@@ -10,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 public class NextPlayerTimer extends TimerTask {
     private Controller controller;
-    private boolean activated;
+    private volatile boolean activated;
+    private PlayerAbstract playerAbstract;
 
-    public NextPlayerTimer(Controller controller){
+    public NextPlayerTimer(Controller controller, PlayerAbstract playerAbstract){
         this.controller = controller;
+        this.playerAbstract = playerAbstract;
         activated = true;
     }
 
@@ -32,11 +41,22 @@ public class NextPlayerTimer extends TimerTask {
         //this just sets player as disconnected, but socket/rmi connection isn't stopped
         //it won't be taken into account when switching to next player
 
-        controller.getGameManager().disconnect(controller.getCurrentGame().getCurrentPlayer());
+        controller.getGameManager().disconnect(playerAbstract);
         if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
             controller.getGameManager().endGame();
         }
         else {
+            if(playerAbstract.getPlayerState() == PlayerState.TOBESPAWNED){
+                SpawnInfo spawnInfo = new SpawnInfo(playerAbstract.getRandomPowerupCard());
+                SpawnAction spawnAction = new SpawnAction(spawnInfo, playerAbstract, controller.getCurrentGame().getCurrentGameBoard());
+                if(controller.getCurrentGame().getTurnHandler().setAndDoAction(spawnAction)) {
+                    controller.getGameManager().sendToEverybody(new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard()));
+                    controller.getGameManager().sendToSpecific(new SetSpawnAnswer(false), playerAbstract.getClientID());
+                    controller.getGameManager().sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
+                }else{
+                    controller.sendErrorMessage(playerAbstract.getClientID());
+                }
+            }
             controller.getCurrentGame().getTurnHandler().setCurrentPhase(TurnPhase.END_TURN);
             controller.getCurrentGame().getTurnHandler().nextPhase();
         }

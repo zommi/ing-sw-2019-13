@@ -14,7 +14,7 @@ class GameTest {
 
     @Test
     public void constructorTest(){
-        Game testGame = new Game(1,8);
+        Game testGame = new Game(1,8, null);
 
         ConcretePlayer testPlayer1 = new ConcretePlayer("pippo");
         testPlayer1.setPlayerCharacter(Figure.SPROG);

@@ -3,7 +3,7 @@ package constants;
 import java.io.File;
 
 public class Constants {
-    public static final int MIN_PLAYERS = 2;
+    public static final int MIN_PLAYERS = 3;
     public static final int MAX_PLAYERS = 5;
     public static final int MIN_PLAYERS_TO_CONTINUE = 2;
 
@@ -61,7 +61,7 @@ public class Constants {
 
     public static final String REGISTRATION_ROOM_NAME = "gameproxy";
 
-    public static final long ACTION_TIMEOUT_SEC = 99999;
+    public static final long ACTION_TIMEOUT_SEC = 15;
     public static final long SPAWN_TIMEOUT_SEC = 99999;
 
 

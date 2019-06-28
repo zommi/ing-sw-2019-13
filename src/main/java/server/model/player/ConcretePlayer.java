@@ -63,6 +63,11 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public PowerUpCard getRandomPowerupCard() {
+        return hand.getPowerupHand().get(0);
+    }
+
+    @Override
     public int getPoints(){
         return points;
     }

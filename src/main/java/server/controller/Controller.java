@@ -48,7 +48,7 @@ public class Controller {
     private List<PlayerAbstract> playersToSpawn;
 
     public Controller(int mapChoice, int initialSkulls, GameManager gameManager){
-        this.currentGame = new Game(mapChoice, initialSkulls);
+        this.currentGame = new Game(mapChoice, initialSkulls, this);
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.gameManager = gameManager;
         this.currentID = 0;
@@ -104,7 +104,9 @@ public class Controller {
 
         if(action instanceof SpawnInfo){
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, player, currentGame.getCurrentGameBoard());
-            turnHandler.setAndDoSpawn(spawnAction);
+            if(!turnHandler.setAndDoSpawn(spawnAction)){
+                return;
+            }
             gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
             gameManager.sendToSpecific(new SetSpawnAnswer(false), clientID);
             gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
@@ -124,9 +126,7 @@ public class Controller {
 
     public boolean makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
-        turnHandler.setController(this);
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
-        turnHandler.setCurrentPlayer(currentPlayer);
 
         System.out.println("We are in the game state: " +currentGame.getCurrentState());
         System.out.println("We are in the action number: " +turnHandler.getCurrentPhase());
@@ -321,11 +321,11 @@ public class Controller {
         return true;
     }
 
-    private void sendErrorMessage(int clientId) {
+    public void sendErrorMessage(int clientId) {
         gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientId);
     }
 
-    private void sendErrorMessage(int clientId, String message){
+    public void sendErrorMessage(int clientId, String message){
         gameManager.sendToSpecific(new MessageAnswer(message), clientId);
 
     }
@@ -478,7 +478,10 @@ public class Controller {
     }
 
     public void sendSpawnRequest() {
+        //also draws a powerupcard
         for(PlayerAbstract player : this.playersToSpawn){
+            player.drawPowerup();
+            gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), player.getClientID());
             gameManager.sendToSpecific(new SpawnCommandAnswer(), player.getClientID());
         }
     }

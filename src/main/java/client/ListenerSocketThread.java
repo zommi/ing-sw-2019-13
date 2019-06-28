@@ -41,6 +41,7 @@ public class ListenerSocketThread implements Runnable{
 
             }catch (IOException e) {
                 System.out.println("Error while reading input");
+                gameModel.setServerOffline(true);
                 return;
             } catch (ClassNotFoundException e) {
                 System.out.println("Error while reading input, class not found exception");

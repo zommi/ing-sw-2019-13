@@ -129,4 +129,5 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void addPoints(int i);
 
+    public abstract PowerUpCard getRandomPowerupCard();
 }

@@ -48,12 +48,12 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println("New Update of the gameboard");
             //gameModel.getMap().printOnCLI();
         }
-        if(object.equals("reset")){
+        else if(object.equals("reset")){
             System.out.println("Tagback worked well");
             this.clientChoice = false;
         }
 
-        if(object.equals("Change player")){
+        else if(object.equals("Change player")){
             System.out.println("Next player");
             if(connection.getClientID() == connection.getCurrentID()){
                 System.out.println("It's your turn!");
@@ -62,30 +62,33 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
 
-        if(object.equals("Spawn")){
+        else if(object.equals("Spawn")){
             System.out.println("New update of spawn");
         }
 
-        if(object.equals("Weapons list")){
+        else if(object.equals("Weapons list")){
             System.out.println("New Update of the weapons");
         }
 
-        if(object.equals("Map initialized")){
+        else if(object.equals("Map initialized")){
             System.out.println("New Update of the map number");
         }
 
-        if(object.equals("Map")){
+        else if(object.equals("Map")){
             System.out.println("New Update of the map");
         }
 
-        if(object.equals("PlayerHand")) {
+        else if(object.equals("PlayerHand")) {
             System.out.println("New Update of the playerhand");
         }
 
-        if(object.equals("Message")){
+        else if(object.equals("Message")){
             System.out.println(Color.RED.getAnsi() + "New message from the server:\n" +
                 gameModel.getMessage() + Constants.ANSI_RESET);
 
+        }
+        else if(object.equals("Server offline")){
+            keepThreadAlive = false;
         }
     }
 
@@ -284,6 +287,8 @@ public class UpdaterCLI  implements Updater,Runnable{
             startLoop();
         }
 
+        System.out.println("OOOOPS! Server is offline, we're sorry. Bye bye");
+
     }
 
     private void startLoop() {
@@ -293,7 +298,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         List<PowerUpCard> powerups;
         ActionParser actionParser = new ActionParser(this);
 
-        while (!gameModel.isDisconnected()) {
+        while (!gameModel.isDisconnected() && !gameModel.isServerOffline()) {
             System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
 
@@ -456,6 +461,9 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
 
+        if(gameModel.isServerOffline())
+            return;
+
         System.out.println("You have been disconnected! Press ENTER to reconnect");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
@@ -484,14 +492,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     public void spawn(ActionParser actionParser){
         String read;
         Scanner myObj = new Scanner(System.in);
-        System.out.println("Creating the action of drawing");
-        DrawInfo action = new DrawInfo();
-        System.out.println("Sending the action of spawning to the server");
-        connection.send(action);//TODO is it instant as an action?
-
 
         List<PowerUpCard> powerups = gameModel.getPlayerHand().getPowerupHand();
-        System.out.println(">You have the following powerups: ");
         while ((powerups == null) || (powerups.isEmpty())) {
             System.out.println(">You have no powerups. There's a problem as you should have drawn them");
             powerups = gameModel.getPlayerHand().getPowerupHand();
@@ -505,6 +507,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         boolean askSpawn = true;
         int spawnChoice = 0;
         while(askSpawn){
+            System.out.println(">You have the following powerups: ");
             for (int i = 0; i < powerups.size(); i++) {
                 System.out.println("> " + powerups.get(i) + " (" +(i+1) +")");
             }
@@ -846,8 +849,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     public static void main(String[] args) {
-        ExecutorService exec = Executors.newCachedThreadPool();
-        exec.submit(new UpdaterCLI());
-        //exec.shutdown();
+        UpdaterCLI updaterCLI = new UpdaterCLI();
+        updaterCLI.run();
+        System.out.println("MAIN END");
     }
 }

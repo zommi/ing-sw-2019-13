@@ -2,6 +2,7 @@ package server.model.game;
 
 import exceptions.*;
 import constants.Color;
+import server.controller.Controller;
 import server.controller.turns.TurnHandler;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
@@ -19,8 +20,6 @@ import java.util.*;
 public class Game {
 
     private TurnHandler turnHandler;
-
-    private TurnPhase currentTurn;
 
     private GameState currentState;
 
@@ -42,7 +41,7 @@ public class Game {
 
     private AmmoTileDeck ammoTileDeck;
 
-    public Game(int mapChoice, int skullChoice) {
+    public Game(int mapChoice, int skullChoice, Controller controller) {
         this.currentState = GameState.SETUP;
         this.currentGameBoard = new GameBoard(mapChoice,skullChoice);
         this.currentGameMap = currentGameBoard.getMap();
@@ -51,7 +50,7 @@ public class Game {
         this.powerupDeck = currentGameBoard.getPowerupDeck();
         this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
         this.currentPlayerIndex = 0;
-        this.turnHandler = new TurnHandler();
+        this.turnHandler = new TurnHandler(controller);
         for(int i = 0; i < weaponDeck.getSize(); i++){
             WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
             this.weaponList.add(temp);
@@ -76,18 +75,10 @@ public class Game {
     public WeaponCard drawWeapon(){
         return this.currentGameBoard.drawWeapon();
     }
-    public ListOfWeaponsAnswer getWeaponList(){
-        return this.weaponList;
-    }
-
-    public TurnPhase getCurrentTurn(){
-        return this.currentTurn;
-    }
 
     public TurnHandler getTurnHandler() {
         return turnHandler;
     }
-
 
     public void addPlayer(PlayerAbstract player) {
         if (this.currentState == GameState.SETUP) {
@@ -133,6 +124,10 @@ public class Game {
         switch (currentState){
             case SETUP:
                 currentState = GameState.NORMAL;
+
+                //starting timer exclusively for the first turn of the first player
+                turnHandler.startNextPlayerTimer();
+
                 break;
             case NORMAL:
                 currentState = GameState.FINAL_FRENZY;

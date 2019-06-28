@@ -30,7 +30,7 @@ class ShootParserTest {
         InputStream inputStream = new FileInputStream(file);
         System.setIn(inputStream);
 
-        Game game = new Game(1,5);
+        Game game = new Game(1,5, null);
         GameBoard gameBoard = game.getCurrentGameBoard();
         InputAbstract inputAbstract = new CliInput();
         List<String> playersNamesList = new ArrayList<>();

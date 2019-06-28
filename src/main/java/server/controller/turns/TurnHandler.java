@@ -14,7 +14,6 @@ import java.util.TimerTask;
 
 public class TurnHandler {
 
-    private PlayerAbstract currentPlayer;
 
     private TurnPhase currentPhase;
 
@@ -23,20 +22,6 @@ public class TurnHandler {
     private TimerTask timerTask;
 
     private Timer timer;
-
-
-
-    public void setCurrentPlayer(PlayerAbstract currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public void playPowerup(int index){
-        currentPlayer.usePowerup(index);
-    }
-
-    public void setController(Controller controller){
-        this.controller = controller;
-    }
 
     /*
     public void reloadWeapon(List<Weapon> weaponsToReload) throws InvalidMoveException{
@@ -48,7 +33,8 @@ public class TurnHandler {
     }
     */
 
-    public TurnHandler(){
+    public TurnHandler(Controller controller){
+        this.controller = controller;
         this.currentPhase = TurnPhase.FIRST_ACTION;
         timer = new Timer(true);
     }
@@ -76,21 +62,8 @@ public class TurnHandler {
         return actionValid;
     }
 
-    public void setAndDoSpawn(Action action){
-        if(currentPhase == TurnPhase.SPAWN_PHASE){
-            boolean actionValid = action.execute(controller);
-            if(actionValid && action instanceof SpawnAction){
-
-            }else{
-                //mandare errore
-            }
-        }
-    }
-
-    public void pass(){
-        if(currentPhase == TurnPhase.END_TURN){
-
-        }
+    public boolean setAndDoSpawn(Action action){
+        return currentPhase == TurnPhase.SPAWN_PHASE && action.execute(controller);
     }
 
     public void setCurrentPhase(TurnPhase currentPhase) {
@@ -108,8 +81,7 @@ public class TurnHandler {
                 currentPhase = TurnPhase.SECOND_ACTION;
 
                 //starting second action timer
-                timerTask = new NextPlayerTimer(controller);
-                timer.schedule(timerTask, 0);
+                startNextPlayerTimer();
 
                 break;
 
@@ -121,13 +93,12 @@ public class TurnHandler {
                 currentPhase = TurnPhase.END_TURN;
 
                 //starting reload timer
-                timerTask = new NextPlayerTimer(controller);
-                timer.schedule(timerTask, 0);
+                startNextPlayerTimer();
 
                 break;
 
             case END_TURN:
-                //stopping reload timer
+                //stopping reload timer, but also first and second action if they have been triggered(no problem)
                 ((NextPlayerTimer)timerTask).setActivated(false);
 
                 controller.restoreSquares();
@@ -138,8 +109,7 @@ public class TurnHandler {
                     controller.sendSpawnRequest();
 
                     //starting spawn timer
-                    timerTask = new SpawnTimer(controller);
-                    timer.schedule(timerTask, 0);
+                    startSpawnTimer();
                 }else {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                     System.out.println("changed player in game, moving from endturn to firstAction");
@@ -147,8 +117,7 @@ public class TurnHandler {
                     currentPhase = TurnPhase.FIRST_ACTION;
 
                     //starting first action timer
-                    timerTask = new NextPlayerTimer(controller);
-                    timer.schedule(timerTask, 0);
+                    startNextPlayerTimer();
                 }
                 break;
             case SPAWN_PHASE:
@@ -161,11 +130,20 @@ public class TurnHandler {
                 currentPhase = TurnPhase.FIRST_ACTION;
 
                 //starting first action timer
-                timerTask = new NextPlayerTimer(controller);
-                timer.schedule(timerTask, 0);
+                startNextPlayerTimer();
                 break;
             default: break;
         }
+    }
+
+    public void startNextPlayerTimer(){
+        timerTask = new NextPlayerTimer(controller, controller.getCurrentGame().getCurrentPlayer());
+        timer.schedule(timerTask, 0);
+    }
+
+    public void startSpawnTimer(){
+        timerTask = new SpawnTimer(controller);
+        timer.schedule(timerTask, 0);
     }
 
 
