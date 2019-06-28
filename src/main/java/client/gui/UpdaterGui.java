@@ -216,6 +216,10 @@ public class UpdaterGui extends Application implements Updater {
                 mainGuiController.updateHand();
             });
         }
+
+        if(object.equals("Disconnected")){
+            Platform.runLater(() -> mainGuiController.disconnectPopupShow());
+        }
     }
 
 

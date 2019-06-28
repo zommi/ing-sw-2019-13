@@ -227,9 +227,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
                 this.error = true;
 
             gameProxy.saveName(this, new NameInfo(name));
-
         }
         catch(RemoteException|NotBoundException re){
+            re.printStackTrace();
             System.out.println("Exception while initializing");
         }
     }

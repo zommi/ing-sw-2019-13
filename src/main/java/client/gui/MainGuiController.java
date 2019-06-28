@@ -100,14 +100,14 @@ public class MainGuiController implements GuiController {
 
     public void spawn() {
         logText("Choose a powerup and Spawn in that color! \n");
-        DrawInfo action = new DrawInfo();
-        this.gui.getConnection().send(action);
+        //DrawInfo action = new DrawInfo();
+        //this.gui.getConnection().send(action);
     }
 
     public void spawnAfterDeath(){
         logText("You died!\nChoose a powerup and Spawn in that color! \n");
-        DrawInfo action = new DrawInfo();
-        this.gui.getConnection().sendAsynchronous(action);
+        //DrawInfo action = new DrawInfo();
+        //this.gui.getConnection().sendAsynchronous(action);
     }
 
     @Override
@@ -400,7 +400,8 @@ public class MainGuiController implements GuiController {
 
     private void setSpawn(PowerUpCard card) {
         boolean firstSpawn = myCharacter == null;
-        for(GuiSpawnPoint spawnPoint : this.spawnPoints){
+        //for(GuiSpawnPoint spawnPoint : this.spawnPoints){
+            /*
             if(card.getColor() == spawnPoint.getColor()){
                 if(myCharacter == null) {
                     this.myCharacter = new GuiCharacter(spawnPoint, model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
@@ -410,7 +411,8 @@ public class MainGuiController implements GuiController {
                 disableMouseEvent();
                 break;
             }
-        }
+            */
+        //}
         Info spawn = this.actionParser.createSpawnEvent(card);
         if(firstSpawn){
             this.gui.getConnection().send(spawn);
@@ -533,7 +535,7 @@ public class MainGuiController implements GuiController {
             //update position of players
             for (int i = 0; i < this.model.getGameBoard().getResult().getActiveCharacters().size(); i++) {
                 if(this.model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
-                    if (this.idClientGuiCharacterMap.get((Object) i) == null) {
+                    if (this.idClientGuiCharacterMap.get(i) == null) {
                         this.idClientGuiCharacterMap.put(i, placeEnemy(
                                 this.model.getPlayerBoard(i),
                                 model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getName())
@@ -905,5 +907,17 @@ public class MainGuiController implements GuiController {
         alert.getDialogPane().setContent(box);
         alert.showAndWait();
         return result;
+    }
+
+    public void disconnectPopupShow() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setTitle("DISCONNECTED");
+        alert.setContentText("YOU HAVE BEEN DISCONNECTED FOR INACTIVITY, PRESS OK TO RECONNECT");
+
+        alert.setOnCloseRequest(e -> {
+            this.gui.getConnection().send(new ReconnectInfo(this.gui.getConnection().getClientID()));
+        });
+        alert.showAndWait();
     }
 }
