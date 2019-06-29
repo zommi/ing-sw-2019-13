@@ -437,7 +437,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 }
 
-                actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
+                connection.sendAsynchronous(
+                        actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice)));
 
                 //there are no more tagbacks to play
                 if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() == 1){
