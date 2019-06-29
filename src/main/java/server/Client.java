@@ -2,6 +2,7 @@ package server;
 
 import client.ReceiverInterface;
 import server.model.player.PlayerAbstract;
+import view.MessageAnswer;
 import view.PingAnswer;
 import view.ServerAnswer;
 
@@ -98,9 +99,11 @@ public class Client {
         socketClientHandler = null;
         receiverInterface = null;
         try{
+            gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
             gameManager.disconnect(getPlayer());
-        }catch(NullPointerException e){
+        }catch(Exception e){
             //do nothing
+            System.out.println("Exception in disconnecting" + e.getClass());
         }
         System.out.println(name + " has successfully been disconnected from the server");
     }

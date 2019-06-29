@@ -5,6 +5,7 @@ import server.controller.Controller;
 import server.controller.turns.TurnPhase;
 import server.model.player.PlayerAbstract;
 import view.DisconnectAnswer;
+import view.MessageAnswer;
 
 import java.util.Date;
 import java.util.TimerTask;
@@ -30,7 +31,14 @@ public class SpawnTimer extends TimerTask {
         //spawning not-spawned-yet players
         for(PlayerAbstract playerAbstract : controller.getPlayersToSpawn()){
             playerAbstract.spawn(controller.getCurrentGame().getCurrentGameBoard().getMap().getRandomSpawnpoint());
+
+            //sending message
+            controller.getGameManager().sendEverybodyExcept(
+                    new MessageAnswer(playerAbstract.getName() + " spawned"), playerAbstract.getClientID());
         }
+
+
+
         controller.getPlayersToSpawn().clear();
 
         //current phase is spawnphase

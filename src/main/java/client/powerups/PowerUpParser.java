@@ -11,8 +11,7 @@ public class PowerUpParser {
     private InputAbstract input;
     private GameModel gameModel;
 
-    public PowerUpParser(GameModel gameModel, InputAbstract input){
-        this.gameModel = gameModel;
+    public PowerUpParser(InputAbstract input){
         this.input = input;
     }
 

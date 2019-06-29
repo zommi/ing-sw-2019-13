@@ -3,14 +3,16 @@ package server.controller.turns;
 import constants.Constants;
 import server.NextPlayerTimer;
 import server.SpawnTimer;
+import server.TagbackTimer;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
+import server.model.player.PlayerAbstract;
+import view.GrenadeAnswer;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class TurnHandler {
 
@@ -27,10 +29,13 @@ public class TurnHandler {
 
     private int timerId;
 
+    private List<PlayerAbstract> tagbackPlayers;
+
 
     public TurnHandler(Controller controller){
         this.controller = controller;
         this.currentPhase = TurnPhase.FIRST_ACTION;
+        tagbackPlayers = new ArrayList<>();
         timerId = 0;
         timer = new Timer(true);
     }
@@ -47,7 +52,17 @@ public class TurnHandler {
                 //if it is a draw or a spawn it is not counted as an action
                 nextPhase();
             }else if(actionValid && action instanceof ShootAction){
-                startTagbackPhase();
+                //checking if someone of the damaged player has a tagback grenade
+                tagbackPlayers.clear();
+                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()){
+                    if(playerAbstract.canPlayTagback(controller.getCurrentGame().getCurrentPlayer())){
+                        tagbackPlayers.add(playerAbstract);
+                    }
+                }
+                if(!tagbackPlayers.isEmpty())
+                    startTagbackPhase();
+                else
+                    nextPhase();
             }
         }else if (currentPhase == TurnPhase.END_TURN && action instanceof ReloadAction){
             actionValid = action.execute(controller);
@@ -67,9 +82,17 @@ public class TurnHandler {
     }
 
     public void startTagbackPhase(){
+        //canceling current timer
+        currentTimerTask.cancel();
+
         lastPhase = currentPhase;
-         currentPhase = TurnPhase.TAGBACK_PHASE;
-         startTagbackTimer();
+        currentPhase = TurnPhase.TAGBACK_PHASE;
+
+        for(PlayerAbstract playerAbstract : tagbackPlayers){
+            controller.getGameManager().sendToSpecific(new GrenadeAnswer(), playerAbstract.getClientID());
+        }
+
+        startTagbackTimer();
     }
 
     public void nextPhase(){
@@ -139,6 +162,8 @@ public class TurnHandler {
 
                 currentPhase = lastPhase;
 
+                nextPhase();
+
                 break;
             default: break;
         }
@@ -157,10 +182,34 @@ public class TurnHandler {
     }
 
     private void startTagbackTimer() {
-
+        currentTimerTask = new TagbackTimer(controller, timerId);
+        timer.schedule(currentTimerTask, Constants.TAGBACK_TIMEOUT_MSEC);
+        timerId++;
     }
 
-    public TimerTask getCurrentTimerTask() {
-        return currentTimerTask;
+    public List<PlayerAbstract> getTagbackPlayers() {
+        return tagbackPlayers;
+    }
+
+    public boolean setAndDoTagback(PowerUpAction powerUpAction) {
+        return powerUpAction.execute(controller);
+    }
+
+    public void tagbackStop(int clientID) {
+        System.out.println("Client " + clientID + "stopped playing tagbacks");
+        //removing player
+        Iterator<PlayerAbstract> iterator = tagbackPlayers.iterator();
+        PlayerAbstract playerAbstract;
+        while(iterator.hasNext()){
+            playerAbstract = iterator.next();
+            if(playerAbstract.getClientID() == clientID)
+                iterator.remove();
+        }
+
+        //checking if no more players are expected to play a tagback
+        if(tagbackPlayers.isEmpty()){
+            System.out.println("Exiting from TAGBACK_PHASE");
+            nextPhase();
+        }
     }
 }

@@ -74,6 +74,8 @@ public class PlayerHand implements Serializable {
         }
     }
 
+
+
     public List<PowerUpCard> getPowerupHand() {
         return powerupHand;    //cloning for server answers
     }
@@ -130,4 +132,12 @@ public class PlayerHand implements Serializable {
         return true;
     }
 
+    public int getNumberOfTagbacks() {
+        int counter = 0;
+        for(PowerUpCard powerUpCard : powerupHand){
+            if(powerUpCard.getName().equalsIgnoreCase("Tagback Grenade"))
+                counter++;
+        }
+        return counter;
+    }
 }

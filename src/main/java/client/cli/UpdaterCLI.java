@@ -8,7 +8,6 @@ import exceptions.NotEnoughPlayersException;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
-import server.model.player.GameCharacter;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -19,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 public class UpdaterCLI  implements Updater,Runnable{
 
+    private Scanner scanner;
+    private ActionParser actionParser;
 
     private Connection connection;
     private boolean alwaysTrue = true;
@@ -33,6 +34,8 @@ public class UpdaterCLI  implements Updater,Runnable{
 
     public UpdaterCLI(){
         super();
+        scanner = new Scanner(System.in);
+        actionParser = new ActionParser(this);
         keepThreadAlive = true;
     }
 
@@ -100,11 +103,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         String characterName = "";
         String mapName = "No one has chosen yet";
 
-        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
         do{
             System.out.println(">Insert your name:");
-            playerName = myObj.nextLine();
+            playerName = scanner.nextLine();
         } while (playerName.equals(""));
 
         System.out.println("Name is: " +playerName);
@@ -113,7 +115,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             System.out.println(">Choose connection method:");
             System.out.println("(1) RMI");
             System.out.println("(2) Socket");
-            methodChosen = myObj.nextLine();
+            methodChosen = scanner.nextLine();
             if (methodChosen.equals("1") || methodChosen.equals("2")) {
                 hasChosen = true;
             }
@@ -160,7 +162,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println(">Choose the number of skulls (MIN: " +
                         Constants.MIN_SKULLS + ", MAX: " + Constants.MAX_SKULLS + "): ");
                 try{
-                    stringChoice = myObj.nextLine();
+                    stringChoice = scanner.nextLine();
                     choice = Integer.parseInt(stringChoice);
                     if(choice < Constants.MIN_SKULLS || choice > Constants.MAX_SKULLS)
                         System.out.println("Please insert a valid number.");
@@ -186,7 +188,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println(mnList.get(i) + " (" + (i+1) + ")");
                 }
                 try {
-                    stringChoice =  myObj.nextLine();
+                    stringChoice =  scanner.nextLine();
                     choice = Integer.parseInt(stringChoice) - 1;
                     if(choice == 0)
                         mapName = "Map 1";
@@ -231,7 +233,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println(Figure.values()[i].name().toUpperCase() + " (" + (i+1) + ")");
                 }
                 try {
-                    stringChoice =  myObj.nextLine();
+                    stringChoice =  scanner.nextLine();
                     choice = Integer.parseInt(stringChoice) - 1;
                     if(choice < Figure.values().length && choice >= 0){
                         set = true;
@@ -291,7 +293,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         PlayerBoardAnswer playerBoard;
         List<WeaponCard> weapons;
         List<PowerUpCard> powerups;
-        ActionParser actionParser = new ActionParser(this);
 
         while (!gameModel.isDisconnected() && !gameModel.isServerOffline()) {
             System.out.println("entering the alwaysTrue cycle");
@@ -304,7 +305,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println("Game is already started");
 
                 System.out.println("Testing if the start game works: " +connection.getStartGame());
-                if ((connection.getClientID() == connection.getCurrentID()) && (connection.getGrenadeID() == -1)) {
+                if ((connection.getClientID() == connection.getCurrentID())) {
                     System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
                             " and the current id is: " +connection.getCurrentID());
                     playerHand = gameModel.getPlayerHand();
@@ -341,93 +342,15 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                     System.out.println("Checking if you need to spawn");
                     if(gameModel.isToSpawn()){
-                        spawn(actionParser);
+                        spawn();
                     }
 
                     waitAfterAction();
 
-                    this.askInput(actionParser);
+                    this.askInput();
                 }
-                else if(connection.getGrenadeID() != -1){
-                    if(connection.getClientID() != connection.getGrenadeID()){
-                        System.out.println("There is somebody that has a tagback grenade. Checking if he wants to use it");
-                        /*try{
-                            TimeUnit.SECONDS.sleep(5000);
-                        }
-                        catch(InterruptedException e){
-                            e.printStackTrace();
-                        }*/
-                    }
-                    else { //we are exactly in the player that has the current turn to use the tagback
-                        Scanner myObj = new Scanner(System.in);
-                        System.out.println("You have been shot. You can use the tagback grenade to give him 1 mark. Do you want to use it? [y]");
-
-                        String read = myObj.nextLine();
-
-                        if(read.equalsIgnoreCase("y")){
-                            System.out.println("Ok you can use the tagback grenade towards the shooter");
-                            System.out.println("Which tagback do you want to use?");
-
-                            //initialize cards to ask
-                            List<PowerUpCard> listTagback = new ArrayList<>();
-                            for (PowerUpCard powerUpCard : gameModel.getPlayerHand().getPowerupHand()) {
-                                if (powerUpCard.getName().equals("Tagback Grenade")) {
-                                    listTagback.add(powerUpCard);
-                                }
-                            }
-
-
-                            List<Integer> tagbackChosen = new ArrayList<>();
-                            boolean chosenPowerup = false;
-                            int choice = 0;
-                            //initialize cards to ask
-                            while(!chosenPowerup) {
-
-                                for(int i = 0; i<listTagback.size(); i++){
-                                    System.out.println(listTagback.get(i).printOnCli() + " (" + (i+1) + ")");
-                                }
-                                int size = listTagback.size()+1;
-                                System.out.println("Stop ("  +size +")");
-
-                                read = myObj.nextLine();
-
-                                try {
-                                    choice = Integer.parseInt(read) - 1;
-                                    if(tagbackChosen.contains(choice)){
-                                        System.out.println("You already chose this tagback");
-                                    }
-                                    else if ((choice+1 != size) && (!tagbackChosen.contains(choice)) && (choice >= 0) && (choice < size-1)) {
-                                        tagbackChosen.add(choice);
-                                    }
-                                    else if (choice+1  == size){
-                                        chosenPowerup = true;
-                                    }
-                                    else
-                                        System.out.println("You chose a number not available");
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Please insert a valid number.");
-                                }
-                            }
-
-                            List<Info> tagbackActions = new ArrayList<>();
-                            Info action;
-                            System.out.println("Test");
-                            for(Integer i:tagbackChosen){
-                                action = actionParser.createPowerUpEvent(listTagback.get(i));
-                                tagbackActions.add(action);
-                            }
-                            System.out.println("Test 1");
-                            gameModel.setGrenadeAction(tagbackActions);
-                            gameModel.setClientChoice(true);
-                            while(gameModel.getClientChoice()){
-                                System.out.println("waiting for the tagback to work");
-                            }
-                            //se ti dice sì, controlla nella sua mano e vai a prendere l'oggetto PowerUp e passa quello
-                            //actionParser.createPowerUpEvent("Tagback Grenade");
-                        }
-                        System.out.println("Ok the powerup has been used towards your shooter");
-                    }
-
+                else if(gameModel.isPlayTagback()){
+                    playTagback();
                 }
                 else{
                     System.out.println("For now it is not your turn: ");// +
@@ -460,7 +383,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             return;
 
         System.out.println("You have been disconnected! Press ENTER to reconnect");
-        Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
         connection.send(new ReconnectInfo(connection.getClientID()));
 
@@ -469,6 +391,50 @@ public class UpdaterCLI  implements Updater,Runnable{
                 TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException e){
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void playTagback() {
+        if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() > 0){
+            System.out.println("Do you wanna play a Tagback Grenade?");
+            if (scanner.nextLine().equalsIgnoreCase("y")) {
+                boolean ask = true;
+                String strChoice = "";
+                int choice = 0;
+                while (ask) {
+                    System.out.println(">Choose the card: ");
+                    for (int i = 0; i < gameModel.getPlayerHand().getPowerupHand().size(); i++) {
+                        System.out.println(gameModel.getPlayerHand().getPowerupHand().get(i).printOnCli() + " (" + (i + 1) + ")");
+                    }
+                    try {
+                        strChoice = scanner.nextLine();
+                        choice = Integer.parseInt(strChoice) - 1;
+                        if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
+                            gameModel.getPlayerHand().getPowerupHand().get(choice).getName().equalsIgnoreCase("Tagback Grenade")) {
+                            ask = false;
+                        }else if(choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
+                                !gameModel.getPlayerHand().getPowerupHand().get(choice).getName().equalsIgnoreCase("Tagback Grenade")) {
+                            System.out.println("You can only play a Tagback Grenade now");
+                        }
+                        else
+                            System.out.println("Please insert a valid number.");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please insert a valid number.");
+                    }
+                }
+
+                actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice));
+
+                //there are no more tagbacks to play
+                if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() == 1){
+                    gameModel.setPlayTagback(false);
+                    connection.sendAsynchronous(new TagbackStopInfo());
+                }
+
+            }else{
+                gameModel.setPlayTagback(false);
+                connection.sendAsynchronous(new TagbackStopInfo());
             }
         }
     }
@@ -484,9 +450,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-    public void spawn(ActionParser actionParser){
+    public void spawn(){
         String read;
-        Scanner myObj = new Scanner(System.in);
 
         List<PowerUpCard> powerups = gameModel.getPlayerHand().getPowerupHand();
         while ((powerups == null) || (powerups.isEmpty())) {
@@ -504,10 +469,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         while(askSpawn){
             System.out.println(">You have the following powerups: ");
             for (int i = 0; i < powerups.size(); i++) {
-                System.out.println("> " + powerups.get(i) + " (" +(i+1) +")");
+                System.out.println("> " + powerups.get(i).printOnCli() + " (" +(i+1) +")");
             }
-            System.out.println(">Choose one of the two powerups and discard it. You will be put in the spawn point of the color of that card : ");
-            read = myObj.nextLine();
+            System.out.println(">Choose one of the powerups and discard it. You will be put in the spawn point of the color of that card : ");
+            read = scanner.nextLine();
             try{
                 spawnChoice = Integer.parseInt(read) - 1;
                 if(spawnChoice==0 || spawnChoice== 1)
@@ -527,7 +492,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
     }
 
-    public void askInput(ActionParser actionParser){
+    public void askInput(){
         String read;
         int row;
         int col;
@@ -535,7 +500,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
         System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
-        Scanner myObj = new Scanner(System.in);
         int collectDecision = 0;
         boolean collectChosen = false;
         printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
@@ -544,7 +508,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
                 "\nMAP to show the map");
-        read = myObj.nextLine();
+        read = scanner.nextLine();
 
         //this is made to avoid asking for an action if player is disconnected
         if(gameModel.isDisconnected())
@@ -554,8 +518,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         if (read.equalsIgnoreCase("M")) {       //move
             System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
-            row = askCoordinate(myObj, "row");
-            col = askCoordinate(myObj, "col");
+            row = askCoordinate("row");
+            col = askCoordinate("col");
 
             Info action = actionParser.createMoveEvent(row, col);
             connection.send(action);
@@ -577,7 +541,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println(gameModel.getPlayerHand().getWeaponHand().get(i) + " (" + (i + 1) + ")");
                 }
                 try {
-                    strChoice = myObj.nextLine();
+                    strChoice = scanner.nextLine();
                     choice = Integer.parseInt(strChoice) - 1;
                     if (choice >= 0 && choice < gameModel.getPlayerHand().getWeaponHand().size() &&
                             gameModel.getPlayerHand().getWeaponHand().get(choice).isReady()) {
@@ -600,7 +564,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println(">Choose what you want to collect: ");
                 System.out.println("Weapon Card (1)"); //1 is to collect weapon
                 System.out.println("Ammo (2)"); //2 is to collect ammo
-                read = myObj.nextLine();
+                read = scanner.nextLine();
                 if (read.equals("1")) {
                     collectDecision = 1;        //weapon
                     collectChosen = true;
@@ -612,9 +576,9 @@ public class UpdaterCLI  implements Updater,Runnable{
 
             //ask for move
             System.out.println(">Do you want to move before collecting? [y to move]");
-            if(myObj.nextLine().equalsIgnoreCase("y")){
-                row = askCoordinate(myObj, "row");
-                col = askCoordinate(myObj, "col");
+            if(scanner.nextLine().equalsIgnoreCase("y")){
+                row = askCoordinate("row");
+                col = askCoordinate("col");
             }
             else{
                 row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
@@ -633,7 +597,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                             System.out.println(spawnPoint.getWeaponCards().get(i).getName() + " (" + (i+1) + ")");
                         }
                         try {
-                            result = Integer.parseInt(myObj.nextLine()) - 1;
+                            result = Integer.parseInt(scanner.nextLine()) - 1;
                             if(result>= 0 && result <spawnPoint.getWeaponCards().size())
                                 askWeapon = false;
                             else
@@ -655,7 +619,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                                         " (" + (i + 1) + ")");
                             }
                             try {
-                                weaponToDiscardIndex = Integer.parseInt(myObj.nextLine()) - 1;
+                                weaponToDiscardIndex = Integer.parseInt(scanner.nextLine()) - 1;
                                 if (weaponToDiscardIndex >= 0 && weaponToDiscardIndex < gameModel.getPlayerHand().getWeaponHand().size())
                                     askWeapon = false;
                                 else
@@ -703,7 +667,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     PowerUpCard powerUpCard = gameModel.getPlayerHand().getPowerupHand().get(i);
                     System.out.println(powerUpCard.printOnCli() + " (" + (i + 1) + ")");
                 }
-                strChoice = myObj.nextLine();
+                strChoice = scanner.nextLine();
                 try {
                     choice = Integer.parseInt(strChoice) - 1;
                     if (choice >= 0 && choice < gameModel.getPlayerHand().getPowerupHand().size() &&
@@ -735,8 +699,8 @@ public class UpdaterCLI  implements Updater,Runnable{
             List<PowerUpCard> powerUpCards = new ArrayList<>();
             if(!gameModel.getPlayerHand().getPlayerHand().areAllWeaponsLoaded()) {
                 System.out.println("Do you want to reload any weapon? [y]");
-                if (myObj.nextLine().equalsIgnoreCase("y")) {
-                    weaponCards = askWeaponsToReload(myObj);
+                if (scanner.nextLine().equalsIgnoreCase("y")) {
+                    weaponCards = askWeaponsToReload();
                     powerUpCards = actionParser.getInput().askPowerUps();
                 }
             }
@@ -776,13 +740,13 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("\nTOT: " + i);
     }
 
-    public int askCoordinate(Scanner myObj, String coordinateType){
+    public int askCoordinate(String coordinateType){
         boolean ask = true;
         int coordinate = 0;
         while(ask) {
             System.out.println(">Choose the " + coordinateType + " you want to move to: ");
             try {
-                coordinate = Integer.parseInt(myObj.nextLine());
+                coordinate = Integer.parseInt(scanner.nextLine());
                 ask = false;
             }catch(NumberFormatException e){
                 //ask == true
@@ -791,7 +755,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         return coordinate;
     }
 
-    public List<WeaponCard> askWeaponsToReload(Scanner scanner){
+    public List<WeaponCard> askWeaponsToReload(){
         List<WeaponCard> returnedList = new ArrayList<>();
         List<WeaponCard> cardsToAsk = new ArrayList<>();
 
@@ -829,14 +793,6 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
         return returnedList;
-    }
-
-    public GameCharacter getCharacter(String string){
-        for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
-            if(gameCharacter.getFigure().name().equalsIgnoreCase(string))
-                return gameCharacter;
-        }
-        return null;
     }
 
     public static void main(String[] args) {

@@ -2,10 +2,12 @@ package server.controller.playeraction;
 
 
 import constants.Constants;
+import server.controller.Controller;
 import server.model.cards.WeaponCard;
+import view.MessageAnswer;
 
 public class ShootActuator {
-    public void actuate(ShootInfo shootInfo){
+    public void actuate(ShootInfo shootInfo, Controller controller){
         //actuate
         for(MacroInfo macroInfo : shootInfo.getActivatedMacros()){
             for(MicroInfo microInfo : macroInfo.getActivatedMicros())
@@ -27,5 +29,8 @@ public class ShootActuator {
         WeaponCard weaponCard = shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon());
         weaponCard.setReady(false);
         shootInfo.getAttacker().getPlayerBoard().addUnloadedWeapon(weaponCard);
+
+        String message = shootInfo.getAttacker().getName() + " shot with " + shootInfo.getWeapon().getName();
+        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), shootInfo.getAttacker().getClientID());
     }
 }

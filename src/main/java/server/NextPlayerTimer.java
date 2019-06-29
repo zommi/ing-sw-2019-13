@@ -8,6 +8,7 @@ import server.controller.turns.TurnPhase;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
 import view.GameBoardAnswer;
+import view.MessageAnswer;
 import view.PlayerHandAnswer;
 import view.SetSpawnAnswer;
 
@@ -38,6 +39,10 @@ public class NextPlayerTimer extends TimerTask {
         System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
 
         controller.getGameManager().disconnect(playerAbstract);
+        //sending message to players
+        controller.getGameManager().sendEverybodyExcept(
+                new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
+
         if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
             controller.getGameManager().endGame();
         }

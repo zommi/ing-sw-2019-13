@@ -88,7 +88,9 @@ public class Controller {
     }
 
     public void makeAsynchronousAction(int clientID, Info action){
-        ConcretePlayer player = (ConcretePlayer)currentGame.getActivePlayers().get(clientID);
+        //this is meant to do actions out of your turn
+
+        PlayerAbstract player = currentGame.getPlayerFromId(clientID);
         TurnHandler turnHandler = currentGame.getTurnHandler();
 
         if(action instanceof SpawnInfo){
@@ -105,11 +107,16 @@ public class Controller {
             }
         }
 
-        if(action instanceof DrawInfo){
-            DrawAction drawAction = new DrawAction(player, currentGame);
-            turnHandler.setAndDoSpawn(drawAction);
-            gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
-            System.out.println("sending the playerhand to the clientID: " + clientID);
+        else if(action instanceof PowerUpPack){
+            PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action, currentGame, player);
+            if(turnHandler.setAndDoTagback(powerUpAction))
+                sendGameboardAndHand(player);
+            else
+                sendErrorMessage(clientID);
+        }
+
+        else if (action instanceof TagbackStopInfo){
+            turnHandler.tagbackStop(clientID);
         }
     }
 
@@ -135,6 +142,11 @@ public class Controller {
 
         if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){
             sendErrorMessage(clientID, "You cannot do that now, game is over!");
+            return false;
+        }
+
+        if(currentGame.getTurnHandler().getCurrentPhase() == TurnPhase.TAGBACK_PHASE){
+            sendErrorMessage(clientID, "Wait for the other players to play their tagback grenades");
             return false;
         }
 
@@ -180,20 +192,9 @@ public class Controller {
         else if(action instanceof PowerUpPack){
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);
             if(turnHandler.setAndDoAction(powerUpAction))
-                sendCollectShootAnswersRMI(currentPlayer, currentID);
+                sendGameboardAndHand(currentPlayer);
             else
                 sendErrorMessage(clientID);
-        }
-
-        else if(action instanceof DrawInfo){
-            DrawAction drawAction = new DrawAction(currentPlayer, currentGame);
-            if(turnHandler.setAndDoAction(drawAction)) {
-                PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(currentPlayer.getHand());
-                gameManager.sendToSpecific(playerHandAnswer, currentID);
-                System.out.println("sending the playerhand to the clientID: " + currentID);
-            }else{
-                sendErrorMessage(clientID);
-            }
         }
 
         else if(action instanceof SpawnInfo){
@@ -211,6 +212,8 @@ public class Controller {
             MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer, currentMap);
             if(turnHandler.setAndDoAction(moveAction)) {
                 GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
+                String message = currentPlayer.getName() + " moved";
+                gameManager.sendEverybodyExcept(new MessageAnswer(message), currentPlayer.getClientID());
                 gameManager.sendToEverybody(gameBoardAnswer);
             }else{
                 sendErrorMessage(clientID);
@@ -221,15 +224,21 @@ public class Controller {
             MoveInfo temp = new MoveInfo(((CollectInfo)action).getRow(),((CollectInfo)action).getCol());
             CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer, currentMap);
             if(turnHandler.setAndDoAction(collectAction))
-                this.sendCollectShootAnswersRMI(currentPlayer, clientID);
+                this.sendGameboardAndHand(currentPlayer);
             else
                 sendErrorMessage(clientID);
         }
 
         else if(action instanceof ShootPack) {
+            //resetting setDamagedBy
+            //if we are here it is because the current player can do the shoot action now, even if it won't be validated
+            for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+                playerAbstract.setJustDamagedBy(null);
+            }
+
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame);
             if(turnHandler.setAndDoAction(shootAction)) {
-                sendCollectShootAnswersRMI(currentPlayer, clientID);
+                sendGameboardAndHand(currentPlayer);
 
 
             }else{      //shoot action not valid
@@ -271,11 +280,11 @@ public class Controller {
         gameManager.sendToEverybody(changeAnswer);
     }
 
-    public void sendCollectShootAnswersRMI(ConcretePlayer player, int clientID){
+    public void sendGameboardAndHand(PlayerAbstract player){
         GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
         PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
         gameManager.sendToEverybody(gameBoardAnswer);
-        gameManager.sendToSpecific(playerHandAnswer, clientID);
+        gameManager.sendToSpecific(playerHandAnswer, player.getClientID());
     }
 
     public void sendSquaresRestored(){

@@ -32,7 +32,7 @@ public class ShootAction implements Action {
     public boolean shoot(){
         ShootInfo shootInfo = shootValidator.validate(shootPack, game, player);
         if(shootInfo != null) {
-            shootActuator.actuate(shootInfo);
+            shootActuator.actuate(shootInfo, game.getController());
             return true;
         }
         else

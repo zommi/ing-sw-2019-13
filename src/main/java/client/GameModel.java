@@ -19,11 +19,8 @@ public class GameModel extends Observable implements Serializable {
     private PlayerHandAnswer playerHand;
     private int clientID;
     private ListOfWeaponsAnswer weaponList;
-    private int grenade = -1;
-    public boolean toSpawn;
+    private boolean toSpawn;
     private boolean clientChoice;
-    private List<Info> grenadeAction = new ArrayList<>();
-    private int numberOfGrenades;
 
     private boolean disconnected;
     private boolean serverOffline;
@@ -33,6 +30,8 @@ public class GameModel extends Observable implements Serializable {
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
     private SetupConfirmAnswer setupConfirmAnswer;
+
+    private boolean playTagback;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
@@ -47,6 +46,14 @@ public class GameModel extends Observable implements Serializable {
         notifyObservers("Server offline");
     }
 
+    public boolean isPlayTagback() {
+        return playTagback;
+    }
+
+    public void setPlayTagback(boolean playTagback) {
+        this.playTagback = playTagback;
+    }
+
     public boolean isServerOffline() {
         return serverOffline;
     }
@@ -57,22 +64,6 @@ public class GameModel extends Observable implements Serializable {
 
     public void setJustDidMyTurn(boolean justDidMyTurn) {
         this.justDidMyTurn = justDidMyTurn;
-    }
-
-    public int getGrenade(){
-        return grenade;
-    }
-
-    public void setGrenadeAction(List<Info> action){
-        this.grenadeAction = action;
-    }
-
-    public List<Info> getGrenadeAction(){
-        return this.grenadeAction;
-    }
-
-    public int getNumberOfGrenades(){
-        return this.numberOfGrenades;
     }
 
     public void setToSpawn(boolean decision){
@@ -129,12 +120,6 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("setupConfirm");
         }
 
-        else if(answer instanceof ResetAnswer) {
-            clientChoice = false;
-            setChanged();
-            notifyObservers("reset");
-        }
-
         else if (answer instanceof GameBoardAnswer) {
             gameBoard = (GameBoardAnswer) answer;
             setChanged();
@@ -153,9 +138,15 @@ public class GameModel extends Observable implements Serializable {
         }
 
         else if (answer instanceof GrenadeAnswer) {
-            setGrenade(((GrenadeAnswer) answer).getResult());
+            playTagback = true;
             setChanged();
             notifyObservers("Grenade");
+        }
+
+        else if(answer instanceof NoMoreTagbacksAnswer){
+            playTagback = false;
+            setChanged();
+            notifyObservers("No More Tagbacks");
         }
 
         else if (answer instanceof PlayerHandAnswer) {
@@ -228,12 +219,6 @@ public class GameModel extends Observable implements Serializable {
         return gameBoard;
     }
 
-    public ListOfWeaponsAnswer getWeaponList() {return weaponList; }
-
-    public void setGrenade(int i){
-        this.grenade = i;
-    }
-
     public PlayerAbstract getMyPlayer(){
         for(GameCharacter gameCharacter : gameBoard.getResult().getActiveCharacters()){
             if(gameCharacter.getConcretePlayer().getClientID() == clientID)
@@ -242,4 +227,15 @@ public class GameModel extends Observable implements Serializable {
         return null;
     }
 
+    public void setGrenadeAction(List<Info> infoList) {
+
+    }
+
+    public int getNumberOfGrenades() {
+        return 0;
+    }
+
+    public List<Info> getGrenadeAction() {
+        return null;
+    }
 }

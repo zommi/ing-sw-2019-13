@@ -48,7 +48,7 @@ public class GameManager {
             activePlayersNum--;
         }
 
-        System.out.println(playerAbstract.getName() + " is inactive: his turns will be skipped");
+        System.out.println(playerAbstract.getName() + "'s turns will be skipped from now on");
     }
 
     public void reconnect(PlayerAbstract playerAbstract){
@@ -251,6 +251,15 @@ public class GameManager {
         if(game != null) {
             for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
                 sendToSpecific(serverAnswer, playerAbstract.getClientID());
+            }
+        }
+    }
+
+    public void sendEverybodyExcept(ServerAnswer serverAnswer, int clientId){
+        if(game != null) {
+            for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
+                if(playerAbstract.getClientID() != clientId)
+                    sendToSpecific(serverAnswer, playerAbstract.getClientID());
             }
         }
     }

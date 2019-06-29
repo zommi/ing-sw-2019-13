@@ -1,22 +1,49 @@
 package server;
 
+import constants.Constants;
 import server.controller.Controller;
-import server.controller.turns.TurnPhase;
+import server.model.player.PlayerAbstract;
+import view.MessageAnswer;
+import view.NoMoreTagbacksAnswer;
 
-public class TagbackTimer {
+import java.util.TimerTask;
+
+public class TagbackTimer extends TimerTask {
     private Controller controller;
     private int id;
-    private TurnPhase lastTurnPhase;
 
-    public TagbackTimer(Controller controller, int id, TurnPhase turnPhase){
+    public TagbackTimer(Controller controller, int id){
         this.controller = controller;
         this.id = id;
-        this.lastTurnPhase = turnPhase;
     }
 
     public void run(){
         System.out.println("Tagback timer " + id + " triggered, moving to END_TURN");
 
+        //so that the client won't ask for tagbacks anymore
+        controller.getGameManager().sendToEverybody(new NoMoreTagbacksAnswer());
+
+        boolean endGame = false;
+
+        for(PlayerAbstract playerAbstract : controller.getCurrentGame().getTurnHandler().getTagbackPlayers()){
+            System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
+
+            controller.getGameManager().disconnect(playerAbstract);
+
+            //sending message to players
+            controller.getGameManager().sendEverybodyExcept(
+                    new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
+
+            if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
+                endGame = true;
+                break;
+            }
+        }
+
+        if(endGame)
+            controller.getGameManager().endGame();
+        else
+            controller.getCurrentGame().getTurnHandler().nextPhase();
 
     }
 }

@@ -6,6 +6,7 @@ import server.model.cards.PowerUpCard;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
+import view.MessageAnswer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class SpawnAction implements Action {
         player.spawn(gameBoard.getMap().getSpawnPoint(powerUpCardToDiscard.getColor())); //a spawn
         player.getHand().removePowerUpCard(powerUpCardToDiscard);
         player.setState(PlayerState.NORMAL);
+
+        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(player.getName() + " spawned"), player.getClientID());
         return true;
     }
 }

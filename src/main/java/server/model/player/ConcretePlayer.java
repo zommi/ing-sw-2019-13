@@ -68,6 +68,16 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public int getNumberOfTagbacks() {
+        return hand.getNumberOfTagbacks();
+    }
+
+    @Override
+    public boolean canPlayTagback(PlayerAbstract currentPlayer) {
+        return justDamagedBy != null && getNumberOfTagbacks()>0 && getPosition().getVisibleCharacters().contains(currentPlayer.getGameCharacter());
+    }
+
+    @Override
     public int getPoints(){
         return points;
     }

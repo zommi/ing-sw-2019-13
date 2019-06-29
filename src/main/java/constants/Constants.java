@@ -61,7 +61,7 @@ public class Constants {
 
     public static final String REGISTRATION_ROOM_NAME = "gameproxy";
 
-    public static final long ACTION_TIMEOUT_MSEC = 20000;
+    public static final long ACTION_TIMEOUT_MSEC = 2000000;
     public static final long SPAWN_TIMEOUT_SEC = 99999999;
 
     public static final long PING_DELAY_SEC = 1;
@@ -89,4 +89,6 @@ public class Constants {
     public static final String PATH_TO_MAP_22 = File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 
     public static final String PATH_TO_CONFIG = File.separatorChar + "config.properties";
+    public static final int NEWTON_MAX_DISTANCE = 2;
+    public static final long TAGBACK_TIMEOUT_MSEC = 2000000;
 }

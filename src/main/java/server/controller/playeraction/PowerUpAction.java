@@ -29,7 +29,7 @@ public class PowerUpAction implements Action {
     public boolean usePowerUp(Controller controller){
         PowerUpInfo powerUpInfo = validator.validate(powerUpPack, controller.getCurrentGame(), player);
         if(powerUpInfo != null) {
-            actuator.actuate(powerUpInfo);
+            actuator.actuate(powerUpInfo, controller);
             return true;
         }else {
             //System.out.println("You can't collect");

@@ -19,6 +19,8 @@ import java.util.*;
  */
 public class Game {
 
+    private Controller controller;
+
     private TurnHandler turnHandler;
 
     private GameState currentState;
@@ -50,6 +52,7 @@ public class Game {
         this.powerupDeck = currentGameBoard.getPowerupDeck();
         this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
         this.currentPlayerIndex = 0;
+        this.controller = controller;
         this.turnHandler = new TurnHandler(controller);
         for(int i = 0; i < weaponDeck.getSize(); i++){
             WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
@@ -62,6 +65,10 @@ public class Game {
                 this.weaponList.add(temp1);
             }
         }
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     public void setCurrentState(GameState currentState) {

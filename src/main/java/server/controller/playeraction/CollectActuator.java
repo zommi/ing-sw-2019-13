@@ -8,10 +8,12 @@ import server.controller.Controller;
 import server.model.cards.CardInterface;
 import server.model.cards.CollectableInterface;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
+import view.MessageAnswer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +50,10 @@ public class CollectActuator {
             card = ((SpawnPoint)player.getPosition()).getWeaponCards().get(choice);
             spawnPoint.removeItem(card, controller);
         }
+
+        //sending message
+        String message = player.getName() + " collected " + (choice == Constants.NO_CHOICE ?
+                "some ammo" : ((WeaponCard)card).getName());
+        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), player.getClientID());
     }
 }

@@ -2,12 +2,16 @@ package server.controller.playeraction;
 
 
 import constants.Constants;
+import server.controller.Controller;
+import view.MessageAnswer;
 
 public class PowerUpActuator {
 
 
-    public void actuate(PowerUpInfo powerUpInfo){
-        switch(powerUpInfo.getPowerUpCard().getPowerUp().getName()){
+    public void actuate(PowerUpInfo powerUpInfo, Controller controller){
+        String powerUpName = powerUpInfo.getPowerUpCard().getPowerUp().getName();
+
+        switch(powerUpName){
             case "Newton":
                 powerUpInfo.getTarget().getGameCharacter().move(powerUpInfo.getSquare());
                 break;
@@ -22,5 +26,12 @@ public class PowerUpActuator {
 
         //discard
         powerUpInfo.getAttacker().getHand().removePowerUpCard(powerUpInfo.getPowerUpCard());
+
+        //sending message
+        String message = powerUpInfo.getAttacker().getName() + " used " + powerUpInfo.getPowerUpCard().getName() +
+                (powerUpName.equalsIgnoreCase("Teleporter") ?
+                        "" : (" against " + powerUpInfo.getTarget().getName()));
+        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), powerUpInfo.getAttacker().getClientID());
+
     }
 }
