@@ -1529,7 +1529,7 @@
         "microEffects" : [
           {
             "mandatory" : true,
-            "marks" : 1,
+            "damage" : 2,
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {

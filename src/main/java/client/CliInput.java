@@ -98,7 +98,7 @@ public class CliInput extends InputAbstract{
             while(ask) {
                 for(int i = 0; i<characters.size(); i++){
                     System.out.println(characters.get(i).getColor().getAnsi() + characters.get(i).getConcretePlayer().getName()
-                            + Constants.ANSI_RESET + " (" + i + ")");
+                            + Constants.ANSI_RESET + " (" + (i+1) + ")");
                 }
                 if(maxTargetPlayerSize != 1 && counter != maxTargetPlayerSize)  //maybe maxTarget check is useless
                     System.out.println("Choose a player [or say 'stop']:\n");
@@ -111,11 +111,12 @@ public class CliInput extends InputAbstract{
                 }
                 else{
                     try{
-                        number = Integer.parseInt(choice);
-                        if(number < characters.size()){
+                        number = Integer.parseInt(choice) - 1;
+                        if(number >= 0 && number < characters.size()){
                             list.add(characters.get(number).getConcretePlayer().getName());
                             System.out.println("You chose: " + characters.get(number).getConcretePlayer().getColor().getAnsi()
                                     + characters.get(number).getConcretePlayer().getName() + Constants.ANSI_RESET);
+                            characters.remove(number);
                             ask = false;
                         }
                         else{

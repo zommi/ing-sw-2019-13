@@ -163,6 +163,11 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
+    public void drawPowerupNoLimits() {
+        hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
+    }
+
+    @Override
     public boolean canPay(Cost cost) {
         return playerBoard.getRedAmmo() >= cost.getRed() &&
                 playerBoard.getBlueAmmo() >= cost.getBlue() &&

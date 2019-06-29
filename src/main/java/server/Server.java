@@ -127,6 +127,7 @@ public class Server {
             client.getPlayer().setConnected(true);
 
             //informing other players
+            System.out.println(client.getName() + " fixed his wifi connection! Yeeehaw");
             if(client.getGameManager().getGameState() != GameState.SETUP)
                 client.getGameManager().sendEverybodyExcept(new MessageAnswer(
                 client.getName() + " fixed his wifi connection! Yeeehaw"), clientID);
@@ -156,11 +157,15 @@ public class Server {
             setupConfirmAnswer.setMapNum(client.getGameManager().getMapChoice());
             if(client.getPlayer().getPlayerState() == PlayerState.TOBESPAWNED)
                 setupConfirmAnswer.setSpawn(true);
+            else if(client.getPlayer().getPlayerState() == PlayerState.DEAD)
+                setupConfirmAnswer.setRespawn(true);
             client.send(new GameBoardAnswer(client.getGameManager().getController().getCurrentGame().getCurrentGameBoard()));
             client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
             client.send(setupConfirmAnswer);
             return;
         }
+
+        //else if setup is not complete
 
         if(client.isFirstPlayer() && !gameManager.isMapSkullsSet()) {
             //the gamemanager will manage illegal values

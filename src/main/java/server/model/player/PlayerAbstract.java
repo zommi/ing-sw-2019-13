@@ -93,6 +93,8 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract void drawPowerup();
 
+    public abstract void drawPowerupNoLimits();
+
     public abstract void setState(PlayerState state);
 
     public abstract boolean canPay(Cost cost);

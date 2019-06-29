@@ -42,7 +42,7 @@ public class GameManager {
             System.out.println(playerAbstract.getName() + " is already disconnected!");
             return;
         }
-        sendToSpecific(new DisconnectAnswer(), controller.getCurrentID());
+        sendToSpecific(new DisconnectAnswer(), playerAbstract.getClientID());
         playerAbstract.setConnected(false);
         if(startGame == 1) {
             activePlayersNum--;
@@ -161,8 +161,9 @@ public class GameManager {
 
             //giving each player two cards
             for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-                playerAbstract.drawPowerup();
-                playerAbstract.drawPowerup();   //two cards to start
+                for(int i = 1; i<=Constants.NUM_POWERUP_START; i++){
+                    playerAbstract.drawPowerupNoLimits();
+                }
             }
 
             //moving to next phase

@@ -89,6 +89,15 @@ public class Controller {
     public void makeAsynchronousAction(int clientID, Info action){
         //this is meant to do actions out of your turn
 
+        System.out.println("Processing " + action.getClass().toString().toUpperCase() +
+                "\nWe are in the game state: " +currentGame.getCurrentState());
+        System.out.println("We are in the action number: " +currentGame.getTurnHandler().getCurrentPhase());
+
+        if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){
+            sendErrorMessage(clientID, "You cannot do that now, game is over!");
+            return;
+        }
+
         PlayerAbstract player = currentGame.getPlayerFromId(clientID);
         TurnHandler turnHandler = currentGame.getTurnHandler();
 
@@ -106,6 +115,9 @@ public class Controller {
             if(this.playersToRespawn.isEmpty()){
                 System.out.println("Exiting from SPAWN_PHASE");
                 turnHandler.nextPhase();
+            }
+            else{
+                System.out.println("Not exiting from SPAWN_PHASE because there are other players that have to spawn");
             }
         }
 
@@ -126,7 +138,8 @@ public class Controller {
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
-        System.out.println("We are in the game state: " +currentGame.getCurrentState());
+        System.out.println("Processing " + action.getClass().toString().toUpperCase() +
+                "\nWe are in the game state: " +currentGame.getCurrentState());
         System.out.println("We are in the action number: " +turnHandler.getCurrentPhase());
 
 
@@ -330,7 +343,7 @@ public class Controller {
                 skullsToAdd = player.isOverkilled() ? 2 : 1;
 
                 //informing players of this death
-                String message = player.getName() + (player.isOverkilled() ? " died from " : " got overkilled by ") +
+                String message = player.getName() + (player.isOverkilled() ? " got overkilled by " : " died from ") +
                         currentGame.getPlayerFromColor(player.getKillerColor()).getName();
                 gameManager.sendToEverybody(new MessageAnswer(message));
 
@@ -338,7 +351,7 @@ public class Controller {
 
                 playersToRespawn.add(player);
 
-                player.drawPowerup();
+                player.drawPowerupNoLimits();
 
                 gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), player.getClientID());
                 gameManager.sendToSpecific(new SetRespawnAnswer(),player.getClientID());

@@ -187,7 +187,7 @@ public class TurnHandler {
 
     private void startSpawnTimer(){
         currentTimerTask = new SpawnTimer(controller, timerId);
-        timer.schedule(currentTimerTask, 0);
+        timer.schedule(currentTimerTask, Constants.SPAWN_TIMEOUT_SEC);
         timerId++;
     }
 

@@ -28,7 +28,7 @@ public class PlayerBoard implements Serializable {
 
 
     //0 red, 1 blue, 2 yellow
-    private int[] ammo = {1,1,1};
+    private int[] ammo = {Constants.NUM_AMMO_START,Constants.NUM_AMMO_START,Constants.NUM_AMMO_START};
 
     private int points;
 
@@ -127,7 +127,7 @@ public class PlayerBoard implements Serializable {
     public void processDeath() {
         damage.clear();
         currentPointValueCursor++;
-        player.setState(PlayerState.TOBESPAWNED);
+        player.setState(PlayerState.DEAD);
     }
 
     public void removeMarksOfAColor(Color color) {
@@ -162,10 +162,9 @@ public class PlayerBoard implements Serializable {
     }
 
     //add mark on playerboard, if size > 3 then don't add
-    public void addMarks(int marks, Color color)
-             {
+    public void addMarks(int marks, Color color) {
         for(int i = 0; i < marks; i++) {
-            if (this.marks.size() < Constants.MAX_MARKS) {
+            if (getMarksOfAColor(color) < Constants.MAX_MARKS) {
                 this.marks.add(color);
             }
         }

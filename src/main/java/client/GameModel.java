@@ -31,14 +31,11 @@ public class GameModel extends Observable implements Serializable {
 
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
-    private SetupConfirmAnswer setupConfirmAnswer;
 
     private boolean playTagback;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
-        setupRequestAnswer = null;
-        setupConfirmAnswer = null;
         clientID = -9;
     }
 
@@ -116,8 +113,8 @@ public class GameModel extends Observable implements Serializable {
         }
 
         else if(answer instanceof SetupConfirmAnswer){
-            setupConfirmAnswer = (SetupConfirmAnswer) answer;
             toSpawn = ((SetupConfirmAnswer) answer).isSpawn();
+            toRespawn = ((SetupConfirmAnswer) answer).isRespawn();
             setChanged();
             notifyObservers("setupConfirm");
         }

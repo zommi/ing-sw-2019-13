@@ -6,10 +6,8 @@ public class SetupConfirmAnswer implements ServerAnswer {
     private int mapNum;
     private String characterName;
     private boolean spawn;
+    private boolean respawn;
 
-    public SetupConfirmAnswer(){
-        spawn = false;
-    }
 
     public boolean isSpawn() {
         return spawn;
@@ -17,6 +15,14 @@ public class SetupConfirmAnswer implements ServerAnswer {
 
     public void setSpawn(boolean spawn) {
         this.spawn = spawn;
+    }
+
+    public boolean isRespawn() {
+        return respawn;
+    }
+
+    public void setRespawn(boolean respawn) {
+        this.respawn = respawn;
     }
 
     public String getCharacterName() {

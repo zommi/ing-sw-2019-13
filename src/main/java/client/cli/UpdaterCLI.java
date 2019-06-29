@@ -398,6 +398,8 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("You have been disconnected! Press ENTER to reconnect");
         scanner.nextLine();
         connection.send(new ReconnectInfo(connection.getClientID()));
+        System.out.println("Sent reconnect request");
+        notMyTurn = true;
 
         while(gameModel.isDisconnected()){
             try{
@@ -437,27 +439,35 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                 }
 
+                System.out.println("Sending tagback to your opponents...");
+
                 connection.sendAsynchronous(
                         actionParser.createPowerUpEvent(gameModel.getPlayerHand().getPowerupHand().get(choice)));
+
+                System.out.println("Tagback sent!");
 
                 //there are no more tagbacks to play
                 if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() == 1){
                     gameModel.setPlayTagback(false);
                     connection.sendAsynchronous(new TagbackStopInfo());
+                    System.out.println("Sent tagback stop info");
+                    notMyTurn = true;
                 }
 
             }
             else{
                 gameModel.setPlayTagback(false);
                 connection.sendAsynchronous(new TagbackStopInfo());
+                System.out.println("Sent tagback stop info");
+                notMyTurn = true;
             }
         }
     }
 
     private void waitAfterAction() {
         while(gameModel.isJustDidMyTurn()){
+            System.out.println("Wait please");
             try {
-                System.out.println("Wait please");
                 TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException e){
                 e.printStackTrace();
@@ -490,7 +500,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             read = scanner.nextLine();
             try{
                 spawnChoice = Integer.parseInt(read) - 1;
-                if(spawnChoice==0 || spawnChoice== 1)
+                if(spawnChoice>=0 && spawnChoice< powerups.size())
                     askSpawn = false;
                 else
                     System.out.println("Please insert a valid number.");
@@ -501,7 +511,11 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         Info action1 = actionParser.createSpawnEvent(powerups.get(spawnChoice));
         System.out.println(">Sending your choice to the server: ");
-        connection.send(action1);
+        if(gameModel.isToSpawn())
+            connection.send(action1);
+        else
+            connection.sendAsynchronous(action1);
+
         //avoid asking again
         gameModel.setToSpawn(false);
         gameModel.setToRespawn(false);
@@ -546,6 +560,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
             if(gameModel.getPlayerHand().getPlayerHand().areAllWeaponsUnloaded()){
                 System.out.println("You have no loaded weapons! You can reload at the end of your turn");
+                return;
             }
             boolean askShoot = false;
             String strChoice = "";
