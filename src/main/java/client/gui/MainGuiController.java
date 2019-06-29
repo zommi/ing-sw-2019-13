@@ -330,7 +330,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableMove(){
-        if(!this.model.isToSpawn()) {
+        if(!this.model.isToSpawn() || !this.model.isToRespawn()) {
             for (GuiTile tile : tiles) {
                 tile.setOnMousePressed(e -> {
                     Info moveInfo = this.actionParser.createMoveEvent(tile.getRow(), tile.getCol());
@@ -345,7 +345,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableCollect(MouseEvent mouseEvent) {
-        if(!this.model.isToSpawn()) {
+        if(!this.model.isToSpawn() || !this.model.isToRespawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
                     Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
@@ -366,7 +366,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enableShoot(MouseEvent mouseEvent) {
-        if(!this.model.isToSpawn()){
+        if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a weapon to use!\n");
             for(Node card : weaponHand.getChildren()){
                 card.setDisable(false);
@@ -377,7 +377,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void enablePowerup(MouseEvent mouseEvent){
-        if(!this.model.isToSpawn()){
+        if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a powerup to use! \n");
             for(Node card : powerupHand.getChildren()){
                 card.setDisable(false);
@@ -416,8 +416,10 @@ public class MainGuiController implements GuiController {
         Info spawn = this.actionParser.createSpawnEvent(card);
         if(firstSpawn){
             this.gui.getConnection().send(spawn);
+            this.model.setToSpawn(false);
         }else {
             this.gui.getConnection().sendAsynchronous(spawn);
+            this.model.setToRespawn(false);
         }
     }
 
@@ -451,7 +453,7 @@ public class MainGuiController implements GuiController {
         int i = 0;
         GuiWeaponCard cardToAdd;
         GuiPowerupCard powerupCard;
-        for(WeaponCard card : this.model.getPlayerHand().getWeaponHand()){
+        for(WeaponCard card : this.model.getPlayerHand().getPlayerHand().getWeaponHand()){
             cardToAdd = new GuiWeaponCard(card, i, getClass().getResource(card.getPath()).toExternalForm());
             this.weaponHand.add(cardToAdd,i,0);
             cardToAdd.setCursor(Cursor.HAND);
@@ -784,9 +786,11 @@ public class MainGuiController implements GuiController {
 
         VBox box = new VBox();
         for(Color color: Color.values()){
-            RadioButton choice = new RadioButton(color.toString());
-            box.getChildren().add(choice);
-            choice.setToggleGroup(group);
+            if(color.isAmmoColor()) {
+                RadioButton choice = new RadioButton(color.toString());
+                box.getChildren().add(choice);
+                choice.setToggleGroup(group);
+            }
         }
 
         alert.getDialogPane().setContent(box);
@@ -803,13 +807,13 @@ public class MainGuiController implements GuiController {
     }
 
     public void handleGrenade() {
-        if(this.gui.getConnection().getClientID() == this.gui.getConnection().getGrenadeID()){
+        if(this.model.getPlayerHand().getPlayerHand().getNumberOfTagbacks() > 0) {
             List<PowerUpCard> grenadeList = new ArrayList<>();
             AtomicReference<List<PowerUpCard>> activatedGrenades = new AtomicReference<>();
-            for(PowerUpCard card : this.model.getPlayerHand().getPowerupHand()){
-                if(card.getPowerUp() instanceof TagbackGrenade) grenadeList.add(card);
+            for (PowerUpCard card : this.model.getPlayerHand().getPowerupHand()) {
+                if (card.getPowerUp() instanceof TagbackGrenade) grenadeList.add(card);
             }
-            if(!grenadeList.isEmpty()) {
+            if (!grenadeList.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setGraphic(null);
                 List<CheckBox> checkBoxList = new ArrayList<>();
@@ -817,7 +821,7 @@ public class MainGuiController implements GuiController {
                 alert.setHeaderText("Select, if you want, the grenades to use:");
 
                 VBox box = new VBox();
-                for(PowerUpCard card : grenadeList){
+                for (PowerUpCard card : grenadeList) {
                     CheckBox choice = new CheckBox(card.getName() + " - " + card.getColor());
                     choice.setId(String.valueOf(card.getCardId()));
                     checkBoxList.add(choice);
@@ -828,15 +832,16 @@ public class MainGuiController implements GuiController {
                 alert.getDialogPane().setContent(box);
                 alert.showAndWait();
                 List<Info> infoList = new ArrayList<>();
-                for(PowerUpCard card : activatedGrenades.get()){
+                for (PowerUpCard card : activatedGrenades.get()) {
                     infoList.add(actionParser.createPowerUpEvent(card));
                     logText("Grenade used\n");
                 }
-                this.model.setGrenadeAction(infoList);
+                for (Info info : infoList) {
+                    this.gui.getConnection().sendAsynchronous(info);
+                }
             }
-            this.model.setClientChoice(true);
-        }else{
-            logText("Waiting for player to use a tagback grenade\n");
+            this.model.setPlayTagback(false);
+            this.gui.getConnection().sendAsynchronous(new TagbackStopInfo());
         }
     }
 

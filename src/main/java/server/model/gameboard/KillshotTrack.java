@@ -76,10 +76,11 @@ public class KillshotTrack implements Serializable {
      * @param token2Add number of token to be added
      * @param color2Add color of the token that is being added
      */
-    public void removeSkull(int token2Add, Color color2Add) {
+    public boolean removeSkull(int token2Add, Color color2Add) {
         this.multiciplityToken[remainingSkulls-1] = token2Add;
         this.damageTokens[remainingSkulls-1] = color2Add;
         remainingSkulls--;
+        return this.remainingSkulls <= 0;
     }
 
     public int getInitialSkulls() {

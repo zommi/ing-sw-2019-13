@@ -151,51 +151,30 @@ public class UpdaterGui extends Application implements Updater {
             });
         }
 
-        if(object.equals("GameBoard") && mapInitialized){
+        if(object.equals("GameBoard")){
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
+                if(!mapInitialized){
+                    getControllerFromString("gui.fxml").init();
+                    changeStage("gui.fxml");
+                    mapInitialized = true;
+                }
                 mainGuiController.restoreSquares();
                 mainGuiController.updateGameboard();
-                mainGuiController.updateHand();
             });
-            if(connection.getGrenadeID() != -1) {
-                Platform.runLater(() -> {
-                    mainGuiController.handleGrenade();
-                });
-            }
+            handleTurn();
         }
 
         if(object.equals("Change player")){
             System.out.println("Player changed");
             Platform.runLater(() -> {
                 mainGuiController.restoreSquares();
-            });
-            handleTurn();
-        }
-
-        if(object.equals("GameBoard") && !mapInitialized){
-            System.out.println("Game initialised");
-            Platform.runLater(() -> {
-                getControllerFromString("gui.fxml").init();
-                changeStage("gui.fxml");
-                mainGuiController.restoreSquares();
-                mainGuiController.updateGameboard();
                 mainGuiController.updateHand();
-                mapInitialized = true;
             });
             handleTurn();
         }
 
-        if(object.equals("Map") && mapInitialized){
-
-        }
-
-        if(object.equals("PlayerHand") && !handInitialized && !mapInitialized){
-            System.out.println("Hand initilized");
-            this.handInitialized = true;
-        }
-
-        if(object.equals("PlayerHand") && handInitialized && mapInitialized){
+        if(object.equals("PlayerHand") && mapInitialized){
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
                 mainGuiController.updateHand();
@@ -210,7 +189,7 @@ public class UpdaterGui extends Application implements Updater {
         }
 
         if(object.equals("Spawn phase")){
-            System.out.println("spawn commanded");
+            System.out.println("Respawn");
             Platform.runLater(() -> {
                 mainGuiController.spawnAfterDeath();
                 mainGuiController.updateHand();
@@ -219,6 +198,12 @@ public class UpdaterGui extends Application implements Updater {
 
         if(object.equals("Disconnected")){
             Platform.runLater(() -> mainGuiController.disconnectPopupShow());
+        }
+
+        if(object.equals("Grenade")){
+            Platform.runLater(() -> {
+                mainGuiController.handleGrenade();
+            });
         }
     }
 
