@@ -30,7 +30,7 @@ public class NextPlayerTimer extends TimerTask {
         //System.out.println("Action timer " + id + " task started at: " + new Date());
         //System.out.println("Action timer " + id + " triggered at: " + new Date());
 
-        System.out.println("Timer " + id + " triggered, moving to END_TURN");
+        System.out.println("Action timer " + id + " triggered, moving to END_TURN");
 
         //this just sets player as disconnected, but socket/rmi connection isn't stopped
         //it won't be taken into account when switching to next player

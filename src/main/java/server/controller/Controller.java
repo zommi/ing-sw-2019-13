@@ -78,17 +78,6 @@ public class Controller {
         return gameManager;
     }
 
-    /*public void nextCurrentID(){
-        if(currentID == currentGame.getActivePlayers().size() - 1){
-            currentID = 0;
-        }
-        else{
-            this.currentID = currentID + 1;
-        }
-    }*/
-
-
-
     public String getCurrentCharacterName(){
         for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
             if(playerAbstract.getClientID() == currentID)
@@ -238,71 +227,10 @@ public class Controller {
         }
 
         else if(action instanceof ShootPack) {
-            ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame); // TODO add player
+            ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame);
             if(turnHandler.setAndDoAction(shootAction)) {
                 sendCollectShootAnswersRMI(currentPlayer, clientID);
-                //TODO check if the target has a powerup
-                List<PlayerAbstract> listOfPlayers = currentGame.getActivePlayers();
 
-
-                for (int i = 0; i < listOfPlayers.size(); i++) {
-                    if(listOfPlayers.get(i).isConnected()) {
-                        int j = 0;
-                        while (j < listOfPlayers.get(i).getHand().getPowerupHand().size()) {
-                            if (listOfPlayers.get(i).getHand().getPowerupHand().get(j).getName().equals("Tagback Grenade")) {
-                                System.out.println("Found a player that has the tagback grenade");
-                                if (listOfPlayers.get(i).getJustDamagedBy() != null) {
-                                    if (listOfPlayers.get(i).getJustDamagedBy().equals(currentPlayer)) {
-                                        grenadeID = listOfPlayers.get(i).getClientID();
-                                        int IDShooter = grenadeID;
-                                        GrenadeAnswer grenadeChanged = new GrenadeAnswer(grenadeID);
-                                        gameManager.sendToEverybody(grenadeChanged);
-                                        sendGrenadeAnswer();
-                                        while (!clientHasChosen) { //TODO with socket it will be different! we are going to check if the client has sent me the action or not
-                                            System.out.println("Waiting for the other player to do the action");
-                                            try {
-                                                System.out.println(" " + IDShooter);
-                                                clientHasChosen = gameManager.getGameProxy().askClient(IDShooter);
-                                                System.out.println("Client has chosen: " + clientHasChosen);
-                                                if (clientHasChosen) {
-                                                    System.out.println("test");
-                                                    List<Info> actionGrenade = gameManager.getGameProxy().getGrenadeAction(IDShooter);
-                                                    System.out.println("The shooter decided to play with " + actionGrenade.size() + "powerups");
-                                                    PlayerAbstract playerShooter = null;
-                                                    for (int b = 0; b < currentGame.getActivePlayers().size(); b++) {
-                                                        if (currentGame.getActivePlayers().get(b).getClientID() == IDShooter)
-                                                            playerShooter = currentGame.getActivePlayers().get(b);
-                                                    }
-                                                    System.out.println("The shooter is " + playerShooter.getName());
-                                                    for (Info a : actionGrenade) {
-                                                        System.out.println("test");
-                                                        PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) a, currentGame, playerShooter);
-                                                        turnHandler.setAndDoAction(powerUpAction);
-                                                        System.out.println("Playing the tagback of color: " + ((PowerUpPack) a).getPowerupCard().getColor());
-                                                    }
-                                                    grenadeID = -1;
-                                                    GrenadeAnswer grenadeDone = new GrenadeAnswer(-1);
-                                                    gameManager.sendToEverybody(grenadeDone);
-                                                    sendCollectShootAnswersRMI(currentPlayer, IDShooter);
-                                                    ResetAnswer resetChoice = new ResetAnswer();
-                                                    gameManager.sendToSpecific(resetChoice, IDShooter);
-                                                }
-                                            } catch (RemoteException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-
-                                    }
-                                    clientHasChosen = false;
-                                    System.out.println("The player did the action ");
-                                    listOfPlayers.get(i).setJustDamagedBy(null);
-                                }
-                                j = Constants.CHOICE;
-                            }
-                            j++;
-                        }
-                    }
-                }
 
             }else{      //shoot action not valid
                 sendErrorMessage(clientID);

@@ -5,5 +5,6 @@ public enum TurnPhase {
     SECOND_ACTION,
     POWERUP_TURN,
     END_TURN,
-    SPAWN_PHASE
+    SPAWN_PHASE,
+    TAGBACK_PHASE
 }

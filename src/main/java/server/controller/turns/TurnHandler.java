@@ -17,6 +17,8 @@ public class TurnHandler {
 
     private TurnPhase currentPhase;
 
+    private TurnPhase lastPhase;
+
     private Controller controller;
 
     private TimerTask currentTimerTask;
@@ -25,15 +27,6 @@ public class TurnHandler {
 
     private int timerId;
 
-    /*
-    public void reloadWeapon(List<Weapon> weaponsToReload) throws InvalidMoveException{
-        if(this.currentPhase == TurnPhase.END_TURN) {
-            for (Weapon w : weaponsToReload) {
-                w.charge();
-            }
-        } throw new InvalidMoveException();
-    }
-    */
 
     public TurnHandler(Controller controller){
         this.controller = controller;
@@ -50,11 +43,11 @@ public class TurnHandler {
         boolean actionValid = false;
         if(currentPhase == TurnPhase.FIRST_ACTION || currentPhase == TurnPhase.SECOND_ACTION) {
             actionValid = action.execute(controller);
-            if(actionValid &&
-                    ((action instanceof ShootAction) ||
-                    (action instanceof CollectAction) ||
-                    (action instanceof MoveAction))) {//if it is a draw or a spawn it is not counted as an action
+            if(actionValid && (action instanceof CollectAction || action instanceof MoveAction)) {
+                //if it is a draw or a spawn it is not counted as an action
                 nextPhase();
+            }else if(actionValid && action instanceof ShootAction){
+                startTagbackPhase();
             }
         }else if (currentPhase == TurnPhase.END_TURN && action instanceof ReloadAction){
             actionValid = action.execute(controller);
@@ -71,6 +64,12 @@ public class TurnHandler {
 
     public void setCurrentPhase(TurnPhase currentPhase) {
         this.currentPhase = currentPhase;
+    }
+
+    public void startTagbackPhase(){
+        lastPhase = currentPhase;
+         currentPhase = TurnPhase.TAGBACK_PHASE;
+         startTagbackTimer();
     }
 
     public void nextPhase(){
@@ -134,6 +133,13 @@ public class TurnHandler {
                 //starting first action timer
                 startNextPlayerTimer();
                 break;
+            case TAGBACK_PHASE:
+                //stopping tagback timer
+                currentTimerTask.cancel();
+
+                currentPhase = lastPhase;
+
+                break;
             default: break;
         }
     }
@@ -144,9 +150,14 @@ public class TurnHandler {
         timerId++;
     }
 
-    public void startSpawnTimer(){
-        currentTimerTask = new SpawnTimer(controller);
+    private void startSpawnTimer(){
+        currentTimerTask = new SpawnTimer(controller, timerId);
         timer.schedule(currentTimerTask, 0);
+        timerId++;
+    }
+
+    private void startTagbackTimer() {
+
     }
 
     public TimerTask getCurrentTimerTask() {
