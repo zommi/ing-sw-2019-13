@@ -2,14 +2,12 @@ package server;
 
 import constants.Constants;
 import server.controller.Controller;
-import server.controller.turns.TurnPhase;
+import server.model.cards.PowerUpCard;
 import server.model.player.PlayerAbstract;
-import view.DisconnectAnswer;
+import server.model.player.PlayerState;
 import view.MessageAnswer;
 
-import java.util.Date;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class SpawnTimer extends TimerTask {
 
@@ -22,26 +20,41 @@ public class SpawnTimer extends TimerTask {
     }
 
     public void run(){
-        //System.out.println("Spawn timer task started at: " + new Date());
 
-        //System.out.println("Spawn timer task finished at: " + new Date());
+        boolean endGame = false;
 
-        System.out.println("Spawn timer " + id + " triggered, moving to FIRST_ACTION");
+        System.out.println("Spawn timer " + id + " triggered");
 
+        //disconnecting and
         //spawning not-spawned-yet players
-        for(PlayerAbstract playerAbstract : controller.getPlayersToSpawn()){
-            playerAbstract.spawn(controller.getCurrentGame().getCurrentGameBoard().getMap().getRandomSpawnpoint());
+        for(PlayerAbstract playerAbstract : controller.getPlayersToRespawn()){
+
+            System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
+
+            controller.getGameManager().disconnect(playerAbstract);
+            //sending message to players
+            controller.getGameManager().sendEverybodyExcept(
+                    new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
+
+            if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
+                endGame = true;
+                break;
+            }
+
+            PowerUpCard powerUpCard = playerAbstract.getRandomPowerupCard();
+            playerAbstract.spawn(controller.getCurrentGame().getCurrentGameBoard().getMap().getSpawnPoint(powerUpCard.getColor()));
+            playerAbstract.getHand().removePowerUpCard(powerUpCard);
+            playerAbstract.setState(PlayerState.NORMAL);
 
             //sending message
             controller.getGameManager().sendEverybodyExcept(
-                    new MessageAnswer(playerAbstract.getName() + " spawned"), playerAbstract.getClientID());
+                    new MessageAnswer(playerAbstract.getName() + " respawned after death"), playerAbstract.getClientID());
         }
 
-
-
-        controller.getPlayersToSpawn().clear();
-
-        //current phase is spawnphase
-        controller.getCurrentGame().getTurnHandler().nextPhase();
+        if(endGame)
+            controller.getGameManager().endGame();
+        else
+            //current phase is SPAWN_PHASE
+            controller.getCurrentGame().getTurnHandler().nextPhase();
     }
 }

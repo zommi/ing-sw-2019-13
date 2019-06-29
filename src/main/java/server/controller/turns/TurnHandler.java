@@ -10,6 +10,7 @@ import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.model.player.PlayerAbstract;
+import server.model.player.PlayerHand;
 import view.GrenadeAnswer;
 
 import java.util.*;
@@ -128,12 +129,21 @@ public class TurnHandler {
                 controller.restoreSquares();
                 System.out.println("restored squares");
                 controller.sendSquaresRestored();
-                if(controller.handleDeaths()){
+
+                //checking if someone died
+                boolean someoneDied = false;
+                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()) {
+                    if (playerAbstract.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD) {
+                        someoneDied = true;
+                    }
+                }
+
+                if(someoneDied){
                     currentPhase = TurnPhase.SPAWN_PHASE;
-                    controller.sendSpawnRequest();
 
                     //starting spawn timer
                     startSpawnTimer();
+                    controller.handleDeaths();
                 }else {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                     System.out.println("changed player in game, moving from endturn to firstAction");

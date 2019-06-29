@@ -5,8 +5,8 @@ import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
 import constants.Color;
 import constants.Constants;
-import exceptions.WrongGameStateException;
 import server.GameManager;
+import server.SetRespawnAnswer;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
@@ -26,7 +26,6 @@ import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
 import view.*;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 public class Controller {
@@ -45,7 +44,7 @@ public class Controller {
 
     private List<SquareAbstract> squaresToUpdate;
 
-    private List<PlayerAbstract> playersToSpawn;
+    private List<PlayerAbstract> playersToRespawn;
 
     public Controller(int mapChoice, int initialSkulls, GameManager gameManager){
         this.currentGame = new Game(mapChoice, initialSkulls, this);
@@ -55,7 +54,7 @@ public class Controller {
         this.grenadeID = -1;
         this.squaresToUpdate = new ArrayList<>();
         this.clientHasChosen = false;
-        this.playersToSpawn = new ArrayList<>();
+        this.playersToRespawn = new ArrayList<>();
     }
 
     public WeaponCard drawWeapon(){
@@ -99,10 +98,13 @@ public class Controller {
                 return;
             }
             gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-            gameManager.sendToSpecific(new SetSpawnAnswer(false), clientID);
+            //spawn is disabled locally by the client
+            //gameManager.sendToSpecific(new SetSpawnAnswer(false), clientID);
             gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
-            this.playersToSpawn.remove(currentGame.getPlayerFromId(clientID));
-            if(this.playersToSpawn.isEmpty()){
+
+            this.playersToRespawn.remove(currentGame.getPlayerFromId(clientID));
+            if(this.playersToRespawn.isEmpty()){
+                System.out.println("Exiting from SPAWN_PHASE");
                 turnHandler.nextPhase();
             }
         }
@@ -201,7 +203,8 @@ public class Controller {
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, currentPlayer, currentGame.getCurrentGameBoard());
             if(turnHandler.setAndDoAction(spawnAction)) {
                 gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-                gameManager.sendToSpecific(new SetSpawnAnswer(false), currentID);
+                //spawn is disabled locally by the client
+                //gameManager.sendToSpecific(new SetSpawnAnswer(false), currentID);
                 gameManager.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
             }else{
                 sendErrorMessage(clientID);
@@ -267,14 +270,6 @@ public class Controller {
 
     }
 
-    private void sendGrenadeAnswer() {
-    gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
-    }
-    /*public void setClientHasChosen(){
-        this.clientHasChosen = true;
-    }*/
-
-
     public void sendChangeCurrentPlayer(){
         ChangeCurrentPlayerAnswer changeAnswer = new ChangeCurrentPlayerAnswer();
         gameManager.sendToEverybody(changeAnswer);
@@ -323,6 +318,8 @@ public class Controller {
         boolean needToSpawn = false;
         boolean doubleKill = false;
         PlayerBoard board;
+        playersToRespawn.clear();
+
         for(PlayerAbstract player : this.currentGame.getActivePlayers()){
             if(player.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD){
                 distributePoints(player);
@@ -331,8 +328,22 @@ public class Controller {
                 }
                 player.die();
                 skullsToAdd = player.isOverkilled() ? 2 : 1;
+
+                //informing players of this death
+                String message = player.getName() + (player.isOverkilled() ? " died from " : " got overkilled by ") +
+                        currentGame.getPlayerFromColor(player.getKillerColor()).getName();
+                gameManager.sendToEverybody(new MessageAnswer(message));
+
                 this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
-                sendSpawnAnswer(player);
+
+                playersToRespawn.add(player);
+
+                player.drawPowerup();
+
+                gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), player.getClientID());
+                gameManager.sendToSpecific(new SetRespawnAnswer(),player.getClientID());
+                gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+
                 if(player.isOverkilled()){
                     board = this.getCurrentGame().getCurrentGameBoard().getBoardFromColor(player.getKillerColor());
                     board.addMarks(1,player.getColor());
@@ -403,23 +414,7 @@ public class Controller {
         return result;
     }
 
-    public List<PlayerAbstract> getPlayersToSpawn(){
-        return playersToSpawn;
-    }
-
-    private void sendSpawnAnswer(PlayerAbstract playerAbstract) {
-        this.playersToSpawn.add(playerAbstract);
-        gameManager.sendToSpecific(new SetSpawnAnswer(true),playerAbstract.getClientID());
-        gameManager.sendToEverybody(new PlayerDiedAnswer());
-        gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
-    }
-
-    public void sendSpawnRequest() {
-        //also draws a powerupcard
-        for(PlayerAbstract player : this.playersToSpawn){
-            player.drawPowerup();
-            gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), player.getClientID());
-            gameManager.sendToSpecific(new SpawnCommandAnswer(), player.getClientID());
-        }
+    public List<PlayerAbstract> getPlayersToRespawn(){
+        return playersToRespawn;
     }
 }

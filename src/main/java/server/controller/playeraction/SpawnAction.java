@@ -13,9 +13,9 @@ import java.util.List;
 
 public class SpawnAction implements Action {
 
-    PlayerAbstract player;
-    PowerUpCard powerUpCardToDiscard;
-    GameBoard gameBoard;
+    private PlayerAbstract player;
+    private PowerUpCard powerUpCardToDiscard;
+    private GameBoard gameBoard;
 
     public SpawnAction(SpawnInfo spawnInfo, PlayerAbstract player, GameBoard gameBoard){
         this.player = player;
@@ -24,7 +24,7 @@ public class SpawnAction implements Action {
     }
 
     public boolean execute(Controller controller){
-        if(player.getPlayerState() != PlayerState.TOBESPAWNED)
+        if(player.getPlayerState() != PlayerState.TOBESPAWNED && player.getPlayerState() != PlayerState.DEAD)
             return false;
 
         List<PowerUpCard> powerupCard = new ArrayList<>();
@@ -34,9 +34,12 @@ public class SpawnAction implements Action {
         }
         player.spawn(gameBoard.getMap().getSpawnPoint(powerUpCardToDiscard.getColor())); //a spawn
         player.getHand().removePowerUpCard(powerUpCardToDiscard);
+
+        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(player.getName() +
+                (player.getPlayerState()==PlayerState.TOBESPAWNED ? " spawned" : " respawned after death")), player.getClientID());
+
         player.setState(PlayerState.NORMAL);
 
-        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(player.getName() + " spawned"), player.getClientID());
         return true;
     }
 }

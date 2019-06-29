@@ -30,6 +30,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     private GameModel gameModel;
     private boolean clientChoice;
     private boolean keepThreadAlive;
+    private boolean notMyTurn;
+    private boolean matchIsNotStarted;
 
 
     public UpdaterCLI(){
@@ -37,6 +39,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         scanner = new Scanner(System.in);
         actionParser = new ActionParser(this);
         keepThreadAlive = true;
+        matchIsNotStarted = true;
     }
 
 
@@ -295,17 +298,15 @@ public class UpdaterCLI  implements Updater,Runnable{
         List<PowerUpCard> powerups;
 
         while (!gameModel.isDisconnected() && !gameModel.isServerOffline()) {
-            System.out.println("entering the alwaysTrue cycle");
             if (connection.getStartGame() == 1) {
 
                 //this is to avoid (printing wrong informations && blocking on input)
                 waitAfterAction();
 
                 actionParser.addGameModel(gameModel);
-                System.out.println("Game is already started");
 
-                System.out.println("Testing if the start game works: " +connection.getStartGame());
-                if ((connection.getClientID() == connection.getCurrentID())) {
+                if (connection.getClientID() == connection.getCurrentID()) {
+                    notMyTurn = false;
                     System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
                             " and the current id is: " +connection.getCurrentID());
                     playerHand = gameModel.getPlayerHand();
@@ -350,22 +351,34 @@ public class UpdaterCLI  implements Updater,Runnable{
                     this.askInput();
                 }
                 else if(gameModel.isPlayTagback()){
+                    notMyTurn = false;
                     playTagback();
                 }
+                else if(gameModel.isToRespawn()){
+                    notMyTurn = false;
+                    System.out.println("You died but don't worry, you can respawn right now");
+                    spawn();
+                }
                 else{
-                    System.out.println("For now it is not your turn: ");// +
+                    //if(!notMyTurn)
+                        //System.out.println("It's not your turn now: " + connection.getCurrentCharacterName() +
+                                //" is playing");// +
                     // getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
                     // connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
                     try{
-                        TimeUnit.SECONDS.sleep(5);
+                        TimeUnit.SECONDS.sleep(1);
                     }
                     catch(InterruptedException e){
                         System.out.println("Exception while waiting");
                     }
+                    notMyTurn = true;
                 }
             }
-            else if(connection.getStartGame() == 0) {
-                System.out.println("Match isn't started, please wait a minute");
+            else if(connection.getStartGame() == 0) { //match is not started yet
+                if(matchIsNotStarted) {
+                    System.out.println("Match isn't started, please wait a minute");
+                    matchIsNotStarted = false;
+                }
                 try{
                     TimeUnit.SECONDS.sleep(5);
                 }
@@ -432,7 +445,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                     connection.sendAsynchronous(new TagbackStopInfo());
                 }
 
-            }else{
+            }
+            else{
                 gameModel.setPlayTagback(false);
                 connection.sendAsynchronous(new TagbackStopInfo());
             }
@@ -482,14 +496,14 @@ public class UpdaterCLI  implements Updater,Runnable{
             }catch(NumberFormatException e){
                 System.out.println("Please insert a valid number.");
             }
-
         }
 
         Info action1 = actionParser.createSpawnEvent(powerups.get(spawnChoice));
         System.out.println(">Sending your choice to the server: ");
         connection.send(action1);
-        System.out.println("Ok you were put in the map, right in the spawn point of color: " +powerups.get(spawnChoice).getColor());
-        System.out.println("In the row " +gameModel.getPlayerBoard(connection.getClientID()).getRow() + ", col " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+        //avoid asking again
+        gameModel.setToSpawn(false);
+        gameModel.setToRespawn(false);
     }
 
     public void askInput(){

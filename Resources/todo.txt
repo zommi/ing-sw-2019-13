@@ -32,6 +32,8 @@ da qualche parte si controlla che tipo non puoi sparare se la fase è POWERUP
 TODOS
 
 respawn cli
+playerboard cli
+non killare client se cade rete ma chiedere nome e tipo connessione
 
 
 SOCKET:

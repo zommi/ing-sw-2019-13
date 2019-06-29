@@ -4,7 +4,7 @@ import server.model.cards.PowerUpCard;
 
 public class SpawnInfo implements Info {
 
-    PowerUpCard powerupCard;
+    private PowerUpCard powerupCard;
 
     public SpawnInfo(PowerUpCard powerupCard){
         this.powerupCard = powerupCard;

@@ -63,7 +63,10 @@ public class GameManager {
         if(startGame == 1)
             activePlayersNum++;
 
-        System.out.println(playerAbstract.getName() + " is not inactive anymore, he will play his turns again");
+        String message = playerAbstract.getName() + " is not inactive anymore, he will play his turns again";
+        System.out.println(message);
+        sendEverybodyExcept(new MessageAnswer(message), playerAbstract.getClientID());
+
 
         //client has to be unlocked
         sendToSpecific(new ReconnectAnswer(), playerAbstract.getClientID());

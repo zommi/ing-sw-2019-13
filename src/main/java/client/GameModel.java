@@ -1,7 +1,6 @@
 package client;
 
-import server.controller.PlayerDiedAnswer;
-import server.controller.SpawnCommandAnswer;
+import server.SetRespawnAnswer;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
@@ -19,7 +18,10 @@ public class GameModel extends Observable implements Serializable {
     private PlayerHandAnswer playerHand;
     private int clientID;
     private ListOfWeaponsAnswer weaponList;
+
     private boolean toSpawn;
+    private boolean toRespawn;
+
     private boolean clientChoice;
 
     private boolean disconnected;
@@ -44,6 +46,14 @@ public class GameModel extends Observable implements Serializable {
         this.serverOffline = serverOffline;
         setChanged();
         notifyObservers("Server offline");
+    }
+
+    public boolean isToRespawn() {
+        return toRespawn;
+    }
+
+    public void setToRespawn(boolean toRespawn) {
+        this.toRespawn = toRespawn;
     }
 
     public boolean isPlayTagback() {
@@ -72,14 +82,6 @@ public class GameModel extends Observable implements Serializable {
 
     public boolean isDisconnected() {
         return disconnected;
-    }
-
-    public List<String> getCharactersNames(){
-        return gameBoard.getCharacterNames();
-    }
-
-    public List<String> getPlayersNames(){
-        return gameBoard.getPlayerNames();
     }
 
     public void setClientID(int clientID){
@@ -137,6 +139,12 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Spawn");
         }
 
+        else if(answer instanceof SetRespawnAnswer){
+            toRespawn = true;
+            setChanged();
+            notifyObservers("Respawn");
+        }
+
         else if (answer instanceof GrenadeAnswer) {
             playTagback = true;
             setChanged();
@@ -166,16 +174,6 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Weapons list");
         }
 
-        else if(answer instanceof PlayerDiedAnswer) {
-            setChanged();
-            notifyObservers("Player died");
-        }
-
-        else if(answer instanceof SpawnCommandAnswer) {
-            toSpawn = true;
-            setChanged();
-            notifyObservers("Spawn phase");
-        }
         else if(answer instanceof MessageAnswer){
             message = ((MessageAnswer) answer).getMessage();
             setChanged();

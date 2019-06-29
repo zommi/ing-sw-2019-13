@@ -6,10 +6,7 @@ import server.model.game.GameState;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
-import view.GameBoardAnswer;
-import view.PlayerHandAnswer;
-import view.SetupRequestAnswer;
-import view.SetupConfirmAnswer;
+import view.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -127,7 +124,13 @@ public class Server {
                 client.setReceiverInterface(receiverInterface);
 
             //setting player connected so that his turn will be played
-            client.getGameManager().getController().getCurrentGame().getPlayerFromId(clientID).setConnected(true);
+            client.getPlayer().setConnected(true);
+
+            //informing other players
+            if(client.getGameManager().getGameState() != GameState.SETUP)
+                client.getGameManager().sendEverybodyExcept(new MessageAnswer(
+                client.getName() + " fixed his wifi connection! Yeeehaw"), clientID);
+
 
             //empty setupAnswer
             setupRequestAnswer.setClientID(clientID);
