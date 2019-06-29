@@ -149,10 +149,10 @@ public class Controller {
         //}
 
         if (!currentPlayer.isConnected() ||
-            currentID != clientID ||
-            currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
+                currentID != clientID ||
+                currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
             sendErrorMessage(clientID, "It's not that easy to cheat here, try again!");
-                return false;
+            return false;
         }
 
         if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){

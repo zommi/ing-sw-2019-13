@@ -15,4 +15,7 @@ public enum PlayerState {
 
     DEAD,
 
+    BEFORE_FIRST_PLAYER_FF,
+
+    AFTER_FIRST_PLAYER_FF,
 }
