@@ -174,7 +174,7 @@ public class UpdaterGui extends Application implements Updater {
             handleTurn();
         }
 
-        if(object.equals("PlayerHand") && mapInitialized){
+        if(object.equals("PlayerHand")){
             System.out.println("Hand Updated");
             Platform.runLater(() -> {
                 mainGuiController.updateHand();

@@ -488,13 +488,13 @@ public class MainGuiController implements GuiController {
             int finalI = i;
             GuiPowerupCard finalPowerupCard = powerupCard;
             powerupCard.setOnMousePressed(e -> {
-                GuiPowerupCard defaultCard = new GuiPowerupCard(
-                        getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(),
-                        finalI);
-                defaultCard.setOnMousePressed(null);
-                defaultCard.setCursor(Cursor.DEFAULT);
-                defaultCard.setFitWidth(powerupHand.getWidth() / 3);
-                defaultCard.setFitHeight(powerupHand.getHeight());
+//                GuiPowerupCard defaultCard = new GuiPowerupCard(
+//                        getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(),
+//                        finalI);
+//                defaultCard.setOnMousePressed(null);
+//                defaultCard.setCursor(Cursor.DEFAULT);
+//                defaultCard.setFitWidth(powerupHand.getWidth() / 3);
+//                defaultCard.setFitHeight(powerupHand.getHeight());
                 if(model.isToSpawn()){
                     setSpawn(card);
                 }else{
@@ -504,7 +504,7 @@ public class MainGuiController implements GuiController {
                         node.setOnMousePressed(null);
                     }
                 }
-                powerupHand.add(defaultCard, finalI, 0);
+//                powerupHand.add(defaultCard, finalI, 0);
             });
             if(!model.isToSpawn())powerupCard.setDisable(true);
             this.powerupHand.add(powerupCard,i,0);
@@ -840,9 +840,9 @@ public class MainGuiController implements GuiController {
                     this.gui.getConnection().sendAsynchronous(info);
                 }
             }
-            this.model.setPlayTagback(false);
-            this.gui.getConnection().sendAsynchronous(new TagbackStopInfo());
         }
+        this.model.setPlayTagback(false);
+        this.gui.getConnection().sendAsynchronous(new TagbackStopInfo());
     }
 
     private List<PowerUpCard> getCheckBoxInput(List<CheckBox> checkBoxes, List<PowerUpCard> listToAsk){
