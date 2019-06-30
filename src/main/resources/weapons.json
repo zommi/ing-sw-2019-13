@@ -14,7 +14,7 @@
 
         "mandatory" : true,
         "description" : "Deal 2 damage and 1 mark to 1 target you can see.",
-"microEffects" : [
+        "microEffects" : [
           {
             "mandatory" : true,
             "damage" : 2,

@@ -1,6 +1,7 @@
 package client;
 
 import server.SetRespawnAnswer;
+import server.controller.turns.TurnPhase;
 import server.model.game.GameState;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
@@ -41,7 +42,11 @@ public class GameModel extends Observable implements Serializable {
     }
 
     public GameState getCurrentState(){
-        return null;    //todo mettere gamestate nella gameboard
+        return gameBoard.getResult().getGameState();
+    }
+
+    public TurnPhase getCurrentTurnPhase(){
+        return gameBoard.getResult().getCurrentTurnPhase();
     }
 
     public void setServerOffline(boolean serverOffline) {

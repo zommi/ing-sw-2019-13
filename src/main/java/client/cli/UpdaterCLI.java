@@ -5,6 +5,7 @@ import client.*;
 import constants.Color;
 import constants.Constants;
 import exceptions.NotEnoughPlayersException;
+import server.controller.turns.TurnPhase;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
@@ -22,16 +23,12 @@ public class UpdaterCLI  implements Updater,Runnable{
     private ActionParser actionParser;
 
     private Connection connection;
-    private boolean alwaysTrue = true;
-
-
-    ExecutorService executorService;
 
     private GameModel gameModel;
     private boolean clientChoice;
     private boolean keepThreadAlive;
-    private boolean notMyTurn;
     private boolean matchIsNotStarted;
+    private boolean firstTimePrintingTagbackWait = true;
 
 
     public UpdaterCLI(){
@@ -42,16 +39,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         matchIsNotStarted = true;
     }
 
-
     @Override
     public void update(Observable obs, Object object){
         if(object.equals("GameBoard")){
             System.out.println("New Update of the gameboard");
-            //gameModel.getMap().printOnCLI();
-        }
-        else if(object.equals("reset")){
-            System.out.println("Tagback worked well");
-            this.clientChoice = false;
         }
 
         else if(object.equals("Change player")){
@@ -65,10 +56,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         else if(object.equals("Spawn")){
             System.out.println("New update of spawn");
-        }
-
-        else if(object.equals("Weapons list")){
-            System.out.println("New Update of the weapons");
         }
 
         else if(object.equals("Map initialized")){
@@ -306,9 +293,18 @@ public class UpdaterCLI  implements Updater,Runnable{
                 actionParser.addGameModel(gameModel);
 
                 if (connection.getClientID() == connection.getCurrentID()) {
-                    notMyTurn = false;
-                    System.out.println("Testing what client I am in: I am in client: " +connection.getClientID() +
-                            " and the current id is: " +connection.getCurrentID());
+
+                    if(gameModel.getCurrentTurnPhase() == TurnPhase.TAGBACK_PHASE && !gameModel.isPlayTagback()){
+                        if(firstTimePrintingTagbackWait){
+                            firstTimePrintingTagbackWait = false;
+                            System.out.println("Someone is playing a tagback, please wait");
+                        }
+                        gameModel.setJustDidMyTurn(true);
+                        continue;
+                    }
+                    firstTimePrintingTagbackWait = true;
+
+
                     playerHand = gameModel.getPlayerHand();
                     playerBoard = gameModel.getPlayerBoard(connection.getClientID());
                     weapons = playerHand.getWeaponHand();
@@ -351,11 +347,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                     this.askInput();
                 }
                 else if(gameModel.isPlayTagback()){
-                    notMyTurn = false;
                     playTagback();
                 }
                 else if(gameModel.isToRespawn()){
-                    notMyTurn = false;
                     System.out.println("You died but don't worry, you can respawn right now");
                     spawn();
                 }
@@ -371,7 +365,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     catch(InterruptedException e){
                         System.out.println("Exception while waiting");
                     }
-                    notMyTurn = true;
                 }
             }
             else if(connection.getStartGame() == 0) { //match is not started yet
@@ -399,7 +392,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         scanner.nextLine();
         connection.send(new ReconnectInfo(connection.getClientID()));
         System.out.println("Sent reconnect request");
-        notMyTurn = true;
 
         while(gameModel.isDisconnected()){
             try{
@@ -411,7 +403,8 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     private void playTagback() {
-        if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() > 0){
+        int numberOfTagbacks = gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks();
+        if(numberOfTagbacks > 0){
             System.out.println("Do you wanna play a Tagback Grenade?");
             if (scanner.nextLine().equalsIgnoreCase("y")) {
                 boolean ask = true;
@@ -447,11 +440,10 @@ public class UpdaterCLI  implements Updater,Runnable{
                 System.out.println("Tagback sent!");
 
                 //there are no more tagbacks to play
-                if(gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks() == 1){
+                if(numberOfTagbacks == 1){
                     gameModel.setPlayTagback(false);
                     connection.sendAsynchronous(new TagbackStopInfo());
                     System.out.println("Sent tagback stop info");
-                    notMyTurn = true;
                 }
 
             }
@@ -459,14 +451,17 @@ public class UpdaterCLI  implements Updater,Runnable{
                 gameModel.setPlayTagback(false);
                 connection.sendAsynchronous(new TagbackStopInfo());
                 System.out.println("Sent tagback stop info");
-                notMyTurn = true;
             }
         }
     }
 
     private void waitAfterAction() {
+        boolean firstTimePrintingWaitPlease = true;
         while(gameModel.isJustDidMyTurn()){
-            System.out.println("Wait please");
+            if(firstTimePrintingWaitPlease) {
+                System.out.println("Wait please");
+                firstTimePrintingWaitPlease = false;
+            }
             try {
                 TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException e){

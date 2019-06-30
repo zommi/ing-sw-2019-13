@@ -96,6 +96,9 @@ public class TurnHandler {
         lastPhase = currentTurnPhase;
         setCurrentTurnPhase(TurnPhase.TAGBACK_PHASE);
 
+        //sending everybody new phase
+        controller.sendEverybodyGameboardAndHand();
+
         for(PlayerAbstract playerAbstract : tagbackPlayers){
             controller.getGameManager().sendToSpecific(new GrenadeAnswer(), playerAbstract.getClientID());
         }
@@ -140,7 +143,6 @@ public class TurnHandler {
 
                 controller.restoreSquares();
                 System.out.println("restored squares");
-                controller.sendSquaresRestored();
 
                 //checking if someone died
                 boolean someoneDied = false;
@@ -191,6 +193,7 @@ public class TurnHandler {
                 break;
             default: break;
         }
+        controller.sendEverybodyGameboardAndHand();
     }
 
     public void startNextPlayerTimer(){

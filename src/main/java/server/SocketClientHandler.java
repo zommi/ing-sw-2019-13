@@ -45,7 +45,7 @@ public class SocketClientHandler implements Runnable {
                 Info infoRead = (Info) inputStream.readObject();
                 processAction(infoRead);
             } catch (IOException e) {
-                System.out.println("CLIENT HAS DISCONNECTED");
+                System.out.println("IOException caught");
                 try{
                     if(clientID != -1){
                         server.getClientFromId(clientID).disconnect();

@@ -105,13 +105,13 @@ public class Controller {
         TurnHandler turnHandler = currentGame.getTurnHandler();
 
         if(action instanceof SpawnInfo){
+            //spawn doesn't change the turn phase so we have to send gameboard here
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, player, currentGame.getCurrentGameBoard());
             if(!turnHandler.setAndDoSpawn(spawnAction)){
                 return;
             }
             gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
             //spawn is disabled locally by the client
-            //gameManager.sendToSpecific(new SetSpawnAnswer(false), clientID);
             gameManager.sendToSpecific(new PlayerHandAnswer(player.getHand()), clientID);
 
             this.playersToRespawn.remove(currentGame.getPlayerFromId(clientID));
@@ -125,9 +125,11 @@ public class Controller {
         }
 
         else if(action instanceof PowerUpPack){
+            //powerup doesn't change the turn phase so we have to send gameboard here
+
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action, currentGame, player);
             if(turnHandler.setAndDoTagback(powerUpAction))
-                sendGameboardAndHand(player);
+                sendEverybodyGameboardAndHand();
             else
                 sendErrorMessage(clientID);
         }
@@ -137,7 +139,7 @@ public class Controller {
         }
     }
 
-    public boolean makeAction(int clientID, Info action){
+    public void makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
@@ -149,97 +151,73 @@ public class Controller {
                 currentID != clientID ||
                 currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
             sendErrorMessage(clientID, "You cannot do that now");
-            return false;
+            return;
         }
 
         if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){
             sendErrorMessage(clientID, "You cannot do that now, game is over!");
-            return false;
+            return;
         }
 
         if(currentGame.getTurnHandler().getCurrentTurnPhase() == TurnPhase.TAGBACK_PHASE){
             sendErrorMessage(clientID, "Please wait for the other players to play their tagback grenades");
-            return false;
+            return;
         }
 
         if(turnHandler.getCurrentTurnPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
                 !(action instanceof ReloadInfo)){
             sendErrorMessage(clientID);
-            return false;
+            return;
         }
 
-        /*if(currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() == 0){
-            try{
-                currentGame.nextState();
-            }
-            catch(WrongGameStateException e){
-                e.printStackTrace();
-            }
-        }*/
 
         //checks and executes actions
 
-        boolean actionOk;
+        boolean actionOk = true;
 
         if(action instanceof ReloadInfo){
 
             //checks that it's not the wrong time to reload
             if(turnHandler.getCurrentTurnPhase() != TurnPhase.END_TURN) {
-                sendErrorMessage(clientID);
-                return false;
+                actionOk = false;
+            }else {
+                ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
+                actionOk = turnHandler.setAndDoAction(reloadAction);
             }
-
-            ReloadAction reloadAction = new ReloadAction((ReloadInfo) action, currentPlayer);
-            actionOk = turnHandler.setAndDoAction(reloadAction);
-            if(actionOk){
-                gameManager.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentPlayer.getClientID());
-                gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-                //turnHandler.nextPhase();
-            }else{
-                sendErrorMessage(clientID);
-            }
-
         }
 
         else if(action instanceof PowerUpPack){
+            //powerup doesn't change the turn phase so we have to send gameboard here
+
             PowerUpAction powerUpAction = new PowerUpAction((PowerUpPack) action,currentGame, currentPlayer);
-            if(turnHandler.setAndDoAction(powerUpAction))
-                sendGameboardAndHand(currentPlayer);
-            else
-                sendErrorMessage(clientID);
+            actionOk = turnHandler.setAndDoAction(powerUpAction);
+            if(actionOk)
+                sendEverybodyGameboardAndHand();
         }
 
         else if(action instanceof SpawnInfo){
+            //spawn doesn't change the turn phase so we have to send gameboard here
+
             SpawnAction spawnAction = new SpawnAction((SpawnInfo) action, currentPlayer, currentGame.getCurrentGameBoard());
-            if(turnHandler.setAndDoAction(spawnAction)) {
-                gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-                //spawn is disabled locally by the client
-                //gameManager.sendToSpecific(new SetSpawnAnswer(false), currentID);
-                gameManager.sendToSpecific(new PlayerHandAnswer(currentPlayer.getHand()), currentID);
-            }else{
-                sendErrorMessage(clientID);
-            }
+            actionOk = turnHandler.setAndDoAction(spawnAction);
+            if(actionOk)
+                sendEverybodyGameboardAndHand();
+            //spawn is disabled locally by the client
         }
 
         else if(action instanceof MoveInfo){
             MoveAction moveAction = new MoveAction((MoveInfo) action, currentPlayer, currentMap);
-            if(turnHandler.setAndDoAction(moveAction)) {
-                GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
+            actionOk = turnHandler.setAndDoAction(moveAction);
+            if(actionOk) {
                 String message = currentPlayer.getName() + " moved";
                 gameManager.sendEverybodyExcept(new MessageAnswer(message), currentPlayer.getClientID());
-                gameManager.sendToEverybody(gameBoardAnswer);
-            }else{
-                sendErrorMessage(clientID);
             }
         }
 
         else if(action instanceof CollectInfo){
-            MoveInfo temp = new MoveInfo(((CollectInfo)action).getRow(),((CollectInfo)action).getCol());
-            CollectAction collectAction = new CollectAction(temp, (CollectInfo) action, currentPlayer, currentMap);
-            if(turnHandler.setAndDoAction(collectAction))
-                this.sendGameboardAndHand(currentPlayer);
-            else
-                sendErrorMessage(clientID);
+            MoveInfo moveInfo = new MoveInfo(((CollectInfo)action).getRow(),((CollectInfo)action).getCol());
+            CollectAction collectAction = new CollectAction(moveInfo, (CollectInfo) action, currentPlayer, currentMap);
+            actionOk = turnHandler.setAndDoAction(collectAction);
         }
 
         else if(action instanceof ShootPack) {
@@ -250,25 +228,12 @@ public class Controller {
             }
 
             ShootAction shootAction = new ShootAction((ShootPack) action, currentPlayer, currentGame);
-            if(turnHandler.setAndDoAction(shootAction)) {
-                sendGameboardAndHand(currentPlayer);
-
-
-            }else{      //shoot action not valid
-                sendErrorMessage(clientID);
-            }
+            actionOk = turnHandler.setAndDoAction(shootAction);
         }
 
-
-        if(turnHandler.getCurrentTurnPhase() == TurnPhase.END_TURN){
-            System.out.println("We are in the end turn");
-            //turnHandler.nextPhase();
-            System.out.println("Turning next phase");
-            System.out.println("Number of actions ended " +turnHandler.getCurrentTurnPhase());
-            //ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
-            //server.sendToEverybody(change);
+        if(!actionOk){
+            sendErrorMessage(clientID);
         }
-        return true;
     }
 
     public void sendErrorMessage(int clientId) {
@@ -285,15 +250,11 @@ public class Controller {
         gameManager.sendToEverybody(changeAnswer);
     }
 
-    public void sendGameboardAndHand(PlayerAbstract player){
-        GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(this.currentGame.getCurrentGameBoard());
-        PlayerHandAnswer playerHandAnswer = new PlayerHandAnswer(player.getHand());
-        gameManager.sendToEverybody(gameBoardAnswer);
-        gameManager.sendToSpecific(playerHandAnswer, player.getClientID());
-    }
-
-    public void sendSquaresRestored(){
-        gameManager.sendToEverybody(new GameBoardAnswer(this.currentGame.getCurrentGameBoard()));
+    public void sendEverybodyGameboardAndHand() {
+        gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
+        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+            gameManager.sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
+        }
     }
 
     public Game getCurrentGame(){
