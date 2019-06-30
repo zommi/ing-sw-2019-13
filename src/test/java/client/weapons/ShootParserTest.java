@@ -32,7 +32,7 @@ class ShootParserTest {
 
         Game game = new Game(1,5, null);
         GameBoard gameBoard = game.getCurrentGameBoard();
-        InputAbstract inputAbstract = new CliInput();
+        InputAbstract inputAbstract = new CliInput(null);
         List<String> playersNamesList = new ArrayList<>();
 
         List<String> roomNameList = new ArrayList<>();
@@ -84,7 +84,7 @@ class ShootParserTest {
 
 
         ShootParser shootParser = new ShootParser(new GameModel(), inputAbstract);
-        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeapon("electroscythe"));
+        ShootPack shootPack = shootParser.getWeaponInput(gameBoard.getWeaponCard("electroscythe"));
 
         ShootValidator shootValidator = new ShootValidator();
         ShootInfo shootInfo = shootValidator.validate(shootPack, game, player1);

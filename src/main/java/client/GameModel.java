@@ -1,6 +1,7 @@
 package client;
 
 import server.SetRespawnAnswer;
+import server.model.game.GameState;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
@@ -37,6 +38,10 @@ public class GameModel extends Observable implements Serializable {
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
         clientID = -9;
+    }
+
+    public GameState getCurrentState(){
+        return null;    //todo mettere gamestate nella gameboard
     }
 
     public void setServerOffline(boolean serverOffline) {

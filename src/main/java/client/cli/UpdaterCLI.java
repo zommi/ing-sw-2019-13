@@ -586,7 +586,7 @@ public class UpdaterCLI  implements Updater,Runnable{
                     System.out.println("Please insert a valid number.");
                 }
             }
-            Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice).getWeapon());
+            Info action = actionParser.createShootEvent(gameModel.getPlayerHand().getWeaponHand().get(choice));
             connection.send(action);
         }
         else if (read.equalsIgnoreCase("C")) {      //collect

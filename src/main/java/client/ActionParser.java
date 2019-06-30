@@ -20,7 +20,7 @@ public class ActionParser{
 
     public ActionParser(Updater updater){
         if(updater instanceof UpdaterCLI) {
-            input = new CliInput();
+            input = new CliInput(this);
         } else{
             input = new GuiInput(updater);
         }
@@ -39,31 +39,9 @@ public class ActionParser{
         return new MoveInfo(coordinatex, coordinatey);
     }
 
-    public Info createShootEvent(Weapon weapon){
+    public Info createShootEvent(WeaponCard weaponCard){
         ShootParser shootParser = new ShootParser(gameModel, input);
-        return shootParser.getWeaponInput(weapon);
-    }
-
-    public Weapon weaponFromString(String name){
-        for(int i = 0; i < gameModel.getPlayerHand().getWeaponHand().size(); i++){
-            if(name.equalsIgnoreCase(gameModel.getPlayerHand().getWeaponHand().get(i).getName())){
-                return gameModel.getPlayerHand().getWeaponHand().get(i).getWeapon();
-            }
-        }
-        System.out.println("ERROR: THE WEAPON DOES NOT EXIST OR YOU DON'T HAVE IT");
-        System.out.println("Insert a new one: ");
-        Scanner myObj = new Scanner(System.in);
-        String read = myObj.nextLine();
-        weaponFromString(read);
-        return null;
-    }
-
-    public void setPlayersNames(List<String> names){
-        input.setPlayersNames(names);
-    }
-
-    public void setRoomsNames(List<String> names){
-        input.setRoomsNames(names);
+        return shootParser.getWeaponInput(weaponCard);
     }
 
     public Info createCollectEvent(int row, int col, int collectDecision, WeaponCard weaponToDiscard, List<PowerUpCard> powerUpCards) {

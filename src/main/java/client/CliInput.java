@@ -7,6 +7,7 @@ import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
 import server.model.map.Room;
 import server.model.player.GameCharacter;
 
@@ -14,9 +15,23 @@ import java.util.*;
 
 public class CliInput extends InputAbstract{
     private Scanner scanner;
+    private ActionParser actionParser;
 
-    public CliInput() {
+    public CliInput(ActionParser actionParser) {
+        this.actionParser = actionParser;
         scanner = new Scanner(System.in);
+    }
+
+    @Override
+    public ReloadInfo askReload(WeaponCard weaponCard) {
+        System.out.println("Do you want to reload your weapon? [y to reload]");
+        if (scanner.nextLine().equalsIgnoreCase("y")){
+            List<WeaponCard> weaponCards = new ArrayList<>(Collections.singletonList(weaponCard));
+            List<PowerUpCard> powerUpCards  = askPowerUps();
+            return (ReloadInfo) actionParser.createReloadEvent(weaponCards, powerUpCards);
+        }
+
+        return null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package client.weapons;
 
 import client.Info;
+import client.ReloadInfo;
 import client.SquareInfo;
 import server.model.cards.PowerUpCard;
 
@@ -9,16 +10,28 @@ import java.util.List;
 
 public class ShootPack implements Info {
 
+
+
     private String weapon;
     private List<MacroPack> activatedMacros;
-    private SquareInfo square;
     private List<PowerUpCard> powerUpCards;
     private List<ScopePack> scopePacks;
+
+    private SquareInfo square;
+    private ReloadInfo reloadInfo;
 
 
     public ShootPack(String weapon){
         this.weapon = weapon;
         this.activatedMacros = new ArrayList<>();
+    }
+
+    public void setReloadInfo(ReloadInfo reloadInfo) {
+        this.reloadInfo = reloadInfo;
+    }
+
+    public ReloadInfo getReloadInfo() {
+        return reloadInfo;
     }
 
     public String getWeapon(){

@@ -7,6 +7,7 @@ import constants.Color;
 import constants.Constants;
 import server.model.cards.*;
 import server.model.game.Game;
+import server.model.game.GameState;
 import server.model.gameboard.GameBoard;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
@@ -31,11 +32,31 @@ public class ShootValidator {
         //uncomment these lines only when instantiating weapon cards and assigning them to players
 
         //attacker must have the selected weapon
-        if(shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()) == null)
+        WeaponCard weaponCard = shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon());
+        if(weaponCard == null)
             return null;
 
-        //weapon must be loaded
-        if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
+
+        //final frenzy checks
+        if(game.getCurrentState() != GameState.FINAL_FRENZY && shootInfo.getReloadInfo() != null)
+            return null;
+
+        if(shootInfo.getReloadInfo() != null) { //player wants to reload before shooting
+            List<PowerUpCard> combinedPowerUps = new ArrayList<>(shootInfo.getPowerUpCards());
+            combinedPowerUps.addAll(shootInfo.getReloadInfo().getPowerUpCards());
+            if (!attacker.hasPowerUpCards(combinedPowerUps))
+                return null;
+
+            ReloadValidator reloadValidator = new ReloadValidator();
+            if (reloadValidator.validate(shootInfo.getReloadInfo(), attacker) == null)
+                return null;
+        }
+
+        //if the attacker wanted to reload, at this point we know for sure that reload info is legal
+        //so we don't check if the weapon is actually ready
+
+        //weapon must be loaded if player doesn't want to reload
+        else if(!shootInfo.getAttacker().getWeaponCard(shootInfo.getWeapon()).isReady())
             return null;
 
         //attacker must have the selected powerups
@@ -365,6 +386,6 @@ public class ShootValidator {
         }
 
         return new ShootInfo(attacker, gameBoard.getWeapon(shootPack.getWeapon()),
-                            macroInfos, squareAbstract, powerUpCards, scopeInfos);
+                            macroInfos, squareAbstract, powerUpCards, scopeInfos, shootPack.getReloadInfo());
     }
 }

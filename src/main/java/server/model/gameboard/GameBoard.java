@@ -175,6 +175,10 @@ public class GameBoard implements Serializable {
     }
 
     public Weapon getWeapon(String name){       //TODO
-        return weaponDeck.getWeapon(name);
+        return getWeaponCard(name).getWeapon();
+    }
+
+    public WeaponCard getWeaponCard(String name){
+        return weaponDeck.getWeaponCard(name);
     }
 }

@@ -9,6 +9,7 @@ import client.weapons.Weapon;
 import constants.Color;
 import javafx.application.Platform;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,11 @@ public class GuiInput extends InputAbstract {
         UpdaterGui updaterGui = (UpdaterGui) updater;
         this.guiController = (MainGuiController)((UpdaterGui) updater).getControllerFromString("gui.fxml");
         this.guiController.setInput(this);
+    }
+
+    @Override
+    public ReloadInfo askReload(WeaponCard weaponCard) {
+        return null;        //todo
     }
 
     @Override

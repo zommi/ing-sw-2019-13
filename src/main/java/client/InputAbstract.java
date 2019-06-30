@@ -5,6 +5,7 @@ import client.weapons.MicroEffect;
 import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -14,6 +15,8 @@ public abstract class InputAbstract {
     List<String> roomsNames;
 
     GameModel gameModel;
+
+    public abstract ReloadInfo askReload(WeaponCard weaponCard);
 
     public abstract boolean getChoice(MacroEffect macroEffect);
 

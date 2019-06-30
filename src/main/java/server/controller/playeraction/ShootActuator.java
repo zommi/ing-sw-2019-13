@@ -8,13 +8,18 @@ import view.MessageAnswer;
 
 public class ShootActuator {
     public void actuate(ShootInfo shootInfo, Controller controller){
+
+        //final frenzy and reload
+        if(shootInfo.getReloadInfo() != null) {
+            ReloadActuator reloadActuator = new ReloadActuator();
+            reloadActuator.actuate(shootInfo.getReloadInfo(), shootInfo.getAttacker(), controller);
+        }
+
         //actuate
         for(MacroInfo macroInfo : shootInfo.getActivatedMacros()){
             for(MicroInfo microInfo : macroInfo.getActivatedMicros())
                 microInfo.actuate(shootInfo);
         }
-
-
 
         //actuate targeting scopes
         for(ScopeInfo scopeInfo : shootInfo.getScopeInfos()){

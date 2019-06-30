@@ -3,6 +3,8 @@ package client.weapons;
 import client.GameModel;
 import client.InputAbstract;
 import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
+import server.model.game.GameState;
 import server.model.player.PlayerState;
 
 import java.util.ArrayList;
@@ -22,15 +24,18 @@ public class ShootParser {
     }
     private ShootPack shootPack;
 
-    public ShootPack getWeaponInput(Weapon weapon){
+    public ShootPack getWeaponInput(WeaponCard weaponCard){
         this.isLimitedActivated = false;
-        this.weapon = weapon;
+        this.weapon = weaponCard.getWeapon();
         shootPack = new ShootPack(weapon.getName());
 
         if(gameModel.getGameBoard() != null && gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT){
             if(input.getMoveChoice())
                 shootPack.setSquare(input.askSquares(1).get(0));
         }
+
+        if(gameModel.getCurrentState() == GameState.FINAL_FRENZY && !weaponCard.isReady())
+            shootPack.setReloadInfo(input.askReload(weaponCard));
 
         switch(weapon.getType()){
             case EXTRA:

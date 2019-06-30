@@ -466,7 +466,7 @@ public class MainGuiController implements GuiController {
             }
             GuiWeaponCard finalCardToAdd = cardToAdd;
             cardToAdd.setOnMousePressed(e -> {
-                Info info = this.actionParser.createShootEvent(finalCardToAdd.getWeaponCard().getWeapon());
+                Info info = this.actionParser.createShootEvent(finalCardToAdd.getWeaponCard());
                 this.gui.getConnection().send(info);
                 for(Node node : weaponHand.getChildren()){
                     node.setDisable(true);

@@ -135,9 +135,13 @@ public class WeaponDeck implements Serializable {
     }
 
     public Weapon getWeapon(String weaponName){
+        return getWeaponCard(weaponName).getWeapon();
+    }
+
+    public WeaponCard getWeaponCard(String weaponName){
         for(WeaponCard weaponCard : staticDeck){
             if(weaponCard.getWeapon().getName().equalsIgnoreCase(weaponName))
-                return weaponCard.getWeapon();
+                return weaponCard;
 
         }
         return null;

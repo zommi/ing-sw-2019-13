@@ -14,6 +14,7 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
     private PowerupDeck powerupDeck;
     private String path;
     private int cardId;
+    private boolean chosenForReload;
 
 
     public PowerUpCard(Color color, PowerUp powerUp, String path, PowerupDeck powerupDeck, int cardId) {
@@ -22,6 +23,14 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         this.powerupDeck = powerupDeck;
         this.path = path;
         this.cardId = cardId;
+    }
+
+    public boolean isChosenForReload() {
+        return chosenForReload;
+    }
+
+    public void setChosenForReload(boolean chosenForReload) {
+        this.chosenForReload = chosenForReload;
     }
 
     public PowerUp getPowerUp() {
