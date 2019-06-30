@@ -1,18 +1,14 @@
 package server.controller.playeraction;
 
 import client.powerups.PowerUpPack;
-import client.weapons.Cost;
 import constants.Constants;
 import server.controller.turns.TurnPhase;
-import server.model.cards.PowerUpCard;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class PowerUpValidator {
@@ -44,7 +40,7 @@ public class PowerUpValidator {
                 break;
 
             case "Tagback Grenade":
-                if(game.getTurnHandler().getCurrentPhase() != TurnPhase.TAGBACK_PHASE)
+                if(game.getTurnHandler().getCurrentTurnPhase() != TurnPhase.TAGBACK_PHASE)
                     return null;
 
                 if(attacker.getJustDamagedBy() == null)

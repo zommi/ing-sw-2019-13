@@ -3,6 +3,7 @@ package server.model.gameboard;
 import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
+import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.map.*;
@@ -56,6 +57,10 @@ public class GameBoard implements Serializable {
 
     private List<GameCharacter> activeCharacters;
 
+    private TurnPhase currentTurnPhase;
+
+
+
     public GameBoard(){
 
     }
@@ -75,8 +80,17 @@ public class GameBoard implements Serializable {
         this.colorToPlayer = new HashMap<>();
         activeCharacters = new ArrayList<>();
         gameCharacterList = new ArrayList<>();
+        currentTurnPhase = TurnPhase.FIRST_ACTION;
         setupGameBoard();
 
+    }
+
+    public void setCurrentTurnPhase(TurnPhase currentTurnPhase) {
+        this.currentTurnPhase = currentTurnPhase;
+    }
+
+    public TurnPhase getCurrentTurnPhase() {
+        return currentTurnPhase;
     }
 
     public void setPositionHashMap(int id, int col, int row){

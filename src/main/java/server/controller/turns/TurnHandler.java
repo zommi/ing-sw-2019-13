@@ -10,7 +10,6 @@ import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerHand;
 import view.GrenadeAnswer;
 
 import java.util.*;
@@ -18,7 +17,7 @@ import java.util.*;
 public class TurnHandler {
 
 
-    private TurnPhase currentPhase;
+    private TurnPhase currentTurnPhase;
 
     private TurnPhase lastPhase;
 
@@ -35,19 +34,19 @@ public class TurnHandler {
 
     public TurnHandler(Controller controller){
         this.controller = controller;
-        this.currentPhase = TurnPhase.FIRST_ACTION;
+        setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
         tagbackPlayers = new ArrayList<>();
         timerId = 0;
         timer = new Timer(true);
     }
 
-    public TurnPhase getCurrentPhase(){
-        return this.currentPhase;
+    public TurnPhase getCurrentTurnPhase(){
+        return this.currentTurnPhase;
     }
 
     public boolean setAndDoAction(Action action){
         boolean actionValid = false;
-        if(currentPhase == TurnPhase.FIRST_ACTION || currentPhase == TurnPhase.SECOND_ACTION) {
+        if(currentTurnPhase == TurnPhase.FIRST_ACTION || currentTurnPhase == TurnPhase.SECOND_ACTION) {
             actionValid = action.execute(controller);
             if(actionValid && (action instanceof CollectAction || action instanceof MoveAction)) {
                 //if it is a draw or a spawn it is not counted as an action
@@ -65,7 +64,7 @@ public class TurnHandler {
                 else
                     nextPhase();
             }
-        }else if (currentPhase == TurnPhase.END_TURN && action instanceof ReloadAction){
+        }else if (currentTurnPhase == TurnPhase.END_TURN && action instanceof ReloadAction){
             actionValid = action.execute(controller);
             if(actionValid){
                 nextPhase();
@@ -75,19 +74,24 @@ public class TurnHandler {
     }
 
     public boolean setAndDoSpawn(Action action){
-        return currentPhase == TurnPhase.SPAWN_PHASE && action.execute(controller);
+        return currentTurnPhase == TurnPhase.SPAWN_PHASE && action.execute(controller);
     }
 
-    public void setCurrentPhase(TurnPhase currentPhase) {
-        this.currentPhase = currentPhase;
+    public void setCurrentTurnPhase(TurnPhase currentTurnPhase) {
+        this.currentTurnPhase = currentTurnPhase;
+        try {
+            controller.getCurrentGame().getCurrentGameBoard().setCurrentTurnPhase(currentTurnPhase);
+        }catch(Exception e){
+            //do nothing
+        }
     }
 
     public void startTagbackPhase(){
         //canceling current timer
         currentTimerTask.cancel();
 
-        lastPhase = currentPhase;
-        currentPhase = TurnPhase.TAGBACK_PHASE;
+        lastPhase = currentTurnPhase;
+        setCurrentTurnPhase(TurnPhase.TAGBACK_PHASE);
 
         for(PlayerAbstract playerAbstract : tagbackPlayers){
             controller.getGameManager().sendToSpecific(new GrenadeAnswer(), playerAbstract.getClientID());
@@ -97,13 +101,13 @@ public class TurnHandler {
     }
 
     public void nextPhase(){
-        switch (currentPhase){
+        switch (currentTurnPhase){
             case FIRST_ACTION:
                 //stopping first action timer
                 currentTimerTask.cancel();
 
                 System.out.println("First action done, moving to second action");
-                currentPhase = TurnPhase.SECOND_ACTION;
+                setCurrentTurnPhase(TurnPhase.SECOND_ACTION);
 
                 //starting second action timer
                 startNextPlayerTimer();
@@ -115,7 +119,7 @@ public class TurnHandler {
                 currentTimerTask.cancel();
 
                 System.out.println("Second action done, moving to next phase");
-                currentPhase = TurnPhase.END_TURN;
+                setCurrentTurnPhase(TurnPhase.END_TURN);
 
                 //starting reload timer
                 startNextPlayerTimer();
@@ -139,7 +143,7 @@ public class TurnHandler {
                 }
 
                 if(someoneDied){
-                    currentPhase = TurnPhase.SPAWN_PHASE;
+                    setCurrentTurnPhase(TurnPhase.SPAWN_PHASE);
 
                     //starting spawn timer
                     startSpawnTimer();
@@ -148,7 +152,7 @@ public class TurnHandler {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                     System.out.println("changed player in game, moving from endturn to firstAction");
                     controller.sendChangeCurrentPlayer();
-                    currentPhase = TurnPhase.FIRST_ACTION;
+                    setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
 
                     //starting first action timer
                     startNextPlayerTimer();
@@ -161,7 +165,7 @@ public class TurnHandler {
                 controller.setCurrentID(controller.getCurrentGame().nextPlayer());
                 System.out.println("changed player in game");
                 controller.sendChangeCurrentPlayer();
-                currentPhase = TurnPhase.FIRST_ACTION;
+                setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
 
                 //starting first action timer
                 startNextPlayerTimer();
@@ -170,7 +174,7 @@ public class TurnHandler {
                 //stopping tagback timer
                 currentTimerTask.cancel();
 
-                currentPhase = lastPhase;
+                setCurrentTurnPhase(lastPhase);
 
                 nextPhase();
 

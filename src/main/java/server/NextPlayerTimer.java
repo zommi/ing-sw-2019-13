@@ -12,9 +12,7 @@ import view.MessageAnswer;
 import view.PlayerHandAnswer;
 import view.SetSpawnAnswer;
 
-import java.util.Date;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class NextPlayerTimer extends TimerTask {
     private Controller controller;
@@ -58,7 +56,7 @@ public class NextPlayerTimer extends TimerTask {
                     controller.sendErrorMessage(playerAbstract.getClientID());
                 }
             }
-            controller.getCurrentGame().getTurnHandler().setCurrentPhase(TurnPhase.END_TURN);
+            controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.END_TURN);
             controller.getCurrentGame().getTurnHandler().nextPhase();
         }
     }

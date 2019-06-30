@@ -91,7 +91,7 @@ public class Controller {
 
         System.out.println("Processing " + action.getClass().toString().toUpperCase() +
                 "\nWe are in the game state: " +currentGame.getCurrentState());
-        System.out.println("We are in the action number: " +currentGame.getTurnHandler().getCurrentPhase());
+        System.out.println("We are in the action number: " +currentGame.getTurnHandler().getCurrentTurnPhase());
 
         if(currentGame.getCurrentState().equals(GameState.GAME_OVER)){
             sendErrorMessage(clientID, "You cannot do that now, game is over!");
@@ -140,7 +140,7 @@ public class Controller {
 
         System.out.println("Processing " + action.getClass().toString().toUpperCase() +
                 "\nWe are in the game state: " +currentGame.getCurrentState());
-        System.out.println("We are in the action number: " +turnHandler.getCurrentPhase());
+        System.out.println("We are in the action number: " +turnHandler.getCurrentTurnPhase());
 
 
         //TODO if(finalfrenzy)
@@ -151,7 +151,7 @@ public class Controller {
         if (!currentPlayer.isConnected() ||
                 currentID != clientID ||
                 currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
-            sendErrorMessage(clientID, "It's not that easy to cheat here, try again!");
+            sendErrorMessage(clientID, "You cannot do that now");
             return false;
         }
 
@@ -160,12 +160,12 @@ public class Controller {
             return false;
         }
 
-        if(currentGame.getTurnHandler().getCurrentPhase() == TurnPhase.TAGBACK_PHASE){
-            sendErrorMessage(clientID, "Wait for the other players to play their tagback grenades");
+        if(currentGame.getTurnHandler().getCurrentTurnPhase() == TurnPhase.TAGBACK_PHASE){
+            sendErrorMessage(clientID, "Please wait for the other players to play their tagback grenades");
             return false;
         }
 
-        if(turnHandler.getCurrentPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
+        if(turnHandler.getCurrentTurnPhase().equals(TurnPhase.POWERUP_TURN) && !(action instanceof PowerUpPack) &&
                 !(action instanceof ReloadInfo)){
             sendErrorMessage(clientID);
             return false;
@@ -187,7 +187,7 @@ public class Controller {
         if(action instanceof ReloadInfo){
 
             //checks that it's not the wrong time to reload
-            if(turnHandler.getCurrentPhase() != TurnPhase.END_TURN) {
+            if(turnHandler.getCurrentTurnPhase() != TurnPhase.END_TURN) {
                 sendErrorMessage(clientID);
                 return false;
             }
@@ -263,11 +263,11 @@ public class Controller {
         }
 
 
-        if(turnHandler.getCurrentPhase() == TurnPhase.END_TURN){
+        if(turnHandler.getCurrentTurnPhase() == TurnPhase.END_TURN){
             System.out.println("We are in the end turn");
             //turnHandler.nextPhase();
             System.out.println("Turning next phase");
-            System.out.println("Number of actions ended " +turnHandler.getCurrentPhase());
+            System.out.println("Number of actions ended " +turnHandler.getCurrentTurnPhase());
             //ChangeCurrentPlayerAnswer change = new ChangeCurrentPlayerAnswer();
             //server.sendToEverybody(change);
         }
