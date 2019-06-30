@@ -33,15 +33,9 @@ public class Game {
 
     private int currentPlayerIndex;
 
-    private int firstPlayerIndex;
-
     private WeaponDeck weaponDeck;
 
-    private PowerupDeck powerupDeck;
-
     private ListOfWeaponsAnswer weaponList = new ListOfWeaponsAnswer();
-
-    private AmmoTileDeck ammoTileDeck;
 
     public Game(int mapChoice, int skullChoice, Controller controller) {
         this.currentState = GameState.SETUP;
@@ -49,11 +43,10 @@ public class Game {
         this.currentGameMap = currentGameBoard.getMap();
         this.activePlayers = new ArrayList<>();
         this.weaponDeck = currentGameBoard.getWeaponDeck();
-        this.powerupDeck = currentGameBoard.getPowerupDeck();
-        this.ammoTileDeck = currentGameBoard.getAmmoTileDeck();
         this.currentPlayerIndex = 0;
         this.controller = controller;
         this.turnHandler = new TurnHandler(controller);
+        this.currentGameBoard.setGameState(currentState);
         for(int i = 0; i < weaponDeck.getSize(); i++){
             WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
             this.weaponList.add(temp);
@@ -104,12 +97,6 @@ public class Game {
         return activePlayers.get(currentPlayerIndex);
     }
 
-    public void setFirstPlayer(int index) throws WrongGameStateException{
-        if(this.currentState == GameState.SETUP)
-            this.firstPlayerIndex = index;
-        else throw new WrongGameStateException();
-    }
-
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
@@ -145,6 +132,7 @@ public class Game {
             default:
                 throw new WrongGameStateException();
         }
+        this.currentGameBoard.setGameState(currentState);
     }
 
     public PlayerAbstract getPlayerFromId(int id){
@@ -168,10 +156,6 @@ public class Game {
         return currentPlayerIndex;
     }
 
-    public int getFirstPlayerIndex() {
-        return firstPlayerIndex;
-    }
-
     public List<PlayerAbstract> getActivePlayers() {
         return activePlayers;
     }
@@ -188,18 +172,6 @@ public class Game {
         return currentGameMap;
     }
 
-    public PowerupDeck getPowerupDeck() {
-        return powerupDeck;
-    }
-
-    public WeaponDeck getWeaponDeck() {
-        return weaponDeck;
-    }
-
-    public AmmoTileDeck getAmmoTileDeck() {
-        return ammoTileDeck;
-    }
-
     public PlayerAbstract getPlayer(String string) {
         for(PlayerAbstract playerAbstract : activePlayers){
             if(playerAbstract.getName().equalsIgnoreCase(string))
@@ -213,5 +185,10 @@ public class Game {
             if(player.getColor() == color) return player;
         }
         return null;
+    }
+
+    public boolean isAfterFirstPlayer(PlayerAbstract playerAbstract) {
+        List<PlayerAbstract> playersAfter = activePlayers.subList(0,currentPlayerIndex);
+        return playersAfter.contains(playerAbstract);
     }
 }

@@ -136,4 +136,6 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract int getNumberOfTagbacks();
 
     public abstract boolean canPlayTagback(PlayerAbstract currentPlayer);
+
+    public abstract PlayerState getStateAfterDeath();
 }

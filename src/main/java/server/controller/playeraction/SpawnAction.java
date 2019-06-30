@@ -38,7 +38,7 @@ public class SpawnAction implements Action {
         controller.getGameManager().sendEverybodyExcept(new MessageAnswer(player.getName() +
                 (player.getPlayerState()==PlayerState.TOBESPAWNED ? " spawned" : " respawned after death")), player.getClientID());
 
-        player.setState(PlayerState.NORMAL);
+        player.setState(player.getStateAfterDeath());
 
         return true;
     }

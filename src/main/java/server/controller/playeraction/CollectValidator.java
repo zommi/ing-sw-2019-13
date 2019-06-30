@@ -25,12 +25,17 @@ public class CollectValidator {
         if(square == null)
             return false;
 
-        if ((player.currentState() == PlayerState.BETTER_COLLECT || player.currentState() == PlayerState.BETTER_SHOOT)
+        if ((player.currentState() == PlayerState.BETTER_COLLECT || player.currentState() == PlayerState.BETTER_SHOOT
+                || player.currentState() == PlayerState.BEFORE_FIRST_PLAYER_FF)
                 && square.distance(player.getPosition()) > Constants.MAX_MOVES_BETTER_COLLECT)
             return false;
 
         if(player.currentState() == PlayerState.NORMAL
                 && square.distance(player.getPosition()) > Constants.MAX_MOVES_NORMAL_COLLECT)
+            return false;
+
+        if(player.currentState() == PlayerState.AFTER_FIRST_PLAYER_FF
+                && square.distance(player.getPosition()) > Constants.MAX_MOVES_BETTERER_COLLECT)
             return false;
 
         //checks illegal combinations

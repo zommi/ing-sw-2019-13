@@ -2,6 +2,7 @@ package client.gui;
 
 import client.SetupInfo;
 import client.gui.guielements.GuiController;
+import constants.Constants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
@@ -28,7 +29,9 @@ public class MapSelectionController implements GuiController {
 
     @Override
     public void init() {
-        this.skullBox.getItems().addAll(5,6,7,8);
+        for(int i = Constants.MIN_SKULLS; i <= Constants.MAX_SKULLS; i++) {
+            this.skullBox.getItems().add(i);
+        }
     }
 
     @Override

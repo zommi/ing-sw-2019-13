@@ -6,6 +6,7 @@ import constants.Constants;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
+import server.model.game.GameState;
 import server.model.map.*;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
@@ -61,6 +62,8 @@ public class GameBoard implements Serializable {
 
 
 
+    private GameState gameState;
+
     public GameBoard(){
 
     }
@@ -82,7 +85,14 @@ public class GameBoard implements Serializable {
         gameCharacterList = new ArrayList<>();
         currentTurnPhase = TurnPhase.FIRST_ACTION;
         setupGameBoard();
+    }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public void setCurrentTurnPhase(TurnPhase currentTurnPhase) {
