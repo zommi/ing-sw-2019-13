@@ -158,11 +158,11 @@ public class UpdaterGui extends Application implements Updater {
                     getControllerFromString("gui.fxml").init();
                     changeStage("gui.fxml");
                     mapInitialized = true;
+                    handleTurn();
                 }
                 mainGuiController.restoreSquares();
                 mainGuiController.updateGameboard();
             });
-            handleTurn();
         }
 
         if(object.equals("Change player")){
@@ -188,7 +188,7 @@ public class UpdaterGui extends Application implements Updater {
             });
         }
 
-        if(object.equals("Spawn phase")){
+        if(object.equals("Respawn")){
             System.out.println("Respawn");
             Platform.runLater(() -> {
                 mainGuiController.spawnAfterDeath();
@@ -219,9 +219,15 @@ public class UpdaterGui extends Application implements Updater {
                 this.mainGuiController.enableAll();
                 if (this.model.isToSpawn()){
                     mainGuiController.spawn();
+                }else if(this.model.isToRespawn()){
+                    mainGuiController.spawnAfterDeath();
                 }
             } else {
                 this.mainGuiController.disableAll();
+                if(this.model.isToRespawn()){
+                    mainGuiController.enableSpawn();
+                    mainGuiController.spawnAfterDeath();
+                }
             }
         });
     }

@@ -118,8 +118,7 @@ public class Controller {
             if(this.playersToRespawn.isEmpty()){
                 System.out.println("Exiting from SPAWN_PHASE");
                 turnHandler.nextPhase();
-            }
-            else{
+            } else{
                 System.out.println("Not exiting from SPAWN_PHASE because there are other players that have to spawn");
             }
         }
@@ -328,7 +327,7 @@ public class Controller {
     }
 
     public void startFrenzy() {
-        this.currentGame.setCurrentState(GameState.FINAL_FRENZY);
+        this.currentGame.nextState();
         //dal giocatore dopo quello corrente inizio a settare gli stati della frenzy
         for(PlayerAbstract playerAbstract : this.currentGame.getActivePlayers()){
             playerAbstract.setState(currentGame.isAfterFirstPlayer(playerAbstract) ? PlayerState.AFTER_FIRST_PLAYER_FF : PlayerState.BEFORE_FIRST_PLAYER_FF);

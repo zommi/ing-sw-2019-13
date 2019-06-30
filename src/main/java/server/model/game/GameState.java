@@ -1,6 +1,8 @@
 package server.model.game;
 
-public enum GameState {
+import java.io.Serializable;
+
+public enum GameState implements Serializable {
     SETUP,
 
     NORMAL,

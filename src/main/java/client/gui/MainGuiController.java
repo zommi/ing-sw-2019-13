@@ -399,25 +399,11 @@ public class MainGuiController implements GuiController {
     }
 
     private void setSpawn(PowerUpCard card) {
-        boolean firstSpawn = myCharacter == null;
-        //for(GuiSpawnPoint spawnPoint : this.spawnPoints){
-            /*
-            if(card.getColor() == spawnPoint.getColor()){
-                if(myCharacter == null) {
-                    this.myCharacter = new GuiCharacter(spawnPoint, model.getMyPlayer().getPlayerBoard(), model.getMyPlayer().getName());
-                    this.idClientGuiCharacterMap.put(this.gui.getConnection().getClientID(), myCharacter);
-                }
-                this.gui.getGameModel().setToSpawn(false);
-                disableMouseEvent();
-                break;
-            }
-            */
-        //}
         Info spawn = this.actionParser.createSpawnEvent(card);
-        if(firstSpawn){
+        if(model.isToSpawn()){
             this.gui.getConnection().send(spawn);
             this.model.setToSpawn(false);
-        }else {
+        }else if(model.isToRespawn()) {
             this.gui.getConnection().sendAsynchronous(spawn);
             this.model.setToRespawn(false);
         }
@@ -495,7 +481,7 @@ public class MainGuiController implements GuiController {
 //                defaultCard.setCursor(Cursor.DEFAULT);
 //                defaultCard.setFitWidth(powerupHand.getWidth() / 3);
 //                defaultCard.setFitHeight(powerupHand.getHeight());
-                if(model.isToSpawn()){
+                if(model.isToSpawn() || model.isToRespawn()){
                     setSpawn(card);
                 }else{
                     Info info = this.actionParser.createPowerUpEvent(finalPowerupCard.getCard());
@@ -506,7 +492,7 @@ public class MainGuiController implements GuiController {
                 }
 //                powerupHand.add(defaultCard, finalI, 0);
             });
-            if(!model.isToSpawn())powerupCard.setDisable(true);
+            if(!model.isToSpawn() && !model.isToRespawn())powerupCard.setDisable(true);
             this.powerupHand.add(powerupCard,i,0);
             i++;
         }
@@ -861,23 +847,7 @@ public class MainGuiController implements GuiController {
     }
 
     public void reload(MouseEvent mouseEvent) {
-        boolean notAllReady = false;
-        for(WeaponCard card : model.getPlayerHand().getWeaponHand()){
-            if(!card.isReady())notAllReady = true;
-        }
-        if(notAllReady){
-            List<WeaponCard> weaponCards = askWeaponsToReload();
-            List<PowerUpCard> powerUpCards;
-            if(!weaponCards.isEmpty()){
-                powerUpCards = askPowerups();
-            }else{
-                powerUpCards = Collections.emptyList();
-            }
-            this.gui.getConnection().send(actionParser.createReloadEvent(weaponCards,powerUpCards));
-
-        } else {
-            this.gui.getConnection().send(actionParser.createReloadEvent(Collections.emptyList(),Collections.emptyList()));
-        }
+        this.gui.getConnection().send(askReload());
     }
 
     private List<WeaponCard> askWeaponsToReload() {
@@ -924,5 +894,31 @@ public class MainGuiController implements GuiController {
             this.gui.getConnection().send(new ReconnectInfo(this.gui.getConnection().getClientID()));
         });
         alert.showAndWait();
+    }
+
+    public Info askReload() {
+        boolean notAllReady = false;
+        for(WeaponCard card : model.getPlayerHand().getWeaponHand()){
+            if(!card.isReady())notAllReady = true;
+        }
+        if(notAllReady){
+            List<WeaponCard> weaponCards = askWeaponsToReload();
+            List<PowerUpCard> powerUpCards;
+            if(!weaponCards.isEmpty()){
+                powerUpCards = askPowerups();
+            }else{
+                powerUpCards = Collections.emptyList();
+            }
+            return actionParser.createReloadEvent(weaponCards,powerUpCards);
+
+        } else {
+            return actionParser.createReloadEvent(Collections.emptyList(),Collections.emptyList());
+        }
+    }
+
+    public void enableSpawn() {
+        for(Node card : powerupHand.getChildren()){
+            card.setDisable(false);
+        }
     }
 }
