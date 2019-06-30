@@ -5,6 +5,7 @@ import client.weapons.Weapon;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
+import server.model.game.GameState;
 import server.model.map.*;
 import constants.*;
 
@@ -38,12 +39,15 @@ public class ConcretePlayer extends PlayerAbstract {
     //added after createCopy
     private PlayerAbstract justDamagedBy;
 
+    private PlayerState stateAfterDeath;
+
     public ConcretePlayer(String name) {
         this.name = name;
         this.hand = new PlayerHand(this);
         this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
         this.points = 0;
+        stateAfterDeath = PlayerState.NORMAL;
         connected = true;
     }
 
@@ -255,6 +259,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void die() {
+        stateAfterDeath = this.currentGame.getCurrentState() == GameState.NORMAL ? PlayerState.NORMAL : state;
         this.playerBoard.processDeath();
     }
 
@@ -330,4 +335,9 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public PlayerBoard getPlayerBoard(){return playerBoard;}
+
+    @Override
+    public PlayerState getStateAfterDeath() {
+        return stateAfterDeath;
+    }
 }

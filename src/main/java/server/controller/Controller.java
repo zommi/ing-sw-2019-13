@@ -46,6 +46,8 @@ public class Controller {
 
     private List<PlayerAbstract> playersToRespawn;
 
+    private boolean finalFrenzy;
+
     public Controller(int mapChoice, int initialSkulls, GameManager gameManager){
         this.currentGame = new Game(mapChoice, initialSkulls, this);
         this.currentMap = this.currentGame.getCurrentGameMap();
@@ -55,6 +57,7 @@ public class Controller {
         this.squaresToUpdate = new ArrayList<>();
         this.clientHasChosen = false;
         this.playersToRespawn = new ArrayList<>();
+        this.finalFrenzy = false;
     }
 
     public WeaponCard drawWeapon(){
@@ -141,12 +144,6 @@ public class Controller {
         System.out.println("Processing " + action.getClass().toString().toUpperCase() +
                 "\nWe are in the game state: " +currentGame.getCurrentState());
         System.out.println("We are in the action number: " +turnHandler.getCurrentPhase());
-
-
-        //TODO if(finalfrenzy)
-        //{
-        //    currentGame.nextState();
-        //}
 
         if (!currentPlayer.isConnected() ||
                 currentID != clientID ||
@@ -348,6 +345,7 @@ public class Controller {
                 gameManager.sendToEverybody(new MessageAnswer(message));
 
                 this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
+                finalFrenzy = this.getCurrentGame().getCurrentGameBoard().getTrack().getRemainingSkulls() <= 0;
 
                 playersToRespawn.add(player);
 
@@ -368,6 +366,14 @@ public class Controller {
         return needToSpawn;
     }
 
+    public void startFrenzy() {
+        this.currentGame.setCurrentState(GameState.FINAL_FRENZY);
+        //dal giocatore dopo quello corrente inizio a settare gli stati della frenzy
+        for(PlayerAbstract playerAbstract : this.currentGame.getActivePlayers()){
+            playerAbstract.setState(currentGame.isAfterFirstPlayer(playerAbstract) ? PlayerState.AFTER_FIRST_PLAYER_FF : PlayerState.BEFORE_FIRST_PLAYER_FF);
+        }
+    }
+
     private void distributePoints(PlayerAbstract player) {
         final int FIRST_DAMAGE = 0;
         //first blood gets 1 point more
@@ -377,8 +383,12 @@ public class Controller {
         //tie breaker: if 2 or more dealt the same amount then the first to deal damage gets the most points
         List<PlayerAbstract> attackers = getAttackers(player);
         int i = 0;
+        int points;
         for(PlayerAbstract attacker : attackers){
-            attacker.addPoints(player.getPlayerBoard().getPointValueArray()[player.getPlayerBoard().getCurrentPointValueCursor() + i]);
+            points = i < Constants.POINT_VALUE.length ?
+                    player.getPlayerBoard().getPointValueArray()[player.getPlayerBoard().getCurrentPointValueCursor() + i] :
+                    1;
+            attacker.addPoints(points);
             i++;
         }
         //double kills give 1 point more
@@ -429,5 +439,9 @@ public class Controller {
 
     public List<PlayerAbstract> getPlayersToRespawn(){
         return playersToRespawn;
+    }
+
+    public boolean isFinalFrenzy() {
+        return finalFrenzy;
     }
 }

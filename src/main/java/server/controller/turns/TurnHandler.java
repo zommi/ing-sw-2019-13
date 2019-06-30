@@ -9,8 +9,10 @@ import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
+import server.model.game.GameState;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerHand;
+import server.model.player.PlayerState;
 import view.GrenadeAnswer;
 
 import java.util.*;
@@ -103,8 +105,13 @@ public class TurnHandler {
                 currentTimerTask.cancel();
 
                 System.out.println("First action done, moving to second action");
-                currentPhase = TurnPhase.SECOND_ACTION;
-
+                if(controller.getCurrentGame().getCurrentState() == GameState.NORMAL) {
+                    currentPhase = TurnPhase.SECOND_ACTION;
+                }else {
+                    currentPhase = this.controller.getCurrentGame().getCurrentPlayer().getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF ?
+                            TurnPhase.END_TURN :
+                            TurnPhase.SECOND_ACTION;
+                }
                 //starting second action timer
                 startNextPlayerTimer();
 
@@ -162,7 +169,9 @@ public class TurnHandler {
                 System.out.println("changed player in game");
                 controller.sendChangeCurrentPlayer();
                 currentPhase = TurnPhase.FIRST_ACTION;
-
+                if(this.controller.isFinalFrenzy()){
+                    this.controller.startFrenzy();
+                }
                 //starting first action timer
                 startNextPlayerTimer();
                 break;

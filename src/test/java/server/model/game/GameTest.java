@@ -37,7 +37,7 @@ class GameTest {
 
             assertEquals(testList,testGame.getActivePlayers());
 
-            testGame.nextState();
+            //testGame.nextState();
 
             //assertThrows(WrongGameStateException.class, () ->
             //        testGame.addPlayer(testPlayer1));

@@ -3,6 +3,7 @@ package client.weapons;
 import client.GameModel;
 import client.InputAbstract;
 import server.model.cards.PowerUpCard;
+import server.model.game.GameState;
 import server.model.cards.WeaponCard;
 import server.model.game.GameState;
 import server.model.player.PlayerState;
@@ -29,9 +30,16 @@ public class ShootParser {
         this.weapon = weaponCard.getWeapon();
         shootPack = new ShootPack(weapon.getName());
 
-        if(gameModel.getGameBoard() != null && gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT){
-            if(input.getMoveChoice())
-                shootPack.setSquare(input.askSquares(1).get(0));
+        if(gameModel.getGameBoard() != null && (gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT
+                                                || gameModel.getGameBoard().getResult().getGameState() == GameState.FINAL_FRENZY)){
+            if(input.getMoveChoice()) {
+                if(gameModel.getMyPlayer().getPlayerState() == PlayerState.BETTER_SHOOT ||
+                    gameModel.getMyPlayer().getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF) {
+                    shootPack.setSquare(input.askSquares(1).get(0));
+                }else{
+                    shootPack.setSquare(input.askSquares(2).get(0));
+                }
+            }
         }
 
         if(gameModel.getCurrentState() == GameState.FINAL_FRENZY && !weaponCard.isReady())
