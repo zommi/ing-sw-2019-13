@@ -25,6 +25,7 @@ public class PlayerBoard implements Serializable {
     private String characterName;
     private List<WeaponCard> unloadedWeapons;
     private Color killerColor;
+    private boolean turned;
 
     private int weaponHandSize;
     private int powerUpHandSize;
@@ -217,6 +218,12 @@ public class PlayerBoard implements Serializable {
         ammo[index]--;
     }
 
+    public void turnPlayerBoard(){
+        this.pointValue = Constants.FINAL_FRENZY_POINT_VALUE;
+        this.currentPointValueCursor = 0;
+        turned = true;
+    }
+
     public void setCharacterName(String string){
         this.characterName = string;
     }
@@ -275,5 +282,9 @@ public class PlayerBoard implements Serializable {
 
     public Color getKillerColor() {
         return killerColor;
+    }
+
+    public boolean isTurned() {
+        return turned;
     }
 }

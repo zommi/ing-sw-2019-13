@@ -66,6 +66,7 @@ public class Game {
 
     public void setCurrentState(GameState currentState) {
         this.currentState = currentState;
+        this.currentGameBoard.setGameState(currentState);
     }
 
     public AmmoTile drawAmmo(){

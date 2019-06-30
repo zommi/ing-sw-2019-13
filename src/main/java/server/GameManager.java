@@ -73,11 +73,20 @@ public class GameManager {
     }
 
     public void endGame(){
-        //todo
+        controller.distributeEndGamePoints();
         for(int i = 0; i<10; i++)
             System.out.println(Color.RED.getAnsi() + "GAME OVER" + Constants.ANSI_RESET);
 
         game.setCurrentState(GameState.GAME_OVER);
+        PlayerAbstract winner = null;
+        int max = 0;
+        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+            if(playerAbstract.getPoints() > max){
+                max = playerAbstract.getPoints();
+                winner = playerAbstract;
+            }
+        }
+        System.out.println(winner.getName() + " HAS WON WITH " + winner.getPoints() + " POINTS");
     }
 
     public int getActivePlayersNum() {

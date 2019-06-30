@@ -1,8 +1,12 @@
 package server.model.gameboard;
 
+import client.Info;
 import constants.Color;
+import constants.Constants;
+import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
+import java.util.*;
 
 /**
  * 
@@ -26,14 +30,13 @@ public class KillshotTrack implements Serializable {
      */
     private int[] multiciplityToken;
 
-    public KillshotTrack(){
-
-    }
+    private GameBoard gameBoard;
     /**
      * constructor for the killshotTrack
      * @param initialSkull number of skulls in a game
      */
-    public KillshotTrack(int initialSkull) {
+    public KillshotTrack(GameBoard gameBoard, int initialSkull) {
+        this.gameBoard = gameBoard;
         this.initialSkulls = initialSkull;
         this.remainingSkulls = initialSkull;
         this.multiciplityToken = new int[initialSkull];
@@ -85,5 +88,42 @@ public class KillshotTrack implements Serializable {
 
     public int getInitialSkulls() {
         return initialSkulls;
+    }
+
+    public void computeTrack(List<PlayerAbstract> playersInGame) {
+        int[] points = Constants.POINT_VALUE;
+        Map<Color, Integer> colorIntegerMap = new HashMap<>();
+        for (Color c : Color.values()) {
+            colorIntegerMap.put(c, getTokensOfColor(c));
+        }
+        List<PlayerAbstract> playersInOrder = new ArrayList<>();
+        int max = 0;
+        Color color = Color.UNDEFINED;
+        while (!colorIntegerMap.isEmpty()){
+            for (Map.Entry<Color, Integer> entry : colorIntegerMap.entrySet()) {
+                if(entry.getValue() == 0)colorIntegerMap.remove(entry.getKey());
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    color = entry.getKey();
+                }
+            }
+            for(PlayerAbstract playerAbstract : playersInGame){
+                if(playerAbstract.getColor() == color){
+                    playersInOrder.add(playerAbstract);
+                    break;
+                }
+            }
+        }
+        for(int i = 0; i < playersInGame.size(); i++){
+            playersInGame.get(i).addPoints(i < points.length ? points[i] : 1);
+        }
+    }
+
+    public int getTokensOfColor(Color c){
+        int counter = 0;
+        for(int i = 0; i < initialSkulls; i++){
+            if(damageTokens[i] == c)counter++;
+        }
+        return counter;
     }
 }

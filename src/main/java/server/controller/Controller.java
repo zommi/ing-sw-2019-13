@@ -330,6 +330,7 @@ public class Controller {
         this.currentGame.nextState();
         //dal giocatore dopo quello corrente inizio a settare gli stati della frenzy
         for(PlayerAbstract playerAbstract : this.currentGame.getActivePlayers()){
+            if(playerAbstract.getPlayerBoard().getDamageTaken() == 0)playerAbstract.getPlayerBoard().turnPlayerBoard();
             playerAbstract.setState(currentGame.isAfterFirstPlayer(playerAbstract) ? PlayerState.AFTER_FIRST_PLAYER_FF : PlayerState.BEFORE_FIRST_PLAYER_FF);
         }
     }
@@ -337,7 +338,9 @@ public class Controller {
     private void distributePoints(PlayerAbstract player) {
         final int FIRST_DAMAGE = 0;
         //first blood gets 1 point more
-        currentGame.getPlayerFromColor(player.getPlayerBoard().getDamage().get(FIRST_DAMAGE)).addPoints(1);
+        if(!player.getPlayerBoard().isTurned()) {
+            currentGame.getPlayerFromColor(player.getPlayerBoard().getDamage().get(FIRST_DAMAGE)).addPoints(1);
+        }
 
         //most damage dealt gets max points
         //tie breaker: if 2 or more dealt the same amount then the first to deal damage gets the most points
@@ -351,7 +354,6 @@ public class Controller {
             attacker.addPoints(points);
             i++;
         }
-        //double kills give 1 point more
     }
 
     private List<PlayerAbstract> getAttackers(PlayerAbstract player) {
@@ -403,5 +405,12 @@ public class Controller {
 
     public boolean isFinalFrenzy() {
         return finalFrenzy;
+    }
+
+    public void distributeEndGamePoints() {
+        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+            distributePoints(playerAbstract);
+        }
+        currentGame.getCurrentGameBoard().getTrack().computeTrack(currentGame.getActivePlayers());
     }
 }

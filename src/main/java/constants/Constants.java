@@ -64,6 +64,7 @@ public class Constants {
     public static final int NUM_AMMO_START = 99;         //default 1
 
     public static final int[] POINT_VALUE = {8,6,4,2,1,1};
+    public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
 
     public static final String AMMOCUBE_CLI_ICON = "■";
     public static final String PLAYER_CLI_ICON = "●";

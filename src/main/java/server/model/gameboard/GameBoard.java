@@ -69,7 +69,7 @@ public class GameBoard implements Serializable {
      */
     public GameBoard(int mapChoice, int skullChoice) {
         this.gameMap = new GameMap(mapChoice);
-        this.track = new KillshotTrack(skullChoice);
+        this.track = new KillshotTrack(this,skullChoice);
         this.weaponDeck = new WeaponDeck();
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();

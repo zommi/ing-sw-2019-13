@@ -1,16 +1,3 @@
-/* 
- * Javadoc style sheet
- */
-
-@import url('resources/fonts/dejavu.css');
-
-/*
- * Styles for individual HTML elements.
- *
- * These are styles that are specific to individual HTML elements. Changing them affects the style of a particular
- * HTML element throughout the page.
- */
-
 body {
     background-color:#ffffff;
     color:#353833;
