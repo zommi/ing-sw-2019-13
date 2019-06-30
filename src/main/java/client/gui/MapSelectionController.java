@@ -58,7 +58,7 @@ public class MapSelectionController implements GuiController {
     void selectMap(MouseEvent event) {
         if(skullBox.getValue() != null){
             for(Node map : mapGridPane.getChildren()){
-                if(map.getId() != null && map instanceof ImageView) {
+                if(map.getId() != null && map instanceof ImageView && event.getSource().equals(map)) {
                     this.gui.setMapIndex(Integer.valueOf(map.getId()));
                 }
             }

@@ -48,7 +48,13 @@ public class GuiPlayerBoard extends StackPane {
         hpGrid.setPrefHeight(15.0);
         hpGrid.setAlignment(Pos.CENTER_LEFT);
         for(int i = 0; i < playerBoard.getResult().getDamageTaken(); i++){
-            hpGrid.add(new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage().get(i).getNormalColor())),i,0);
+            StackPane pane = new StackPane();
+            Circle token = new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage().get(i).getNormalColor()));
+            Label label = new Label(String.valueOf(i));
+            label.setAlignment(Pos.CENTER);
+            pane.getChildren().add(token);
+            pane.getChildren().add(label);
+            hpGrid.add(pane,i,0);
         }
         Label hpLabel = new Label("HP");
         hpGrid.add(hpLabel,playerBoard.getResult().getDamageTaken(),0);

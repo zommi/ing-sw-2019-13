@@ -60,8 +60,6 @@ public class GameBoard implements Serializable {
 
     private TurnPhase currentTurnPhase;
 
-
-
     private GameState gameState;
 
     public GameBoard(){

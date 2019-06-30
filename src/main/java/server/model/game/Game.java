@@ -114,14 +114,11 @@ public class Game {
     }
 
 
-    public void nextState() throws WrongGameStateException{
+    public void nextState(){
         switch (currentState){
             case SETUP:
                 currentState = GameState.NORMAL;
-
-                //starting timer exclusively for the first turn of the first player
                 turnHandler.startNextPlayerTimer();
-
                 break;
             case NORMAL:
                 currentState = GameState.FINAL_FRENZY;
@@ -129,8 +126,6 @@ public class Game {
             case FINAL_FRENZY:
                 currentState = GameState.GAME_OVER;
                 break;
-            default:
-                throw new WrongGameStateException();
         }
         this.currentGameBoard.setGameState(currentState);
     }

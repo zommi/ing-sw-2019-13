@@ -54,7 +54,7 @@ public class Constants {
 
     //player rules
     public static final int MAX_HP = 12;                //default 12
-    public static final int DEATH_THRESHOLD = 10;       //default 10
+    public static final int DEATH_THRESHOLD = 2;       //default 10
 
     public static final int MAX_MARKS = 3;              //default 3
 

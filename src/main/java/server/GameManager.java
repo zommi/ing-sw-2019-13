@@ -168,12 +168,7 @@ public class GameManager {
 
             //moving to next phase
             System.out.println("Moving to NORMAL GameState");
-            try{
-                game.nextState();
-            }
-            catch(WrongGameStateException e){
-                e.printStackTrace();
-            }
+            game.nextState();
             System.out.println("We are in the game state: " +game.getCurrentState());
 
             System.out.println("Created the game");

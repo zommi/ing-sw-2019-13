@@ -35,7 +35,7 @@ public class GuiInput extends InputAbstract {
 
     @Override
     public ReloadInfo askReload(WeaponCard weaponCard) {
-        return null;        //todo
+        return (ReloadInfo) guiController.askReload();
     }
 
     @Override
