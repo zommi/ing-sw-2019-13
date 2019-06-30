@@ -12,23 +12,12 @@ public class GameStartTimer extends TimerTask {
     }
 
     public void run(){
-        System.out.println("Timer task started at: "+new Date());
-        start();
-        System.out.println("Timer task finished at: "+new Date());
+        System.out.println("GameStartTimer triggered at: " + new Date() + "\nStarting match right now");
 
         //creating new GameManager in server
         gameManager.getServer().setCurrentGameManager(new GameManager(gameManager.getServer()));
 
         //start the old GameManager
         gameManager.startMatch();
-    }
-
-    private void start() {
-        try {
-            //assuming it takes 20 secs to complete the task
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

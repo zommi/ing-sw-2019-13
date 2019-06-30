@@ -26,6 +26,9 @@ public class PlayerBoard implements Serializable {
     private List<WeaponCard> unloadedWeapons;
     private Color killerColor;
 
+    private int weaponHandSize;
+    private int powerUpHandSize;
+
 
     //0 red, 1 blue, 2 yellow
     private int[] ammo = {Constants.NUM_AMMO_START,Constants.NUM_AMMO_START,Constants.NUM_AMMO_START};
@@ -36,14 +39,6 @@ public class PlayerBoard implements Serializable {
     private static final int BLUE_CUBES_INDEX = Color.BLUE.getIndex();
     private static final int YELLOW_CUBES_INDEX = Color.YELLOW.getIndex();
 
-    /**
-     * Default constructor
-     */
-
-    public PlayerBoard(){
-
-    }
-
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
         this.damage = new ArrayList<>();
@@ -51,6 +46,30 @@ public class PlayerBoard implements Serializable {
         this.pointValue = Constants.POINT_VALUE;
         this.currentPointValueCursor = 0;
         unloadedWeapons = new ArrayList<>();
+    }
+
+    public void increaseWeaponHandSize(){
+        weaponHandSize++;
+    }
+
+    public void decreaseWeaponHandSize(){
+        weaponHandSize--;
+    }
+
+    public int getWeaponHandSize() {
+        return weaponHandSize;
+    }
+
+    public void increasePowerUpHandSize(){
+        powerUpHandSize++;
+    }
+
+    public void decreasePowerUpHandSize(){
+        powerUpHandSize--;
+    }
+
+    public int getPowerUpHandSize() {
+        return powerUpHandSize;
     }
 
     public void removeWeaponCard(WeaponCard weaponCard){

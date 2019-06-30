@@ -212,8 +212,8 @@ public class GameManager {
         if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
             TimerTask timerTask = new GameStartTimer(this);
             Timer timer = new Timer(true);
-            timer.schedule(timerTask, 0);
-            System.out.println("Task started");
+            timer.schedule(timerTask, Constants.GAME_START_TIMER_MSEC);
+            System.out.println("GameStartTimer created at " + new Date());
         }
         else if(playerList.size() == Constants.MAX_PLAYERS)
             maxPlayersReached = true;     //no more players will be added

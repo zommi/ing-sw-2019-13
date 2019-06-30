@@ -52,10 +52,6 @@ public class GameBoard implements Serializable {
 
     private Map<Integer,PlayerBoard> mapPlayerBoard;
 
-    private Map<Color, PlayerAbstract> colorToPlayer;
-
-    private List<GameCharacter> gameCharacterList;
-
     private List<GameCharacter> activeCharacters;
 
     private TurnPhase currentTurnPhase;
@@ -80,9 +76,7 @@ public class GameBoard implements Serializable {
         this.powerupDeck = new PowerupDeck();
         this.ammoTileDeck = new AmmoTileDeck();
         this.mapPlayerBoard = new HashMap<>();
-        this.colorToPlayer = new HashMap<>();
         activeCharacters = new ArrayList<>();
-        gameCharacterList = new ArrayList<>();
         currentTurnPhase = TurnPhase.FIRST_ACTION;
         setupGameBoard();
     }
@@ -103,16 +97,8 @@ public class GameBoard implements Serializable {
         return currentTurnPhase;
     }
 
-    public void setPositionHashMap(int id, int col, int row){
-        mapPlayerBoard.get(id).setPosition(col,row);
-    }
-
     public List<GameCharacter> getActiveCharacters() {
         return activeCharacters;
-    }
-
-    public List<String> getPlayerNames(){
-        return this.listOfPlayerNames;
     }
 
     public void setPlayerNames(List<String> string){
@@ -160,8 +146,6 @@ public class GameBoard implements Serializable {
         this.mapPlayerBoard.put(p.getClientID(), p.getPlayerBoard());
     }
 
-
-
     public KillshotTrack getTrack() {
         return this.track;
     }
@@ -182,23 +166,7 @@ public class GameBoard implements Serializable {
         return ammoTileDeck;
     }
 
-    public List<GameCharacter> getGameCharacterList() {
-        return gameCharacterList;
-    }
-
-    public void addGameCharacter(GameCharacter gameCharacter){
-        this.gameCharacterList.add(gameCharacter);
-        this.colorToPlayer.put(
-                Color.fromCharacter(gameCharacter.getFigure().toString()),
-                gameCharacter.getConcretePlayer()
-        );
-    }
-
-    public PlayerBoard getBoardFromColor(Color color){
-        return this.colorToPlayer.get(color).getPlayerBoard();
-    }
-
-    public Weapon getWeapon(String name){       //TODO
+    public Weapon getWeapon(String name){
         return getWeaponCard(name).getWeapon();
     }
 

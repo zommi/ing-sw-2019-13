@@ -138,4 +138,6 @@ public abstract class PlayerAbstract implements Serializable {
     public abstract boolean canPlayTagback(PlayerAbstract currentPlayer);
 
     public abstract PlayerState getStateAfterDeath();
+
+    public abstract String printOnCli();
 }

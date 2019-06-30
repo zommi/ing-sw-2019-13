@@ -55,6 +55,7 @@ public class PlayerHand implements Serializable {
             powerUpCard1 = iterator.next();
             if(powerUpCard.equals(powerUpCard1)){
                 iterator.remove();
+                player.getPlayerBoard().decreasePowerUpHandSize();
                 return;
             }
 
@@ -68,6 +69,7 @@ public class PlayerHand implements Serializable {
             weaponCard1 = iterator.next();
             if(weaponCard.equals(weaponCard1)){
                 iterator.remove();
+                player.getPlayerBoard().decreaseWeaponHandSize();
                 return;
             }
 
@@ -92,27 +94,14 @@ public class PlayerHand implements Serializable {
 
     public void addCard(WeaponCard cardToAdd){
         weaponHand.add(cardToAdd);
-        //TODO add swap on gameboard if size == 3
-        //note that on spawnpoints there is a list of the weapons currently available
-        //i just need to add the weapon the player decides to discard
+        player.getPlayerBoard().increaseWeaponHandSize();
     }
-
-    public void addCard(WeaponCard cardToAdd, WeaponCard cardToLeave, Controller controller){
-        this.weaponHand.add(cardToAdd);
-        this.weaponHand.remove(cardToLeave);
-        //TODO add swap on gameboard if size == 3
-        //note that on spawnpoints there is a list of the weapons currently available
-        //i just need to add the weapon the player decides to discard
-        this.player.getGameCharacter().getPosition().addItem(cardToLeave);
-        this.player.getGameCharacter().getPosition().removeItem(cardToAdd, controller);
-    }
-
-    public boolean weaponFull(){return this.weaponHand.size() == Constants.MAX_WEAPON_HAND;}
 
     public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_POWERUP_HAND;}
 
     public void addCard(PowerUpCard draw) {
         this.powerupHand.add(draw);
+        player.getPlayerBoard().increasePowerUpHandSize();
     }
 
     public boolean areAllWeaponsLoaded(){

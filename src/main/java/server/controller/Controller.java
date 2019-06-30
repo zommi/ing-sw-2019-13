@@ -317,7 +317,7 @@ public class Controller {
                 gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
 
                 if(player.isOverkilled()){
-                    board = this.getCurrentGame().getCurrentGameBoard().getBoardFromColor(player.getKillerColor());
+                    board = getCurrentGame().getPlayerFromColor(player.getColor()).getPlayerBoard();
                     board.addMarks(1,player.getColor());
                 }
                 needToSpawn = true;

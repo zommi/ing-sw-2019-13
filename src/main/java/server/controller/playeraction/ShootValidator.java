@@ -351,6 +351,19 @@ public class ShootValidator {
         else
             squareAbstract = null;
 
+        //checking if player has powerups to pay and targeting scopes to use COMBINED
+        if(shootPack.getPowerUpCards() != null && shootPack.getScopePacks() != null) {
+            List<PowerUpCard> combinedPowerUps = new ArrayList<>(shootPack.getPowerUpCards());
+            for(ScopePack scopePack : shootPack.getScopePacks()){
+                if(scopePack.getTargetingScope() != null)
+                    combinedPowerUps.add(scopePack.getTargetingScope());
+            }
+            
+            if(!attacker.hasPowerUpCards(combinedPowerUps))
+                return null;
+        }
+
+
         //converting powerUpCards
         List<PowerUpCard> powerUpCards = new ArrayList<>();
         if(shootPack.getPowerUpCards() == null)

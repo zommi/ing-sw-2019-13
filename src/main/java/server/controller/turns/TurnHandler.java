@@ -11,7 +11,6 @@ import server.controller.playeraction.normalaction.MoveAction;
 import server.controller.playeraction.normalaction.ShootAction;
 import server.model.game.GameState;
 import server.model.player.PlayerAbstract;
-import server.model.player.PlayerHand;
 import server.model.player.PlayerState;
 import view.GrenadeAnswer;
 
@@ -204,7 +203,7 @@ public class TurnHandler {
 
     private void startSpawnTimer(){
         currentTimerTask = new SpawnTimer(controller, timerId);
-        timer.schedule(currentTimerTask, Constants.SPAWN_TIMEOUT_SEC);
+        timer.schedule(currentTimerTask, Constants.SPAWN_TIMEOUT_MSEC);
         timerId++;
     }
 

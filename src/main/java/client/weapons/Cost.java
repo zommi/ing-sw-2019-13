@@ -121,9 +121,9 @@ public class Cost implements Serializable {
     }
 
     public String printOnCli(){
-        return Color.RED.getAnsi() + Constants.CUBE + " x" + red + "    " +
-                Color.BLUE.getAnsi() + Constants.CUBE + " x" + blue + "    " +
-                Color.YELLOW.getAnsi() + Constants.CUBE + " x" + yellow + Constants.ANSI_RESET;
+        return Color.RED.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + red + "    " +
+                Color.BLUE.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + blue + "    " +
+                Color.YELLOW.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + yellow + Constants.ANSI_RESET;
     }
 
     public int getBlue() {

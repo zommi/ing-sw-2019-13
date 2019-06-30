@@ -9,12 +9,13 @@ import server.controller.turns.TurnPhase;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
 import server.model.player.Figure;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class UpdaterCLI  implements Updater,Runnable{
@@ -258,7 +259,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
-
     @Override
     public void run(){
 
@@ -330,14 +330,13 @@ public class UpdaterCLI  implements Updater,Runnable{
                         System.out.println();
                         for(Color color : Color.values()){
                             if(color.isAmmoColor()){
-                                System.out.print(color.getAnsi() + Constants.CUBE + " x" + playerBoard.getResult().getAmmo(color) +
+                                System.out.print(color.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + playerBoard.getResult().getAmmo(color) +
                                         Constants.ANSI_RESET + "\t");
                             }
                         }
                         System.out.println();
                     }
 
-                    System.out.println("Checking if you need to spawn");
                     if(gameModel.isToSpawn()){
                         spawn();
                     }
@@ -520,18 +519,18 @@ public class UpdaterCLI  implements Updater,Runnable{
         String read;
         int row;
         int col;
-        System.out.println(" Client ID: " +connection.getClientID());
+        /*System.out.println(" Client ID: " +connection.getClientID());
         System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
-        System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());
+        System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());*/
 
         int collectDecision = 0;
         boolean collectChosen = false;
-        printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
+        //printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
 
         gameModel.getMap().printOnCLI();
 
         System.out.println(">Write a command: \nM to Move\nC to Collect\nS to Shoot\nP to use a PowerUp\nR to Reload\\pass" +
-                "\nMAP to show the map");
+                "\nMAP to show the map\nPL to show all the playerboards");
         read = scanner.nextLine();
 
         //this is made to avoid asking for an action if player is disconnected
@@ -735,34 +734,53 @@ public class UpdaterCLI  implements Updater,Runnable{
         else if(read.equalsIgnoreCase("map")){
             gameModel.getMap().printOnCLI();
         }
+        else if(read.equalsIgnoreCase("pl")){
+            printPlayerBoards();
+            System.out.println("Press enter to exit");
+            scanner.nextLine();
+        }
         else {
             System.out.println(">Please insert a valid action.");
         }
     }
 
-    public void printPlayerBoard(PlayerBoardAnswer p){
-        /*System.out.println("You are playing with " + getCharacter(characterName).getColor().getAnsi() +
-                characterName + Constants.ANSI_RESET);*/
+    private void printPlayerBoards(){
+        for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
+            printPlayerBoard(gameCharacter.getConcretePlayer());
+        }
+    }
 
+    private void printPlayerBoard(PlayerAbstract playerAbstract){
+        System.out.print("\n" + playerAbstract.printOnCli() + "'s playerboard:");
         //prints damage
-        System.out.println("\nDAMAGE:\n");
+        System.out.print("\nDAMAGE: ");
         int i = 0;
-        for(Color color : p.getResult().getDamage()){
+        for(Color color : playerAbstract.getPlayerBoard().getDamage()){
             if(color != null) {
                 i++;
-                System.out.print(color.getAnsi() + "O" + Constants.ANSI_RESET);
+                System.out.print(color.getAnsi() + Constants.DAMAGE_TOKEN_CLI_ICON + Constants.ANSI_RESET);
             }
         }
-        System.out.println("\nTOT: " + i);
+        System.out.print(" (tot: " + i + ")");
 
         //prints marks
-        System.out.println("\nMARKS:\n");
+        System.out.print("\nMARKS: ");
         i=0;
-        for(Color color : p.getResult().getMarks()){
+        for(Color color : playerAbstract.getPlayerBoard().getMarks()){
             i++;
-            System.out.print(color.getAnsi() + "O" + Constants.ANSI_RESET);
+            System.out.print(color.getAnsi() + Constants.DAMAGE_TOKEN_CLI_ICON + Constants.ANSI_RESET);
         }
-        System.out.println("\nTOT: " + i);
+        System.out.print(" (tot: " + i + ")");
+
+        //print cards
+        System.out.print("\nUNLOADED WEAPONS: ");
+        int j =0;
+        for(WeaponCard weaponCard : playerAbstract.getPlayerBoard().getUnloadedWeapons()){
+            System.out.print((j==0 ? "" : ", ") + weaponCard);
+            j++;
+        }
+        System.out.print("\nNUMBER OF LOADED WEAPONS: " + (playerAbstract.getPlayerBoard().getWeaponHandSize() - j));
+        System.out.print("\nNUMBER OF POWERUPS: " + playerAbstract.getPlayerBoard().getPowerUpHandSize() + "\n\n");
     }
 
     public int askCoordinate(String coordinateType){

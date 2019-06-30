@@ -9,9 +9,10 @@ public class Constants {
     public static final int MAX_PLAYERS = 5;
     public static final int MIN_PLAYERS_TO_CONTINUE = 2;
 
-    public static final long TAGBACK_TIMEOUT_MSEC = 180000;     //default 3 minutes
-    public static final long ACTION_TIMEOUT_MSEC =  180000;     //default 3 minutes
-    public static final long SPAWN_TIMEOUT_SEC =    180000;     //default 3 minutes
+    public static final long GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
+    public static final long TAGBACK_TIMEOUT_MSEC = 3*60*(long)1000;      //default 3 minutes
+    public static final long ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
+    public static final long SPAWN_TIMEOUT_MSEC =    3*60*(long)1000;     //default 3 minutes
 
     public static final long PING_DELAY_SEC = 1;
 
@@ -22,7 +23,6 @@ public class Constants {
 
 
     //game rules
-
     public static final int MIN_SKULLS = 1;     //default 5
     public static final int MAX_SKULLS = 8;     //default 8
 
@@ -40,7 +40,6 @@ public class Constants {
     public static final int MAX_MOVES_BETTER_SHOOT = 1;
 
     public static final int NO_CHOICE = -99999;
-    public static final int CHOICE = 99999;
 
 
 
@@ -65,11 +64,11 @@ public class Constants {
     public static final int NUM_AMMO_START = 99;         //default 1
 
     public static final int[] POINT_VALUE = {8,6,4,2,1,1};
-    public static final int[] INITIAL_AMMO = {1,1,1};
 
-    public static final String CUBE = "∎";
-    public static final String PLAYER_CLI_ICON = "∎";
-    public static final String DEAD_PLAYER_CLI_ICON = "X";
+    public static final String AMMOCUBE_CLI_ICON = "■";
+    public static final String PLAYER_CLI_ICON = "●";
+    public static final String DEAD_PLAYER_CLI_ICON = "✖";
+    public static final String DAMAGE_TOKEN_CLI_ICON = "▲";
 
 
 
@@ -82,22 +81,16 @@ public class Constants {
 
 
     //paths
-
     public static final String PATH_TO_RESOURCES_FOLDER = "." + File.separatorChar + "src" +
             File.separatorChar + "main" + File.separatorChar + "resources";
 
     public static final String PATH_TO_AMMOTILE_JSON = File.separatorChar + "ammo_tiles.json";
-
     public static final String PATH_TO_POWERUP_JSON = File.separatorChar + "powerups.json";
-
     public static final String PATH_TO_WEAPONS_JSON = File.separatorChar + "weapons.json";
 
     public static final String PATH_TO_MAP_11 = File.separatorChar + "maps" + File.separatorChar + "map11.txt";
-
     public static final String PATH_TO_MAP_12 = File.separatorChar + "maps" + File.separatorChar + "map12.txt";
-
     public static final String PATH_TO_MAP_21 = File.separatorChar + "maps" + File.separatorChar + "map21.txt";
-
     public static final String PATH_TO_MAP_22 = File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 
     public static final String PATH_TO_CONFIG = File.separatorChar + "config.properties";

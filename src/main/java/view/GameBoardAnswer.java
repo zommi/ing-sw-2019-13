@@ -20,18 +20,6 @@ public class GameBoardAnswer implements ServerAnswer, Serializable {
         return result;
     }
 
-    public List<String> getCharacterNames() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < result.getGameCharacterList().size(); i++) {
-            list.add(result.getGameCharacterList().get(i).getFigure().toString());
-        }
-        return list;
-    }
-
-    public List<String> getPlayerNames() {
-        return result.getPlayerNames();
-    }
-
     public PlayerBoardAnswer getPlayerBoard(int clientID){
         return (new PlayerBoardAnswer((PlayerBoard) (result.getHashMap()).get(clientID)));
     }

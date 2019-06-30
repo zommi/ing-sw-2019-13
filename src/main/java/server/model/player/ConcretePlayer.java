@@ -340,4 +340,9 @@ public class ConcretePlayer extends PlayerAbstract {
     public PlayerState getStateAfterDeath() {
         return stateAfterDeath;
     }
+
+    @Override
+    public String printOnCli() {
+        return getColor().getAnsi() + name.toUpperCase() + Constants.ANSI_RESET;
+    }
 }

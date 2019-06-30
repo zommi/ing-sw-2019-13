@@ -4,6 +4,10 @@ import constants.Color;
 import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
 import server.model.cards.AmmoTile;
+import server.model.player.ConcretePlayer;
+import server.model.player.Figure;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -85,10 +89,26 @@ class GameMapTest {
         assertFalse(iterator.hasNext());
     }
 
-    /*@Test
+    @Test
     void printOnCli(){
         GameMap gameMap = new GameMap(1);
         gameMap.getSquare(1,1).addItem(new AmmoTile(null, false));
+        PlayerAbstract playerAbstract = new ConcretePlayer("asd");
+        playerAbstract.setPlayerCharacter(Figure.DESTRUCTOR);
+        playerAbstract.spawn(gameMap.getSquare(0,0));
         gameMap.printOnCLI();
+    }
+
+    /*@Test
+    void testSymbol(){
+        *//*String hex = "D83D";
+        String hex2 = "DCA7";
+        int intValue = Integer.parseInt(hex, 16);
+        int intValue2 = Integer.parseInt(hex, 16);
+        System.out.println((char)(intValue+intValue2));*//*
+
+        String PLAYER_CLI_ICON2 = "▲";
+
+        System.out.println(PLAYER_CLI_ICON2);
     }*/
 }
