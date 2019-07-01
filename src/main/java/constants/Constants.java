@@ -60,8 +60,8 @@ public class Constants {
     public static final int MAX_WEAPON_HAND = 3;        //default 3
     public static final int MAX_POWERUP_HAND = 3;       //default 3
 
-    public static final int NUM_POWERUP_START = 10;      //default 2
-    public static final int NUM_AMMO_START = 99;         //default 1
+    public static final int NUM_POWERUP_START = 2;      //default 2
+    public static final int NUM_AMMO_START = 50;         //default 1
 
     public static final int[] POINT_VALUE = {8,6,4,2,1,1};
     public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
