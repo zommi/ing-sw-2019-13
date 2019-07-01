@@ -420,14 +420,15 @@ public class Controller {
         for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
             distributePoints(playerAbstract);
         }
-        computeTrack(currentGame.getActivePlayers());
+        computeTrack();
     }
 
-    private void computeTrack(List<PlayerAbstract> playersInGame) {
+    private void computeTrack() {
         int[] pointsValues = Constants.KILLSHOTTRACK_POINTS_VALUES;
         Map<Color, Integer> colorIntegerMap = new HashMap<>();
         for (Color c : Color.values()) {
-            colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
+            if(c.isCharacterColor())
+                colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
         }
         List<PlayerAbstract> playersInOrder = new ArrayList<>();
         int max = 0;
@@ -443,13 +444,10 @@ public class Controller {
                     color = entry.getKey();
                 }
             }
-            for(PlayerAbstract playerAbstract : playersInGame){
-                if(playerAbstract.getColor() == color){
-                    playersInOrder.add(playerAbstract);
-                    colorIntegerMap.remove(color);
-                    break;
-                }
-            }
+            playersInOrder.add(currentGame.getPlayerFromColor(color));
+            colorIntegerMap.remove(color);
+
+            max = 0;
         }
         for(int i = 0; i < playersInOrder.size(); i++){
             int points = i < pointsValues.length ? pointsValues[i] : Constants.DEFAULT_MIN_POINTS;
