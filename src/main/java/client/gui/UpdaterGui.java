@@ -205,6 +205,20 @@ public class UpdaterGui extends Application implements Updater {
                 mainGuiController.handleGrenade();
             });
         }
+
+        if(object.equals("Game Over")){
+            System.out.println("Game over");
+            Platform.runLater(() -> {
+                mainGuiController.gameOver();
+            });
+        }
+
+        if(object.equals("Message")){
+            System.out.println("message received");
+            Platform.runLater(() -> {
+                mainGuiController.logText(this.model.getMessage());
+            });
+        }
     }
 
 

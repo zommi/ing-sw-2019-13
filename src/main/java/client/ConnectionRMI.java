@@ -39,6 +39,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         this.clientID = -1;
         this.gameModel = new GameModel();
         getProperties();
+        System.setProperty("rmi.server.hostname","192.168.1.5");
     }
 
     private void getProperties() {

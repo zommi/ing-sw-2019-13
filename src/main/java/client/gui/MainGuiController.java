@@ -429,7 +429,7 @@ public class MainGuiController implements GuiController {
         alert.showAndWait();
     }
 
-    private void logText(String string){
+    public void logText(String string){
         log += string;
         this.textLogger.setText(log);
     }
@@ -468,8 +468,8 @@ public class MainGuiController implements GuiController {
                     card,
                     i);
             powerupCard.setCursor(Cursor.HAND);
-            powerupCard.setFitWidth(powerupHand.getWidth()/3);
-            powerupCard.setFitHeight(powerupHand.getHeight());
+            powerupCard.prefWidth(powerupHand.getWidth()/3);
+            powerupCard.prefHeight(powerupHand.getHeight());
 
             int finalI = i;
             GuiPowerupCard finalPowerupCard = powerupCard;
@@ -521,17 +521,19 @@ public class MainGuiController implements GuiController {
     public void updateGameboard() {
         if(this.model != null) {
             //update position of players
-            for (int i = 0; i < this.model.getGameBoard().getResult().getActiveCharacters().size(); i++) {
-                if(this.model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
-                    if (this.idClientGuiCharacterMap.get(i) == null) {
-                        this.idClientGuiCharacterMap.put(i, placeEnemy(
-                                this.model.getPlayerBoard(i),
-                                model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getName())
+            int id = 0;
+            for (GameCharacter character : model.getGameBoard().getResult().getActiveCharacters()) {
+                id = character.getConcretePlayer().getClientID();
+                if(character.getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
+                    if (this.idClientGuiCharacterMap.get(id) == null) {
+                        this.idClientGuiCharacterMap.put(id, placeEnemy(
+                                this.model.getPlayerBoard(id),
+                                model.getGameBoard().getResult().getActiveCharacters().get(id).getConcretePlayer().getName())
                         );
                     } else {
-                        this.idClientGuiCharacterMap.get(i).setPosition(getTile(
-                                this.model.getPlayerBoard(i).getRow(),
-                                this.model.getPlayerBoard(i).getCol()
+                        this.idClientGuiCharacterMap.get(id).setPosition(getTile(
+                                this.model.getPlayerBoard(id).getRow(),
+                                this.model.getPlayerBoard(id).getCol()
                         ));
                     }
                 }
@@ -920,5 +922,16 @@ public class MainGuiController implements GuiController {
         for(Node card : powerupHand.getChildren()){
             card.setDisable(false);
         }
+    }
+
+    public void gameOver() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("GAME OVER");
+        alert.setContentText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner()  + ", thank you for playing!");
+        alert.setGraphic(null);
+        alert.setOnCloseRequest(e -> {
+            this.gui.changeStage("start_menu.fxml");
+        });
+        alert.showAndWait();
     }
 }

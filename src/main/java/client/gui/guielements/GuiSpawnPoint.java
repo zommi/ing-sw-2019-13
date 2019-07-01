@@ -65,4 +65,9 @@ public class GuiSpawnPoint extends GuiTile {
     public SpawnPoint getSpawnPoint() {
         return spawnPoint;
     }
+
+    @Override
+    public SquareAbstract getSquare() {
+        return spawnPoint;
+    }
 }

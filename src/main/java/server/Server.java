@@ -42,6 +42,7 @@ public class Server {
 
         socketServer = new SocketServer(1337, this);
         serverRMI = new ServerRMI(this);
+        System.setProperty("rmi.server.hostname","192.168.1.5");
     }
 
     public Map<String, Integer> getNameToId() {
