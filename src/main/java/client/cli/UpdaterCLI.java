@@ -523,7 +523,6 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         int result = -1;
         if (read.equalsIgnoreCase("M")) {       //move
-            System.out.println(">You are in the position: row " + gameModel.getPlayerBoard(connection.getClientID()).getRow() + " col " + gameModel.getPlayerBoard(connection.getClientID()).getCol());
 
             row = askCoordinate("row");
             col = askCoordinate("col");
@@ -589,8 +588,8 @@ public class UpdaterCLI  implements Updater,Runnable{
                 col = askCoordinate("col");
             }
             else{
-                row = gameModel.getPlayerBoard(connection.getClientID()).getRow();
-                col = gameModel.getPlayerBoard(connection.getClientID()).getCol();
+                row = gameModel.getMyPlayer().getPosition().getRow();//gameModel.getPlayerBoard(connection.getClientID()).getRow();
+                col = gameModel.getMyPlayer().getPosition().getCol();//gameModel.getPlayerBoard(connection.getClientID()).getCol();
             }
 
             if (collectDecision == 1) { //collect weapon

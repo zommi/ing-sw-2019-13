@@ -19,12 +19,10 @@ public class GameModel extends Observable implements Serializable {
     private GameBoardAnswer gameBoard;
     private PlayerHandAnswer playerHand;
     private int clientID;
-    private ListOfWeaponsAnswer weaponList;
 
     private boolean toSpawn;
     private boolean toRespawn;
 
-    private boolean clientChoice;
 
     private boolean disconnected;
     private boolean serverOffline;
@@ -102,14 +100,6 @@ public class GameModel extends Observable implements Serializable {
         this.clientID = clientID;
     }
 
-    public boolean getClientChoice(){
-        return this.clientChoice;
-    }
-
-    public void setClientChoice(boolean choice){
-        this.clientChoice = choice;
-    }
-
     public Integer getClientID(){
         return clientID;
     }
@@ -182,12 +172,6 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Change player");
         }
 
-        else if(answer instanceof ListOfWeaponsAnswer) {
-            weaponList = (ListOfWeaponsAnswer) answer;
-            setChanged();
-            notifyObservers("Weapons list");
-        }
-
         else if(answer instanceof MessageAnswer){
             message = ((MessageAnswer) answer).getMessage();
             setChanged();
@@ -244,18 +228,6 @@ public class GameModel extends Observable implements Serializable {
             if(gameCharacter.getConcretePlayer().getClientID() == clientID)
                 return gameCharacter.getConcretePlayer();
         }
-        return null;
-    }
-
-    public void setGrenadeAction(List<Info> infoList) {
-
-    }
-
-    public int getNumberOfGrenades() {
-        return 0;
-    }
-
-    public List<Info> getGrenadeAction() {
         return null;
     }
 }

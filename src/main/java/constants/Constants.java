@@ -13,7 +13,7 @@ public class Constants {
 
     public static final long GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
     public static final long TAGBACK_TIMEOUT_MSEC = 3*60*(long)1000;      //default 3 minutes
-    public static final long ACTION_TIMEOUT_MSEC =  1*60*(long)1000;      //default 3 minutes
+    public static final long ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
     public static final long SPAWN_TIMEOUT_MSEC =    3*60*(long)1000;     //default 3 minutes
 
     public static final long PING_DELAY_SEC = 1;
@@ -69,7 +69,7 @@ public class Constants {
     public static final int MAX_POWERUP_HAND = 3;       //default 3
 
     public static final int NUM_POWERUP_START = 2;      //default 2
-    public static final int NUM_AMMO_START = 50;         //default 1
+    public static final int NUM_AMMO_START = 1;         //default 1
 
     public static final int[] POINTS_VALUES = {8,6,4,2,1,1};
     public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
