@@ -33,6 +33,8 @@ public class Game {
 
     private int currentPlayerIndex;
 
+    private int lastPlayerIndex;
+
     private WeaponDeck weaponDeck;
 
     private ListOfWeaponsAnswer weaponList = new ListOfWeaponsAnswer();
@@ -44,6 +46,7 @@ public class Game {
         this.activePlayers = new ArrayList<>();
         this.weaponDeck = currentGameBoard.getWeaponDeck();
         this.currentPlayerIndex = 0;
+        this.lastPlayerIndex = 0;
         this.controller = controller;
         this.turnHandler = new TurnHandler(controller);
         this.currentGameBoard.setGameState(currentState);
@@ -96,11 +99,14 @@ public class Game {
         return activePlayers.get(currentPlayerIndex);
     }
 
+    public PlayerAbstract getLastPlayer(){return activePlayers.get(lastPlayerIndex);}
+
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
     public int nextPlayer(){
+        lastPlayerIndex = currentPlayerIndex;
         do{
             if (currentPlayerIndex < this.activePlayers.size() - 1)
                 currentPlayerIndex++;
