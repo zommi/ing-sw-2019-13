@@ -12,47 +12,41 @@ import java.util.Properties;
 public class ConnectionSocket implements Connection {
 
     private Socket socket;
-    private int clientID;
 
     private int currentID;
-    private int grenadeID;
-
-    private int mapNum;
-    private String mapChoice;
 
     private GameModel gameModel;
-    private int initialSkulls;
     private int startGame = 0;
     private boolean error = false;
 
-    private String characterName;
 
     private ObjectOutputStream outputStream;
     private ListenerSocketThread listenerSocketThread;
 
-    private static final String SERVER_ADDRESS  = "localhost";
+    private static final String SERVER_ADDRESS = "localhost";
     private String serverAddress;
     private static final int REGISTRATION_PORT = 1337;
     private int registrationPort;
     private String currentCharacter;
 
-    public ConnectionSocket(){
-        this.clientID = -1;
+    public ConnectionSocket() {
         this.gameModel = new GameModel();
         this.socket = null;
-        this.characterName = "No name yet";
         getProperties();
     }
 
     private void getProperties() {
         Properties properties = new Properties();
         try {
-            properties.load(getClass().getResourceAsStream(Constants.PATH_TO_CONFIG));
+
+            FileInputStream configFile = new FileInputStream(Constants.PATH_TO_CONFIG);
+            properties.load(configFile);
+            configFile.close();
+
             serverAddress = properties.getProperty("app.serverIp");
             registrationPort = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
         } catch (IOException e) {
             System.out.println("File not found, given default values");
-            e.printStackTrace();
             serverAddress = SERVER_ADDRESS;
             registrationPort = REGISTRATION_PORT;
         }
@@ -67,44 +61,36 @@ public class ConnectionSocket implements Connection {
         this.currentCharacter = currentCharacter;
     }
 
-    public boolean getError(){
+    public boolean getError() {
         return this.error;
     }
 
-    public void setMapNum(int mapNum) {
-        this.mapNum = mapNum;
-    }
-
-    public void setInitialSkulls(int initialSkulls) {
-        this.initialSkulls = initialSkulls;
-    }
-
-    public int getClientID(){
+    public int getClientID() {
         try {
             while (gameModel.getSetupRequestAnswer() == null)
                 Thread.sleep(500);
-        }catch(InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println("Interrupted exception");
         }
         return gameModel.getSetupRequestAnswer().getClientID();
     }
 
-    public String getCurrentCharacterName(){
+    public String getCurrentCharacterName() {
         return currentCharacter;
     }
 
     @Override
-    public int getCurrentID(){
+    public int getCurrentID() {
         return currentID;
     }
 
     @Override
-    public int getStartGame(){
+    public int getStartGame() {
         return this.startGame;
     }
 
     //must get client id from the server and set it
-    public void configure(String name){
+    public void configure(String name) {
         try {
             System.out.println("Configuring socket connection...");
             this.socket = new Socket(serverAddress, registrationPort);
@@ -123,8 +109,8 @@ public class ConnectionSocket implements Connection {
         }
     }
 
-    public void send(Info info){
-        if(gameModel.isGameOver())
+    public void send(Info info) {
+        if (gameModel.isGameOver())
             return;
 
         gameModel.setJustDidMyTurn(true);
@@ -145,20 +131,11 @@ public class ConnectionSocket implements Connection {
         send(new AsynchronousInfo(action));
     }
 
-    public GameModel getGameModel(){
+    public GameModel getGameModel() {
         return this.gameModel;
-    }
-
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
     }
 
     public void setStartGame(int startGame) {
         this.startGame = startGame;
-    }
-
-    @Override
-    public void setGrenadeID(int grenadeID) {
-        this.grenadeID = grenadeID;
     }
 }

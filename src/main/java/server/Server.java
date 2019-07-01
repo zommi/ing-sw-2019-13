@@ -87,7 +87,7 @@ public class Server {
         idToClient.remove(clientId);
 
         //removing ref to the gameManager
-        if(gameManager.getActivePlayersNum() == 0) {
+        if(gameManager.getController().getCurrentGame().getActivePlayers().isEmpty()) {
             gameManagerList.remove(gameManager);
             System.out.println("GameManager removed");
         }

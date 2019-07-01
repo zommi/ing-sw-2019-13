@@ -51,20 +51,10 @@ public class ListenerSocketThread implements Runnable{
     }
 
     private void processSocketInfo(SocketInfo socketInfo){
-        if(socketInfo.getClientID() != -1) {
-            connectionSocket.setClientID(socketInfo.getClientID());
-            gameModel.setClientID(socketInfo.getClientID());
-        }
-        if(socketInfo.getMapNum() != -1)
-            connectionSocket.setMapNum(socketInfo.getMapNum());
-        if(socketInfo.getInitialSkulls() != -1)
-            connectionSocket.setInitialSkulls(socketInfo.getInitialSkulls());
 
         if(socketInfo.getStartGame() != -1)
             connectionSocket.setStartGame(socketInfo.getStartGame());
 
-        if(socketInfo.getGrenadeID() != -2) // -2 ATTENTION HERE
-            connectionSocket.setGrenadeID(socketInfo.getGrenadeID());
         if(socketInfo.getCurrentID() != -1)
             connectionSocket.setCurrentID(socketInfo.getCurrentID());
         if(socketInfo.getCurrentCharacter() != null)

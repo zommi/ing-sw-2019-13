@@ -44,7 +44,11 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private void getProperties() {
         Properties properties = new Properties();
         try {
-            properties.load(getClass().getResourceAsStream(Constants.PATH_TO_CONFIG));
+
+            FileInputStream configFile = new FileInputStream(Constants.PATH_TO_CONFIG);
+            properties.load(configFile);
+            configFile.close();
+
             serverAddress = properties.getProperty("app.serverIp");
             registrationPort = Integer.valueOf(properties.getProperty("app.registryPort"));
             registrationRoom = properties.getProperty("app.registrationRoomName");
@@ -79,32 +83,8 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         return 0;
     }
 
-    public void sendConnection() {
-
-    }
-
-
-    public void setClientID(int clientID){
-        this.clientID = clientID;
-    }
-
-    @Override
-    public void setMapNum(int mapNum) {
-
-    }
-
-    @Override
-    public void setInitialSkulls(int initialSkulls) {
-
-    }
-
     @Override
     public void setStartGame(int startGame) {
-
-    }
-
-    @Override
-    public void setGrenadeID(int grenadeID) {
 
     }
 
@@ -116,21 +96,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     @Override
     public void setCurrentCharacter(String currentCharacter) {
 
-    }
-
-    @Override
-    public boolean askClient() throws RemoteException{
-        return gameModel.getClientChoice();
-    }
-
-    @Override
-    public int getNumberOfGrenades(){
-        return gameModel.getNumberOfGrenades();
-    }
-
-    @Override
-    public List<Info> getGrenadeAction(){
-        return gameModel.getGrenadeAction();
     }
 
     @Override
@@ -226,11 +191,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
             re.printStackTrace();
             System.out.println("Exception while initializing");
         }
-    }
-
-    @Override
-    public void setClientIDExisting(int idAlreadyExisting) throws RemoteException{
-        this.clientID = idAlreadyExisting;
     }
 
     @Override

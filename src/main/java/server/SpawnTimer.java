@@ -32,14 +32,15 @@ public class SpawnTimer extends TimerTask {
             System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
 
             controller.getGameManager().disconnect(playerAbstract);
-            //sending message to players
-            controller.getGameManager().sendEverybodyExcept(
-                    new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
 
             if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
                 endGame = true;
                 break;
             }
+
+            //sending message to players
+            controller.getGameManager().sendEverybodyExcept(
+                    new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
 
             PowerUpCard powerUpCard = playerAbstract.getRandomPowerupCard();
             playerAbstract.spawn(controller.getCurrentGame().getCurrentGameBoard().getMap().getSpawnPoint(powerUpCard.getColor()));
@@ -51,9 +52,7 @@ public class SpawnTimer extends TimerTask {
                     new MessageAnswer(playerAbstract.getName() + " respawned after death"), playerAbstract.getClientID());
         }
 
-        if(endGame)
-            controller.getGameManager().endGame();
-        else
+        if(!endGame)
             //current phase is SPAWN_PHASE
             controller.getCurrentGame().getTurnHandler().nextPhase();
     }

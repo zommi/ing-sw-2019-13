@@ -42,6 +42,10 @@ public class TurnHandler {
         timer = new Timer(true);
     }
 
+    public TimerTask getCurrentTimerTask() {
+        return currentTimerTask;
+    }
+
     public TurnPhase getCurrentTurnPhase(){
         return this.currentTurnPhase;
     }

@@ -54,7 +54,10 @@ public class GameManager {
             activePlayersNum--;
         }
 
-        System.out.println(playerAbstract.getName() + "'s turns will be skipped from now on");
+        if(activePlayersNum < Constants.MIN_PLAYERS_TO_CONTINUE)
+            endGame();
+        else
+            System.out.println(playerAbstract.getName() + "'s turns will be skipped from now on");
     }
 
     public void reconnect(PlayerAbstract playerAbstract){
@@ -79,13 +82,14 @@ public class GameManager {
     }
 
     public void endGame(){
+        game.getTurnHandler().getCurrentTimerTask().cancel();
         controller.distributeEndGamePoints();
         for(int i = 0; i<10; i++)
             System.out.println(Color.RED.getAnsi() + "GAME OVER" + Constants.ANSI_RESET);
 
         game.setCurrentState(GameState.GAME_OVER);
         Map<PlayerAbstract, Integer> playerToPoint = new HashMap<>();
-        PlayerAbstract winner = null;
+        PlayerAbstract winner = game.getActivePlayers().get(0); //arbitrary
         int max = 0;
         for(PlayerAbstract playerAbstract : game.getActivePlayers()){
             playerToPoint.put(playerAbstract, playerAbstract.getPoints());
@@ -99,6 +103,13 @@ public class GameManager {
         sendToEverybody(new MessageAnswer(message));
         sendToEverybody(new GameOverAnswer(playerToPoint, winner));
         gameOver = true;
+
+        //removing already disconnected clients from server database
+        List<PlayerAbstract> clonedList = new ArrayList<>(game.getActivePlayers());
+        for(PlayerAbstract playerAbstract : clonedList){
+            if(!server.getClientFromId(playerAbstract.getClientID()).isConnected())
+                server.removeClient(playerAbstract.getClientID());
+        }
 
     }
 

@@ -1,6 +1,8 @@
 package constants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Constants {
 
@@ -11,7 +13,7 @@ public class Constants {
 
     public static final long GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
     public static final long TAGBACK_TIMEOUT_MSEC = 3*60*(long)1000;      //default 3 minutes
-    public static final long ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
+    public static final long ACTION_TIMEOUT_MSEC =  1*60*(long)1000;      //default 3 minutes
     public static final long SPAWN_TIMEOUT_MSEC =    3*60*(long)1000;     //default 3 minutes
 
     public static final long PING_DELAY_SEC = 1;
@@ -100,6 +102,5 @@ public class Constants {
     public static final String PATH_TO_MAP_21 = File.separatorChar + "maps" + File.separatorChar + "map21.txt";
     public static final String PATH_TO_MAP_22 = File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 
-    public static final String PATH_TO_CONFIG = File.separatorChar + "config.properties";
-    public static final int[] KILLSHOTTRACK_POINTS_VALUES = ;
+    public static final String PATH_TO_CONFIG = "./config.properties";
 }

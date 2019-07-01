@@ -117,7 +117,6 @@ public class SocketClientHandler implements Runnable {
 
             socketInfo.setStartGame(gameManager.getStartGame());
             socketInfo.setCurrentID(gameManager.getController().getCurrentGame().getCurrentPlayer().getClientID());
-            socketInfo.setGrenadeID(gameManager.getController().getGrenadeID());
             socketInfo.setCurrentCharacter(gameManager.getController().getCurrentGame().getCurrentPlayer().getCharacterName());
         }catch(NullPointerException|IndexOutOfBoundsException e){
             //dont't send
@@ -128,17 +127,5 @@ public class SocketClientHandler implements Runnable {
 
     public int getClientID() {
         return clientID;
-    }
-
-    public void setKeepThreadAlive(boolean keepThreadAlive) {
-        this.keepThreadAlive = keepThreadAlive;
-    }
-
-    public ObjectInputStream getInputStream() {
-        return inputStream;
-    }
-
-    public ObjectOutputStream getOutputStream() {
-        return outputStream;
     }
 }

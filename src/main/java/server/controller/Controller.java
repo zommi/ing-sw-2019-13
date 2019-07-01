@@ -446,6 +446,7 @@ public class Controller {
             for(PlayerAbstract playerAbstract : playersInGame){
                 if(playerAbstract.getColor() == color){
                     playersInOrder.add(playerAbstract);
+                    colorIntegerMap.remove(color);
                     break;
                 }
             }

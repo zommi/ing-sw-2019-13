@@ -79,7 +79,7 @@ public class Client {
         if(socketClientHandler == null && receiverInterface == null)
             return false;
         if(socketClientHandler != null){
-            return false;
+            return true;
         }
         else{
             try{
@@ -98,14 +98,16 @@ public class Client {
 
         socketClientHandler = null;
         receiverInterface = null;
+
+        System.out.println(name + " has successfully been disconnected from the server");
+
         try{
             gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
             gameManager.disconnect(getPlayer());
         }catch(Exception e){
             //do nothing
-            System.out.println("Exception in disconnecting" + e.getClass());
+            System.out.println("Exception in disconnecting, " + e.getClass());
         }
-        System.out.println(name + " has successfully been disconnected from the server");
     }
 
     public void send(ServerAnswer serverAnswer){

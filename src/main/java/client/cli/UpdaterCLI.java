@@ -8,9 +8,7 @@ import exceptions.NotEnoughPlayersException;
 import server.controller.turns.TurnPhase;
 import server.model.cards.*;
 import server.model.map.SpawnPoint;
-import server.model.player.Figure;
-import server.model.player.GameCharacter;
-import server.model.player.PlayerAbstract;
+import server.model.player.*;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
@@ -313,39 +311,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                     }
                     firstTimePrintingTagbackWait = true;
 
-
-                    playerHand = gameModel.getPlayerHand();
-                    playerBoard = gameModel.getPlayerBoard(connection.getClientID());
-                    weapons = playerHand.getWeaponHand();
-                    System.out.println(">You have the following weapons: ");
-                    if ((weapons == null) || (weapons.isEmpty())) {
-                        System.out.println("You have no weapons!");
-                    } else {
-                        for (WeaponCard weaponCard : weapons) {
-                            System.out.println("> " + weaponCard.getName() + weaponCard.printStatus());
-                        }
-                    }
-                    powerups = playerHand.getPowerupHand();
-                    System.out.println(">You have the following powerups: ");
-                    if ((powerups == null) || (powerups.isEmpty())) {
-                        System.out.println("You have no powerups!");
-                    } else {
-                        for (PowerUpCard powerUpCard : powerups) {
-                            System.out.println("> " + powerUpCard.printOnCli());
-                        }
-                    }
-
-                    if (playerBoard != null) { //these checks are used when the clients still do not have any update, at the start of the match
-                        System.out.println();
-                        for(Color color : Color.values()){
-                            if(color.isAmmoColor()){
-                                System.out.print(color.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + playerBoard.getResult().getAmmo(color) +
-                                        Constants.ANSI_RESET + "\t");
-                            }
-                        }
-                        System.out.println();
-                    }
-
                     if(gameModel.isToSpawn()){
                         spawn();
                     }
@@ -393,8 +358,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             }
         }
 
-        if(gameModel.isServerOffline())
+        if(gameModel.isServerOffline() || gameModel.isGameOver()){
+            keepThreadAlive = false;
             return;
+        }
 
         System.out.println("You have been disconnected! Press ENTER to reconnect");
         scanner.nextLine();
@@ -538,13 +505,11 @@ public class UpdaterCLI  implements Updater,Runnable{
         String read;
         int row;
         int col;
-        /*System.out.println(" Client ID: " +connection.getClientID());
-        System.out.println(" Row: " +gameModel.getPlayerBoard(connection.getClientID()).getRow());
-        System.out.println(" Col: " +gameModel.getPlayerBoard(connection.getClientID()).getCol());*/
 
         int collectDecision = 0;
         boolean collectChosen = false;
-        //printPlayerBoard(gameModel.getPlayerBoard(connection.getClientID()));
+
+        printHand();
 
         gameModel.getMap().printOnCLI();
 
@@ -858,9 +823,57 @@ public class UpdaterCLI  implements Updater,Runnable{
         return returnedList;
     }
 
+    private void printHand(){
+        PlayerHandAnswer playerHand = gameModel.getPlayerHand();
+        PlayerBoardAnswer playerBoard = gameModel.getPlayerBoard(connection.getClientID());
+
+        //print weapons
+        List<WeaponCard> weapons = playerHand.getWeaponHand();
+        if (weapons == null || weapons.isEmpty()) {
+            System.out.print("\nYou have no weapons!");
+        }
+        else{
+            System.out.print("\nYou have the following weapons:\n\t");
+            int i =0;
+            for (WeaponCard weaponCard : weapons) {
+                System.out.print((i==0 ? "" : ", ") + weaponCard.printOnCli());
+                i++;
+            }
+        }
+
+        //print powerups
+        List<PowerUpCard> powerups = playerHand.getPowerupHand();
+        if ((powerups == null) || (powerups.isEmpty())) {
+            System.out.print("\nYou have no powerups!");
+        } else {
+            System.out.print("\nYou have the following powerups:\n\t");
+            int i = 0;
+            for (PowerUpCard powerUpCard : powerups) {
+                System.out.print((i==0 ? "" : ", ") + powerUpCard.printOnCli());
+                i++;
+            }
+        }
+
+        //print ammos
+        if(playerBoard != null) { //these checks are used when the clients still do not have any update, at the start of the match
+            System.out.println();
+            for(Color color : Color.values()){
+                if(color.isAmmoColor()){
+                    System.out.print(color.getAnsi() + Constants.AMMOCUBE_CLI_ICON + " x" + playerBoard.getResult().getAmmo(color) +
+                            Constants.ANSI_RESET + "\t");
+                }
+            }
+            System.out.println();
+        }
+    }
+
     public static void main(String[] args) {
         UpdaterCLI updaterCLI = new UpdaterCLI();
         updaterCLI.run();
-        System.out.println("MAIN END");
+
+        System.out.println("\n\nPress ENTER to close");
+        updaterCLI.scanner.nextLine();
+
+        System.exit(0);
     }
 }

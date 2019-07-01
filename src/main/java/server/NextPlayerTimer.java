@@ -36,15 +36,13 @@ public class NextPlayerTimer extends TimerTask {
 
         System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
 
-        controller.getGameManager().disconnect(playerAbstract);
         //sending message to players
         controller.getGameManager().sendEverybodyExcept(
                 new MessageAnswer(playerAbstract.getName() + " is AFK"), playerAbstract.getClientID());
 
-        if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
-            controller.getGameManager().endGame();
-        }
-        else {
+        controller.getGameManager().disconnect(playerAbstract);
+
+        if(controller.getGameManager().getActivePlayersNum() >= Constants.MIN_PLAYERS_TO_CONTINUE) {
             if(playerAbstract.getPlayerState() == PlayerState.TOBESPAWNED){
                 SpawnInfo spawnInfo = new SpawnInfo(playerAbstract.getRandomPowerupCard());
                 SpawnAction spawnAction = new SpawnAction(spawnInfo, playerAbstract, controller.getCurrentGame().getCurrentGameBoard());

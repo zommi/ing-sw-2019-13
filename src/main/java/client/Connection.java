@@ -23,11 +23,7 @@ import java.rmi.RemoteException;
 
      GameModel getGameModel();
 
-     void setClientID(int clientID);
-     void setMapNum(int mapNum);
-     void setInitialSkulls(int initialSkulls);
      void setStartGame(int startGame);
-     void setGrenadeID(int grenadeID);
      void setCurrentID(int currentID);
      void setCurrentCharacter(String currentCharacter);
 

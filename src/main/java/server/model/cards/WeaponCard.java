@@ -2,6 +2,8 @@ package server.model.cards;
 
 
 import client.weapons.Weapon;
+import constants.Color;
+import constants.Constants;
 
 import java.io.Serializable;
 
@@ -73,7 +75,7 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
         return weapon.getPath();
     }
 
-    public String printStatus(){
-        return ", " + (isReady() ? "OK" : "KO");
+    public String printOnCli(){
+        return (isReady() ? Color.GREEN.getAnsi() : Color.RED.getAnsi()) + name + Constants.ANSI_RESET;
     }
 }

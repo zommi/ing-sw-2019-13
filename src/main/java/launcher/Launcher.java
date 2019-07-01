@@ -2,6 +2,7 @@ package launcher;
 
 import client.cli.UpdaterCLI;
 import client.gui.UpdaterGui;
+import constants.Constants;
 import server.Server;
 
 import java.rmi.RemoteException;
