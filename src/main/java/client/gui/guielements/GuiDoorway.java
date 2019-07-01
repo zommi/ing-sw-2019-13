@@ -22,5 +22,10 @@ public class GuiDoorway extends GuiTile {
 
     }
 
+    @Override
+    public SquareAbstract getSquare() {
+        return null;
+    }
+
 
 }

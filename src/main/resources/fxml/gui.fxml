@@ -61,34 +61,36 @@
             </ImageView>
          </children>
       </GridPane>
-       <GridPane fx:id="powerupHand" hgap="3.0" layoutX="430.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
-                 AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="570.0">
-           <columnConstraints>
-               <ColumnConstraints prefWidth="143.3" />
-               <ColumnConstraints prefWidth="143.4" />
-               <ColumnConstraints prefWidth="143.3" />
-           </columnConstraints>
-           <rowConstraints>
-               <RowConstraints prefHeight="230.0" />
-           </rowConstraints>
-           <children>
-               <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="0">
-                   <image>
-                       <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                   </image>
-               </ImageView>
-               <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="1">
-                   <image>
-                       <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                   </image>
-               </ImageView>
-               <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="2">
-                   <image>
-                       <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                   </image>
-               </ImageView>
-           </children>
-       </GridPane>
+       <ScrollPane layoutX="430.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
+                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="570.0">
+           <GridPane fx:id="powerupHand" hgap="3.0" prefHeight="230.0" prefWidth="430.0">
+               <columnConstraints>
+                   <ColumnConstraints prefWidth="143.3" />
+                   <ColumnConstraints prefWidth="143.4" />
+                   <ColumnConstraints prefWidth="143.3" />
+               </columnConstraints>
+               <rowConstraints>
+                   <RowConstraints prefHeight="230.0" />
+               </rowConstraints>
+               <children>
+                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="0">
+                       <image>
+                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
+                       </image>
+                   </ImageView>
+                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="1">
+                       <image>
+                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
+                       </image>
+                   </ImageView>
+                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="2">
+                       <image>
+                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
+                       </image>
+                   </ImageView>
+               </children>
+           </GridPane>
+       </ScrollPane>
        <!-- button gridpane -->
       <GridPane fx:id="buttonGrid" layoutX="860.0" layoutY="570.0" prefHeight="230.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="570.0">

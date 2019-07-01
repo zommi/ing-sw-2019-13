@@ -58,4 +58,8 @@ public class GuiSquare extends GuiTile {
         this.square = (Square) square;
     }
 
+    @Override
+    public SquareAbstract getSquare() {
+        return square;
+    }
 }

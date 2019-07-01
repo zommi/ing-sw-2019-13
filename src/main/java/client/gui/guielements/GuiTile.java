@@ -44,4 +44,6 @@ public abstract class GuiTile extends StackPane {
     public abstract void restore();
 
     public abstract void setSquare(SquareAbstract square);
+
+    public abstract SquareAbstract getSquare();
 }
