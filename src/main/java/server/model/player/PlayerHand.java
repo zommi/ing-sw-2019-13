@@ -103,6 +103,7 @@ public class PlayerHand implements Serializable {
     public boolean powerupsFull(){return this.powerupHand.size() == Constants.MAX_POWERUP_HAND;}
 
     public void addCard(PowerUpCard draw) {
+        System.out.println("Adding one card");
         this.powerupHand.add(draw);
         player.getPlayerBoard().increasePowerUpHandSize();
     }

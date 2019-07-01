@@ -163,10 +163,10 @@ public class TurnHandler {
                     controller.handleDeaths();
                 }else {
                     controller.setCurrentID(controller.getCurrentGame().nextPlayer());
-                    if(controller.getCurrentGame().getCurrentPlayer().getPlayerState() == PlayerState.AFTER_FIRST_PLAYER_FF &&
-                        controller.getCurrentGame().getLastPlayer().getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF){
+
+                    if(controller.getCurrentGame().getCurrentPlayer().equals(controller.getFirstFrenzyPlayer()))
                         controller.getGameManager().endGame();
-                    }
+
                     System.out.println("changed player in game, moving from endturn to firstAction");
                     controller.sendChangeCurrentPlayer();
                     setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
@@ -180,14 +180,14 @@ public class TurnHandler {
                 currentTimerTask.cancel();
 
                 controller.setCurrentID(controller.getCurrentGame().nextPlayer());
-                if(controller.getCurrentGame().getCurrentPlayer().getPlayerState() == PlayerState.AFTER_FIRST_PLAYER_FF &&
-                        controller.getCurrentGame().getLastPlayer().getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF) {
+
+                if(controller.getCurrentGame().getCurrentPlayer().equals(controller.getFirstFrenzyPlayer()))
                     controller.getGameManager().endGame();
-                }
+
                 System.out.println("changed player in game");
                 controller.sendChangeCurrentPlayer();
                 setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
-                if(this.controller.isFinalFrenzy()){
+                if(this.controller.isFinalFrenzy() && controller.getCurrentGame().getCurrentState() != GameState.FINAL_FRENZY){
                     this.controller.startFrenzy();
                 }
                 //starting first action timer

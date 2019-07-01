@@ -48,6 +48,8 @@ public class Controller {
 
     private boolean finalFrenzy;
 
+    private PlayerAbstract firstFrenzyPlayer;
+
     public Controller(int mapChoice, int initialSkulls, GameManager gameManager){
         this.currentGame = new Game(mapChoice, initialSkulls, this);
         this.currentMap = this.currentGame.getCurrentGameMap();
@@ -256,6 +258,10 @@ public class Controller {
         }
     }
 
+    public PlayerAbstract getFirstFrenzyPlayer() {
+        return firstFrenzyPlayer;
+    }
+
     public Game getCurrentGame(){
         return this.currentGame;
     }
@@ -335,9 +341,20 @@ public class Controller {
     public void startFrenzy() {
         this.currentGame.nextState();
         //dal giocatore dopo quello corrente inizio a settare gli stati della frenzy
-        for(PlayerAbstract playerAbstract : this.currentGame.getActivePlayers()){
-            if(playerAbstract.getPlayerBoard().getDamageTaken() == 0)playerAbstract.getPlayerBoard().turnPlayerBoard();
-            playerAbstract.setState(currentGame.isAfterFirstPlayer(playerAbstract) ? PlayerState.AFTER_FIRST_PLAYER_FF : PlayerState.BEFORE_FIRST_PLAYER_FF);
+        firstFrenzyPlayer = currentGame.getCurrentPlayer();     //assuming it has already changed
+
+        if(firstFrenzyPlayer.equals(currentGame.getActivePlayers().get(0))) {
+            for (PlayerAbstract playerAbstract : currentGame.getActivePlayers()) {
+                playerAbstract.setState(PlayerState.AFTER_FIRST_PLAYER_FF);
+            }
+        }
+        else{
+            for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+                if(currentGame.getActivePlayers().indexOf(playerAbstract) >= currentGame.getActivePlayers().indexOf(firstFrenzyPlayer))
+                    playerAbstract.setState(PlayerState.BEFORE_FIRST_PLAYER_FF);
+                else
+                    playerAbstract.setState(PlayerState.AFTER_FIRST_PLAYER_FF);
+            }
         }
     }
 

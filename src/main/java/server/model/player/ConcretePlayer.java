@@ -165,6 +165,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void drawPowerupNoLimits() {
+        System.out.println("Giving one powerup to " + name);
         hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
     }
 
