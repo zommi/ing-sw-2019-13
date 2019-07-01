@@ -21,25 +21,15 @@ import java.util.Map;
 
      String getCurrentCharacter(int clientID) throws RemoteException;
 
-     boolean askClient(int ID) throws RemoteException;
-
-     List<Info> getGrenadeAction(int grenadeID) throws RemoteException;
-
-     String getCharacterName(int clientID) throws RemoteException;
-
      int getCurrentID(int clientID) throws RemoteException;
 
-     int getGrenadeID(int clientID) throws RemoteException;
-
-     boolean makeAction(int clientID, Info action) throws RemoteException;
+     void makeAction(int clientID, Info action) throws RemoteException;
 
      void saveName(ReceiverInterface receiverInterface, Info info) throws RemoteException;
 
      void saveSetup(ReceiverInterface receiverInterface, Info info) throws RemoteException;
 
-     boolean makeAsynchronousAction(int clientID, Info action)  throws RemoteException;
-
-     PlayerAbstract getPlayer(int clientID) throws RemoteException;
+     void makeAsynchronousAction(int clientID, Info action)  throws RemoteException;
 
      void reconnect(int clientId) throws RemoteException;
 

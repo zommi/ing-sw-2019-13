@@ -70,8 +70,8 @@ public class GuiPlayerBoard extends StackPane {
         marksGrid.add(marksLabel,playerBoard.getResult().getMarks().size(),0);
 
         /*GridPane pointGrid = new GridPane();
-        for(int i = 0; i < Constants.POINT_VALUE.length; i++){
-            pointGrid.add(new Label(((Integer) Constants.POINT_VALUE[i]).toString()),i,0);
+        for(int i = 0; i < Constants.POINTS_VALUES.length; i++){
+            pointGrid.add(new Label(((Integer) Constants.POINTS_VALUES[i]).toString()),i,0);
         }
         for(int i = 0; i < playerBoard.getResult().)*/
 

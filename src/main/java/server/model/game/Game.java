@@ -88,10 +88,8 @@ public class Game {
         }
     }
 
-    public void removePlayer(PlayerAbstract player) throws WrongGameStateException{
-        if(this.currentState == GameState.SETUP){
-            this.activePlayers.remove(player);
-        }else throw new WrongGameStateException();
+    public void removePlayer(PlayerAbstract player){
+        activePlayers.remove(player);
     }
 
     public PlayerAbstract getCurrentPlayer(){

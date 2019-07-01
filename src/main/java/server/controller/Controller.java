@@ -292,17 +292,23 @@ public class Controller {
 
         for(PlayerAbstract player : this.currentGame.getActivePlayers()){
             if(player.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD){
-                distributePoints(player);
-                if(doubleKill){
-                    currentGame.getPlayerFromColor(player.getKillerColor()).addPoints(1);
-                }
-                player.die();
-                skullsToAdd = player.isOverkilled() ? 2 : 1;
+
+                PlayerAbstract killer = currentGame.getPlayerFromColor(player.getKillerColor());
 
                 //informing players of this death
                 String message = player.getName() + (player.isOverkilled() ? " got overkilled by " : " died from ") +
-                        currentGame.getPlayerFromColor(player.getKillerColor()).getName();
+                        killer.getName();
                 gameManager.sendToEverybody(new MessageAnswer(message));
+
+                distributePoints(player);
+                if(doubleKill){
+                    killer.addPoints(Constants.DOUBLE_KILL_POINTS);
+                    gameManager.sendToEverybody(new MessageAnswer(killer.getName() + " got " + Constants.DOUBLE_KILL_POINTS + " points!"));
+
+                }
+
+                player.die();
+                skullsToAdd = player.isOverkilled() ? 2 : 1;
 
                 this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
                 finalFrenzy = this.getCurrentGame().getCurrentGameBoard().getTrack().getRemainingSkulls() <= 0;
@@ -316,7 +322,7 @@ public class Controller {
                 gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
 
                 if(player.isOverkilled()){
-                    board = getCurrentGame().getPlayerFromColor(player.getColor()).getPlayerBoard();
+                    board = killer.getPlayerBoard();
                     board.addMarks(1,player.getColor());
                 }
                 needToSpawn = true;
@@ -338,8 +344,10 @@ public class Controller {
     private void distributePoints(PlayerAbstract player) {
         final int FIRST_DAMAGE = 0;
         //first blood gets 1 point more
-        if(!player.getPlayerBoard().isTurned()) {
-            currentGame.getPlayerFromColor(player.getPlayerBoard().getDamage().get(FIRST_DAMAGE)).addPoints(1);
+        if(!player.getPlayerBoard().isTurned() && !player.getPlayerBoard().getDamage().isEmpty()) {
+            PlayerAbstract playerToAddPoints = currentGame.getPlayerFromColor(player.getPlayerBoard().getFirstDamageColor());
+            playerToAddPoints.addPoints(Constants.FIRST_BLOOD_POINTS);
+            gameManager.sendToEverybody(new MessageAnswer(playerToAddPoints.getName() + " got " + Constants.FIRST_BLOOD_POINTS + " points for First Blood!"));
         }
 
         //most damage dealt gets max points
@@ -348,10 +356,11 @@ public class Controller {
         int i = 0;
         int points;
         for(PlayerAbstract attacker : attackers){
-            points = i < Constants.POINT_VALUE.length ?
+            points = i < Constants.POINTS_VALUES.length ?
                     player.getPlayerBoard().getPointValueArray()[player.getPlayerBoard().getCurrentPointValueCursor() + i] :
-                    1;
+                    Constants.DEFAULT_MIN_POINTS;
             attacker.addPoints(points);
+            gameManager.sendToEverybody(new MessageAnswer(attacker.getName() + " got " + points + " points for killing " + player.getName()));
             i++;
         }
     }
@@ -411,6 +420,40 @@ public class Controller {
         for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
             distributePoints(playerAbstract);
         }
-        currentGame.getCurrentGameBoard().getTrack().computeTrack(currentGame.getActivePlayers());
+        computeTrack(currentGame.getActivePlayers());
+    }
+
+    private void computeTrack(List<PlayerAbstract> playersInGame) {
+        int[] pointsValues = Constants.KILLSHOTTRACK_POINTS_VALUES;
+        Map<Color, Integer> colorIntegerMap = new HashMap<>();
+        for (Color c : Color.values()) {
+            colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
+        }
+        List<PlayerAbstract> playersInOrder = new ArrayList<>();
+        int max = 0;
+        Color color = Color.UNDEFINED;
+        while (!colorIntegerMap.isEmpty()){
+            Iterator<Map.Entry<Color, Integer>> iterator = colorIntegerMap.entrySet().iterator();
+            while(iterator.hasNext()){
+                Map.Entry<Color, Integer> entry = iterator.next();
+                if(entry.getValue() == 0)
+                    iterator.remove();
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    color = entry.getKey();
+                }
+            }
+            for(PlayerAbstract playerAbstract : playersInGame){
+                if(playerAbstract.getColor() == color){
+                    playersInOrder.add(playerAbstract);
+                    break;
+                }
+            }
+        }
+        for(int i = 0; i < playersInOrder.size(); i++){
+            int points = i < pointsValues.length ? pointsValues[i] : Constants.DEFAULT_MIN_POINTS;
+            playersInOrder.get(i).addPoints(points);
+            gameManager.sendToEverybody(new MessageAnswer(playersInOrder.get(i).getName() + " got " + points + " points from the killshot track!"));
+        }
     }
 }

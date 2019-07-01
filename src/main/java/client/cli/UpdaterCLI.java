@@ -274,7 +274,10 @@ public class UpdaterCLI  implements Updater,Runnable{
             startLoop();
         }
 
-        System.out.println("OOOOPS! Server is offline, we're sorry. Bye bye");
+        if(gameModel.isServerOffline())
+            System.out.println("OOOOPS! Server is offline, we're sorry. Bye bye");
+        else if(gameModel.isGameOver())
+            System.out.println("See you!");
 
     }
 
@@ -291,6 +294,12 @@ public class UpdaterCLI  implements Updater,Runnable{
                 waitAfterAction();
 
                 actionParser.addGameModel(gameModel);
+
+                if(gameModel.isGameOver()){
+                    printFinalScore();
+                    keepThreadAlive = false;
+                    return;
+                }
 
                 if (connection.getClientID() == connection.getCurrentID()) {
 
@@ -399,6 +408,16 @@ public class UpdaterCLI  implements Updater,Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    private void printFinalScore() {
+        Map<PlayerAbstract, Integer> map = gameModel.getGameOverAnswer().getPlayerToPoint();
+        System.out.print("\nThe final score is:\n");
+        for(PlayerAbstract playerAbstract : map.keySet()){
+            System.out.println("\t" + playerAbstract.printOnCli() + " scored " + map.get(playerAbstract) + " points");
+        }
+
+        System.out.println("\nThe winner is... " + gameModel.getGameOverAnswer().getWinner().printOnCli());
     }
 
     private void playTagback() {
@@ -745,6 +764,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     private void printPlayerBoards(){
+        System.out.println("\n\nYou have " + gameModel.getPlayerHand().getPlayerHand().getPoints() + " points");
         for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
             printPlayerBoard(gameCharacter.getConcretePlayer());
         }

@@ -118,21 +118,6 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
 
     }
 
-    public GameProxyInterface getGameProxy(){
-        return this.gameProxy;
-    }
-
-    @Override
-    public int getGrenadeID(){
-        try{
-            return gameProxy.getGrenadeID(clientID);
-        }
-        catch(RemoteException e){
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
     @Override
     public boolean askClient() throws RemoteException{
         return gameModel.getClientChoice();
@@ -165,6 +150,9 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     public void send(Info action){
+        if(gameModel.isGameOver())
+            return;
+
         gameModel.setJustDidMyTurn(true);
         try {
             if (action instanceof NameInfo) {
@@ -189,12 +177,18 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     }
 
     public void sendAsynchronous(Info action){
+        if(gameModel.isGameOver())
+            return;
+
+        gameModel.setJustDidMyTurn(true);
+
         try{
             gameProxy.makeAsynchronousAction(this.clientID, action);
         }
         catch(Exception re){
             System.out.println("Could not make the action");
             re.printStackTrace();
+            gameModel.setJustDidMyTurn(false);
         }
     }
 

@@ -41,6 +41,12 @@ public class Constants {
 
     public static final int NO_CHOICE = -99999;
 
+    public static final int DOUBLE_KILL_POINTS = 1;
+    public static final int FIRST_BLOOD_POINTS = 1;
+    public static final int DEFAULT_MIN_POINTS = 1;
+    public static final int[] KILLSHOTTRACK_POINTS_VALUES = {8,6,4,2,1,1};
+
+
 
 
     //token rules
@@ -53,7 +59,7 @@ public class Constants {
 
     //player rules
     public static final int MAX_HP = 12;                //default 12
-    public static final int DEATH_THRESHOLD = 2;       //default 10
+    public static final int DEATH_THRESHOLD = 0;       //default 10
 
     public static final int MAX_MARKS = 3;              //default 3
 
@@ -63,7 +69,7 @@ public class Constants {
     public static final int NUM_POWERUP_START = 10;      //default 2
     public static final int NUM_AMMO_START = 99;         //default 1
 
-    public static final int[] POINT_VALUE = {8,6,4,2,1,1};
+    public static final int[] POINTS_VALUES = {8,6,4,2,1,1};
     public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
 
     public static final String AMMOCUBE_CLI_ICON = "■";
@@ -95,4 +101,5 @@ public class Constants {
     public static final String PATH_TO_MAP_22 = File.separatorChar + "maps" + File.separatorChar + "map22.txt";
 
     public static final String PATH_TO_CONFIG = File.separatorChar + "config.properties";
+    public static final int[] KILLSHOTTRACK_POINTS_VALUES = ;
 }

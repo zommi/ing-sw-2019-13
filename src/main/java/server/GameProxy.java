@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class GameProxy extends Publisher implements GameProxyInterface, Serializable {
+public class GameProxy implements GameProxyInterface, Serializable {
 
     private ServerRMI serverRMI;
     private List<PlayerAbstract> player = new ArrayList<>();
@@ -40,9 +40,8 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     }
 
     @Override
-    public boolean makeAction(int clientID, Info action)  throws RemoteException{
+    public void makeAction(int clientID, Info action)  throws RemoteException{
         serverRMI.getGameManagerFromId(clientID).getController().makeAction(clientID, action);
-        return true;
     }
 
     @Override
@@ -65,7 +64,12 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
                             } catch (RemoteException e) {
                                 System.out.println("Remote exception after ping");
                                 keepThreadAlive = false;
-                                serverRMI.getServer().getClientFromId(clientID).disconnect();
+                                Client client = serverRMI.getServer().getClientFromId(clientID);
+                                if(client.getGameManager().isGameOver())
+                                    serverRMI.getServer().removeClient(clientID);
+                                else
+                                    client.disconnect();
+
                             }catch(InterruptedException e1){
                                 //
                             }
@@ -81,65 +85,13 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
         serverRMI.getServer().setupPlayer(receiverInterface.getClientID(), setupInfo);
     }
 
-    @Override
-    public List<Info> getGrenadeAction(int ID) throws RemoteException{
-        for (int k = 0; k < clientRMIadded.size(); k++) {
-            try {
-                int clientID = clientRMIadded.get(k).getClientID();
-                if (clientID == ID) {
-                    return clientRMIadded.get(k).getGrenadeAction();
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String getCharacterName(int clientID) throws RemoteException{
-        for(PlayerAbstract p:player){
-            if(p.getGameCharacter() != null){ //if the character has already been assigned it means that the player already exists in the list and it's completed, otherwise the player still does not have a character
-                if(p.getClientID() == clientID)
-                    return p.getCharacterName();
-            }
-        }
-        return "No name yet";
-    }
-
-    @Override
-    public boolean askClient(int ID) throws RemoteException{
-        for(int k = 0; k < clientRMIadded.size(); k++){
-            try{
-                int clientID = clientRMIadded.get(k).getClientID();
-                if(clientID == ID){
-                    return clientRMIadded.get(k).askClient();
-                }
-            }
-            catch(RemoteException e){
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    public boolean makeAsynchronousAction(int clientID, Info action)  throws RemoteException{
+    public void makeAsynchronousAction(int clientID, Info action)  throws RemoteException{
         this.serverRMI.getGameManagerFromId(clientID).getController().makeAsynchronousAction(clientID, action);
-        return true;
-    }
-
-    @Override
-    public void sendMessage(ServerAnswer message){
     }
 
     @Override
     public int getCurrentID(int clientID) throws RemoteException{
         return this.serverRMI.getGameManagerFromId(clientID).getController().getCurrentID();
-    }
-
-    @Override
-    public int getGrenadeID(int clientID) throws RemoteException{
-        return this.serverRMI.getGameManagerFromId(clientID).getController().getGrenadeID();
     }
 
     @Override
@@ -151,15 +103,6 @@ public class GameProxy extends Publisher implements GameProxyInterface, Serializ
     @Override
     public void ping() throws RemoteException {
         //
-    }
-
-    @Override
-    public PlayerAbstract getPlayer(int clientID) throws RemoteException{
-        for(PlayerAbstract p:player){
-            if(p.getClientID() == clientID)
-                return p;
-        }
-        return null;
     }
 
     @Override

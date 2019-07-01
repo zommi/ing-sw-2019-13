@@ -109,6 +109,10 @@ public class Client {
     }
 
     public void send(ServerAnswer serverAnswer){
+
+        if(gameManager.isGameOver())
+            return;
+
         try {
             if (socketClientHandler != null)
                 socketClientHandler.publishSocketMessage(serverAnswer);

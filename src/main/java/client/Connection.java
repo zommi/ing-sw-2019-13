@@ -7,8 +7,6 @@ import java.rmi.RemoteException;
 
      int getCurrentID();
 
-     int getGrenadeID();
-
      String getCurrentCharacterName();
 
      int getStartGame();

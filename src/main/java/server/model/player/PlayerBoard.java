@@ -44,9 +44,16 @@ public class PlayerBoard implements Serializable {
         this.player = p;
         this.damage = new ArrayList<>();
         this.marks = new ArrayList<>();
-        this.pointValue = Constants.POINT_VALUE;
+        this.pointValue = Constants.POINTS_VALUES;
         this.currentPointValueCursor = 0;
         unloadedWeapons = new ArrayList<>();
+    }
+
+    public Color getFirstDamageColor(){
+        if(!damage.isEmpty())
+            return damage.get(0);
+        else
+            return null;
     }
 
     public void increaseWeaponHandSize(){
@@ -128,7 +135,7 @@ public class PlayerBoard implements Serializable {
         if((damage.size() > Constants.BETTERCOLLECTDAMAGE)&&(damage.size() <= Constants.BETTERSHOOTDAMAGE)){
             player.setState(PlayerState.BETTER_COLLECT);
         }
-        if((damage.size() > Constants.BETTERSHOOTDAMAGE) && (damage.size() <= Constants.DEATH_THRESHOLD)){
+        if(damage.size() > Constants.BETTERSHOOTDAMAGE && damage.size() <= Constants.DEATH_THRESHOLD){
             player.setState(PlayerState.BETTER_SHOOT);
         }
         if(damage.size() > Constants.DEATH_THRESHOLD){

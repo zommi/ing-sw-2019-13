@@ -29,12 +29,18 @@ public class GameManager {
 
     private Server server;
 
+    private boolean gameOver;
+
 
     public GameManager(Server server){
         this.server = server;
         mapSkullsSet = false;
         noPlayer = true;
         maxPlayersReached = false;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public void disconnect(PlayerAbstract playerAbstract){
@@ -78,15 +84,22 @@ public class GameManager {
             System.out.println(Color.RED.getAnsi() + "GAME OVER" + Constants.ANSI_RESET);
 
         game.setCurrentState(GameState.GAME_OVER);
+        Map<PlayerAbstract, Integer> playerToPoint = new HashMap<>();
         PlayerAbstract winner = null;
         int max = 0;
         for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+            playerToPoint.put(playerAbstract, playerAbstract.getPoints());
             if(playerAbstract.getPoints() > max){
                 max = playerAbstract.getPoints();
                 winner = playerAbstract;
             }
         }
-        System.out.println(winner.getName() + " HAS WON WITH " + winner.getPoints() + " POINTS");
+        String message = winner.getName() + " HAS WON WITH " + winner.getPoints() + " POINTS";
+        System.out.println(message);
+        sendToEverybody(new MessageAnswer(message));
+        sendToEverybody(new GameOverAnswer(playerToPoint, winner));
+        gameOver = true;
+
     }
 
     public int getActivePlayersNum() {
@@ -125,10 +138,6 @@ public class GameManager {
 
     public int getStartGame(){
         return this.startGame;
-    }
-
-    public GameProxyInterface getGameProxy(){
-        return server.getGameProxy();
     }
 
     public synchronized int getInitialSkulls() {
@@ -303,5 +312,9 @@ public class GameManager {
         controller = new Controller(mapChoice, initialSkulls, this);
         System.out.println("Controller created");
         game = controller.getCurrentGame();
+    }
+
+    public void removePlayer(String name) {
+        game.removePlayer(game.getPlayer(name));
     }
 }

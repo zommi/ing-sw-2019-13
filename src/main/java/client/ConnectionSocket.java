@@ -99,12 +99,6 @@ public class ConnectionSocket implements Connection {
     }
 
     @Override
-    public int getGrenadeID(){
-        return grenadeID;
-    }
-
-
-    @Override
     public int getStartGame(){
         return this.startGame;
     }
@@ -130,13 +124,17 @@ public class ConnectionSocket implements Connection {
     }
 
     public void send(Info info){
+        if(gameModel.isGameOver())
+            return;
+
         gameModel.setJustDidMyTurn(true);
+
         try {
             outputStream.reset();
             outputStream.writeObject(info);
             outputStream.flush();
         } catch (IOException e) {
-            System.console().printf("ERROR DURING SERIALIZATION\n");
+            System.console().printf("ERROR WHILE SENDING\n");
             e.printStackTrace();
             gameModel.setJustDidMyTurn(false);
         }
@@ -144,8 +142,7 @@ public class ConnectionSocket implements Connection {
 
     @Override
     public void sendAsynchronous(Info action) {
-        AsynchronousInfo asynchronousInfo = new AsynchronousInfo(action);
-        send(asynchronousInfo);
+        send(new AsynchronousInfo(action));
     }
 
     public GameModel getGameModel(){

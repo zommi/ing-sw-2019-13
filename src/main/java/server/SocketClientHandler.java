@@ -48,7 +48,10 @@ public class SocketClientHandler implements Runnable {
                 System.out.println("IOException caught");
                 try{
                     if(clientID != -1){
-                        server.getClientFromId(clientID).disconnect();
+                        if(server.getClientFromId(clientID).getGameManager().isGameOver())
+                            server.removeClient(clientID);
+                        else
+                            server.getClientFromId(clientID).disconnect();
                         keepThreadAlive = false;
                     }
                 }catch(NullPointerException npe){

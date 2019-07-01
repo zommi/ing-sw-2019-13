@@ -33,8 +33,11 @@ public class GameModel extends Observable implements Serializable {
 
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
+    private GameOverAnswer gameOverAnswer;
 
     private boolean playTagback;
+
+    private boolean gameOver;
 
 
     public GameModel(){ //THERE IS A NEW gamemodel for every client!
@@ -53,6 +56,10 @@ public class GameModel extends Observable implements Serializable {
         this.serverOffline = serverOffline;
         setChanged();
         notifyObservers("Server offline");
+    }
+
+    public GameOverAnswer getGameOverAnswer() {
+        return gameOverAnswer;
     }
 
     public boolean isToRespawn() {
@@ -196,8 +203,16 @@ public class GameModel extends Observable implements Serializable {
             setChanged();
             notifyObservers("Reconnected");
         }
+        else if(answer instanceof GameOverAnswer){
+            gameOverAnswer = (GameOverAnswer) answer;
+            gameOver = true;
+        }
 
         justDidMyTurn = false;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public boolean isToSpawn(){

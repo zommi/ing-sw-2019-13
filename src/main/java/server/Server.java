@@ -44,10 +44,6 @@ public class Server {
         serverRMI = new ServerRMI(this);
     }
 
-    public void removeClient(int clientId){
-
-    }
-
     public Map<String, Integer> getNameToId() {
         return nameToId;
     }
@@ -73,6 +69,31 @@ public class Server {
         System.out.println("Added the clientID " + nextClientId);
         nextClientId++;
         return idToReturn;
+    }
+
+    public void removeClient(int clientId){
+        Client client = getClientFromId(clientId);
+        String name = client.getName();
+        GameManager gameManager = client.getGameManager();
+
+        System.out.println("Removing client: " + name);
+
+
+        //removing player from the active players list
+        client.getGameManager().removePlayer(client.getName());
+
+        //removing this client from database on the server
+        nameToId.remove(client.getName());
+        idToClient.remove(clientId);
+
+        //removing ref to the gameManager
+        if(gameManager.getActivePlayersNum() == 0) {
+            gameManagerList.remove(gameManager);
+            System.out.println("GameManager removed");
+        }
+
+        System.out.println("Client removed: " + name);
+
     }
 
     public synchronized void addClient(Client client){

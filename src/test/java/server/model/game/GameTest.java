@@ -20,31 +20,28 @@ class GameTest {
         testPlayer1.setPlayerCharacter(Figure.SPROG);
         ConcretePlayer testPlayer2 = new ConcretePlayer("pluto");
         testPlayer2.setPlayerCharacter(Figure.DESTRUCTOR);
-        List<ConcretePlayer> testList = new ArrayList<ConcretePlayer>();
+        List<ConcretePlayer> testList = new ArrayList<>();
 
         testList.add(testPlayer1);
         testList.add(testPlayer2);
-        try{
 
-            testGame.addPlayer(testPlayer1);
-            testGame.addPlayer(testPlayer2);
+        testGame.addPlayer(testPlayer1);
+        testGame.addPlayer(testPlayer2);
 
-            assertEquals(testList,testGame.getActivePlayers());
+        assertEquals(testList,testGame.getActivePlayers());
 
-            testGame.removePlayer(testPlayer1);
+        testGame.removePlayer(testPlayer1);
 
-            testList.remove(testPlayer1);
+        testList.remove(testPlayer1);
 
-            assertEquals(testList,testGame.getActivePlayers());
+        assertEquals(testList,testGame.getActivePlayers());
 
-            //testGame.nextState();
+        //testGame.nextState();
 
-            //assertThrows(WrongGameStateException.class, () ->
-            //        testGame.addPlayer(testPlayer1));
+        //assertThrows(WrongGameStateException.class, () ->
+        //        testGame.addPlayer(testPlayer1));
 
-        }catch (WrongGameStateException e){
-            e.printStackTrace();
-        }
+
 
     }
 

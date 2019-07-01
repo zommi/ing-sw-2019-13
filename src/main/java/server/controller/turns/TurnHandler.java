@@ -222,7 +222,7 @@ public class TurnHandler {
     }
 
     public void tagbackStop(int clientID) {
-        System.out.println("Client " + clientID + "stopped playing tagbacks");
+        System.out.println("Client " + clientID + " stopped playing tagbacks");
         //removing player
         Iterator<PlayerAbstract> iterator = tagbackPlayers.iterator();
         PlayerAbstract playerAbstract;

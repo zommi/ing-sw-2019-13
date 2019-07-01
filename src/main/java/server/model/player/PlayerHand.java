@@ -16,18 +16,21 @@ public class PlayerHand implements Serializable {
     private ArrayList<WeaponCard> weaponHand;
     private ArrayList<PowerUpCard> powerupHand;
     private transient ConcretePlayer player;
+    private int points;
 
-    /**
-     *
-     */
-
-    public PlayerHand(){
-    }
 
     public PlayerHand(ConcretePlayer p) {
         this.player = p;
         this.weaponHand = new ArrayList<>();
         this.powerupHand = new ArrayList<>();
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int i){
+        points += i;
     }
 
     public ConcretePlayer getPlayer(){
