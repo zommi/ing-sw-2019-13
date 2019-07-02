@@ -80,7 +80,7 @@ public class TurnHandler {
     }
 
     public boolean setAndDoSpawn(Action action){
-        return currentTurnPhase == TurnPhase.SPAWN_PHASE && action.execute(controller);
+        return currentTurnPhase == TurnPhase.RESPAWN_PHASE && action.execute(controller);
     }
 
     public void setCurrentTurnPhase(TurnPhase currentTurnPhase) {
@@ -115,13 +115,13 @@ public class TurnHandler {
                 //stopping first action timer
                 currentTimerTask.cancel();
 
-                System.out.println("First action done, moving to second action");
                 if(controller.getCurrentGame().getCurrentState() == GameState.NORMAL) {
+                    System.out.println("First action done, moving to second action");
                     setCurrentTurnPhase(TurnPhase.SECOND_ACTION);
-                }else {
+                }else{
                     setCurrentTurnPhase(controller.getCurrentGame().getCurrentPlayer().getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF ?
-                            TurnPhase.END_TURN :
-                            TurnPhase.SECOND_ACTION);
+                            TurnPhase.SECOND_ACTION :
+                            TurnPhase.END_TURN);
                 }
                 //starting second action timer
                 startNextPlayerTimer();
@@ -156,7 +156,8 @@ public class TurnHandler {
                 }
 
                 if(someoneDied){
-                    setCurrentTurnPhase(TurnPhase.SPAWN_PHASE);
+                    System.out.println("Someone died, moving to RESPAWN_PHASE");
+                    setCurrentTurnPhase(TurnPhase.RESPAWN_PHASE);
 
                     //starting spawn timer
                     startSpawnTimer();
@@ -175,7 +176,7 @@ public class TurnHandler {
                     startNextPlayerTimer();
                 }
                 break;
-            case SPAWN_PHASE:
+            case RESPAWN_PHASE:
                 //stopping spawn timer
                 currentTimerTask.cancel();
 
@@ -186,7 +187,9 @@ public class TurnHandler {
 
                 System.out.println("changed player in game");
                 controller.sendChangeCurrentPlayer();
+
                 setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
+
                 if(this.controller.isFinalFrenzy() && controller.getCurrentGame().getCurrentState() != GameState.FINAL_FRENZY){
                     this.controller.startFrenzy();
                 }

@@ -81,14 +81,16 @@ public class Server {
 
 
         //removing player from the active players list
-        client.getGameManager().removePlayer(client.getName());
+        if(client.isPlayerSetupComplete()) {
+            client.getGameManager().removePlayer(name);
+        }
 
         //removing this client from database on the server
         nameToId.remove(client.getName());
         idToClient.remove(clientId);
 
         //removing ref to the gameManager
-        if(gameManager.getController().getCurrentGame().getActivePlayers().isEmpty()) {
+        if(gameManager.isGameOver() && gameManager.getController().getCurrentGame().getActivePlayers().isEmpty()) {
             gameManagerList.remove(gameManager);
             System.out.println("GameManager removed");
         }
@@ -170,19 +172,18 @@ public class Server {
         GameManager gameManager = client.getGameManager();
         SetupConfirmAnswer setupConfirmAnswer = new SetupConfirmAnswer();
 
+        if(client.isPlayerSetupComplete()){
 
-
-        if(client.isPlayerSetupComplete() || (gameManager.isMapSkullsSet() &&
-                gameManager.getController().getCurrentGame().getCurrentState() != GameState.SETUP)){
-            setupConfirmAnswer.setCharacterName(client.getGameManager().getController().getCurrentGame().getPlayer(client.getName()).getCharacterName());
-            setupConfirmAnswer.setSkullNum(client.getGameManager().getInitialSkulls());
-            setupConfirmAnswer.setMapNum(client.getGameManager().getMapChoice());
             if(client.getPlayer().getPlayerState() == PlayerState.TOBESPAWNED)
                 setupConfirmAnswer.setSpawn(true);
             else if(client.getPlayer().getPlayerState() == PlayerState.DEAD)
                 setupConfirmAnswer.setRespawn(true);
-            client.send(new GameBoardAnswer(client.getGameManager().getController().getCurrentGame().getCurrentGameBoard()));
-            client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
+
+            if(gameManager.getGameStarted() == 1) {
+                client.send(new GameBoardAnswer(client.getGameManager().getController().getCurrentGame().getCurrentGameBoard()));
+                client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
+            }
+
             client.send(setupConfirmAnswer);
             return;
         }
@@ -193,10 +194,6 @@ public class Server {
             //the gamemanager will manage illegal values
             gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
             gameManager.setMapChoice(setupInfo.getMapChoice());
-            System.out.println("CREO CONTROLLER"); //TODO togliere
-            //now we can call createController because map and skulls have been set
-            gameManager.createController();
-
             gameManager.setMapSkullsSet(true);
         }
 
@@ -205,7 +202,7 @@ public class Server {
         concretePlayer.setState(PlayerState.TOBESPAWNED);
         setupConfirmAnswer.setSpawn(true);
 
-        if(Figure.fromString(setupInfo.getCharacterName()) != null && !gameManager.isCharacterTaken(setupInfo.getCharacterName())){
+        if(Figure.fromString(setupInfo.getCharacterName()) != null && gameManager.isCharacterFree(setupInfo.getCharacterName())){
             //player in Game has already been created
             concretePlayer.setPlayerCharacter(Figure.fromString(setupInfo.getCharacterName()));
         }
@@ -216,6 +213,7 @@ public class Server {
         //adding the player to the game
         boolean added = gameManager.addPlayer(concretePlayer);
 
+        //if max player is reached waits for a new gamemanager to be created
         while(!added){
             try{
                 Thread.sleep(2000);
@@ -228,17 +226,11 @@ public class Server {
         //player setup is ok
         client.setPlayerSetupComplete(true);
 
-        //sends an answer with updated data
-        setupConfirmAnswer.setCharacterName(concretePlayer.getCharacterName());
-
-        if(gameManager.isMapSkullsSet()){
-            //sends game related info
-            setupConfirmAnswer.setMapNum(gameManager.getMapChoice());
-            setupConfirmAnswer.setSkullNum(gameManager.getInitialSkulls());
-        }
-
+        //sending confirm with spawn and respawn
         client.send(setupConfirmAnswer);
-        if(gameManager.getStartGame()==1){
+
+        //sending stuff if player is reconnecting
+        if(gameManager.getGameStarted()==1){
             client.send(new GameBoardAnswer(gameManager.getController().getCurrentGame().getCurrentGameBoard()));
             client.send(new PlayerHandAnswer(client.getPlayer().getHand()));
         }

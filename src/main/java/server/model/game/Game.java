@@ -160,14 +160,6 @@ public class Game {
         return activePlayers;
     }
 
-    public void setPlayersNames(){
-        List<String> names = new ArrayList<>();
-        for(PlayerAbstract playerAbstract : activePlayers){
-            names.add(playerAbstract.getName());
-        }
-        this.currentGameBoard.setPlayerNames(names);
-    }
-
     public GameMap getCurrentGameMap() {
         return currentGameMap;
     }

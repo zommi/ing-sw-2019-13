@@ -2,13 +2,9 @@ package server;
 
 import client.*;
 import constants.Constants;
-import exceptions.GameAlreadyStartedException;
-import server.model.gameboard.GameBoard;
 import server.model.player.*;
-import view.*;
 
 import java.io.Serializable;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -107,7 +103,7 @@ public class GameProxy implements GameProxyInterface, Serializable {
 
     @Override
     public int getStartGame(int clientID) throws RemoteException{
-        return this.serverRMI.getGameManagerFromId(clientID).getStartGame();
+        return this.serverRMI.getGameManagerFromId(clientID).getGameStarted();
     }
 }
 

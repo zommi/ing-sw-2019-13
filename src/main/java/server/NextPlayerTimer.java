@@ -26,8 +26,7 @@ public class NextPlayerTimer extends TimerTask {
     }
 
     public void run(){
-        //System.out.println("Action timer " + id + " task started at: " + new Date());
-        //System.out.println("Action timer " + id + " triggered at: " + new Date());
+
 
         System.out.println("Action timer " + id + " triggered, moving to END_TURN");
 

@@ -26,10 +26,6 @@ public class ShootAction implements Action {
 
     @Override
     public boolean execute(Controller controller) {
-        return this.shoot();
-    }
-
-    public boolean shoot(){
         ShootInfo shootInfo = shootValidator.validate(shootPack, game, player);
         if(shootInfo != null) {
             shootActuator.actuate(shootInfo, game.getController());
@@ -38,6 +34,4 @@ public class ShootAction implements Action {
         else
             return false;
     }
-
-
 }

@@ -2,7 +2,6 @@ package server;
 
 import constants.Color;
 import constants.Constants;
-import exceptions.WrongGameStateException;
 import server.controller.Controller;
 import server.model.game.Game;
 import server.model.game.GameState;
@@ -14,29 +13,31 @@ import java.util.*;
 
 public class GameManager {
 
-    private Game game;
-    private int mapChoice;
+    private Server server;
     private Controller controller;
+    private Game game;
+
+    private int mapChoice;
     private int initialSkulls;
-    private int startGame = 0;
-    private List<Integer> listOfClients = new ArrayList<>();
+    private boolean mapSkullsSet;
+
     private List<PlayerAbstract> playerList = new ArrayList<>();
     private boolean noPlayer;
-    private boolean mapSkullsSet;
-    private boolean maxPlayersReached;
-
     private int activePlayersNum;
 
-    private Server server;
-
+    private int gameStarted;
+    private boolean gameStarting;
     private boolean gameOver;
+
+    private Timer timer;
+    private TimerTask startTimerTask;
 
 
     public GameManager(Server server){
         this.server = server;
+        gameStarted = 0;
         mapSkullsSet = false;
         noPlayer = true;
-        maxPlayersReached = false;
     }
 
     public boolean isGameOver() {
@@ -50,7 +51,7 @@ public class GameManager {
         }
         sendToSpecific(new DisconnectAnswer(), playerAbstract.getClientID());
         playerAbstract.setConnected(false);
-        if(startGame == 1) {
+        if(gameStarted == 1) {
             activePlayersNum--;
         }
 
@@ -69,7 +70,7 @@ public class GameManager {
 
         playerAbstract.setConnected(true);
 
-        if(startGame == 1)
+        if(gameStarted == 1)
             activePlayersNum++;
 
         String message = playerAbstract.getName() + " is not inactive anymore, he will play his turns again";
@@ -139,7 +140,7 @@ public class GameManager {
 
     public void defaultSetup(){
         initialSkulls = Constants.MIN_SKULLS;
-        mapChoice = 0;
+        mapChoice = 1;
         setMapSkullsSet(true);
     }
 
@@ -147,126 +148,153 @@ public class GameManager {
         return server;
     }
 
-    public int getStartGame(){
-        return this.startGame;
+    public int getGameStarted(){
+        return this.gameStarted;
     }
 
     public synchronized int getInitialSkulls() {
         return initialSkulls;
     }
 
-    //posso far partire un thread del game passandogli playerList, controller, gameproxy
-    public int startMatch(){
-        if(playerList.size() < Constants.MIN_PLAYERS){ //if after 30 seconds we have less than 3 players, the game does not start
+    public void startMatch(){
 
-            //todo throws null pointer exception when calling sendtoeverybody, change also listOfClients
-            System.out.println("The game still has less than 3 players");
-            listOfClients = null;
-            game = null;
-            startGame = 2;
+        //timer has expired
+        gameStarting = false;
 
-            //informs socket clients
-            sendToEverybody(null);
-
-            return 2;
+        if(!mapSkullsSet){
+            defaultSetup();
         }
-        //now we have to start the game!
-        else{
-            game.setPlayersNames();
 
-            for(PlayerAbstract playerAbstract : playerList){
-                game.addPlayer(playerAbstract);
-            }
+        //now we can call createController because map and skulls have been set
+        createController();
 
-            activePlayersNum = game.getActivePlayers().size();
-
-            //adding active characters to the gameboard
-            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-                game.getCurrentGameBoard().getActiveCharacters().add(playerAbstract.getGameCharacter());
-            }
-
-            //setting first client id
-            controller.setCurrentID(game.getActivePlayers().get(game.getCurrentPlayerIndex()).getClientID());
-
-            //giving each player two cards
-            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
-                for(int i = 1; i<=Constants.NUM_POWERUP_START; i++){
-                    playerAbstract.drawPowerupNoLimits();
-                }
-            }
-
-            //moving to next phase
-            System.out.println("Moving to NORMAL GameState");
-            game.nextState();
-            System.out.println("We are in the game state: " +game.getCurrentState());
-
-            System.out.println("Created the game");
-            System.out.println("Now I will send the map to the client");
-
-            //send initial info
-            InitialMapAnswer initialMapAnswer = new InitialMapAnswer(mapChoice);
-            GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
-            SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
-
-            sendToEverybody(initialMapAnswer);
-            sendToEverybody(gameBoardAnswer);
-            sendToEverybody(setSpawnAnswer);
-
-            //send playerhands to every player
-            for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()){
-                sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
-            }
-
-            startGame = 1;  //game is started
-
-            //informs socket clients that startGame has changed
-            sendToEverybody(null);
-
-
-            return 1; //not useful
+        System.out.println("Setting up game...");
+        //adding players to the game
+        for(PlayerAbstract playerAbstract : playerList){
+            game.addPlayer(playerAbstract);
+            activePlayersNum++;
         }
+
+        //adding characters to the gameboard and setting the game into the players
+        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+            game.getCurrentGameBoard().getActiveCharacters().add(playerAbstract.getGameCharacter());
+            playerAbstract.setCurrentGame(game);
+        }
+
+        //setting first client id as current player
+        controller.setCurrentID(game.getActivePlayers().get(game.getCurrentPlayerIndex()).getClientID());
+
+        //giving each player two cards
+        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+            for(int i = 1; i<=Constants.NUM_POWERUP_START; i++){
+                playerAbstract.drawPowerupNoLimits();
+            }
+        }
+
+        //moving to next phase
+        game.nextState();
+
+        System.out.println("All set up\nSending stuff to the clients...");
+
+        //send initial info
+        GameBoardAnswer gameBoardAnswer = new GameBoardAnswer(controller.getCurrentGame().getCurrentGameBoard());
+        SetSpawnAnswer setSpawnAnswer = new SetSpawnAnswer(true); //at the very start all of them need to be spawned
+
+        sendToEverybody(gameBoardAnswer);
+        sendToEverybody(setSpawnAnswer);
+
+        //send playerhands to every player
+        for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()){
+            sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
+        }
+
+        System.out.println("Stuff sent");
+
+        //game is started
+        gameStarted = 1;
+
+        //informs socket clients that gameStarted has changed
+        sendToEverybody(null);
     }
 
     public synchronized boolean addPlayer(PlayerAbstract player){
-        if(maxPlayersReached)
+        if(activePlayersNum == Constants.MAX_PLAYERS)
             return false;   //player is not added
+
         System.out.println("added " + player.getName());
+
         playerList.add(player);
-        player.setCurrentGame(game);
-        if(playerList.size() == Constants.MIN_PLAYERS){ //start timer di N secondi
-            TimerTask timerTask = new GameStartTimer(this);
-            Timer timer = new Timer(true);
-            timer.schedule(timerTask, Constants.GAME_START_TIMER_MSEC);
+        activePlayersNum++;
+
+        //starting timer
+        if(playerList.size() == Constants.MIN_PLAYERS){
+            startTimerTask = new GameStartTimer(this);
+            timer = new Timer(true);
+            timer.schedule(startTimerTask, Constants.GAME_START_TIMER_MSEC);
+            gameStarting = true;
             System.out.println("GameStartTimer created at " + new Date());
         }
-        else if(playerList.size() == Constants.MAX_PLAYERS)
-            maxPlayersReached = true;     //no more players will be added
+
+        //cancel the timer and start the match
+        if(playerList.size() == Constants.MAX_PLAYERS){
+            startTimerTask.cancel();
+            server.setCurrentGameManager(new GameManager(server));
+            startMatch();
+        }
 
         return true;
+    }
+
+    public void removePlayer(String name) {
+
+        //removing from "temp" playerList
+        Iterator<PlayerAbstract> iterator = playerList.iterator();
+        PlayerAbstract tempPlayer;
+        while(iterator.hasNext()){
+            tempPlayer = iterator.next();
+            if(tempPlayer.getName().equalsIgnoreCase(name))
+                iterator.remove();
+        }
+
+        //changing copy of the list size
+        activePlayersNum--;
+
+        //canceling timer if already started
+        if(activePlayersNum < Constants.MIN_PLAYERS && gameStarting){
+            //cancel timer
+            System.out.println("Canceling timer...");
+            startTimerTask.cancel();
+            gameStarting = false;
+            System.out.println("Timer canceled");
+        }
+
+        //removing actual player from real list in game, if the game is started
+        if(gameStarted == 1)
+            game.removePlayer(game.getPlayer(name));
     }
 
     public synchronized Figure getFreeFigure(){
 
         //assuming maximum number of player has not been reached
         for(Figure figure : Figure.values()){
-            if(!isCharacterTaken(figure.name()))
+            if(isCharacterFree(figure.name()))
                 return figure;
         }
         return null; //this should never happen
     }
 
-    public synchronized boolean isCharacterTaken(String nameChar){
+    public synchronized boolean isCharacterFree(String nameChar){
         System.out.println("Checking if the character is already taken by someone else");
         System.out.println("In my list I have " + playerList.size() +"players, i will check if they already have chosen their characters");
         for(PlayerAbstract playerAbstract : playerList){
             if( playerAbstract.isCharacterChosen() && playerAbstract.getCharacterName().equalsIgnoreCase(nameChar)){
                 System.out.println("Found " + playerAbstract.getCharacterName());
                 System.out.println("The character is already taken by someone else");
-                return true;
+                return false;
             }
         }
         System.out.println("The character name you chose is ok");
-        return false;
+        return true;
     }
 
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
@@ -323,9 +351,5 @@ public class GameManager {
         controller = new Controller(mapChoice, initialSkulls, this);
         System.out.println("Controller created");
         game = controller.getCurrentGame();
-    }
-
-    public void removePlayer(String name) {
-        game.removePlayer(game.getPlayer(name));
     }
 }

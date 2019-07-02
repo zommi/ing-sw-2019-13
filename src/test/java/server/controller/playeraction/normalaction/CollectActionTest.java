@@ -3,8 +3,6 @@ package server.controller.playeraction.normalaction;
 import constants.Color;
 import constants.Direction;
 import org.junit.jupiter.api.Test;
-import client.CollectInfo;
-import client.MoveInfo;
 import server.model.gameboard.GameBoard;
 import server.model.map.SpawnPoint;
 import server.model.player.ConcretePlayer;
@@ -55,7 +53,7 @@ class CollectActionTest {
         //TODO
         //assertTrue(testAction.execute());
 
-        testPlayer.setState(PlayerState.BETTER_COLLECT);
+        testPlayer.setState(PlayerState.ADRENALINIC_COLLECT);
 
         //TODO change implementation!
         //MoveInfo correctAdrenalineMove = new MoveInfo(testPlayer, correctAdrenalineList);

@@ -48,6 +48,10 @@ public class ConcretePlayer extends PlayerAbstract {
         connected = true;
     }
 
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
     @Override
     public boolean isConnected() {
         return connected;
@@ -224,7 +228,7 @@ public class ConcretePlayer extends PlayerAbstract {
         //checks duplicate (no duplicate allowed because of the id)
         for(PowerUpCard powerUpCard : powerUpCards){
             for(PowerUpCard powerUpCard1 : powerUpCards){
-                if(powerUpCard != powerUpCard1 && powerUpCard.equals(powerUpCard1))
+                if(powerUpCards.indexOf(powerUpCard) != powerUpCards.indexOf(powerUpCard1) && powerUpCard.equals(powerUpCard1))
                     return false;
             }
         }
@@ -267,8 +271,7 @@ public class ConcretePlayer extends PlayerAbstract {
             return false;
         ConcretePlayer player2 = (ConcretePlayer) obj;
 
-        return this.gameCharacter.equals(player2.gameCharacter);
-
+        return this.name.equalsIgnoreCase(player2.name);
     }
 
     public boolean isOverkilled(){

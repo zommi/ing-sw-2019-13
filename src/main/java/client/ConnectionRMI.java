@@ -1,11 +1,7 @@
 package client;
 
 import constants.Constants;
-import exceptions.GameAlreadyStartedException;
 import server.GameProxyInterface;
-import server.model.map.GameMap;
-import server.model.player.Figure;
-import server.model.player.PlayerAbstract;
 import view.ServerAnswer;
 
 import java.io.FileInputStream;
@@ -16,7 +12,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -119,7 +114,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         if(gameModel.isGameOver())
             return;
 
-        gameModel.setJustDidMyTurn(true);
+        gameModel.setGamemodelNotUpdated(true);
         try {
             if (action instanceof NameInfo) {
                 gameProxy.saveName(this, action);
@@ -137,7 +132,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         }catch(RemoteException e){
             System.out.println("Remote exception caught");
             e.printStackTrace();
-            gameModel.setJustDidMyTurn(false);
+            gameModel.setGamemodelNotUpdated(false);
         }
 
     }
@@ -146,7 +141,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         if(gameModel.isGameOver())
             return;
 
-        gameModel.setJustDidMyTurn(true);
+        gameModel.setGamemodelNotUpdated(true);
 
         try{
             gameProxy.makeAsynchronousAction(this.clientID, action);
@@ -154,7 +149,7 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
         catch(Exception re){
             System.out.println("Could not make the action");
             re.printStackTrace();
-            gameModel.setJustDidMyTurn(false);
+            gameModel.setGamemodelNotUpdated(false);
         }
     }
 

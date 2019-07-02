@@ -46,8 +46,7 @@ public abstract class PlayerAbstract implements Serializable {
      */
     public abstract void spawn(SquareAbstract sp);
 
-    public void shoot() {
-    }
+    public abstract Game getCurrentGame();
 
     public abstract int getPoints();
 

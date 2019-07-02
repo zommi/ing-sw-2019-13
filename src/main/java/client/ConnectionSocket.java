@@ -1,9 +1,6 @@
 package client;
 
 import constants.Constants;
-import server.model.map.GameMap;
-import server.model.player.Figure;
-import view.ServerAnswer;
 
 import java.io.*;
 import java.net.Socket;
@@ -113,7 +110,7 @@ public class ConnectionSocket implements Connection {
         if (gameModel.isGameOver())
             return;
 
-        gameModel.setJustDidMyTurn(true);
+        gameModel.setGamemodelNotUpdated(true);
 
         try {
             outputStream.reset();
@@ -122,7 +119,7 @@ public class ConnectionSocket implements Connection {
         } catch (IOException e) {
             System.console().printf("ERROR WHILE SENDING\n");
             e.printStackTrace();
-            gameModel.setJustDidMyTurn(false);
+            gameModel.setGamemodelNotUpdated(false);
         }
     }
 

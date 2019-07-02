@@ -133,10 +133,10 @@ public class PlayerBoard implements Serializable {
             this.damage.add(color);
         }
         if((damage.size() > Constants.BETTERCOLLECTDAMAGE)&&(damage.size() <= Constants.BETTERSHOOTDAMAGE)){
-            player.setState(PlayerState.BETTER_COLLECT);
+            player.setState(PlayerState.ADRENALINIC_COLLECT);
         }
         if(damage.size() > Constants.BETTERSHOOTDAMAGE && damage.size() <= Constants.DEATH_THRESHOLD){
-            player.setState(PlayerState.BETTER_SHOOT);
+            player.setState(PlayerState.ADRENALINIC_SHOOT);
         }
         if(damage.size() > Constants.DEATH_THRESHOLD){
             this.killerColor = color;

@@ -9,9 +9,9 @@ public enum PlayerState {
 
     NORMAL,
 
-    BETTER_COLLECT,
+    ADRENALINIC_COLLECT,
 
-    BETTER_SHOOT,
+    ADRENALINIC_SHOOT,
 
     DEAD,
 

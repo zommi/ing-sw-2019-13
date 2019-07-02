@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class UpdaterGui extends Application implements Updater {
 
 
-    private HashMap<String, Parent> sceneMap = new HashMap<>();
+    private HashMap<String, Scene> sceneMap = new HashMap<>();
 
     private HashMap<String, GuiController> controllerMap = new HashMap<>();
 
@@ -79,29 +79,16 @@ public class UpdaterGui extends Application implements Updater {
 
     public void set(){
         try {
-//            List<Path> files = new ArrayList<>();
-//            Files.newDirectoryStream(Paths.get(getClass().getResource("/fxml").toURI()),path -> path.toFile().isFile()).forEach(files::add);
-//            //File fxmlDir = new File(getClass().getResourceAsStream(File.separatorChar + "fxml"));
-//            for(Path path: files) {
-//                String[] subDir = path.toString().split("/");
-//                FXMLLoader loader = new FXMLLoader((getClass().getResource(
-//                        "/" + subDir[subDir.length - 2] + "/" + subDir[subDir.length - 1])));
-//                this.sceneMap.put(path.getFileName().toString(), loader.load());
-//                GuiController controller = loader.getController();
-//                this.controllerMap.put(path.getFileName().toString(), controller);
-//                this.currentController = controller;
-//                controller.addGui(this);
-//            }
             List<String> fxmls = new ArrayList<String>(Arrays.asList("gui.fxml","loading_screen.fxml","map_selection.fxml","start_menu.fxml"));
             for(String path: fxmls) {
                 FXMLLoader loader = new FXMLLoader((getClass().getResource(File.separatorChar + "fxml" + File.separatorChar +path)));
-                this.sceneMap.put(path, loader.load());
+                this.sceneMap.put(path, new Scene(loader.load()));
                 GuiController controller = loader.getController();
                 this.controllerMap.put(path, controller);
                 this.currentController = controller;
                 controller.addGui(this);
             }
-            currentScene = new Scene(sceneMap.get("start_menu.fxml"));
+            currentScene = sceneMap.get("start_menu.fxml");
             mainGuiController = (MainGuiController)getControllerFromString("gui.fxml");
             this.stageName = "stage_menu.fxml";
             this.actionParser = new ActionParser(this);
@@ -118,7 +105,7 @@ public class UpdaterGui extends Application implements Updater {
 
     public void changeStage(String scene){
         this.stageName = scene;
-        currentScene = new Scene(sceneMap.get(scene));
+        currentScene = sceneMap.get(scene);
         currentController = controllerMap.get(scene);
         stage.setScene(currentScene);
         format();
@@ -216,7 +203,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("Message")){
             System.out.println("message received");
             Platform.runLater(() -> {
-                mainGuiController.logText(this.model.getMessage());
+                mainGuiController.logText(this.model.getMessage() + "\n");
             });
         }
     }
