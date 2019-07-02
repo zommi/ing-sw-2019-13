@@ -53,6 +53,7 @@ public class PlayerHand implements Serializable {
 
     public void removePowerUpCard(PowerUpCard powerUpCard){
         Iterator<PowerUpCard> iterator = powerupHand.iterator();
+        player.getCurrentGame().getCurrentGameBoard().getPowerupDeck().discardCard(powerUpCard);
         PowerUpCard powerUpCard1;
         while(iterator.hasNext()){
             powerUpCard1 = iterator.next();

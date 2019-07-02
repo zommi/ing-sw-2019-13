@@ -65,7 +65,15 @@ public class AmmoTileDeck implements Serializable {
      * @return Returns the AmmoTile popped.
      */
     public AmmoTile draw(){
-        return this.deck.pop();
+        AmmoTile ammoTile = this.deck.pop();
+        if(this.deck.isEmpty()){
+            try {
+                initializeDeck();
+            } catch (ReadJsonErrorException e) {
+                e.printStackTrace();
+            }
+        }
+        return ammoTile;
     }
 
     /**

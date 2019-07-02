@@ -86,4 +86,14 @@ class PowerUpDeckTest {
         assertTrue(copyList.containsAll(testDeck.getDeck()));
     }
 
+    @Test
+    public void infiniteDraw(){
+        PowerupDeck deck = new PowerupDeck();
+        int size = deck.getDeck().size();
+
+        for(int i = 0; i < size; i++){
+            assertNotNull(deck.draw());
+        }
+    }
+
 }

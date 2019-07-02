@@ -41,10 +41,6 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         return (color);
     }
 
-    public void draw() {
-        powerupDeck.draw();
-    }
-
     public Color getColor() {
         return color;
     }

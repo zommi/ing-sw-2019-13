@@ -52,10 +52,6 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
         return id;
     }
 
-    public void draw() {
-        //Draw card from spawnpoint.
-    }
-
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof WeaponCard))
