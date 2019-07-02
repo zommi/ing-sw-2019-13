@@ -216,7 +216,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("Message")){
             System.out.println("message received");
             Platform.runLater(() -> {
-                mainGuiController.logText(this.model.getMessage());
+                mainGuiController.logText(this.model.getMessage() + "\n");
             });
         }
     }

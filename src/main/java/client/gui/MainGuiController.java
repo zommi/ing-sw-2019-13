@@ -56,7 +56,10 @@ public class MainGuiController implements GuiController {
     private TextArea textLogger;
 
     @FXML
-    public Button scoreboardButton;
+    private Button scoreboardButton;
+
+    @FXML
+    private ScrollPane powerupScrollPane;
 
     private String log;
 
@@ -86,6 +89,10 @@ public class MainGuiController implements GuiController {
     private GuiInput input;
 
     private Map<Integer,GuiCharacter> idClientGuiCharacterMap = new HashMap<>();
+
+    private final static double POWERUP_HEIGHT = 200;
+    private final static double POWERUP_WIDTH = 100;
+
     @Override
     public void init(){
         log = "Game started! \n";
@@ -94,20 +101,16 @@ public class MainGuiController implements GuiController {
         this.actionParser.addGameModel(this.model);
         textLogger.setText(log);
         textLogger.setWrapText(true);
-        logText("Welcome " + this.model.getMyPlayer().getName() + ", you chose " + this.gui.getCharacter() + "\n"); //todo getMyPlayer could throw exception
+        logText("Welcome " + this.model.getMyPlayer().getName() + "\n");
         this.textLogger.setEditable(false);
     }
 
     public void spawn() {
         logText("Choose a powerup and Spawn in that color! \n");
-        //DrawInfo action = new DrawInfo();
-        //this.gui.getConnection().send(action);
     }
 
     public void spawnAfterDeath(){
         logText("You died!\nChoose a powerup and Spawn in that color! \n");
-        //DrawInfo action = new DrawInfo();
-        //this.gui.getConnection().sendAsynchronous(action);
     }
 
     @Override
@@ -402,7 +405,9 @@ public class MainGuiController implements GuiController {
         Info spawn = this.actionParser.createSpawnEvent(card);
         if(model.isToSpawn()){
             this.gui.getConnection().send(spawn);
-            this.model.setToSpawn(false);
+            if(this.gui.getConnection().getCurrentID() == this.gui.getConnection().getClientID()){
+                this.model.setToSpawn(false);
+            }
         }else if(model.isToRespawn()) {
             this.gui.getConnection().sendAsynchronous(spawn);
             this.model.setToRespawn(false);
@@ -432,6 +437,7 @@ public class MainGuiController implements GuiController {
     public void logText(String string){
         log += string;
         this.textLogger.setText(log);
+        textLogger.appendText("");
     }
 
     public void updateHand() {
@@ -468,19 +474,12 @@ public class MainGuiController implements GuiController {
                     card,
                     i);
             powerupCard.setCursor(Cursor.HAND);
-            powerupCard.prefWidth(powerupHand.getWidth()/3);
-            powerupCard.prefHeight(powerupHand.getHeight());
+            powerupCard.setFitHeight(POWERUP_HEIGHT);
+            powerupCard.setPreserveRatio(true);
 
-            int finalI = i;
+
             GuiPowerupCard finalPowerupCard = powerupCard;
             powerupCard.setOnMousePressed(e -> {
-//                GuiPowerupCard defaultCard = new GuiPowerupCard(
-//                        getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(),
-//                        finalI);
-//                defaultCard.setOnMousePressed(null);
-//                defaultCard.setCursor(Cursor.DEFAULT);
-//                defaultCard.setFitWidth(powerupHand.getWidth() / 3);
-//                defaultCard.setFitHeight(powerupHand.getHeight());
                 if(model.isToSpawn() || model.isToRespawn()){
                     setSpawn(card);
                 }else{
@@ -490,7 +489,6 @@ public class MainGuiController implements GuiController {
                         node.setOnMousePressed(null);
                     }
                 }
-//                powerupHand.add(defaultCard, finalI, 0);
             });
             if(!model.isToSpawn() && !model.isToRespawn())powerupCard.setDisable(true);
             this.powerupHand.add(powerupCard,i,0);
@@ -508,11 +506,11 @@ public class MainGuiController implements GuiController {
         }
 
         this.powerupHand.getChildren().removeAll();
-        for(int i = 0; i < Constants.MAX_POWERUP_HAND; i++){
+        for(int i = 0; i < Constants.MAX_POWERUP_HAND + 1; i++){
             GuiPowerupCard powerupCard = new GuiPowerupCard(
                     getClass().getResource("/Grafica/cards/AD_powerups_IT_02.png").toExternalForm(), i);
-            powerupCard.setFitWidth(powerupHand.getWidth()/3);
-            powerupCard.setFitHeight(powerupHand.getHeight());
+            powerupCard.setFitHeight(POWERUP_HEIGHT);
+            powerupCard.setPreserveRatio(true);
             this.powerupHand.add(powerupCard, i, 0);
         }
     }

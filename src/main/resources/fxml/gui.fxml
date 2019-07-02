@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,29 +12,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.TextArea?>
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MainGuiController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.MainGuiController">
     <stylesheets>
-        <URL value="@/style.css"/>
+        <URL value="@/style.css" />
     </stylesheets>
    <children>
-      <ScrollPane prefHeight="570.0" prefWidth="860.0"
-                  AnchorPane.bottomAnchor="230.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane prefHeight="570.0" prefWidth="860.0" AnchorPane.bottomAnchor="230.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="0.0">
          <content>
             <StackPane fx:id="mapStackPane" prefHeight="570.0" prefWidth="860.0" styleClass="maingui-scrollpane-background" />
          </content>
       </ScrollPane>
        <!-- text logger -->
-       <ScrollPane layoutX="860.0" prefHeight="570.0" prefWidth="340.0" AnchorPane.bottomAnchor="230.0"
-                   AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-           <content>
-               <TextArea fx:id="textLogger" prefHeight="Infinity" prefWidth="570.0"/>
-           </content>
-       </ScrollPane>
-      <GridPane fx:id="weaponHand" hgap="3.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
-                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="770.0" AnchorPane.topAnchor="570.0">
+       <TextArea fx:id="textLogger" prefHeight="Infinity" prefWidth="340.0" layoutX="860.0" AnchorPane.bottomAnchor="230.0"
+                 AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <GridPane fx:id="weaponHand" hgap="3.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="770.0" AnchorPane.topAnchor="570.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" prefWidth="143.0" />
             <ColumnConstraints hgrow="SOMETIMES" prefWidth="143.0" />
@@ -61,70 +53,49 @@
             </ImageView>
          </children>
       </GridPane>
-       <ScrollPane layoutX="430.0" layoutY="570.0" prefHeight="230.0" prefWidth="430.0"
-                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="570.0">
-           <GridPane fx:id="powerupHand" hgap="3.0" prefHeight="230.0" prefWidth="430.0">
+       <ScrollPane fx:id="powerupScrollPane" layoutX="430.0" layoutY="570.0" maxWidth="430.0" minWidth="430.0" prefHeight="230.0" prefWidth="430.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="570.0">
+           <GridPane fx:id="powerupHand" hgap="3.0" maxWidth="560.0" minWidth="560.0" prefHeight="230.0" prefWidth="560.0">
                <columnConstraints>
                    <ColumnConstraints prefWidth="143.3" />
                    <ColumnConstraints prefWidth="143.4" />
+                   <ColumnConstraints prefWidth="143.3" />
                    <ColumnConstraints prefWidth="143.3" />
                </columnConstraints>
                <rowConstraints>
                    <RowConstraints prefHeight="230.0" />
                </rowConstraints>
-               <children>
-                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="0">
-                       <image>
-                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                       </image>
-                   </ImageView>
-                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="1">
-                       <image>
-                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                       </image>
-                   </ImageView>
-                   <ImageView fitHeight="230.0" fitWidth="140.0" GridPane.columnIndex="2">
-                       <image>
-                           <Image url="@../Grafica/cards/AD_powerups_IT_02.png" />
-                       </image>
-                   </ImageView>
-               </children>
            </GridPane>
        </ScrollPane>
        <!-- button gridpane -->
-      <GridPane fx:id="buttonGrid" layoutX="860.0" layoutY="570.0" prefHeight="230.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="570.0">
+      <GridPane fx:id="buttonGrid" layoutX="860.0" layoutY="570.0" prefHeight="230.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="860.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="570.0">
         <columnConstraints>
           <ColumnConstraints prefWidth="340.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints prefHeight="76.0"/>
-            <RowConstraints prefHeight="76.0"/>
-            <RowConstraints prefHeight="76.0"/>
+            <RowConstraints prefHeight="76.0" />
+            <RowConstraints prefHeight="76.0" />
+            <RowConstraints prefHeight="76.0" />
         </rowConstraints>
          <children>
              <GridPane GridPane.rowIndex="0">
                  <columnConstraints>
-                     <ColumnConstraints prefWidth="85.0"/>
-                     <ColumnConstraints prefWidth="85.0"/>
-                     <ColumnConstraints prefWidth="85.0"/>
-                     <ColumnConstraints prefWidth="85.0"/>
+                     <ColumnConstraints prefWidth="85.0" />
+                     <ColumnConstraints prefWidth="85.0" />
+                     <ColumnConstraints prefWidth="85.0" />
+                     <ColumnConstraints prefWidth="85.0" />
                  </columnConstraints>
                  <children>
-                     <Button prefHeight="76.0" prefWidth="85.0" text="MOVE" GridPane.columnIndex="0"
-                             onMousePressed="#enableMove"/>
-                     <Button prefHeight="76.0" prefWidth="85.0" text="COLLECT" GridPane.columnIndex="1"
-                             onMousePressed="#enableCollect"/>
-                     <Button prefHeight="76.0" prefWidth="85.0" text="SHOOT" GridPane.columnIndex="2"
-                             onMousePressed="#enableShoot"/>
-                     <Button prefHeight="76.0" prefWidth="85.0" text="POWERUP" GridPane.columnIndex="3"
-                             onMousePressed="#enablePowerup"/>
+                     <Button onMousePressed="#enableMove" prefHeight="76.0" prefWidth="85.0" text="MOVE" GridPane.columnIndex="0" />
+                     <Button onMousePressed="#enableCollect" prefHeight="76.0" prefWidth="85.0" text="COLLECT" GridPane.columnIndex="1" />
+                     <Button onMousePressed="#enableShoot" prefHeight="76.0" prefWidth="85.0" text="SHOOT" GridPane.columnIndex="2" />
+                     <Button onMousePressed="#enablePowerup" prefHeight="76.0" prefWidth="85.0" text="POWERUP" GridPane.columnIndex="3" />
                  </children>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
              </GridPane>
-             <Button prefHeight="76.0" prefWidth="340.0" text="RELOAD/PASS" GridPane.rowIndex="1"
-                     onMousePressed="#reload"/>
-            <Button fx:id="scoreboardButton" prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2"
-                    onMousePressed="#showScoreboard"/>
+             <Button onMousePressed="#reload" prefHeight="76.0" prefWidth="340.0" text="RELOAD/PASS" GridPane.rowIndex="1" />
+            <Button fx:id="scoreboardButton" onMousePressed="#showScoreboard" prefHeight="76.0" prefWidth="340.0" text="SHOW SCOREBOAR_D" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

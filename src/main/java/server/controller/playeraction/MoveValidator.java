@@ -1,13 +1,8 @@
 package server.controller.playeraction;
 
-import constants.Direction;
-import server.model.map.GameMap;
-import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
-
-import java.util.List;
 
 public class MoveValidator {
 
