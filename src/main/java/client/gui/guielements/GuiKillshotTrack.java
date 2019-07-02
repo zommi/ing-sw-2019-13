@@ -16,8 +16,8 @@ public class GuiKillshotTrack extends StackPane {
     public GuiKillshotTrack(KillshotTrack track){
         this.track = track;
         GridPane killshotPane = new GridPane();
-        for(int i = 0; i < track.getInitialSkulls(); i++){
-            if(track.getDamageTokens()[i] == null) {
+        for(int i = 0; i < track.getInitialSkulls() || i < track.getDamageTokens().size(); i++){
+            if(i >= track.getDamageTokens().size()) {
                 ImageView skull = new ImageView(getClass().getResource("/redskull.png").toExternalForm());
                 killshotPane.add(skull, i, 0);
                 skull.prefWidth(25.0);
@@ -32,7 +32,7 @@ public class GuiKillshotTrack extends StackPane {
                 damageCircle.setRadius(10.0);
                 damageCircle.setStrokeWidth(2.0);
                 damageCircle.setStroke(Paint.valueOf("#000000"));
-                damageCircle.setFill(Paint.valueOf(track.getDamageTokens()[i].getNormalColor()));
+                damageCircle.setFill(Paint.valueOf(track.getDamageTokens().get(i).getNormalColor()));
                 stackPane.getChildren().add(damageCircle);
                 stackPane.getChildren().add(label);
                 killshotPane.add(stackPane,i,0);
