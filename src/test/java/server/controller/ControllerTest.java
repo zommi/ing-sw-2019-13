@@ -85,7 +85,6 @@ class ControllerTest {
         Info action = new ReloadInfo(player.getHand().getWeaponHand(), powerups);
         controller.makeAction(0, action);
         assertEquals(true, player.getHand().getWeaponHand().get(0).isReady());
-        //IT WORKS WITHOUT THE NEXT PHASE IN TURN HANDLER
 
     }
 
