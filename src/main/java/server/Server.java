@@ -172,6 +172,8 @@ public class Server {
         GameManager gameManager = client.getGameManager();
         SetupConfirmAnswer setupConfirmAnswer = new SetupConfirmAnswer();
 
+
+
         if(client.isPlayerSetupComplete()){
 
             if(client.getPlayer().getPlayerState() == PlayerState.TOBESPAWNED)

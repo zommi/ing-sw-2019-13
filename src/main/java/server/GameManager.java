@@ -46,13 +46,15 @@ public class GameManager {
 
     public void disconnect(PlayerAbstract playerAbstract){
         if(!playerAbstract.isConnected()){
-            System.out.println(playerAbstract.getName() + " is already disconnected!");
+            System.out.println(playerAbstract.getName() + " is already set as inactive!");
             return;
         }
         sendToSpecific(new DisconnectAnswer(), playerAbstract.getClientID());
         playerAbstract.setConnected(false);
+
         if(gameStarted == 1) {
             activePlayersNum--;
+            System.out.println("Active players are now " + activePlayersNum);
         }
 
         if(activePlayersNum < Constants.MIN_PLAYERS_TO_CONTINUE)
@@ -224,7 +226,7 @@ public class GameManager {
         System.out.println("added " + player.getName());
 
         playerList.add(player);
-        activePlayersNum++;
+        //activePlayersNum++;
 
         //starting timer
         if(playerList.size() == Constants.MIN_PLAYERS){
@@ -285,7 +287,7 @@ public class GameManager {
 
     public synchronized boolean isCharacterFree(String nameChar){
         System.out.println("Checking if the character is already taken by someone else");
-        System.out.println("In my list I have " + playerList.size() +"players, i will check if they already have chosen their characters");
+        System.out.println("In my list I have " + playerList.size() +" players, i will check if they already have chosen their characters");
         for(PlayerAbstract playerAbstract : playerList){
             if( playerAbstract.isCharacterChosen() && playerAbstract.getCharacterName().equalsIgnoreCase(nameChar)){
                 System.out.println("Found " + playerAbstract.getCharacterName());

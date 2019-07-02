@@ -444,28 +444,39 @@ public class Controller {
         int[] pointsValues = Constants.KILLSHOTTRACK_POINTS_VALUES;
         Map<Color, Integer> colorIntegerMap = new HashMap<>();
         for (Color c : Color.values()) {
-            if(c.isCharacterColor())
+            if(c.isCharacterColor()) {
                 colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
+                System.out.println(colorIntegerMap.get(c) + " " + c.name() + " tokens");
+            }
+
         }
         List<PlayerAbstract> playersInOrder = new ArrayList<>();
         int max = 0;
+
         Color color = Color.UNDEFINED;
         while (!colorIntegerMap.isEmpty()){
+            max = 0;
             Iterator<Map.Entry<Color, Integer>> iterator = colorIntegerMap.entrySet().iterator();
             while(iterator.hasNext()){
                 Map.Entry<Color, Integer> entry = iterator.next();
-                if(entry.getValue() == 0)
+                if(entry.getValue() == 0) {
                     iterator.remove();
+                    continue;
+                }
                 if (entry.getValue() > max) {
                     max = entry.getValue();
                     color = entry.getKey();
+                    System.out.println("Max found: " + max + " color " + color.name());
                 }
             }
             playersInOrder.add(currentGame.getPlayerFromColor(color));
             colorIntegerMap.remove(color);
 
-            max = 0;
         }
+
+        if(max == 0)
+            return;
+
         for(int i = 0; i < playersInOrder.size(); i++){
             int points = i < pointsValues.length ? pointsValues[i] : Constants.DEFAULT_MIN_POINTS;
             playersInOrder.get(i).addPoints(points);

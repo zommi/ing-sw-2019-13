@@ -90,9 +90,6 @@ public class Constants {
 
 
     //paths
-    public static final String PATH_TO_RESOURCES_FOLDER = "." + File.separatorChar + "src" +
-            File.separatorChar + "main" + File.separatorChar + "resources";
-
     public static final String PATH_TO_AMMOTILE_JSON = File.separatorChar + "ammo_tiles.json";
     public static final String PATH_TO_POWERUP_JSON = File.separatorChar + "powerups.json";
     public static final String PATH_TO_WEAPONS_JSON = File.separatorChar + "weapons.json";
