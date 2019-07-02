@@ -70,7 +70,7 @@ public class GuiInput extends InputAbstract {
 
     @Override
     public boolean getMoveChoice() {
-        //chiede al player se vuole muoversi prima di sparare, viene chiamato solo se lo stato è BETTER_SHOOT
+        //chiede al player se vuole muoversi prima di sparare, viene chiamato solo se lo stato è ADRENALINIC_SHOOT
         return this.guiController.getMoveChoice();
     }
 

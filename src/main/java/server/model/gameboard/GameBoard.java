@@ -38,8 +38,6 @@ public class GameBoard implements Serializable {
      */
     private transient WeaponDeck weaponDeck;
 
-    private List<String> listOfPlayerNames;
-
     /**
      * reference to the powerups deck
      */
@@ -97,10 +95,6 @@ public class GameBoard implements Serializable {
 
     public List<GameCharacter> getActiveCharacters() {
         return activeCharacters;
-    }
-
-    public void setPlayerNames(List<String> string){
-        this.listOfPlayerNames = string;
     }
 
     public AmmoTile drawAmmo(){

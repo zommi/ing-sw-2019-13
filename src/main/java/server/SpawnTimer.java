@@ -53,7 +53,7 @@ public class SpawnTimer extends TimerTask {
         }
 
         if(!endGame)
-            //current phase is SPAWN_PHASE
+            //current phase is RESPAWN_PHASE
             controller.getCurrentGame().getTurnHandler().nextPhase();
     }
 }

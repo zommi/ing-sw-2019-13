@@ -16,6 +16,7 @@ import server.model.player.PlayerState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShootValidator {
 
@@ -41,9 +42,13 @@ public class ShootValidator {
         if(game.getCurrentState() != GameState.FINAL_FRENZY && shootInfo.getReloadInfo() != null)
             return null;
 
-        if(shootInfo.getReloadInfo() != null) { //player wants to reload before shooting
+        //if player wants to reload before shooting
+        if(shootInfo.getReloadInfo() != null) {
+            //cards used for paying the reload, for paying the shoot, and targeting scopes CANNOT intersect
             List<PowerUpCard> combinedPowerUps = new ArrayList<>(shootInfo.getPowerUpCards());
             combinedPowerUps.addAll(shootInfo.getReloadInfo().getPowerUpCards());
+            combinedPowerUps.addAll(shootInfo.getScopeInfos().stream().map(ScopeInfo::getTargetingScope).collect(Collectors.toList()));
+
             if (!attacker.hasPowerUpCards(combinedPowerUps))
                 return null;
 
@@ -73,15 +78,20 @@ public class ShootValidator {
         }
 
         //validating adrenalinic move
-        if(shootInfo.getAttacker().getPlayerState()==PlayerState.BETTER_SHOOT){
+        if(shootInfo.getAttacker().getPlayerState()==PlayerState.ADRENALINIC_SHOOT || game.getCurrentState() == GameState.FINAL_FRENZY){
             shootInfo.getAttacker().getGameCharacter().setOldPosition();
             if(shootInfo.getSquare() != null) {
-                if(shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) == Constants.MAX_MOVES_BETTER_SHOOT) {
-                    gameBoard.getMap().setValid(false);
-                    shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
+                if((attacker.getPlayerState() == PlayerState.ADRENALINIC_SHOOT || attacker.getPlayerState() == PlayerState.BEFORE_FIRST_PLAYER_FF) &&
+                        shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) > Constants.MAX_MOVES_ADRENALINIC_SHOOT) {
+                    return null;
+                }
+                if(attacker.getPlayerState() == PlayerState.AFTER_FIRST_PLAYER_FF &&
+                        shootInfo.getSquare().distance(shootInfo.getAttacker().getPosition()) > Constants.MAX_MOVES_FRENETIC_SHOOT){
+                    return null;
                 }
                 else{
-                    return null;
+                    gameBoard.getMap().setValid(false);
+                    shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
                 }
             }
         }else{
@@ -251,6 +261,14 @@ public class ShootValidator {
 
                 }
 
+                //you cannot use the ammocube of the targeting scope card to pay if you are using its effect
+                for(PowerUpCard powerUpCard : shootInfo.getPowerUpCards()){
+                    for(ScopeInfo scopeInfo : shootInfo.getScopeInfos()){
+                        if(powerUpCard.equals(scopeInfo.getTargetingScope()))
+                            return null;
+                    }
+                }
+
                 //player must have the selected powerups
                 if(!attacker.hasPowerUpCards(cardsUsed))
                     return null;
@@ -272,7 +290,7 @@ public class ShootValidator {
                 gameBoard.getMap().setValid(true);
             }
 
-            if(shootInfo.getAttacker().getPlayerState() == PlayerState.BETTER_SHOOT){
+            if(shootInfo.getAttacker().getPlayerState() == PlayerState.ADRENALINIC_SHOOT){
                 shootInfo.getAttacker().getGameCharacter().move(shootInfo.getAttacker().getGameCharacter().getOldPosition());
             }
         }

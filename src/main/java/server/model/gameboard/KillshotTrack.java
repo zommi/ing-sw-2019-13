@@ -1,12 +1,8 @@
 package server.model.gameboard;
 
-import client.Info;
 import constants.Color;
-import constants.Constants;
-import server.model.player.PlayerAbstract;
 
 import java.io.Serializable;
-import java.util.*;
 
 /**
  * 
@@ -28,7 +24,7 @@ public class KillshotTrack implements Serializable {
     /**
      * array containing the number of tokens at a given index
      */
-    private int[] multiciplityToken;
+    private int[] multiplicityToken;
 
     private GameBoard gameBoard;
     /**
@@ -39,7 +35,7 @@ public class KillshotTrack implements Serializable {
         this.gameBoard = gameBoard;
         this.initialSkulls = initialSkull;
         this.remainingSkulls = initialSkull;
-        this.multiciplityToken = new int[initialSkull];
+        this.multiplicityToken = new int[initialSkull];
         this.damageTokens = new Color[initialSkull];
     }
 
@@ -55,8 +51,8 @@ public class KillshotTrack implements Serializable {
         return this.damageTokens;
     }
 
-    public int[] getMulticiplityToken() {
-        return this.multiciplityToken;
+    public int[] getMultiplicityToken() {
+        return this.multiplicityToken;
     }
     /**
      *
@@ -64,7 +60,7 @@ public class KillshotTrack implements Serializable {
      * @return the number of token at index
      */
     public int getMulticiplity(int index) {
-        return this.multiciplityToken[index];
+        return this.multiplicityToken[index];
     }
 
     /**
@@ -79,11 +75,11 @@ public class KillshotTrack implements Serializable {
      * @param token2Add number of token to be added
      * @param color2Add color of the token that is being added
      */
-    public boolean removeSkull(int token2Add, Color color2Add) {
-        this.multiciplityToken[remainingSkulls-1] = token2Add;
-        this.damageTokens[remainingSkulls-1] = color2Add;
+    public boolean swapDamageSkull(int token2Add, Color color2Add) {
+        multiplicityToken[remainingSkulls-1] = token2Add;
+        damageTokens[remainingSkulls-1] = color2Add;
         remainingSkulls--;
-        return this.remainingSkulls <= 0;
+        return remainingSkulls <= 0;
     }
 
     public int getInitialSkulls() {
@@ -93,7 +89,7 @@ public class KillshotTrack implements Serializable {
     public int getTokensOfColor(Color c){
         int counter = 0;
         for(int i = 0; i < initialSkulls; i++){
-            if(damageTokens[i] == c)counter+=multiciplityToken[i];
+            if(damageTokens[i] == c)counter+= multiplicityToken[i];
         }
         return counter;
     }

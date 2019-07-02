@@ -2,7 +2,6 @@ package server;
 
 
 import client.*;
-import server.model.game.GameState;
 import view.ServerAnswer;
 
 import java.io.IOException;
@@ -115,7 +114,7 @@ public class SocketClientHandler implements Runnable {
         try{
             GameManager gameManager = server.getGameManagerFromId(clientID);
 
-            socketInfo.setStartGame(gameManager.getStartGame());
+            socketInfo.setStartGame(gameManager.getGameStarted());
             socketInfo.setCurrentID(gameManager.getController().getCurrentGame().getCurrentPlayer().getClientID());
             socketInfo.setCurrentCharacter(gameManager.getController().getCurrentGame().getCurrentPlayer().getCharacterName());
         }catch(NullPointerException|IndexOutOfBoundsException e){

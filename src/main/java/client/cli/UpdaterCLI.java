@@ -24,18 +24,13 @@ public class UpdaterCLI  implements Updater,Runnable{
     private Connection connection;
 
     private GameModel gameModel;
-    private boolean clientChoice;
     private boolean keepThreadAlive;
-    private boolean matchIsNotStarted;
-    private boolean firstTimePrintingTagbackWait = true;
-
 
     public UpdaterCLI(){
         super();
         scanner = new Scanner(System.in);
         actionParser = new ActionParser(this);
         keepThreadAlive = true;
-        matchIsNotStarted = true;
     }
 
     @Override
@@ -90,7 +85,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         boolean initialSkullsChosen = false;
 
         String characterName = "";
-        String mapName = "No one has chosen yet";
 
 
         do{
@@ -111,8 +105,6 @@ public class UpdaterCLI  implements Updater,Runnable{
         } while (!hasChosen);
         System.out.println("Method set: " +methodChosen);
 
-
-        int lastClientID = 0;
 
         if (methodChosen.equals("1")) {
             connection = new ConnectionRMI();
@@ -140,13 +132,10 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         //now we know what we have to ask to the user: it's all written into the setupAnswer
 
-        //if(connection.getError() == true)
-        //    throw new GameAlreadyStartedException();
-
         int mapNumber = 0;
         if(gameModel.getSetupRequestAnswer().isFirstPlayer()) {//only if it is the first client!
             do{
-                String stringChoice = "";
+                String stringChoice;
                 int choice;
                 System.out.println(">Choose the number of skulls (MIN: " +
                         Constants.MIN_SKULLS + ", MAX: " + Constants.MAX_SKULLS + "): ");
@@ -171,7 +160,7 @@ public class UpdaterCLI  implements Updater,Runnable{
             String[] mapNames = {"Little", "Normal", "Big", "Huge"};
             List<String> mnList = Arrays.asList(mapNames);
             int choice;
-            String stringChoice = "";
+            String stringChoice;
             do {
                 for(int i = 0; i< mnList.size(); i++){
                     System.out.println(mnList.get(i) + " (" + (i+1) + ")");
@@ -179,17 +168,9 @@ public class UpdaterCLI  implements Updater,Runnable{
                 try {
                     stringChoice =  scanner.nextLine();
                     choice = Integer.parseInt(stringChoice) - 1;
-                    if(choice == 0)
-                        mapName = "Map 1";
-                    else if(choice == 1)
-                        mapName = "Map 2";
-                    else if(choice == 2)
-                        mapName = "Map 3";
-                    else if(choice == 3)
-                        mapName = "Map 4";
                     if(choice <mnList.size() && choice >= 0){
                         mapChosen = true;
-                        mapNumber = choice;
+                        mapNumber = choice + 1;     //maps start from 1
                     }
                     else{
                         System.out.println("Error: insert a valid number!");
@@ -199,16 +180,6 @@ public class UpdaterCLI  implements Updater,Runnable{
                 }
 
             } while (!mapChosen);
-            System.out.println(">You have chosen the map: " +mapName);
-        }
-        else        //if it's not the first client
-        {
-            /*do{
-                mapName = connection.getMapName();
-                initialSkulls = connection.getInitialSkulls();
-            } while((mapName.equals("No one has chosen yet"))||(initialSkulls == 0));
-            System.out.println(">Your friend has chosen the map: " +mapName);
-            System.out.println(">Your friend has chosen the initial skulls number : " +initialSkulls);*/
         }
 
         if(gameModel.getSetupRequestAnswer().isGameCharacter()){
@@ -251,10 +222,7 @@ public class UpdaterCLI  implements Updater,Runnable{
 
         connection.send(setupInfo);
 
-        if(connection.getStartGame() == 2){
-            System.out.println("Unfortunately, not enough people joined the game so you will be disconnected. Bye");
-            throw new NotEnoughPlayersException();
-        }
+        System.out.println("Your choices have been sent to the server");
     }
 
     @Override
@@ -280,16 +248,13 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     private void startLoop() {
-        PlayerHandAnswer playerHand;
-        PlayerBoardAnswer playerBoard;
-        List<WeaponCard> weapons;
-        List<PowerUpCard> powerups;
 
         while (!gameModel.isDisconnected() && !gameModel.isServerOffline()) {
-            if (connection.getStartGame() == 1) {
 
-                //this is to avoid (printing wrong informations && blocking on input)
-                waitAfterAction();
+            //this is to avoid (printing wrong informations && blocking on input)
+            waitAfterAction();
+
+            if (connection.getStartGame() == 1) {
 
                 actionParser.addGameModel(gameModel);
 
@@ -301,23 +266,29 @@ public class UpdaterCLI  implements Updater,Runnable{
 
                 if (connection.getClientID() == connection.getCurrentID()) {
 
+                    //Someone else is playing a tagback
                     if(gameModel.getCurrentTurnPhase() == TurnPhase.TAGBACK_PHASE && !gameModel.isPlayTagback()){
-                        if(firstTimePrintingTagbackWait){
-                            firstTimePrintingTagbackWait = false;
                             System.out.println("Someone is playing a tagback, please wait");
-                        }
-                        gameModel.setJustDidMyTurn(true);
+                        gameModel.setGamemodelNotUpdated(true);
                         continue;
                     }
-                    firstTimePrintingTagbackWait = true;
 
-                    if(gameModel.isToSpawn()){
-                        spawn();
+                    //someone else is respawning
+                    if(gameModel.getCurrentTurnPhase() == TurnPhase.RESPAWN_PHASE && !gameModel.isToRespawn()){
+                        System.out.println("Someone is respawning, please wait");
+                        gameModel.setGamemodelNotUpdated(true);
+                        continue;
                     }
 
-                    waitAfterAction();
+                    //you have to spawn at the start of the match
+                    if(gameModel.isToSpawn()){
+                        spawn();
+                        //sending spawnInfo already sets gamemodelNotUpdated to true
+                        continue;
+                    }
 
-                    this.askInput();
+                    //else: it's my turn
+                    askInput();
                 }
                 else if(gameModel.isPlayTagback()){
                     playTagback();
@@ -325,36 +296,17 @@ public class UpdaterCLI  implements Updater,Runnable{
                 else if(gameModel.isToRespawn()){
                     System.out.println("You died but don't worry, you can respawn right now");
                     spawn();
+                    //sending spawn info already set gamemodelNotUpdated to true
+                    //no need to continue beacuse it's an exclusive branch
                 }
                 else{
-                    //if(!notMyTurn)
-                        //System.out.println("It's not your turn now: " + connection.getCurrentCharacterName() +
-                                //" is playing");// +
-                    // getCharacter(connection.getCurrentCharacterName()).getColor().getAnsi() +
-                    // connection.getCurrentCharacterName() + Constants.ANSI_RESET + " is playing");
-                    try{
-                        TimeUnit.SECONDS.sleep(1);
-                    }
-                    catch(InterruptedException e){
-                        System.out.println("Exception while waiting");
-                    }
+                    gameModel.setGamemodelNotUpdated(true);
                 }
             }
-            else if(connection.getStartGame() == 0) { //match is not started yet
-                if(matchIsNotStarted) {
-                    System.out.println("Match isn't started, please wait a minute");
-                    matchIsNotStarted = false;
-                }
-                try{
-                    TimeUnit.SECONDS.sleep(5);
-                }
-                catch(InterruptedException e){
-                    System.out.println("Exception while waiting");
-                }
-            }
-            else if(connection.getStartGame() == 2) {
-                System.out.println("The number of players is not enough. Bye!");
-                return;
+            else{ //match is not started yet
+                System.out.println("Match isn't started, please wait");
+                gameModel.setGamemodelNotUpdated(true);
+
             }
         }
 
@@ -441,12 +393,10 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     private void waitAfterAction() {
-        boolean firstTimePrintingWaitPlease = true;
-        while(gameModel.isJustDidMyTurn()){
-            if(firstTimePrintingWaitPlease) {
-                System.out.println("Wait please");
-                firstTimePrintingWaitPlease = false;
-            }
+        if(gameModel.isGamemodelNotUpdated())
+            System.out.println("Wait please");
+
+        while(gameModel.isGamemodelNotUpdated()){
             try {
                 TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException e){

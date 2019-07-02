@@ -27,7 +27,7 @@ public class GameModel extends Observable implements Serializable {
     private boolean disconnected;
     private boolean serverOffline;
 
-    private boolean justDidMyTurn;
+    private boolean gamemodelNotUpdated;
 
     private String message;
     private SetupRequestAnswer setupRequestAnswer;
@@ -80,12 +80,12 @@ public class GameModel extends Observable implements Serializable {
         return serverOffline;
     }
 
-    public boolean isJustDidMyTurn() {
-        return justDidMyTurn;
+    public boolean isGamemodelNotUpdated() {
+        return gamemodelNotUpdated;
     }
 
-    public void setJustDidMyTurn(boolean justDidMyTurn) {
-        this.justDidMyTurn = justDidMyTurn;
+    public void setGamemodelNotUpdated(boolean gamemodelNotUpdated) {
+        this.gamemodelNotUpdated = gamemodelNotUpdated;
     }
 
     public void setToSpawn(boolean decision){
@@ -130,11 +130,6 @@ public class GameModel extends Observable implements Serializable {
             gameBoard = (GameBoardAnswer) answer;
             setChanged();
             notifyObservers("GameBoard");
-        }
-
-        else if (answer instanceof InitialMapAnswer) {
-            setChanged();
-            notifyObservers("Initialized Map");
         }
 
         else if (answer instanceof SetSpawnAnswer) {
@@ -193,7 +188,7 @@ public class GameModel extends Observable implements Serializable {
             notifyObservers("Game Over");
         }
 
-        justDidMyTurn = false;
+        gamemodelNotUpdated = false;
     }
 
     public boolean isGameOver() {

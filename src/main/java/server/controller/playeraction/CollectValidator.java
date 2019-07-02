@@ -25,9 +25,9 @@ public class CollectValidator {
         if(square == null)
             return false;
 
-        if ((player.currentState() == PlayerState.BETTER_COLLECT || player.currentState() == PlayerState.BETTER_SHOOT
+        if ((player.currentState() == PlayerState.ADRENALINIC_COLLECT || player.currentState() == PlayerState.ADRENALINIC_SHOOT
                 || player.currentState() == PlayerState.BEFORE_FIRST_PLAYER_FF)
-                && square.distance(player.getPosition()) > Constants.MAX_MOVES_BETTER_COLLECT)
+                && square.distance(player.getPosition()) > Constants.MAX_MOVES_ADRENALINIC_COLLECT) //same for frenetic before first
             return false;
 
         if(player.currentState() == PlayerState.NORMAL
@@ -35,7 +35,7 @@ public class CollectValidator {
             return false;
 
         if(player.currentState() == PlayerState.AFTER_FIRST_PLAYER_FF
-                && square.distance(player.getPosition()) > Constants.MAX_MOVES_BETTERER_COLLECT)
+                && square.distance(player.getPosition()) > Constants.MAX_MOVES_FRENETIC_COLLECT)
             return false;
 
         //checks illegal combinations

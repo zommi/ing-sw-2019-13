@@ -15,14 +15,12 @@ import java.util.List;
 public class MoveAction implements Action {
     private SquareAbstract destination;
     private PlayerAbstract player;
-    private GameMap map;
 
     private MoveValidator validator;
     private MoveActuator actuator;
 
     public MoveAction(MoveInfo info, PlayerAbstract player, GameMap map){
         this.destination = map.getSquare(info.getRow(),info.getCol());
-        this.map = map;
         this.player = player;
         this.validator = new MoveValidator();
         this.actuator = new MoveActuator();

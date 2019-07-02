@@ -118,10 +118,10 @@ public class Controller {
 
             this.playersToRespawn.remove(currentGame.getPlayerFromId(clientID));
             if(this.playersToRespawn.isEmpty()){
-                System.out.println("Exiting from SPAWN_PHASE");
+                System.out.println("Exiting from RESPAWN_PHASE");
                 turnHandler.nextPhase();
             } else{
-                System.out.println("Not exiting from SPAWN_PHASE because there are other players that have to spawn");
+                System.out.println("Not exiting from RESPAWN_PHASE because there are other players that have to spawn");
             }
         }
 
@@ -170,6 +170,7 @@ public class Controller {
             sendErrorMessage(clientID);
             return;
         }
+
 
 
         //checks and executes actions
@@ -290,7 +291,7 @@ public class Controller {
     }
 
     public boolean handleDeaths() {
-        int skullsToAdd;
+        int tokensToAdd;
         boolean needToSpawn = false;
         boolean doubleKill = false;
         PlayerBoard board;
@@ -314,10 +315,10 @@ public class Controller {
                 }
 
                 player.die();
-                skullsToAdd = player.isOverkilled() ? 2 : 1;
+                tokensToAdd = player.isOverkilled() ? 2 : 1;
 
-                this.getCurrentGame().getCurrentGameBoard().getTrack().removeSkull(skullsToAdd,player.getKillerColor());
-                finalFrenzy = this.getCurrentGame().getCurrentGameBoard().getTrack().getRemainingSkulls() <= 0;
+                this.getCurrentGame().getCurrentGameBoard().getTrack().swapDamageSkull(tokensToAdd,player.getKillerColor());
+                finalFrenzy = currentGame.getCurrentGameBoard().getTrack().getRemainingSkulls() <= 0;
 
                 playersToRespawn.add(player);
 
@@ -340,7 +341,7 @@ public class Controller {
 
     public void startFrenzy() {
         this.currentGame.nextState();
-        //dal giocatore dopo quello corrente inizio a settare gli stati della frenzy
+
         firstFrenzyPlayer = currentGame.getCurrentPlayer();     //assuming it has already changed
 
         if(firstFrenzyPlayer.equals(currentGame.getActivePlayers().get(0))) {
@@ -359,7 +360,6 @@ public class Controller {
     }
 
     private void distributePoints(PlayerAbstract player) {
-        final int FIRST_DAMAGE = 0;
         //first blood gets 1 point more
         if(!player.getPlayerBoard().isTurned() && !player.getPlayerBoard().getDamage().isEmpty()) {
             PlayerAbstract playerToAddPoints = currentGame.getPlayerFromColor(player.getPlayerBoard().getFirstDamageColor());

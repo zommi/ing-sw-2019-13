@@ -6,7 +6,6 @@ import view.MessageAnswer;
 import view.PingAnswer;
 import view.ServerAnswer;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class Client {
@@ -101,6 +100,13 @@ public class Client {
 
         System.out.println(name + " has successfully been disconnected from the server");
 
+        //if the game is not started, the client is gonna be completely removed from the server
+        if(gameManager.getGameStarted() == 0){
+            gameManager.getServer().removeClient(clientID);
+            return;
+        }
+
+        //else, we set the player as inactive
         try{
             gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
             gameManager.disconnect(getPlayer());

@@ -431,15 +431,25 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
             grid[baseRow + SQ_Y - 2][baseCol + SQ_X - 2] = "A";
 
         if(!sq.getCharacters().isEmpty())
-            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(0).getColor().getAnsi()+Constants.PLAYER_CLI_ICON+color;
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(0).getColor().getAnsi()+(
+                    sq.getCharacters().get(0).getConcretePlayer().getPlayerBoard().getDamage().size() > Constants.DEATH_THRESHOLD ?
+                            Constants.DEAD_PLAYER_CLI_ICON : Constants.PLAYER_CLI_ICON)+color;
         if(sq.getCharacters().size()>1)
-            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 3] = sq.getCharacters().get(1).getColor().getAnsi()+Constants.PLAYER_CLI_ICON+color;
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 + 3] = sq.getCharacters().get(1).getColor().getAnsi()+(
+                    sq.getCharacters().get(1).getConcretePlayer().getPlayerBoard().getDamage().size() > Constants.DEATH_THRESHOLD ?
+                            Constants.DEAD_PLAYER_CLI_ICON : Constants.PLAYER_CLI_ICON)+color;
         if(sq.getCharacters().size()>2)
-            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 - 1] = sq.getCharacters().get(2).getColor().getAnsi()+Constants.PLAYER_CLI_ICON+color;
+            grid[baseRow + (SQ_Y-2)/2 + 1][baseCol + (SQ_X-2)/2 - 1] = sq.getCharacters().get(2).getColor().getAnsi()+(
+                    sq.getCharacters().get(2).getConcretePlayer().getPlayerBoard().getDamage().size() > Constants.DEATH_THRESHOLD ?
+                            Constants.DEAD_PLAYER_CLI_ICON : Constants.PLAYER_CLI_ICON)+color;
         if(sq.getCharacters().size()>3)
-            grid[baseRow + (SQ_Y-2)/2 - 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(3).getColor().getAnsi()+Constants.PLAYER_CLI_ICON+color;
+            grid[baseRow + (SQ_Y-2)/2 - 1][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(3).getColor().getAnsi()+(
+                    sq.getCharacters().get(3).getConcretePlayer().getPlayerBoard().getDamage().size() > Constants.DEATH_THRESHOLD ?
+                            Constants.DEAD_PLAYER_CLI_ICON : Constants.PLAYER_CLI_ICON)+color;
         if(sq.getCharacters().size()>4)
-            grid[baseRow + (SQ_Y-2)/2 + 3][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(4).getColor().getAnsi()+Constants.PLAYER_CLI_ICON+color;
+            grid[baseRow + (SQ_Y-2)/2 + 3][baseCol + (SQ_X-2)/2 + 1] = sq.getCharacters().get(4).getColor().getAnsi()+(
+                    sq.getCharacters().get(4).getConcretePlayer().getPlayerBoard().getDamage().size() > Constants.DEATH_THRESHOLD ?
+                            Constants.DEAD_PLAYER_CLI_ICON : Constants.PLAYER_CLI_ICON)+color;
 
         grid[baseRow][baseCol] = color + "╔";
         grid[baseRow][baseCol + SQ_X - 1] = "╗" + ANSI_RESET;

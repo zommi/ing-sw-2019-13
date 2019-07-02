@@ -34,10 +34,12 @@ public class Constants {
     public static final int BETTERCOLLECTDAMAGE = 2;
     public static final int BETTERSHOOTDAMAGE = 5;
 
-    public static final int MAX_MOVES_BETTERER_COLLECT = 3;
-    public static final int MAX_MOVES_BETTER_COLLECT = 2;
+    public static final int MAX_MOVES_FRENETIC_COLLECT = 3;
+    public static final int MAX_MOVES_ADRENALINIC_COLLECT = 2;
     public static final int MAX_MOVES_NORMAL_COLLECT = 1;
-    public static final int MAX_MOVES_BETTER_SHOOT = 1;
+    public static final int MAX_MOVES_ADRENALINIC_SHOOT = 1;
+    public static final int MAX_MOVES_FRENETIC_SHOOT = 2;
+
 
     public static final int NO_CHOICE = -99999;
 
@@ -67,7 +69,7 @@ public class Constants {
     public static final int MAX_POWERUP_HAND = 3;       //default 3
 
     public static final int NUM_POWERUP_START = 2;      //default 2
-    public static final int NUM_AMMO_START = 1;         //default 1
+    public static final int NUM_AMMO_START = 50;         //default 1
 
     public static final int[] POINTS_VALUES = {8,6,4,2,1,1};
     public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
