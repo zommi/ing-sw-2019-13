@@ -26,6 +26,7 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
         this.ready = true;
     }
 
+
     public Weapon getWeapon() {
         return weapon;
     }
