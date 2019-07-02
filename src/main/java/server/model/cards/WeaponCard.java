@@ -26,6 +26,7 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
         this.ready = true;
     }
 
+
     public Weapon getWeapon() {
         return weapon;
     }
@@ -50,10 +51,6 @@ public class WeaponCard implements CollectableInterface, CardInterface, Serializ
 
     public int getId() {
         return id;
-    }
-
-    public void draw() {
-        //Draw card from spawnpoint.
     }
 
     @Override

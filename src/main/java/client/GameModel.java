@@ -185,6 +185,7 @@ public class GameModel extends Observable implements Serializable {
         else if(answer instanceof GameOverAnswer){
             gameOverAnswer = (GameOverAnswer) answer;
             gameOver = true;
+            setChanged();
             notifyObservers("Game Over");
         }
 

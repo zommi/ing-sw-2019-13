@@ -925,7 +925,7 @@ public class MainGuiController implements GuiController {
     public void gameOver() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("GAME OVER");
-        alert.setContentText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner()  + ", thank you for playing!");
+        alert.setContentText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner().getName()  + ", thank you for playing!");
         alert.setGraphic(null);
         alert.setOnCloseRequest(e -> {
             this.gui.changeStage("start_menu.fxml");

@@ -1,14 +1,29 @@
 package server.controller;
 
+import client.Info;
+import client.ReloadInfo;
+import client.weapons.Weapon;
 import constants.Color;
+import constants.Constants;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import server.GameManager;
 import server.Server;
+import server.controller.turns.TurnPhase;
+import server.model.cards.PowerUp;
+import server.model.cards.PowerUpCard;
+import server.model.cards.WeaponCard;
+import server.model.game.Game;
+import server.model.game.GameState;
+import server.model.gameboard.GameBoard;
+import server.model.gameboard.PowerupDeck;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,6 +68,26 @@ class ControllerTest {
 
 
     }
+
+    @Test
+    public void makeActionTest() throws  RemoteException {
+        Controller controller = new Controller(1, 5, new GameManager(new Server()));
+        PlayerAbstract player = new ConcretePlayer("Alessia");
+        controller.getCurrentGame().addPlayer(player);
+        controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.END_TURN);
+        controller.getCurrentGame().getTurnHandler().startNextPlayerTimer();
+        GameBoard gameBoard = new GameBoard(1, 5);
+        player.getHand().addCard(gameBoard.getWeaponCard("Tractor Beam")); //now he has the tractor beam in his hand.
+        player.getHand().getWeaponHand().get(0).setReady(false);
+        List<PowerUpCard> powerups = new ArrayList<>();
+        powerups.add(controller.getCurrentGame().getCurrentGameBoard().getPowerupDeck().draw());
+        player.getHand().addCard(powerups.get(0));
+        Info action = new ReloadInfo(player.getHand().getWeaponHand(), powerups);
+        controller.makeAction(0, action);
+        assertEquals(true, player.getHand().getWeaponHand().get(0).isReady());
+
+    }
+
 
     /*
     @Test
