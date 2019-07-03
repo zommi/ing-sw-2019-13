@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
 
     @Test
-    public void pointDistributionTest() throws RemoteException {
+    public void pointDistributionTest(){
         Controller controller = new Controller(1,5,new GameManager(new Server()));
         PlayerAbstract mimmo = new ConcretePlayer("mimmo");
         PlayerAbstract pluto = new ConcretePlayer("pluto");

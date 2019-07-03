@@ -27,7 +27,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShootValidatorTest {
+class ShootTest {
 
     @Test
     void lockRifle() {
