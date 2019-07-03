@@ -2,6 +2,8 @@ package server.controller;
 
 import client.Info;
 import client.ReloadInfo;
+import client.SquareInfo;
+import client.powerups.PowerUpPack;
 import client.weapons.Weapon;
 import constants.Color;
 import constants.Constants;
@@ -17,6 +19,8 @@ import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.gameboard.GameBoard;
 import server.model.gameboard.PowerupDeck;
+import server.model.map.Square;
+import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
@@ -77,20 +81,41 @@ class ControllerTest {
     @Test
     public void makeActionTest() {
         Controller controller = new Controller(1, 5, new GameManager(new Server()));
-        PlayerAbstract player = new ConcretePlayer("Alessia");
-        player.setCurrentGame(controller.getCurrentGame());
-        controller.getCurrentGame().addPlayer(player);
+        Game game = new Game(1,5, controller);
+        PlayerAbstract player1 = new ConcretePlayer("Alessia");
+        player1.getHand().addCard(game.getCurrentGameBoard().getPowerUpCard(8));
+        player1.setCurrentGame(controller.getCurrentGame());
+        controller.getCurrentGame().addPlayer(player1);
         controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.END_TURN);
         controller.getCurrentGame().getTurnHandler().startNextPlayerTimer();
         GameBoard gameBoard = new GameBoard(1, 5);
-        player.getHand().addCard(gameBoard.getWeaponCard("Tractor Beam")); //now he has the tractor beam in his hand.
-        player.getHand().getWeaponHand().get(0).setReady(false);
+        player1.getHand().addCard(gameBoard.getWeaponCard("Tractor Beam")); //now he has the tractor beam in his hand.
+        player1.getHand().getWeaponHand().get(0).setReady(false);
         List<PowerUpCard> powerups = new ArrayList<>();
         powerups.add(controller.getCurrentGame().getCurrentGameBoard().getPowerupDeck().draw());
-        player.getHand().addCard(powerups.get(0));
-        Info action = new ReloadInfo(player.getHand().getWeaponHand(), powerups);
+        player1.getHand().addCard(powerups.get(0));
+        Info action = new ReloadInfo(player1.getHand().getWeaponHand(), powerups);
         controller.makeAction(0, action);
-        assertEquals(true, player.getHand().getWeaponHand().get(0).isReady());
+        assertEquals(true, player1.getHand().getWeaponHand().get(0).isReady());
+
+
+        PlayerAbstract player2 = new ConcretePlayer("Matteo");
+        player2.setPlayerCharacter(Figure.DESTRUCTOR);
+        game.getActivePlayers().add(player2);
+        controller.getCurrentGame().addPlayer(player2);
+        player2.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
+        PlayerAbstract player3 = new ConcretePlayer("Tommaso");
+        player3.setPlayerCharacter(Figure.SPROG);
+        game.getActivePlayers().add(player3);
+        player3.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
+        controller.getCurrentGame().addPlayer(player3);
+        SquareInfo squareInfo = new SquareInfo(0, 1);
+        controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
+        Info actionPowerup = new PowerUpPack(gameBoard.getPowerUpCard(8), squareInfo, "Tommaso");
+        System.out.println("" +gameBoard.getPowerUpCard(8).getName());
+        controller.makeAction(0, actionPowerup);
+        assertEquals(squareInfo.getCol(), player3.getPosition().getCol());
+        assertEquals(squareInfo.getRow(), player3.getPosition().getRow());
 
     }
 

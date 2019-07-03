@@ -22,7 +22,6 @@ public class PowerUpAction implements Action {
 
     @Override
     public boolean execute(Controller controller) {
-        //TODO
         return this.usePowerUp(controller);
     }
 
