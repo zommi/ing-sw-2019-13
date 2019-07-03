@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
 
     @Test
-    public void pointDistributionTest() throws RemoteException {
+    public void pointDistributionTest(){
         Controller controller = new Controller(1,5,new GameManager(new Server()));
         PlayerAbstract mimmo = new ConcretePlayer("mimmo");
         PlayerAbstract pluto = new ConcretePlayer("pluto");
@@ -45,7 +45,6 @@ class ControllerTest {
         pluto.setCurrentGame(controller.getCurrentGame());
         pippo.setCurrentGame(controller.getCurrentGame());
         nino.setCurrentGame(controller.getCurrentGame());
-
         controller.getCurrentGame().addPlayer(mimmo);
         controller.getCurrentGame().addPlayer(pluto);
         controller.getCurrentGame().addPlayer(pippo);
@@ -79,7 +78,7 @@ class ControllerTest {
     }
 
     @Test
-    public void makeActionTest() {
+    public void makeActionTest(){
         Controller controller = new Controller(1, 5, new GameManager(new Server()));
         Game game = new Game(1,5, controller);
         PlayerAbstract player1 = new ConcretePlayer("Alessia");

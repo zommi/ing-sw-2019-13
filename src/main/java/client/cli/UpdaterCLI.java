@@ -12,6 +12,7 @@ import server.model.player.*;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -86,7 +87,7 @@ public class UpdaterCLI  implements Updater,Runnable{
      * @throws RemoteException
      */
     @Override
-    public void set() throws RemoteException, NotEnoughPlayersException {
+    public void set(){
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
         boolean hasChosen = false;
         String playerName;
@@ -118,7 +119,12 @@ public class UpdaterCLI  implements Updater,Runnable{
 
 
         if (methodChosen.equals("1")) {
-            connection = new ConnectionRMI();
+            try {
+                connection = new ConnectionRMI();
+            }catch(RemoteException e){
+                keepThreadAlive = false;
+                return;
+            }
             System.out.println("RMI connection was set up");
         } else{
             connection = new ConnectionSocket();
@@ -239,13 +245,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     @Override
     public void run(){
 
-        try {
-            set();
-        }
-        catch(RemoteException|NotEnoughPlayersException nbe) {
-            System.out.println("Exception caught");
-            return;
-        }
+        set();
 
         while(keepThreadAlive){
             startLoop();
@@ -404,10 +404,10 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     private void waitAfterAction() {
-        if(gameModel.isGamemodelNotUpdated())
+        if(gameModel.isGamemodelNotUpdated() && !gameModel.isServerOffline())
             System.out.println("Wait please");
 
-        while(gameModel.isGamemodelNotUpdated()){
+        while(gameModel.isGamemodelNotUpdated() && !gameModel.isServerOffline()){
             try {
                 TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException e){

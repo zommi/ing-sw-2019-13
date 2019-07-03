@@ -20,34 +20,17 @@ public class ConnectionSocket implements Connection {
     private ObjectOutputStream outputStream;
     private ListenerSocketThread listenerSocketThread;
 
-    private static final String SERVER_ADDRESS = "localhost";
     private String serverAddress;
-    private static final int REGISTRATION_PORT = 1337;
     private int registrationPort;
     private String currentCharacter;
 
     public ConnectionSocket() {
         this.gameModel = new GameModel();
         this.socket = null;
-        getProperties();
+        serverAddress = Constants.SERVER_ADDRESS;
+        registrationPort = Constants.SOCKET_PORT;
     }
 
-    private void getProperties() {
-        Properties properties = new Properties();
-        try {
-
-            FileInputStream configFile = new FileInputStream(Constants.PATH_TO_CONFIG);
-            properties.load(configFile);
-            configFile.close();
-
-            serverAddress = properties.getProperty("app.serverIp");
-            registrationPort = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
-        } catch (IOException e) {
-            System.out.println("File not found, given default values");
-            serverAddress = SERVER_ADDRESS;
-            registrationPort = REGISTRATION_PORT;
-        }
-    }
 
     public void setCurrentID(int currentID) {
         this.currentID = currentID;

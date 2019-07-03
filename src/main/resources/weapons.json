@@ -131,6 +131,7 @@
           {
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
+            "description" : "Deal 1 additional damage to the other of those targets",
             "policies" : [
               {
                 "policyName" : "inList",
@@ -153,6 +154,7 @@
           {
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
+            "description" : "Deal 1 damage to a different target you can see",
             "policies" : [
               {
                 "policyName" : "visible",
@@ -832,6 +834,7 @@
           {
             "damage" : 1,
             "maxTargetPlayerSize" : 1,
+            "description" : "Deal 1 damage to a target 1 move away",
             "policies" : [
               {
                 "policyName" : "distanceEqual",
@@ -844,6 +847,7 @@
           {
             "maxTargetPlayerSize" : 1,
             "damage" : 1,
+            "description" : "Deal 1 damage to a target 2 moves away, in the same direction",
             "policies" : [
               {
                 "policyName" : "distanceEqual",
@@ -883,6 +887,7 @@
           {
             "damage" : 2,
             "maxNmSquareSize" : 1,
+            "description" : "Deal 2 damage to everyone on the first square",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -905,6 +910,7 @@
           {
             "damage" : 1,
             "maxNmSquareSize" : 1,
+            "description" : "Deal 1 damage to everyone on the second square",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -964,6 +970,7 @@
             "mandatory" : true,
             "damage" : 1,
             "maxTargetPlayerSize" : 1,
+            "description" : "Deal 1 damage to 1 target you can see",
             "policies" : [
               {
                 "policyName" : "visible",
@@ -975,6 +982,7 @@
           {
             "limited" : true,
             "moveFlag" : true,
+            "description" : "Move the target 1 square",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1008,6 +1016,7 @@
             "mandatory" : true,
             "marks" : 1,
             "maxNmSquareSize" : 1,
+            "description" : "Deal 1 damage to every player on a square you can see",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1029,6 +1038,7 @@
           {
             "limited" : true,
             "moveFlag" : true,
+            "description" : "Move the target 1 square, only if you have not already done it",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1132,6 +1142,7 @@
           {
             "moveFlag" : true,
             "generatePlayerFlag" : true,
+            "description" : "Move the target one square",
             "policies" : [
               {
                 "policyName" : "distanceEqual",
@@ -1505,6 +1516,7 @@
           {
             "moveFlag" : true,
             "generatePlayerFlag" : true,
+            "description" : "Move the target one square",
             "policies" : [
               {
                 "policyName" : "distanceEqual",
@@ -1604,6 +1616,7 @@
         "microEffects" : [
           {
             "mandatory" : true,
+            "description" : "Choose a square exactly 1 move away and move onto that square",
             "moveFlag" : true,
             "generatePlayerFlag" : true,
             "policies" : [
@@ -1622,6 +1635,7 @@
           },
           {
             "damage" : 2,
+            "description" : "Deal 1 damage to 1 target on the square you chose",
             "maxTargetPlayerSize" : 1,
             "policies" : [
               {
@@ -1637,6 +1651,7 @@
           },
           {
             "moveFlag" : true,
+            "description" : "Move one more square in the same direction",
             "generatePlayerFlag" : true,
             "policies" : [
               {
@@ -1672,6 +1687,7 @@
           },
           {
             "conditional" : true,
+            "description" : "Deal 2 damage to 1 target on the square you chose",
             "macroEffectIndex" : 1,
             "microEffectIndex" : 2,
             "damage" : 2,
@@ -1794,6 +1810,7 @@
           },
           {
             "moveFlag" : true,
+            "description" : "Move that target 0, 1, or 2 squares in one direction",
             "generatePlayerFlag" : true,
             "policies" : [
               {
