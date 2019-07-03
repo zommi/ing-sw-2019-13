@@ -18,8 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Does all the checks for validating the shoot action
+ * @author Matteo Pacciani
+ */
+
 public class ShootValidator {
 
+    /**
+     * Does all the checks for validating the shoot action
+     * @param shootPack a container with all the data related to this shoot action
+     * @param game the game in which the shoot action is made
+     * @param attacker the player that is making the action
+     * @return a shootInfo ready to be actuated, or null if the validation process fails
+     */
     public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
 
         List<PlayerAbstract> damagedPlayers = new ArrayList<>();
@@ -292,6 +304,13 @@ public class ShootValidator {
         }
     }
 
+    /**
+     * Converts the shootPack into a shootInfo, that is made of references instead of strings
+     * @param shootPack the object that is going to be converted
+     * @param game the game in which the shootPack is being processed
+     * @param attacker the attacking player
+     * @return a shootInfo that is ready to be validated, or null if the conversion fails
+     */
     public ShootInfo convert(ShootPack shootPack, Game game, PlayerAbstract attacker)  {
         //must return null if conversion fails
         GameBoard gameBoard = game.getCurrentGameBoard();

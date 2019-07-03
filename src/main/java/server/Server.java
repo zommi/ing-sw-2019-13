@@ -39,9 +39,6 @@ public class Server {
         gameManagerList = new ArrayList<>();
         currentGameManager = new GameManager(this);
         gameManagerList.add(currentGameManager);
-
-
-        System.setProperty("rmi.server.hostname","192.168.1.5");
     }
 
     public void startSocketRmi() throws RemoteException{

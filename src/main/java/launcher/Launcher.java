@@ -2,20 +2,11 @@ package launcher;
 
 import client.cli.UpdaterCLI;
 import client.gui.UpdaterGui;
-import constants.Constants;
 import server.Server;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Properties;
 
 public class Launcher {
-    public int i;
-
-    public int getI() {
-        return i;
-    }
 
     public static void main(String[] args){
         if(args.length == 1){
@@ -33,7 +24,7 @@ public class Launcher {
                 case "cli":
                     UpdaterCLI.main(null);
                     break;
-                default: break;
+                default: System.out.println("Invalid parameter, please run the jar again with one of the following:\nserver    cli    gui\n\n");
             }
         }
     }

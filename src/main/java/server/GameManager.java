@@ -33,6 +33,7 @@ public class GameManager {
     private TimerTask startTimerTask;
 
 
+
     public GameManager(Server server){
         this.server = server;
         gameStarted = 0;
