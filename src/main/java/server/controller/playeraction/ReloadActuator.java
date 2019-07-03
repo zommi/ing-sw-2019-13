@@ -24,9 +24,11 @@ public class ReloadActuator {
 
         playerAbstract.payWithPowerUps(reloadInfo.getCost(), reloadInfo.getPowerUpCards());
 
-        //sending message
-        String message = playerAbstract.getName() + (weapons.equalsIgnoreCase("") ? " completed his turn"
-                : " reloaded " + weapons);
-        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), playerAbstract.getClientID());
+        if(controller != null) {
+            //sending message
+            String message = playerAbstract.getName() + (weapons.equalsIgnoreCase("") ? " completed his turn"
+                    : " reloaded " + weapons);
+            controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), playerAbstract.getClientID());
+        }
     }
 }

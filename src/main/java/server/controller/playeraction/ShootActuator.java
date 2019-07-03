@@ -12,7 +12,7 @@ public class ShootActuator {
     public void actuate(ShootInfo shootInfo, Controller controller){
 
         //final frenzy and reload
-        if(shootInfo.getReloadInfo() != null) {
+        if(shootInfo.getReloadInfo() != null && controller != null) {
             ReloadActuator reloadActuator = new ReloadActuator();
             reloadActuator.actuate(shootInfo.getReloadInfo(), shootInfo.getAttacker(), controller);
         }
@@ -38,7 +38,9 @@ public class ShootActuator {
         weaponCard.setReady(false);
         shootInfo.getAttacker().getPlayerBoard().addUnloadedWeapon(weaponCard);
 
-        String message = shootInfo.getAttacker().getName() + " shot with " + shootInfo.getWeapon().getName();
-        controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), shootInfo.getAttacker().getClientID());
+        if(controller != null) {
+            String message = shootInfo.getAttacker().getName() + " shot with " + shootInfo.getWeapon().getName();
+            controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), shootInfo.getAttacker().getClientID());
+        }
     }
 }

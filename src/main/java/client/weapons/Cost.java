@@ -43,8 +43,8 @@ public class Cost implements Serializable {
         int tyellow = 0;
 
         switch(color){
-            case RED: tblue++; break;
-            case BLUE: tred++; break;
+            case RED: tred++; break;
+            case BLUE: tblue++; break;
             case YELLOW: tyellow++; break;
             default: //zero cost
         }

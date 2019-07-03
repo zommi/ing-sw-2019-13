@@ -304,7 +304,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
         return new MapIterator();
     }
 
-    public SquareAbstract getRandomSpawnpoint() {
+    /*public SquareAbstract getRandomSpawnpoint() {
         int i = (int) (Math.random() * 3);
         Color color;
         switch(i){
@@ -315,7 +315,7 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
 
         }
         return getSpawnPoint(color);
-    }
+    }*/
 
     private class MapIterator implements Iterator<SquareAbstract>{
         SquareAbstract currentSquare;

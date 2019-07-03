@@ -69,7 +69,7 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public PowerUpCard getRandomPowerupCard() {
-        return hand.getPowerupHand().get(0);
+        return hand.getPowerupHand().isEmpty() ? null : hand.getPowerupHand().get(0);
     }
 
     @Override
@@ -169,7 +169,6 @@ public class ConcretePlayer extends PlayerAbstract {
 
     @Override
     public void drawPowerupNoLimits() {
-        System.out.println("Giving one powerup to " + name);
         hand.addCard(currentGame.getCurrentGameBoard().getPowerupDeck().draw());
     }
 

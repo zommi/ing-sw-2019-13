@@ -19,6 +19,8 @@ public class PowerupDeck implements Serializable {
      */
     private LinkedList<PowerUpCard> deck;
 
+    private LinkedList<PowerUpCard> staticDeck;
+
     /**
      * stack of discarded cards
      */
@@ -60,20 +62,25 @@ public class PowerupDeck implements Serializable {
 
         this.deck = new LinkedList<>();
         try {
+            int id = 0;
             for (int i = 0; i < arrayOfPowerUps.length; i++) {
-                for (int j = 0; j < arrayOfPowerUps[i].getNumberOfCards(); j++) {
+                for (int j = 0; j < arrayOfPowerUps[i].getNumberOfCards(); j++, id++) {
                     this.deck.push(new PowerUpCard(
                             arrayOfPowerUps[i].getValue(),
                             getPoweupFromIndex(arrayOfPowerUps[i].getIndex()),
                             arrayOfPowerUps[i].getPath(),
                             this,
-                            i
+                            id
                     ));
                 }
             }
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+
+        staticDeck = new LinkedList<>();
+        staticDeck.addAll(deck);
+
         shuffle();
     }
 
@@ -153,5 +160,13 @@ public class PowerupDeck implements Serializable {
             stringToReturn += card.getName() + '(' + card.getColor() + ')' + '\n';
         }
         return stringToReturn;
+    }
+
+    public PowerUpCard getPowerUpCard(int id) {
+        for(PowerUpCard powerUpCard : staticDeck){
+            if(powerUpCard.getCardId() == id)
+                return powerUpCard;
+        }
+        return null;
     }
 }

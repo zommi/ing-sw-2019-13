@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class ShootValidator {
 
     public ShootInfo validate(ShootPack shootPack, Game game, PlayerAbstract attacker){
-        GameBoard gameBoard = game.getCurrentGameBoard();
 
         List<PlayerAbstract> damagedPlayers = new ArrayList<>();
 

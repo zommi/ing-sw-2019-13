@@ -98,10 +98,10 @@ public class ShootInfo implements Serializable, Info {
                     return false;
             }
             else{
-                    if(microInfo.getPlayersList().isEmpty() ||
-                            microInfo.getPlayersList().size() > microEffect.getMaxTargetPlayerSize())
-                        return false;
-                }
+                if(microInfo.getPlayersList().isEmpty() ||
+                        microInfo.getPlayersList().size() > microEffect.getMaxTargetPlayerSize())
+                    return false;
+            }
 
         }
 

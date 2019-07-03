@@ -13,7 +13,8 @@ import java.util.*;
  * 
  */
 public class PlayerBoard implements Serializable {
-    ConcretePlayer player;
+
+    private ConcretePlayer player;
 
     private List<Color> damage;
 
@@ -30,7 +31,6 @@ public class PlayerBoard implements Serializable {
     private int weaponHandSize;
     private int powerUpHandSize;
 
-
     //0 red, 1 blue, 2 yellow
     private int[] ammo = {Constants.NUM_AMMO_START,Constants.NUM_AMMO_START,Constants.NUM_AMMO_START};
 
@@ -39,6 +39,9 @@ public class PlayerBoard implements Serializable {
     private static final int RED_CUBES_INDEX = Color.RED.getIndex();
     private static final int BLUE_CUBES_INDEX = Color.BLUE.getIndex();
     private static final int YELLOW_CUBES_INDEX = Color.YELLOW.getIndex();
+
+
+
 
     public PlayerBoard(ConcretePlayer p) {
         this.player = p;
@@ -240,6 +243,12 @@ public class PlayerBoard implements Serializable {
         this.pointValue = Constants.FINAL_FRENZY_POINT_VALUE;
         this.currentPointValueCursor = 0;
         turned = true;
+    }
+
+    public void setAmmo(int[] ammo) {
+        this.ammo[0] = ammo[0];
+        this.ammo[1] = ammo[1];
+        this.ammo[2] = ammo[2];
     }
 
     public void setCharacterName(String string){

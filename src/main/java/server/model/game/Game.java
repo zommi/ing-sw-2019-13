@@ -35,32 +35,18 @@ public class Game {
 
     private int lastPlayerIndex;
 
-    private WeaponDeck weaponDeck;
 
-    private ListOfWeaponsAnswer weaponList = new ListOfWeaponsAnswer();
 
     public Game(int mapChoice, int skullChoice, Controller controller) {
         this.currentState = GameState.SETUP;
         this.currentGameBoard = new GameBoard(mapChoice,skullChoice);
         this.currentGameMap = currentGameBoard.getMap();
         this.activePlayers = new ArrayList<>();
-        this.weaponDeck = currentGameBoard.getWeaponDeck();
         this.currentPlayerIndex = 0;
         this.lastPlayerIndex = 0;
         this.controller = controller;
         this.turnHandler = new TurnHandler(controller);
         this.currentGameBoard.setGameState(currentState);
-        for(int i = 0; i < weaponDeck.getSize(); i++){
-            WeaponCard temp = weaponDeck.getWeaponFromIndex(i);
-            this.weaponList.add(temp);
-            //System.out.println("added the weapon " +weaponDeck.getWeaponFromIndex(i).getName());
-        }
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < currentGameMap.getSpawnPoints().size(); j++){
-                WeaponCard temp1 = currentGameMap.getSpawnPoints().get(j).getWeaponCards().get(i);
-                this.weaponList.add(temp1);
-            }
-        }
     }
 
     public Controller getController() {
@@ -179,8 +165,4 @@ public class Game {
         return null;
     }
 
-    public boolean isAfterFirstPlayer(PlayerAbstract playerAbstract) {
-        List<PlayerAbstract> playersAfter = activePlayers.subList(0,currentPlayerIndex);
-        return playersAfter.contains(playerAbstract);
-    }
 }

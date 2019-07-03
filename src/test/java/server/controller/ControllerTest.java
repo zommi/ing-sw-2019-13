@@ -37,6 +37,11 @@ class ControllerTest {
         PlayerAbstract pippo = new ConcretePlayer("pippo");
         PlayerAbstract nino = new ConcretePlayer("nino");
 
+        mimmo.setCurrentGame(controller.getCurrentGame());
+        pluto.setCurrentGame(controller.getCurrentGame());
+        pippo.setCurrentGame(controller.getCurrentGame());
+        nino.setCurrentGame(controller.getCurrentGame());
+
         controller.getCurrentGame().addPlayer(mimmo);
         controller.getCurrentGame().addPlayer(pluto);
         controller.getCurrentGame().addPlayer(pippo);

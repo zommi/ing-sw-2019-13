@@ -32,13 +32,9 @@ public class Controller {
 
     private int currentID;
 
-    private int grenadeID;
-
     private Game currentGame;
 
     private GameMap currentMap;
-
-    private boolean clientHasChosen;
 
     private GameManager gameManager;
 
@@ -54,12 +50,8 @@ public class Controller {
         this.currentGame = new Game(mapChoice, initialSkulls, this);
         this.currentMap = this.currentGame.getCurrentGameMap();
         this.gameManager = gameManager;
-        this.currentID = 0;
-        this.grenadeID = -1;
         this.squaresToUpdate = new ArrayList<>();
-        this.clientHasChosen = false;
         this.playersToRespawn = new ArrayList<>();
-        this.finalFrenzy = false;
     }
 
     public WeaponCard drawWeapon(){
@@ -72,10 +64,6 @@ public class Controller {
 
     public int getCurrentID(){
         return this.currentID;
-    }
-
-    public int getGrenadeID(){
-        return this.grenadeID;
     }
 
     public GameManager getGameManager() {

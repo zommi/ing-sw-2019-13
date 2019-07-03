@@ -5,6 +5,7 @@ import constants.Color;
 import constants.Constants;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
+import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.GameState;
 import server.model.map.*;
@@ -164,5 +165,9 @@ public class GameBoard implements Serializable {
 
     public WeaponCard getWeaponCard(String name){
         return weaponDeck.getWeaponCard(name);
+    }
+
+    public PowerUpCard getPowerUpCard(int id){
+        return powerupDeck.getPowerUpCard(id);
     }
 }
