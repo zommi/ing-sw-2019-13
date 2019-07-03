@@ -13,35 +13,6 @@ import java.rmi.RemoteException;
 
 public class StartMenuController implements GuiController {
 
-    /*
-    @FXML
-    private StackPane backStackPane;
-
-    @FXML
-    private ImageView background;
-
-    @FXML
-    private StackPane forwardStackPane;
-
-    @FXML
-    private GridPane mainGridPane;
-
-    @FXML
-    private GridPane buttonGridPane;
-
-    @FXML
-    private GridPane inputGridPane;
-
-    @FXML
-    private
-    */
-
-    @FXML
-    private Button createButton;
-
-    @FXML
-    private Button connectButton;
-
     @FXML
     private ChoiceBox connectionBox;
 
@@ -53,7 +24,6 @@ public class StartMenuController implements GuiController {
 
     private UpdaterGui gui;
 
-
     @FXML
     public void initialize(){
         init();
@@ -63,6 +33,9 @@ public class StartMenuController implements GuiController {
         this.gui.changeStage("map_selection.fxml");
     }
 
+    /**
+     * Method called by UpdaterGui when there is a lobby waiting for players.
+     */
     public void connect(){
         this.gui.changeStage("loading_screen.fxml");
         SetupInfo setupInfo = new SetupInfo();
@@ -70,21 +43,24 @@ public class StartMenuController implements GuiController {
         this.gui.getConnection().send(setupInfo);
     }
 
-    public void setGui(UpdaterGui updaterGui) {
-        this.gui = updaterGui;
-    }
-
-    @Override
-    public void addGui(UpdaterGui updaterGui) {
-        this.gui = updaterGui;
-    }
-
+    /**
+     * Method called to initialize the client with standard values.
+     */
     @Override
     public void init() {
         connectionBox.getItems().addAll("RMI","SOCKET");
         characterBox.getItems().addAll("DESTRUCTOR","VIOLET","BANSHEE","DOZER","SPROG");
     }
 
+    /**
+     * Event activated when the "Start" button is pressed, it connects the client to the
+     * server and based on the answer received it will either open the map
+     * selection menu if it's the first player connecting, or it will open
+     * a loading menu waiting for the game to start
+     * @param mouseEvent The event starting the method
+     * @throws RemoteException Throws remote exception it the client
+     * is not able to connect to the RMI server
+     */
     public void start(MouseEvent mouseEvent) throws RemoteException{
         this.gui.setPlayerName(this.nameField.getText());
         this.gui.setConnection(
@@ -98,13 +74,24 @@ public class StartMenuController implements GuiController {
         this.gui.setCharacter((String)this.characterBox.getValue());
     }
 
+    /**
+     * Null method because there's no need to enable all buttons
+     */
     @Override
-    public void enableAll() {
+    public void enableAll() { }
+
+    /**
+     * Null method because there's no need to disable all buttons
+     */
+    @Override
+    public void disableAll() { }
+
+    public void setGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 
     @Override
-    public void disableAll() {
-
+    public void addGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
-
 }

@@ -9,61 +9,80 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.*;
-import java.util.HashMap;
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
 public class UpdaterGui extends Application implements Updater {
 
-
+    /**
+     * Map used to link Scenes to relative Strings
+     */
     private HashMap<String, Scene> sceneMap = new HashMap<>();
 
+    /**
+     * Map used to link Controllers to their stage's name
+     */
     private HashMap<String, GuiController> controllerMap = new HashMap<>();
 
+    /**
+     * Controller for the shown stage
+     */
     private GuiController currentController;
 
+    /**
+     * Controller for the game stage, it can be used before the game has started
+     */
     private MainGuiController mainGuiController;
 
+    /**
+     * Reference to the scene shown
+     */
     private Scene currentScene;
 
     private Stage stage;
 
     private String stageName;
 
+    /**
+     * Type of connection chosen by the client
+     */
     private Connection connection;
 
+    /**
+     * Name chosen by the client
+     */
     private String playerName;
 
+    /**
+     * Character chosen by the client.
+     */
     private String character;
 
+    /**
+     * Index of the map chosen by the first client.
+     */
     private int mapIndex;
 
     private int initialSkulls;
 
-    private int playerId;
+    private boolean mapInitialized;
 
-    boolean mapInitialized;
-
-    boolean handInitialized;
-
+    /**
+     * Reference to the light model used.
+     */
     private GameModel model;
 
     private ActionParser actionParser;
+
+    private final String GUI = "gui.fxml";
+    private final String LOADING_SCREEN = "loading_screen.fxml";
+    private final String MAP_SELECTION= "map_selection.fxml";
+    private final String START_MENU = "start_menu.fxml";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -77,9 +96,12 @@ public class UpdaterGui extends Application implements Updater {
         launch(args);
     }
 
+    /**
+     * Loads all fxml files used for gui and sets the first stage
+     */
     public void set(){
         try {
-            List<String> fxmls = new ArrayList<String>(Arrays.asList("gui.fxml","loading_screen.fxml","map_selection.fxml","start_menu.fxml"));
+            List<String> fxmls = new ArrayList<String>(Arrays.asList(GUI,LOADING_SCREEN,MAP_SELECTION,START_MENU));
             for(String path: fxmls) {
                 FXMLLoader loader = new FXMLLoader((getClass().getResource(File.separatorChar + "fxml" + File.separatorChar +path)));
                 this.sceneMap.put(path, new Scene(loader.load()));
@@ -88,21 +110,28 @@ public class UpdaterGui extends Application implements Updater {
                 this.currentController = controller;
                 controller.addGui(this);
             }
-            currentScene = sceneMap.get("start_menu.fxml");
-            mainGuiController = (MainGuiController)getControllerFromString("gui.fxml");
-            this.stageName = "stage_menu.fxml";
+            currentScene = sceneMap.get(START_MENU);
+            mainGuiController = (MainGuiController)getControllerFromString(GUI);
+            this.stageName = START_MENU;
             this.actionParser = new ActionParser(this);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * Shows the starting window
+     */
     public void run(){
         stage.setTitle("ADRENALINE.EXE");
         stage.setScene(currentScene);
         stage.show();
     }
 
+    /**
+     * Changes stage shown to the client by using a map linking stages and names
+     * @param scene Name of the stage that needs to be shown
+     */
     public void changeStage(String scene){
         this.stageName = scene;
         currentScene = sceneMap.get(scene);
@@ -112,6 +141,9 @@ public class UpdaterGui extends Application implements Updater {
         stage.show();
     }
 
+    /**
+     * Centers the window in the center of the screen and makes it not resizable
+     */
     private void format(){
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - currentScene.getWidth()) / 2);
@@ -119,12 +151,19 @@ public class UpdaterGui extends Application implements Updater {
         stage.setResizable(false);
     }
 
+    /**
+     * Method that is called whenever there is a change notified on the GameModel,
+     * when this method is called based on the notification received different methods
+     * are called on the controller for the gui. This handles all updates on the view.
+     * @param gameModel The object that is observed
+     * @param object Parameter used to notify what has changed on the observed object
+     */
     @Override
     public void update(Observable gameModel, Object object) {
 
         if(object.equals("setup")){
             Platform.runLater(() -> {
-                StartMenuController controller = (StartMenuController)getControllerFromString("start_menu.fxml");
+                StartMenuController controller = (StartMenuController)getControllerFromString(START_MENU);
                 if(model.getSetupRequestAnswer().isFirstPlayer()){
                     controller.createGame();
                 }else{
@@ -142,8 +181,8 @@ public class UpdaterGui extends Application implements Updater {
             System.out.println("gameboard updated");
             Platform.runLater(() -> {
                 if(!mapInitialized){
-                    getControllerFromString("gui.fxml").init();
-                    changeStage("gui.fxml");
+                    mainGuiController.init();
+                    changeStage(GUI);
                     mapInitialized = true;
                     handleTurn();
                 }
@@ -261,22 +300,6 @@ public class UpdaterGui extends Application implements Updater {
         this.playerName = name;
     }
 
-    public Scene getCurrentScene() {
-        return currentScene;
-    }
-
-    public GuiController getCurrentController(){
-        return currentController;
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
-    }
-
     public String getPlayerName() {
         return playerName;
     }
@@ -291,10 +314,6 @@ public class UpdaterGui extends Application implements Updater {
 
     public Connection getConnection(){
         return this.connection;
-    }
-
-    public String getStageName() {
-        return stageName;
     }
 
     public GameModel getGameModel(){

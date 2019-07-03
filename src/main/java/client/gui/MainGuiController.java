@@ -58,23 +58,13 @@ public class MainGuiController implements GuiController {
     @FXML
     private Button scoreboardButton;
 
-    @FXML
-    private ScrollPane powerupScrollPane;
-
     private String log;
 
-    @FXML
-    private ScrollPane chat;
-
     private GameModel model;
-
-    private int weaponHandSize = 0;
 
     private UpdaterGui gui;
 
     private ActionParser actionParser;
-
-    private int side = 175;
 
     private List<GuiSquare> squares = new ArrayList<>();
 
@@ -83,8 +73,6 @@ public class MainGuiController implements GuiController {
     private List<GuiTile> tiles = new ArrayList<>();
 
     private List<GuiTile> tilesToUpdate = new ArrayList<>();
-
-    private GuiCharacter myCharacter;
 
     private GuiInput input;
 
@@ -152,6 +140,7 @@ public class MainGuiController implements GuiController {
         this.model = gui.getGameModel();
         GameMap map = model.getMap();
         SquareAbstract currentSquare = map.iterator().next();
+        int side = 175;
         int doorSize = side / 3;
         GuiDoorway doorway;
 
@@ -171,7 +160,7 @@ public class MainGuiController implements GuiController {
             if (!currentSquare.isSpawnPoint()){
                 Square squareConverted = (Square) currentSquare;
                 GuiSquare square = new GuiSquare(currentSquare.getRow(),currentSquare.getCol(),
-                        side,side,Paint.valueOf(currentSquare.getColor().getTileColor()));
+                        side, side,Paint.valueOf(currentSquare.getColor().getTileColor()));
                 square.setCursor(Cursor.HAND);
                 if(squareConverted.getAmmoTile() != null)square.setAmmo(new GuiAmmoTile(squareConverted.getAmmoTile().getPath()));
                 squares.add(square);
@@ -183,7 +172,7 @@ public class MainGuiController implements GuiController {
                         currentSquare.getRow()*2);
             } else {
                 GuiSpawnPoint spawnPoint = new GuiSpawnPoint(currentSquare.getRow(),currentSquare.getCol(),
-                        side,side,currentSquare.getColor());
+                        side, side,currentSquare.getColor());
                 spawnPoints.add(spawnPoint);
                 tiles.add(spawnPoint);
                 spawnPoint.setCursor(Cursor.HAND);
@@ -257,8 +246,7 @@ public class MainGuiController implements GuiController {
     }
 
     @FXML
-    void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, GuiWeaponCard cardToDiscard, GuiSpawnPoint sp) {
-        if(weaponHandSize == 3) return;
+    private void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, int cardToDiscardIndex, GuiSpawnPoint sp) {
         GuiWeaponCard cardToAdd = weaponCard;
 
         cardToAdd.setCursor(Cursor.HAND);
@@ -266,10 +254,6 @@ public class MainGuiController implements GuiController {
         cardToAdd.setFitHeight(weaponHand.getHeight());
 
         cardToAdd.setOnMousePressed(null);
-        //this.weaponHand.add(cardToAdd,weaponHandSize,0);
-
-        //null da cambiare con la WeaponCard da scartare
-        //far scegliere anche i powerup con cui pagare eventualmente l'arma
 
         List<PowerUpCard> powerUpCards = this.model.getPlayerHand().getPowerupHand().isEmpty() ?
                 Collections.emptyList() :
@@ -277,10 +261,9 @@ public class MainGuiController implements GuiController {
 
         Info collectInfo = actionParser.createCollectEvent(sp.getRow(),sp.getCol(),
                 weaponCard.getIndex(),
-                weaponHandSize<3 ? null : cardToDiscard.getWeaponCard(),
+                model.getPlayerHand().getWeaponHand().size() == 3 ? model.getPlayerHand().getWeaponHand().get(cardToDiscardIndex) : null,
                 powerUpCards);
         this.gui.getConnection().send(collectInfo);
-        weaponHandSize++;
     }
 
     private void showWeapons(GuiSpawnPoint spawnPoint) {
@@ -298,11 +281,11 @@ public class MainGuiController implements GuiController {
                 weapon.setPreserveRatio(true);
                 alert.close();
                 Platform.runLater(() -> {
-                    if(weaponHandSize < 3){
-                        drawWeapon(e,weapon,null,spawnPoint);
+                    if(model.getPlayerHand().getWeaponHand().size() < 3){
+                        drawWeapon(e,weapon,-1,spawnPoint);
                     }else{
-                        GuiWeaponCard weaponToDiscard = askWeaponToDiscard();
-                        drawWeapon(e,weapon,weaponToDiscard,spawnPoint);
+                        int weaponToDiscardIndex = askWeaponToDiscard();
+                        drawWeapon(e,weapon,weaponToDiscardIndex,spawnPoint);
                     }
                 });
                 spawnPoint.getCardsOnSpawnPoint().remove(weapon.getIndex());
@@ -317,16 +300,18 @@ public class MainGuiController implements GuiController {
         alert.showAndWait();
     }
 
-    private GuiWeaponCard askWeaponToDiscard() {
+    private int askWeaponToDiscard() {
         Stage empytStage = new Stage(StageStyle.TRANSPARENT);
         empytStage.initModality(Modality.NONE);
         logText("Choose a weapon to swap\n");
-        AtomicReference<GuiWeaponCard> result = new AtomicReference<>();
+        AtomicReference<Integer> result = new AtomicReference<>();
         for(Node card : weaponHand.getChildren()){
-            card.setOnMousePressed(e -> {
-                result.set((GuiWeaponCard) card);
-                empytStage.close();
-            });
+            if(card instanceof GuiWeaponCard && GridPane.getColumnIndex(card) == ((GuiWeaponCard)card).getIndex()) {
+                card.setOnMousePressed(e -> {
+                    result.set(((GuiWeaponCard)card).getIndex());
+                    empytStage.close();
+                });
+            }
         }
         empytStage.showAndWait();
         return result.get();
@@ -687,10 +672,6 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText("Do you want to move a square before shooting?");
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
-    }
-
-    public void removeMyCharacter() {
-        this.myCharacter = null;
     }
 
     public List<PowerUpCard> askPowerups() {

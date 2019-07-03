@@ -9,8 +9,6 @@ public class GuiWeaponCard extends ImageView {
 
     private int index;
 
-    private String name;
-
     private WeaponCard card;
 
     public GuiWeaponCard(WeaponCard card, int index, String path){
