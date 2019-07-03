@@ -128,6 +128,9 @@ public class Controller {
         }
     }
 
+    /**
+     * This method actuates the action sent by the client
+     */
     public void makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
@@ -225,7 +228,7 @@ public class Controller {
             sendErrorMessage(clientID);
         }
     }
-
+    
     public void sendErrorMessage(int clientId) {
         gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientId);
     }
