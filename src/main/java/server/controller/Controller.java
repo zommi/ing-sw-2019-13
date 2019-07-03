@@ -54,10 +54,18 @@ public class Controller {
         this.playersToRespawn = new ArrayList<>();
     }
 
+    /**
+     * This method is used to draw a weapon card from the deck
+     * @return a weapon card from the deck
+     */
     public WeaponCard drawWeapon(){
         return this.currentGame.drawWeapon();
     }
 
+    /**
+     * This method is used to draw an ammo from the ammoTileDeck
+     * @return an ammo from the ammoTileDeck
+     */
     public AmmoTile drawAmmo(){
         return this.currentGame.drawAmmo();
     }
@@ -128,6 +136,9 @@ public class Controller {
         }
     }
 
+    /**
+     * This method actuates the action sent by the client
+     */
     public void makeAction(int clientID, Info action){
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
@@ -226,20 +237,34 @@ public class Controller {
         }
     }
 
+    /**
+     * This method is used to send an error message to a client
+     * @param clientId of the client to which the message is sent
+     */
     public void sendErrorMessage(int clientId) {
         gameManager.sendToSpecific(new MessageAnswer("\nAction not valid!\n"), clientId);
     }
 
+    /**
+     * This method is used to send a String error message to a client
+     * @param clientId of the client to which the message is sent
+     */
     public void sendErrorMessage(int clientId, String message){
         gameManager.sendToSpecific(new MessageAnswer(message), clientId);
 
     }
 
+    /**
+     * This method is used to send the notification of the change of the current player to all the clients
+     */
     public void sendChangeCurrentPlayer(){
         ChangeCurrentPlayerAnswer changeAnswer = new ChangeCurrentPlayerAnswer();
         gameManager.sendToEverybody(changeAnswer);
     }
 
+    /**
+     * This method is used to send the gameboard and the specific hand to each client
+     */
     public void sendEverybodyGameboardAndHand() {
         gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
         for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
@@ -278,6 +303,10 @@ public class Controller {
         squaresToUpdate.clear();
     }
 
+    /**
+     * This method is used handle the situation in which someone dies
+     * @return a boolean indicating that the player has to be spawned
+     */
     public boolean handleDeaths() {
         int tokensToAdd;
         boolean needToSpawn = false;
@@ -327,6 +356,7 @@ public class Controller {
         return needToSpawn;
     }
 
+    
     public void startFrenzy() {
         this.currentGame.nextState();
 

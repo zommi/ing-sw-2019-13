@@ -17,6 +17,12 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+
+/**
+ * This is the main class for client command line interface.
+ * The user has to choose a name, the connection method (rmi or socket) and the first one to connect will choose the map of the match (1,2,3,4) and the number of skulls (5,6,7,8).
+ * Then each user chooses a character.
+ */
 public class UpdaterCLI  implements Updater,Runnable{
 
     private Scanner scanner;
@@ -33,6 +39,7 @@ public class UpdaterCLI  implements Updater,Runnable{
         actionParser = new ActionParser(this);
         keepThreadAlive = true;
     }
+
 
     @Override
     public void update(Observable obs, Object object){
@@ -75,6 +82,10 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+    /**
+     * The method is used to ask the client the name, the connection method chosen, the character and, to the first that connects, it asks the map and the skulls
+     * @throws RemoteException
+     */
     @Override
     public void set(){
         //this method has to be run every time a new client starts. every cli needs to be an observer of the gameModel
@@ -405,6 +416,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+    /**
+     * The method is called to ask the client which powerup he wants to discard when he is spawning
+     */
     public void spawn(){
         String read;
 
@@ -451,6 +465,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         gameModel.setToRespawn(false);
     }
 
+    /**
+     * The method is used to ask the input of each action to the client
+     */
     public void askInput(){
         String read;
         int row;
@@ -677,6 +694,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+    /**
+     * The method is used to print on the console all the playerboards of the players
+     */
     private void printPlayerBoards(){
         System.out.println("\n\nYou have " + gameModel.getPlayerHand().getPlayerHand().getPoints() + " points");
         for(GameCharacter gameCharacter : gameModel.getGameBoard().getResult().getActiveCharacters()){
@@ -684,6 +704,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+    /**
+     * The method is used to print on the console the playerboard of the player
+     */
     private void printPlayerBoard(PlayerAbstract playerAbstract){
         System.out.print("\n" + playerAbstract.printOnCli() + "'s playerboard:");
         //prints damage
@@ -717,6 +740,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.print("\nNUMBER OF POWERUPS: " + playerAbstract.getPlayerBoard().getPowerUpHandSize() + "\n\n");
     }
 
+    /**
+     * The method is used to ask the client the input of the coordinates he wants to move to
+     */
     public int askCoordinate(String coordinateType){
         boolean ask = true;
         int coordinate = 0;
@@ -732,6 +758,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         return coordinate;
     }
 
+    /**
+     * The method is used to ask the client the input of the reload action
+     */
     public List<WeaponCard> askWeaponsToReload(){
         List<WeaponCard> returnedList = new ArrayList<>();
         List<WeaponCard> cardsToAsk = new ArrayList<>();
@@ -772,6 +801,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         return returnedList;
     }
 
+    /**
+     * The method prints on the console the hand of the player
+     */
     private void printHand(){
         PlayerHandAnswer playerHand = gameModel.getPlayerHand();
         PlayerBoardAnswer playerBoard = gameModel.getPlayerBoard(connection.getClientID());

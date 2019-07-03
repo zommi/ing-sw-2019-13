@@ -23,6 +23,9 @@ import java.util.Map;
 
      int getCurrentID(int clientID) throws RemoteException;
 
+     /**
+      * This method is used to send the client action to the controller
+      */
      void makeAction(int clientID, Info action) throws RemoteException;
 
      void saveName(ReceiverInterface receiverInterface, Info info) throws RemoteException;

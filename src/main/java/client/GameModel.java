@@ -60,6 +60,10 @@ public class GameModel extends Observable implements Serializable {
         return gameOverAnswer;
     }
 
+    /**
+     * The method is used to see if the player has to be respawned
+     * @return boolean that indicates if the player has to be respawned
+     */
     public boolean isToRespawn() {
         return toRespawn;
     }
@@ -92,6 +96,10 @@ public class GameModel extends Observable implements Serializable {
         toSpawn = decision;
     }
 
+    /**
+     * The method is used to see if the player has been disconnected
+     * @return boolean that indicates if the player has been disconnected
+     */
     public boolean isDisconnected() {
         return disconnected;
     }
@@ -108,6 +116,9 @@ public class GameModel extends Observable implements Serializable {
         return setupRequestAnswer;
     }
 
+    /**
+     * The method is used to save the answers that the connection gets from the server, and notifies the observers
+     */
     public void saveAnswer(ServerAnswer answer) {
 
         //the GameModel will save the answer of the Server
@@ -196,6 +207,10 @@ public class GameModel extends Observable implements Serializable {
         return gameOver;
     }
 
+    /**
+     * The method is used to see if the player has to be spawned
+     * @return boolean that indicates if the player has to be spawned
+     */
     public boolean isToSpawn(){
         return this.toSpawn;
     }
