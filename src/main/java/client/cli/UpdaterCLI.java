@@ -83,7 +83,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to ask the client the name, the connection method chosen, the character and, to the first that connects, it asks the map and the skulls.
+     * The method is used to ask the client the name, the connection method chosen, the character and, to the first that connects, it asks the map and the skulls
      * @throws RemoteException
      */
     @Override
@@ -417,7 +417,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is called to ask the client which powerup he wants to discard when he is spawning.
+     * The method is called to ask the client which powerup he wants to discard when he is spawning
      */
     public void spawn(){
         String read;
@@ -466,7 +466,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to ask the input of each action to the client.
+     * The method is used to ask the input of each action to the client
      */
     public void askInput(){
         String read;
@@ -695,7 +695,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to print on the console all the playerboards of the players.
+     * The method is used to print on the console all the playerboards of the players
      */
     private void printPlayerBoards(){
         System.out.println("\n\nYou have " + gameModel.getPlayerHand().getPlayerHand().getPoints() + " points");
@@ -705,7 +705,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to print on the console the playerboard of the player.
+     * The method is used to print on the console the playerboard of the player
      */
     private void printPlayerBoard(PlayerAbstract playerAbstract){
         System.out.print("\n" + playerAbstract.printOnCli() + "'s playerboard:");
@@ -741,7 +741,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to ask the client the input of the coordinates he wants to move to.
+     * The method is used to ask the client the input of the coordinates he wants to move to
      */
     public int askCoordinate(String coordinateType){
         boolean ask = true;
@@ -759,7 +759,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method is used to ask the client the input of the reload action.
+     * The method is used to ask the client the input of the reload action
      */
     public List<WeaponCard> askWeaponsToReload(){
         List<WeaponCard> returnedList = new ArrayList<>();
@@ -802,7 +802,7 @@ public class UpdaterCLI  implements Updater,Runnable{
     }
 
     /**
-     * The method prints on the console the hand of the player.
+     * The method prints on the console the hand of the player
      */
     private void printHand(){
         PlayerHandAnswer playerHand = gameModel.getPlayerHand();

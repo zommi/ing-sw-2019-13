@@ -7,8 +7,16 @@ import java.rmi.RemoteException;
 
      int getCurrentID();
 
+     /**
+      * This method asks to the server the name of the current character
+      * @return the name of the current character
+      */
      String getCurrentCharacterName();
 
+     /**
+      * This method asks to the server if the game has started
+      * @return an int that indicates if the game has started
+      */
      int getStartGame();
 
      int getClientID();
