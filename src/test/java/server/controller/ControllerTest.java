@@ -75,9 +75,10 @@ class ControllerTest {
     }
 
     @Test
-    public void makeActionTest() throws  RemoteException {
+    public void makeActionTest() {
         Controller controller = new Controller(1, 5, new GameManager(new Server()));
         PlayerAbstract player = new ConcretePlayer("Alessia");
+        player.setCurrentGame(controller.getCurrentGame());
         controller.getCurrentGame().addPlayer(player);
         controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.END_TURN);
         controller.getCurrentGame().getTurnHandler().startNextPlayerTimer();

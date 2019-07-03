@@ -1,6 +1,7 @@
 package server.model.player;
 
 import constants.Color;
+import constants.Constants;
 import exceptions.InvalidMoveException;
 import org.junit.jupiter.api.Test;
 import server.model.cards.AmmoTile;
@@ -8,6 +9,7 @@ import server.model.gameboard.GameBoard;
 import server.model.items.AmmoCube;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +23,7 @@ class PlayerBoardTest {
         testPlayer.setPlayerCharacter(Figure.BANSHEE);
 
         PlayerBoard testPlayerBoard = testPlayer.getPlayerBoard();
+        testPlayerBoard.setAmmo(new int[]{1, 1,1});
 
         List<AmmoCube> testList = new ArrayList<>();
         testList.add(new AmmoCube(Color.RED));

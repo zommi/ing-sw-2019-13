@@ -31,8 +31,8 @@ public class Constants {
 
     public static final int NUMBER_OF_WEAPON_PER_SPAWN_POINT = 3;
 
-    public static final int BETTERCOLLECTDAMAGE = 2;
-    public static final int BETTERSHOOTDAMAGE = 5;
+    public static final int ADR_COLLECT_THRESHOLD = 2;
+    public static final int ADR_SHOOT_THRESHOLD = 5;
 
     public static final int MAX_MOVES_FRENETIC_COLLECT = 3;
     public static final int MAX_MOVES_ADRENALINIC_COLLECT = 2;
@@ -61,7 +61,7 @@ public class Constants {
 
     //player rules
     public static final int MAX_HP = 12;                //default 12
-    public static final int DEATH_THRESHOLD = 0;       //default 10
+    public static final int DEATH_THRESHOLD = 10;       //default 10
 
     public static final int MAX_MARKS = 3;              //default 3
 

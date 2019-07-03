@@ -29,6 +29,9 @@ public class ShootActuator {
             shootInfo.getAttacker().getHand().removePowerUpCard(scopeInfo.getTargetingScope());
         }
 
+        if(shootInfo.getSquare() != null)
+            shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
+
         //pay
         shootInfo.getAttacker().payWithPowerUps(shootInfo.getTotalCost(), shootInfo.getPowerUpCards());
 
@@ -41,6 +44,11 @@ public class ShootActuator {
         if(controller != null) {
             String message = shootInfo.getAttacker().getName() + " shot with " + shootInfo.getWeapon().getName();
             controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message), shootInfo.getAttacker().getClientID());
+
+            if(shootInfo.getSquare() != null){
+                String message1 = shootInfo.getAttacker().getName() + " moved while shooting, he's sooo smart";
+                controller.getGameManager().sendEverybodyExcept(new MessageAnswer(message1), shootInfo.getAttacker().getClientID());
+            }
         }
     }
 }

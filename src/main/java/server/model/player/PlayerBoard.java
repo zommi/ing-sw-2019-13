@@ -4,6 +4,7 @@ import server.model.cards.AmmoTile;
 import constants.*;
 import exceptions.*;
 import server.model.cards.WeaponCard;
+import server.model.game.GameState;
 import server.model.items.*;
 
 import java.io.Serializable;
@@ -135,10 +136,12 @@ public class PlayerBoard implements Serializable {
         for(int i = 0; i < damageToAdd && i < Constants.MAX_HP;i++){
             this.damage.add(color);
         }
-        if((damage.size() > Constants.BETTERCOLLECTDAMAGE)&&(damage.size() <= Constants.BETTERSHOOTDAMAGE)){
+        if((damage.size() > Constants.ADR_COLLECT_THRESHOLD && damage.size() <= Constants.ADR_SHOOT_THRESHOLD &&
+                player.getCurrentGame().getCurrentState() != GameState.FINAL_FRENZY)){
             player.setState(PlayerState.ADRENALINIC_COLLECT);
         }
-        if(damage.size() > Constants.BETTERSHOOTDAMAGE && damage.size() <= Constants.DEATH_THRESHOLD){
+        else if(damage.size() > Constants.ADR_SHOOT_THRESHOLD && damage.size() <= Constants.DEATH_THRESHOLD &&
+                player.getCurrentGame().getCurrentState() != GameState.FINAL_FRENZY){
             player.setState(PlayerState.ADRENALINIC_SHOOT);
         }
         if(damage.size() > Constants.DEATH_THRESHOLD){
