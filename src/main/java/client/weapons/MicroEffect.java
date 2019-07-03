@@ -63,6 +63,14 @@ public class MicroEffect implements Serializable {
         return number;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public int getMacroNumber() {
         return macroNumber;
     }

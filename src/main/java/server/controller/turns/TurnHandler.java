@@ -218,13 +218,13 @@ public class TurnHandler {
 
     private void startSpawnTimer(){
         currentTimerTask = new SpawnTimer(controller, timerId);
-        timer.schedule(currentTimerTask, Constants.SPAWN_TIMEOUT_MSEC);
+        timer.schedule(currentTimerTask, Constants.ACTION_TIMEOUT_MSEC);
         timerId++;
     }
 
     private void startTagbackTimer() {
         currentTimerTask = new TagbackTimer(controller, timerId);
-        timer.schedule(currentTimerTask, Constants.TAGBACK_TIMEOUT_MSEC);
+        timer.schedule(currentTimerTask, Constants.ACTION_TIMEOUT_MSEC);
         timerId++;
     }
 

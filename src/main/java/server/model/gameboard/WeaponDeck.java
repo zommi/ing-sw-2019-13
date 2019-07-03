@@ -37,7 +37,6 @@ public class WeaponDeck implements Serializable {
      */
     private void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        //File file = new File(Constants.PATH_TO_WEAPONS_JSON);
         InputStream weaponStream = getClass().getResourceAsStream(Constants.PATH_TO_WEAPONS_JSON);
         BufferedReader reader = new BufferedReader(new InputStreamReader(weaponStream));
 
@@ -59,6 +58,8 @@ public class WeaponDeck implements Serializable {
                 macroEffect.setNumber(macro);
                 int micro = 0;
                 for(MicroEffect microEffect : macroEffect.getMicroEffects()){
+                    if(microEffect.getDescription() == null)
+                        microEffect.setDescription("");
                     microEffect.setNumber(micro);
                     microEffect.setMacroNumber(macro);
                     micro++;

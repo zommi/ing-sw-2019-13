@@ -165,7 +165,7 @@ public class CliInput extends InputAbstract{
             while(ask) {
                 for(int i = 0; i<rooms.size(); i++){
                     System.out.println(rooms.get(i).getColor().getAnsi() + rooms.get(i).getColor().name()
-                            + Constants.ANSI_RESET + " (" + i + ")");
+                            + Constants.ANSI_RESET + " (" + (i+1) + ")");
                 }
                 if(max != 1 && counter != max)  //maybe maxTarget check is useless
                     System.out.println("Choose a room [or say 'stop']:\n");
@@ -178,7 +178,7 @@ public class CliInput extends InputAbstract{
                 }
                 else{
                     try{
-                        number = Integer.parseInt(choice);
+                        number = Integer.parseInt(choice) - 1;
                         if(number < rooms.size()){
                             list.add(rooms.get(number).getColor().name());
                             System.out.println("You chose " + number + ": " + rooms.get(number).getColor().name());

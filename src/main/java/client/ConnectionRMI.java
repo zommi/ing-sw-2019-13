@@ -4,15 +4,12 @@ import constants.Constants;
 import server.GameProxyInterface;
 import view.ServerAnswer;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class ConnectionRMI extends UnicastRemoteObject implements Serializable, Connection, ReceiverInterface {
@@ -22,38 +19,16 @@ public class ConnectionRMI extends UnicastRemoteObject implements Serializable, 
     private boolean error = false;
     private GameModel gameModel;
     private int clientID;
-    //private static final String SERVER_ADDRESS  = "192.168.43.66";
-    private static final String SERVER_ADDRESS  = "localhost";
     private String serverAddress;
-    private static final String REGISTRATION_ROOM_NAME = "gameproxy";
     private String registrationRoom;
-    private static final int REGISTRATION_PORT = 1099;
     private int registrationPort;
 
     public ConnectionRMI() throws RemoteException{
         this.clientID = -1;
         this.gameModel = new GameModel();
-        getProperties();
-        System.setProperty("rmi.server.hostname","192.168.1.5");
-    }
-
-    private void getProperties() {
-        Properties properties = new Properties();
-        try {
-
-            FileInputStream configFile = new FileInputStream(Constants.PATH_TO_CONFIG);
-            properties.load(configFile);
-            configFile.close();
-
-            serverAddress = properties.getProperty("app.serverIp");
-            registrationPort = Integer.valueOf(properties.getProperty("app.registryPort"));
-            registrationRoom = properties.getProperty("app.registrationRoomName");
-        } catch (IOException e) {
-            System.out.println("File not found, given default values");
-            serverAddress = SERVER_ADDRESS;
-            registrationPort = REGISTRATION_PORT;
-            registrationRoom = REGISTRATION_ROOM_NAME;
-        }
+        serverAddress = Constants.SERVER_ADDRESS;
+        registrationPort = Constants.RMI_PORT;
+        registrationRoom = Constants.REGISTRATION_ROOM_NAME;
     }
 
     public String getCurrentCharacterName(){
