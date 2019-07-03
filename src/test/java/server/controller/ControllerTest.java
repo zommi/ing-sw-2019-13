@@ -41,7 +41,6 @@ class ControllerTest {
         pluto.setCurrentGame(controller.getCurrentGame());
         pippo.setCurrentGame(controller.getCurrentGame());
         nino.setCurrentGame(controller.getCurrentGame());
-
         controller.getCurrentGame().addPlayer(mimmo);
         controller.getCurrentGame().addPlayer(pluto);
         controller.getCurrentGame().addPlayer(pippo);
@@ -75,7 +74,7 @@ class ControllerTest {
     }
 
     @Test
-    public void makeActionTest() {
+    public void makeActionTest(){
         Controller controller = new Controller(1, 5, new GameManager(new Server()));
         PlayerAbstract player = new ConcretePlayer("Alessia");
         player.setCurrentGame(controller.getCurrentGame());
