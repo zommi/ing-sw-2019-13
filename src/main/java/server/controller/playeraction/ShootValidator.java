@@ -70,7 +70,6 @@ public class ShootValidator {
 
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
-            gameBoard.getMap().setValid(false);
             for(PlayerAbstract playerAbstract : game.getActivePlayers()){
                 if(playerAbstract.getPosition() != null)
                     playerAbstract.getGameCharacter().setOldPosition();
@@ -90,7 +89,6 @@ public class ShootValidator {
                     return null;
                 }
                 else{
-                    gameBoard.getMap().setValid(false);
                     shootInfo.getAttacker().getGameCharacter().move(shootInfo.getSquare());
                 }
             }
@@ -287,7 +285,6 @@ public class ShootValidator {
                     if(playerAbstract.getPosition() != null)
                         playerAbstract.getGameCharacter().move(playerAbstract.getGameCharacter().getOldPosition());
                 }
-                gameBoard.getMap().setValid(true);
             }
 
             if(shootInfo.getAttacker().getPlayerState() == PlayerState.ADRENALINIC_SHOOT){

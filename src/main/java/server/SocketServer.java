@@ -22,8 +22,9 @@ public class SocketServer implements Runnable{
     @Override
     public void run(){
         try {
-            System.out.println("SOCKET SERVER RUNNING");
             ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("SOCKET SERVER RUNNING");
+
             while(true){    //NOSONAR
                 SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
                 executorService.submit(socketClientHandler);

@@ -31,7 +31,7 @@ public class Server {
     private Map<String, Integer> nameToId;
 
 
-    public Server() throws RemoteException{
+    public Server(){
 
         idToClient = new HashMap<>();
         nameToId = new HashMap<>();
@@ -40,9 +40,13 @@ public class Server {
         currentGameManager = new GameManager(this);
         gameManagerList.add(currentGameManager);
 
+
+        System.setProperty("rmi.server.hostname","192.168.1.5");
+    }
+
+    public void startSocketRmi() throws RemoteException{
         socketServer = new SocketServer(1337, this);
         serverRMI = new ServerRMI(this);
-        System.setProperty("rmi.server.hostname","192.168.1.5");
     }
 
     public Map<String, Integer> getNameToId() {
@@ -254,6 +258,7 @@ public class Server {
     public static void main(String[] args) throws RemoteException {
 
         Server server = new Server();
+        server.startSocketRmi();
 
         ExecutorService executor = Executors.newCachedThreadPool();
 

@@ -11,10 +11,10 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 public abstract class InputAbstract {
-    List<String> playersNames;
-    List<String> roomsNames;
 
     GameModel gameModel;
+
+
 
     public abstract ReloadInfo askReload(WeaponCard weaponCard);
 
@@ -29,22 +29,6 @@ public abstract class InputAbstract {
     public abstract List<String> askPlayers(int maxTargetPlayerSize);
 
     public abstract List<String> askRooms(int maxTargetRoomSize);
-
-    public List<String> getRoomsNames() {
-        return roomsNames;
-    }
-
-    public void setRoomsNames(List<String> roomsNames) {
-        this.roomsNames = roomsNames;
-    }
-
-    public void setPlayersNames(List<String> playersNames){
-        this.playersNames = playersNames;
-    }
-
-    public List<String> getPlayersNames() {
-        return playersNames;
-    }
 
     public abstract boolean getMoveChoice();
 

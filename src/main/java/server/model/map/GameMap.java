@@ -24,7 +24,6 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
     private List<ArrayList<SquareAbstract>> squares = new ArrayList<>();
     private List<Room> rooms = new ArrayList<>();
     private List<Color> roomsToBuild = new ArrayList<>();
-    private boolean valid;
     //add to copy
     private int numRow;
     private int numCol;
@@ -43,7 +42,6 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
     public GameMap(int mapNum) {
         numRow = 0;
         numCol = 0;
-        valid = true;
         String path;
         switch(mapNum) {
 
@@ -299,14 +297,6 @@ public class GameMap implements Serializable, Iterable<SquareAbstract> {
 
     public List<ArrayList<SquareAbstract>> getSquares() {
         return squares;
-    }
-
-    public boolean isValid(){
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
     }
 
     @Override
