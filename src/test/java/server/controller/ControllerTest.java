@@ -99,23 +99,18 @@ class ControllerTest {
         assertEquals(true, player1.getHand().getWeaponHand().get(0).isReady());
 
 
-        PlayerAbstract player2 = new ConcretePlayer("Matteo");
-        player2.setPlayerCharacter(Figure.DESTRUCTOR);
+        PlayerAbstract player2 = new ConcretePlayer("Tommaso");
+        player2.setPlayerCharacter(Figure.SPROG);
         game.getActivePlayers().add(player2);
-        controller.getCurrentGame().addPlayer(player2);
         player2.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
-        PlayerAbstract player3 = new ConcretePlayer("Tommaso");
-        player3.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player3);
-        player3.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
-        controller.getCurrentGame().addPlayer(player3);
+        controller.getCurrentGame().addPlayer(player2);
         SquareInfo squareInfo = new SquareInfo(0, 1);
         controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
         Info actionPowerup = new PowerUpPack(gameBoard.getPowerUpCard(8), squareInfo, "Tommaso");
         System.out.println("" +gameBoard.getPowerUpCard(8).getName());
         controller.makeAction(0, actionPowerup);
-        assertEquals(squareInfo.getCol(), player3.getPosition().getCol());
-        assertEquals(squareInfo.getRow(), player3.getPosition().getRow());
+        assertEquals(squareInfo.getCol(), player2.getPosition().getCol());
+        assertEquals(squareInfo.getRow(), player2.getPosition().getRow());
 
     }
 
