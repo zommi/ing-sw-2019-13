@@ -115,7 +115,7 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     public String getCharacterName(){
-         return this.gameCharacter.getFigure().fromFigure();
+         return this.gameCharacter.getFigure().toString().toUpperCase();
     }
 
     public void setPlayerCharacter(Figure figure){

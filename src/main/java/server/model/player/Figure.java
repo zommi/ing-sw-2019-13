@@ -19,21 +19,6 @@ public enum Figure {
         this.owner = null;
     }
 
-
-
-    public String fromFigure(){
-        if(this.equals(DESTRUCTOR))
-            return "DESTRUCTOR";
-        else if(this.equals(BANSHEE))
-            return "BANSHEE";
-        else if(this.equals(DOZER))
-            return "DOZER";
-        else if(this.equals(VIOLET))
-            return "VIOLET";
-        else //(this.equals(SPROG))
-            return "SPROG";
-    }
-
     public static Figure fromString(String name){
         if(name.toUpperCase().equals("DESTRUCTOR"))
             return DESTRUCTOR;
