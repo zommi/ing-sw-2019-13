@@ -356,7 +356,6 @@ public class Controller {
         return needToSpawn;
     }
 
-    
     public void startFrenzy() {
         this.currentGame.nextState();
 
