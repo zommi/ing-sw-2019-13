@@ -1,9 +1,7 @@
 package server;
 
-import java.net.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,7 +11,7 @@ public class SocketServer implements Runnable{
     private Server server;
 
 
-    public SocketServer(int port, Server server){
+    SocketServer(int port, Server server){
         this.port = port;
         this.server = server;
         executorService = Executors.newCachedThreadPool();
@@ -21,17 +19,28 @@ public class SocketServer implements Runnable{
 
     @Override
     public void run(){
+        ServerSocket serverSocket;
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
             System.out.println("SOCKET SERVER RUNNING");
 
-            while(true){    //NOSONAR
-                SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
-                executorService.submit(socketClientHandler);
-            }
+            startAcceptingConnections(serverSocket);
+
         } catch (IOException e) {
-            System.out.println("ERROR DURING SOCKET INITIALIZATION");
+            System.out.println("Error during ServerSocket initialization, closing program...");
             e.printStackTrace();
+            System.exit(0);
         }
+    }
+
+    private void startAcceptingConnections(ServerSocket serverSocket){
+            while (true) {    //NOSONAR
+                try {
+                    SocketClientHandler socketClientHandler = new SocketClientHandler(serverSocket.accept(), server);
+                    executorService.submit(socketClientHandler);
+                }catch(IOException e){
+                    //
+                }
+            }
     }
 }

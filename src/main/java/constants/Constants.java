@@ -16,8 +16,6 @@ public class Constants {
 
     public static final String ANSI_RESET = "\u001B[0m";
 
-    //public static final String REGISTRATION_ROOM_NAME = "gameproxy";
-
 
 
     //game rules

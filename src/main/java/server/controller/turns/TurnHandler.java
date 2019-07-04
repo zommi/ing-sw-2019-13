@@ -60,7 +60,7 @@ public class TurnHandler {
             }else if(actionValid && action instanceof ShootAction){
                 //checking if someone of the damaged player has a tagback grenade
                 tagbackPlayers.clear();
-                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()){
+                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getPlayers()){
                     if(playerAbstract.canPlayTagback(controller.getCurrentGame().getCurrentPlayer())){
                         tagbackPlayers.add(playerAbstract);
                     }
@@ -149,7 +149,7 @@ public class TurnHandler {
 
                 //checking if someone died
                 boolean someoneDied = false;
-                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getActivePlayers()) {
+                for(PlayerAbstract playerAbstract : controller.getCurrentGame().getPlayers()) {
                     if (playerAbstract.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD) {
                         someoneDied = true;
                     }

@@ -5,7 +5,6 @@ import server.GameManager;
 import server.Server;
 import server.controller.Controller;
 import server.model.cards.PowerUpCard;
-import server.model.game.Game;
 import server.model.gameboard.*;
 
 import java.rmi.RemoteException;
@@ -29,8 +28,8 @@ class PlayerHandTest {
     public void infiniteDraw() throws RemoteException {
         Controller controller = new Controller(1,5,new GameManager(new Server()));
         ConcretePlayer p = new ConcretePlayer("pippo");
-        controller.getCurrentGame().addPlayer(p);
-        controller.getGameManager().addPlayer(p);
+        controller.getCurrentGame().addPlayerToGame(p);
+        controller.getGameManager().addPlayerBeforeMatchStarts(p);
         p.setCurrentGame(controller.getCurrentGame());
         PowerupDeck deck = controller.getCurrentGame().getCurrentGameBoard().getPowerupDeck();
         int largenum = deck.getDeck().size() * 100;

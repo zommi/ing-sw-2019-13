@@ -81,7 +81,7 @@ public class ShootValidator {
 
         //saves players' old positions and sets map to not valid if weapon is special
         if(shootInfo.getWeapon().isSpecial()){
-            for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+            for(PlayerAbstract playerAbstract : game.getPlayers()){
                 if(playerAbstract.getPosition() != null)
                     playerAbstract.getGameCharacter().setOldPosition();
             }
@@ -230,7 +230,7 @@ public class ShootValidator {
                     if(weaponMicro.isGeneratePlayerFlag()){
                         //adds all active players to playerList and then removes those who don't meet
                         //  policy requirements
-                        for(PlayerAbstract playerAbstract : game.getActivePlayers()){
+                        for(PlayerAbstract playerAbstract : game.getPlayers()){
                             if(playerAbstract.getPosition() != null)
                                 microInfo.getPlayersList().add(playerAbstract);
                         }
@@ -292,7 +292,7 @@ public class ShootValidator {
 
         } finally {
             if (shootInfo.getWeapon().isSpecial()) {
-                for (PlayerAbstract playerAbstract : game.getActivePlayers()) {
+                for (PlayerAbstract playerAbstract : game.getPlayers()) {
                     if(playerAbstract.getPosition() != null)
                         playerAbstract.getGameCharacter().move(playerAbstract.getGameCharacter().getOldPosition());
                 }

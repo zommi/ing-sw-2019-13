@@ -61,10 +61,10 @@ public class GameProxy implements GameProxyInterface, Serializable {
                                 System.out.println("Remote exception after ping");
                                 keepThreadAlive = false;
                                 Client client = serverRMI.getServer().getClientFromId(clientID);
-                                if(client.getGameManager().isGameOver())
+                                if(client.getGameManager().getGameStarted() == 0 && client.getGameManager().isGameOver())
                                     serverRMI.getServer().removeClient(clientID);
                                 else
-                                    client.disconnect();
+                                    client.disconnectClient();
 
                             }catch(InterruptedException e1){
                                 //
@@ -93,7 +93,7 @@ public class GameProxy implements GameProxyInterface, Serializable {
     @Override
     public void reconnect(int clientId) {
         Client client = serverRMI.getServer().getClientFromId(clientId);
-        client.getGameManager().reconnect(client.getPlayer());
+        client.getGameManager().setActive(client.getPlayer());
     }
 
     @Override

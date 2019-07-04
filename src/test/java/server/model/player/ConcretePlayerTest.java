@@ -2,7 +2,6 @@ package server.model.player;
 
 import constants.Color;
 import constants.Constants;
-import constants.Direction;
 import server.GameManager;
 import server.Server;
 import server.controller.Controller;
@@ -47,7 +46,7 @@ class ConcretePlayerTest {
         Controller controller = new Controller(1,8,new GameManager(new Server()));
         PlayerAbstract player1 = new ConcretePlayer("Pippo");
         player1.setCurrentGame(controller.getCurrentGame());
-        controller.getCurrentGame().addPlayer(player1);
+        controller.getCurrentGame().addPlayerToGame(player1);
         player1.setPlayerCharacter(Figure.DESTRUCTOR);
         player1.spawn(controller.getCurrentGame().getCurrentGameMap().getSpawnPoint(Color.BLUE));
         player1.collect(controller.getCurrentGame().getCurrentGameMap().getSpawnPoint(Color.BLUE),1);
@@ -60,7 +59,7 @@ class ConcretePlayerTest {
         Controller controller = new Controller(1,8,new GameManager(new Server()));
         PlayerAbstract player1 = new ConcretePlayer("Pippo");
         player1.setCurrentGame(controller.getCurrentGame());
-        controller.getCurrentGame().addPlayer(player1);
+        controller.getCurrentGame().addPlayerToGame(player1);
         player1.setPlayerCharacter(Figure.DESTRUCTOR);
         for (int i = 0 ; i < Constants.MAX_POWERUP_HAND; i++)player1.drawPowerup();
         assertEquals(3, player1.getHand().getPowerupHand().size());

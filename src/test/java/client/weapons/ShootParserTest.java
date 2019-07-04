@@ -57,7 +57,7 @@ class ShootParserTest {
         playersNamesList.add(player4.getName());
         playersNamesList.add(player5.getName());
 
-        for(PlayerAbstract playerAbstract : game.getActivePlayers())
+        for(PlayerAbstract playerAbstract : game.getPlayers())
             System.out.println(playerAbstract.getName());
 
         *//*gameBoard.addGameCharacter(player1.getGameCharacter());

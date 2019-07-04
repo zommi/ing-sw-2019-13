@@ -2,7 +2,6 @@ package server;
 
 import client.ReceiverInterface;
 import client.SetupInfo;
-import server.model.game.GameState;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
@@ -16,11 +15,26 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Starts socket and rmi server.
+ * Handles all the clients that connect to the server.
+ * @author Matteo Pacciani
+ */
 public class Server {
 
+    /**
+     * the client id that will be assigned to the next client that connects
+     */
     private int nextClientId;
 
+    /**
+     * Contains the registry and the remote object for rmi connection
+     */
     private ServerRMI serverRMI;
+
+    /**
+     *
+     */
     private SocketServer socketServer;
 
     private List<GameManager> gameManagerList;
@@ -29,6 +43,7 @@ public class Server {
     private Map<Integer, Client> idToClient;
 
     private Map<String, Integer> nameToId;
+
 
 
     public Server(){
@@ -41,7 +56,7 @@ public class Server {
         gameManagerList.add(currentGameManager);
     }
 
-    public void startSocketRmi() throws RemoteException{
+    private void startSocketRmi() throws RemoteException{
         socketServer = new SocketServer(1337, this);
         serverRMI = new ServerRMI(this);
     }
@@ -82,16 +97,17 @@ public class Server {
 
 
         //removing player from the active players list
-        if(client.isPlayerSetupComplete()) {
-            client.getGameManager().removePlayer(name);
+        //if player setup is not complete, the player has not been added to the activePlayers list yet
+        if(gameManager.getGameStarted() == 1 && client.isPlayerSetupComplete()) {
+            client.getGameManager().removePlayerFromActivePlayers(name);
         }
 
         //removing this client from database on the server
-        nameToId.remove(client.getName());
+        nameToId.remove(name);
         idToClient.remove(clientId);
 
         //removing ref to the gameManager
-        if(gameManager.isGameOver() && gameManager.getController().getCurrentGame().getActivePlayers().isEmpty()) {
+        if(gameManager.isGameOver() && gameManager.getActivePlayers().isEmpty()) {
             gameManagerList.remove(gameManager);
             System.out.println("GameManager removed");
         }
@@ -149,14 +165,16 @@ public class Server {
                 client.setReceiverInterface(receiverInterface);
 
             //setting player connected so that his turn will be played
-            client.getPlayer().setConnected(true);
+            if(client.getGameManager().getGameStarted() == 1){
+                client.getGameManager().setActive(client.getPlayer());
+            }
 
             //informing other players
             System.out.println(client.getName() + " fixed his wifi connection! Yeeehaw");
-            if(client.getGameManager().getGameState() != GameState.SETUP)
+            if(client.getGameManager().getGameStarted() == 1) {
                 client.getGameManager().sendEverybodyExcept(new MessageAnswer(
-                client.getName() + " fixed his wifi connection! Yeeehaw"), clientID);
-
+                        client.getName() + " fixed his wifi connection! Yeeehaw"), clientID);
+            }
 
             //empty setupAnswer
             setupRequestAnswer.setClientID(clientID);
@@ -193,6 +211,13 @@ public class Server {
 
         //else if setup is not complete
 
+        if(gameManager.getGameStarted() == 1){
+            setupConfirmAnswer.setServerOffline(true);
+            client.send(setupConfirmAnswer);
+            //removeClient(clientId);
+            return;
+        }
+
         if(client.isFirstPlayer() && !gameManager.isMapSkullsSet()) {
             //the gamemanager will manage illegal values
             gameManager.setInitialSkulls(setupInfo.getInitialSkulls());
@@ -214,13 +239,15 @@ public class Server {
         }
 
         //adding the player to the game
-        boolean added = gameManager.addPlayer(concretePlayer);
+        boolean added = gameManager.addPlayerBeforeMatchStarts(concretePlayer);
 
         //if max player is reached waits for a new gamemanager to be created
         while(!added){
             try{
                 Thread.sleep(2000);
-                added = currentGameManager.addPlayer(concretePlayer);   //in the meantime, a new GameManager should have been created
+                added = currentGameManager.addPlayerBeforeMatchStarts(concretePlayer);
+                //in the meantime, a new GameManager should have been created
+                client.setGameManager(currentGameManager);
             }catch(InterruptedException e){
                 //do nothing
             }
