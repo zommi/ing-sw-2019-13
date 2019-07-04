@@ -110,15 +110,24 @@ public class Client {
         if(gameManager.isGameOver())
             return;
 
-        try {
-            if (socketClientHandler != null)
-                socketClientHandler.publishSocketMessage(serverAnswer);
-            else if(receiverInterface != null)
-                receiverInterface.publishMessage(serverAnswer);
+        if (socketClientHandler != null)
+            socketClientHandler.publishSocketMessage(serverAnswer);
+        if (socketClientHandler != null)
+            socketClientHandler.publishSocketMessage(serverAnswer);
+        else if(receiverInterface != null) {
 
-        }catch(RemoteException e){
-            disconnectClient();
+            new Thread(){
+
+                @Override
+                public void run() {
+                    try {
+                        receiverInterface.publishMessage(serverAnswer);
+                    }catch(RemoteException e){
+                        disconnectClient();
+                    }
+
+                }
+            }.start();
         }
-
     }
 }

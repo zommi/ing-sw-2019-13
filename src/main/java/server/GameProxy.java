@@ -67,10 +67,9 @@ public class GameProxy implements GameProxyInterface, Serializable {
                                 if(client.getGameManager().getGameStarted() == 1 && client.getGameManager().isGameOver())
                                     serverRMI.getServer().removeClient(clientID);
                                 else if(client.getGameManager().getGameStarted() == 1){
-                                    serverRMI.getServer().removeClient(clientID);
-                                }else{
                                     client.disconnectClient();
-
+                                }else{
+                                    serverRMI.getServer().removeClient(clientID);
                                 }
                             }catch(InterruptedException e1){
                                 //
