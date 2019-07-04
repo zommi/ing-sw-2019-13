@@ -79,7 +79,7 @@ public class Controller {
     }
 
     public String getCurrentCharacterName(){
-        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+        for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
             if(playerAbstract.getClientID() == currentID)
                 //return playerAbstract.getName() + ", " + playerAbstract.getCharacterName();
                 return playerAbstract.getCharacterName();
@@ -147,7 +147,7 @@ public class Controller {
                 "\nWe are in the game state: " +currentGame.getCurrentState());
         System.out.println("We are in the action number: " +turnHandler.getCurrentTurnPhase());
 
-        if (!currentPlayer.isConnected() ||
+        if (!currentPlayer.isActive() ||
                 currentID != clientID ||
                 currentPlayer.getPlayerState().equals(PlayerState.DEAD)){
             sendErrorMessage(clientID, "You cannot do that now");
@@ -224,7 +224,7 @@ public class Controller {
         else if(action instanceof ShootPack) {
             //resetting setDamagedBy
             //if we are here it is because the current player can do the shoot action now, even if it won't be validated
-            for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+            for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
                 playerAbstract.setJustDamagedBy(null);
             }
 
@@ -267,7 +267,7 @@ public class Controller {
      */
     public void sendEverybodyGameboardAndHand() {
         gameManager.sendToEverybody(new GameBoardAnswer(currentGame.getCurrentGameBoard()));
-        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+        for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
             gameManager.sendToSpecific(new PlayerHandAnswer(playerAbstract.getHand()), playerAbstract.getClientID());
         }
     }
@@ -285,7 +285,7 @@ public class Controller {
     }
 
     public List<PlayerAbstract> getPlayers(){
-        return currentGame.getActivePlayers();
+        return currentGame.getPlayers();
     }
 
     public void addSquareToUpdate(SquareAbstract square) {
@@ -314,7 +314,7 @@ public class Controller {
         PlayerBoard board;
         playersToRespawn.clear();
 
-        for(PlayerAbstract player : this.currentGame.getActivePlayers()){
+        for(PlayerAbstract player : this.currentGame.getPlayers()){
             if(player.getPlayerBoard().getDamageTaken() > Constants.DEATH_THRESHOLD){
 
                 PlayerAbstract killer = currentGame.getPlayerFromColor(player.getKillerColor());
@@ -362,14 +362,14 @@ public class Controller {
 
         firstFrenzyPlayer = currentGame.getCurrentPlayer();     //assuming it has already changed
 
-        if(firstFrenzyPlayer.equals(currentGame.getActivePlayers().get(0))) {
-            for (PlayerAbstract playerAbstract : currentGame.getActivePlayers()) {
+        if(firstFrenzyPlayer.equals(currentGame.getPlayers().get(0))) {
+            for (PlayerAbstract playerAbstract : currentGame.getPlayers()) {
                 playerAbstract.setState(PlayerState.AFTER_FIRST_PLAYER_FF);
             }
         }
         else{
-            for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
-                if(currentGame.getActivePlayers().indexOf(playerAbstract) >= currentGame.getActivePlayers().indexOf(firstFrenzyPlayer))
+            for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
+                if(currentGame.getPlayers().indexOf(playerAbstract) >= currentGame.getPlayers().indexOf(firstFrenzyPlayer))
                     playerAbstract.setState(PlayerState.BEFORE_FIRST_PLAYER_FF);
                 else
                     playerAbstract.setState(PlayerState.AFTER_FIRST_PLAYER_FF);
@@ -404,7 +404,7 @@ public class Controller {
         List<PlayerAbstract> playersInOrder = new ArrayList<>();
         Map<Color,Integer> colorIntegerMap = new EnumMap<>(Color.class);
         int damage;
-        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+        for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
             damage = player.getPlayerBoard().getDamageOfAColor(playerAbstract.getColor());
             if(damage > 0){
                 colorIntegerMap.put(playerAbstract.getColor(),damage);
@@ -452,7 +452,7 @@ public class Controller {
     }
 
     public void distributeEndGamePoints() {
-        for(PlayerAbstract playerAbstract : currentGame.getActivePlayers()){
+        for(PlayerAbstract playerAbstract : currentGame.getPlayers()){
             distributePoints(playerAbstract);
         }
         computeTrack();
@@ -464,7 +464,6 @@ public class Controller {
         for (Color c : Color.values()) {
             if(c.isCharacterColor()) {
                 colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
-                System.out.println(colorIntegerMap.get(c) + " " + c.name() + " tokens");
             }
 
         }

@@ -8,13 +8,10 @@ import client.weapons.MicroPack;
 import client.weapons.ScopePack;
 import client.weapons.ShootPack;
 import constants.Color;
-import exceptions.NoSuchSquareException;
 import org.junit.jupiter.api.Test;
-import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 import server.model.game.Game;
 import server.model.game.GameState;
-import server.model.gameboard.GameBoard;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
@@ -36,12 +33,12 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
 
 
@@ -79,17 +76,17 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
 
         PlayerAbstract player02 = new ConcretePlayer("player02");
         player02.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player02);
+        game.getPlayers().add(player02);
         player02.spawn(game.getCurrentGameBoard().getMap().getSquare(0,2));
 
 
@@ -145,17 +142,17 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
 
         PlayerAbstract player02 = new ConcretePlayer("player02");
         player02.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player02);
+        game.getPlayers().add(player02);
         player02.spawn(game.getCurrentGameBoard().getMap().getSquare(0,2));
 
 
@@ -211,12 +208,12 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(2,1));
 
 
@@ -253,20 +250,20 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player00.setCurrentGame(game);
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player01.setCurrentGame(game);
 
 
         PlayerAbstract player02 = new ConcretePlayer("player02");
         player02.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player02);
+        game.getPlayers().add(player02);
         player02.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player02.setCurrentGame(game);
 
@@ -341,27 +338,27 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
 
         PlayerAbstract player02 = new ConcretePlayer("player02");
         player02.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player02);
+        game.getPlayers().add(player02);
         player02.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
 
         PlayerAbstract player4 = new ConcretePlayer("player4");
         player4.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player4);
+        game.getPlayers().add(player4);
         player4.spawn(game.getCurrentGameBoard().getMap().getSquare(0,2));
 
         PlayerAbstract player5 = new ConcretePlayer("player5");
         player5.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player5);
+        game.getPlayers().add(player5);
         player5.spawn(game.getCurrentGameBoard().getMap().getSquare(0,2));
 
 
@@ -414,20 +411,20 @@ class ShootTest {
 
         PlayerAbstract player00 = new ConcretePlayer("player00");
         player00.setPlayerCharacter(Figure.DESTRUCTOR);
-        game.getActivePlayers().add(player00);
+        game.getPlayers().add(player00);
         player00.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player00.setCurrentGame(game);
         player00.setState(PlayerState.AFTER_FIRST_PLAYER_FF);
 
         PlayerAbstract player01 = new ConcretePlayer("player01");
         player01.setPlayerCharacter(Figure.BANSHEE);
-        game.getActivePlayers().add(player01);
+        game.getPlayers().add(player01);
         player01.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player01.setCurrentGame(game);
 
         PlayerAbstract player02 = new ConcretePlayer("player02");
         player02.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player02);
+        game.getPlayers().add(player02);
         player02.spawn(game.getCurrentGameBoard().getMap().getSquare(0,1));
         player02.setCurrentGame(game);
 

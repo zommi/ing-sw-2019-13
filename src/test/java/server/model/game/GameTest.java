@@ -1,6 +1,5 @@
 package server.model.game;
 
-import exceptions.WrongGameStateException;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import org.junit.jupiter.api.Test;
@@ -25,16 +24,16 @@ class GameTest {
         testList.add(testPlayer1);
         testList.add(testPlayer2);
 
-        testGame.addPlayer(testPlayer1);
-        testGame.addPlayer(testPlayer2);
+        testGame.addPlayerToGame(testPlayer1);
+        testGame.addPlayerToGame(testPlayer2);
 
-        assertEquals(testList,testGame.getActivePlayers());
+        assertEquals(testList,testGame.getPlayers());
 
         testGame.removePlayer(testPlayer1);
 
         testList.remove(testPlayer1);
 
-        assertEquals(testList,testGame.getActivePlayers());
+        assertEquals(testList,testGame.getPlayers());
 
         //testGame.nextState();
 

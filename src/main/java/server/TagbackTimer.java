@@ -28,9 +28,9 @@ public class TagbackTimer extends TimerTask {
         for(PlayerAbstract playerAbstract : controller.getCurrentGame().getTurnHandler().getTagbackPlayers()){
             System.out.println("Disconnecting " + playerAbstract.getName() + " for inactivity");
 
-            controller.getGameManager().disconnect(playerAbstract);
+            controller.getGameManager().setInactive(playerAbstract);
 
-            if (controller.getGameManager().getActivePlayersNum() < Constants.MIN_PLAYERS_TO_CONTINUE) {
+            if (controller.getGameManager().getActivePlayers().size() < Constants.MIN_PLAYERS_TO_CONTINUE) {
                 endGame = true;
                 break;
             }

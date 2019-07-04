@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class ConcretePlayer extends PlayerAbstract {
 
-    private boolean connected;
+    private boolean active;
 
     private String name;
 
@@ -45,7 +45,7 @@ public class ConcretePlayer extends PlayerAbstract {
         this.playerBoard = new PlayerBoard(this);
         this.state = PlayerState.NORMAL;
         stateAfterDeath = PlayerState.NORMAL;
-        connected = true;
+        active = true;
     }
 
     public Game getCurrentGame() {
@@ -53,13 +53,13 @@ public class ConcretePlayer extends PlayerAbstract {
     }
 
     @Override
-    public boolean isConnected() {
-        return connected;
+    public boolean isActive() {
+        return active;
     }
 
     @Override
-    public void setConnected(boolean connected) {
-        this.connected = connected;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

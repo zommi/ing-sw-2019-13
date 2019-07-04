@@ -1,16 +1,13 @@
 package server.model.game;
 
-import exceptions.*;
 import constants.Color;
 import server.controller.Controller;
 import server.controller.turns.TurnHandler;
-import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.gameboard.*;
 import server.model.player.*;
 import server.model.map.*;
-import view.ListOfWeaponsAnswer;
 
 import java.util.*;
 
@@ -27,7 +24,7 @@ public class Game {
 
     private GameMap currentGameMap;
 
-    private List<PlayerAbstract> activePlayers;
+    private List<PlayerAbstract> players;
 
     private GameBoard currentGameBoard;
 
@@ -41,7 +38,7 @@ public class Game {
         this.currentState = GameState.SETUP;
         this.currentGameBoard = new GameBoard(mapChoice,skullChoice);
         this.currentGameMap = currentGameBoard.getMap();
-        this.activePlayers = new ArrayList<>();
+        this.players = new ArrayList<>();
         this.currentPlayerIndex = 0;
         this.lastPlayerIndex = 0;
         this.controller = controller;
@@ -70,38 +67,30 @@ public class Game {
         return turnHandler;
     }
 
-    public void addPlayer(PlayerAbstract player) {
-        if (this.currentState == GameState.SETUP) {
-            this.activePlayers.add(player);
-            this.currentGameBoard.addPlayerBoard((ConcretePlayer) player);
-        }
+    public void addPlayerToGame(PlayerAbstract player) {
+        this.players.add(player);
+        this.currentGameBoard.addPlayerBoard((ConcretePlayer) player);
     }
 
     public void removePlayer(PlayerAbstract player){
-        activePlayers.remove(player);
+        players.remove(player);
     }
 
     public PlayerAbstract getCurrentPlayer(){
-        return activePlayers.get(currentPlayerIndex);
-    }
-
-    public PlayerAbstract getLastPlayer(){return activePlayers.get(lastPlayerIndex);}
-
-    public void setCurrentPlayerIndex(int currentPlayerIndex) {
-        this.currentPlayerIndex = currentPlayerIndex;
+        return players.get(currentPlayerIndex);
     }
 
     public int nextPlayer(){
         lastPlayerIndex = currentPlayerIndex;
         do{
-            if (currentPlayerIndex < this.activePlayers.size() - 1)
+            if (currentPlayerIndex < this.players.size() - 1)
                 currentPlayerIndex++;
             else
                 currentPlayerIndex = 0;
         }
-        while(!getCurrentPlayer().isConnected());
+        while(!getCurrentPlayer().isActive());
 
-        return activePlayers.get(currentPlayerIndex).getClientID();
+        return players.get(currentPlayerIndex).getClientID();
     }
 
 
@@ -122,7 +111,7 @@ public class Game {
     }
 
     public PlayerAbstract getPlayerFromId(int id){
-        for(PlayerAbstract player : activePlayers){
+        for(PlayerAbstract player : players){
             if(player.getClientID() == id){
                 return player;
             }
@@ -142,8 +131,8 @@ public class Game {
         return currentPlayerIndex;
     }
 
-    public List<PlayerAbstract> getActivePlayers() {
-        return activePlayers;
+    public List<PlayerAbstract> getPlayers() {
+        return players;
     }
 
     public GameMap getCurrentGameMap() {
@@ -151,7 +140,7 @@ public class Game {
     }
 
     public PlayerAbstract getPlayer(String string) {
-        for(PlayerAbstract playerAbstract : activePlayers){
+        for(PlayerAbstract playerAbstract : players){
             if(playerAbstract.getName().equalsIgnoreCase(string))
                 return playerAbstract;
         }
@@ -159,7 +148,7 @@ public class Game {
     }
 
     public PlayerAbstract getPlayerFromColor(Color color){
-        for(PlayerAbstract player : activePlayers){
+        for(PlayerAbstract player : players){
             if(player.getColor() == color) return player;
         }
         return null;
