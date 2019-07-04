@@ -1051,7 +1051,7 @@ public class MainGuiController implements GuiController {
     public void close() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("SERVER DISCONNECTED");
-        alert.setHeaderText("OH NO THE SERVER DID AN OPSIEEEE :(((");
+        alert.setHeaderText("The server went offline.");
         alert.setContentText(null);
         alert.setGraphic(null);
         alert.setOnCloseRequest(e -> System.exit(1));
