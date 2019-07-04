@@ -30,6 +30,10 @@ public class Client {
         return name;
     }
 
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
     public boolean isFirstPlayer() {
         return firstPlayer;
     }
@@ -58,14 +62,6 @@ public class Client {
         return gameManager.getController().getCurrentGame().getPlayer(name);
     }
 
-    public ReceiverInterface getReceiverInterface() {
-        return receiverInterface;
-    }
-
-    public SocketClientHandler getSocketClientHandler() {
-        return socketClientHandler;
-    }
-
     public void setReceiverInterface(ReceiverInterface receiverInterface) {
         this.receiverInterface = receiverInterface;
     }
@@ -85,35 +81,28 @@ public class Client {
                 receiverInterface.publishMessage(new PingAnswer());
                 return true;
             }catch(RemoteException e){
-                disconnect();
+                disconnectClient();
                 return false;
             }
         }
 
     }
 
-    public void disconnect(){
+    public void disconnectClient(){
         System.out.println("Lost connection with " + name);
 
         socketClientHandler = null;
         receiverInterface = null;
 
-        System.out.println(name + " has successfully been disconnected from the server");
-
         //if the game is not started, the client is gonna be completely removed from the server
         if(gameManager.getGameStarted() == 0){
             gameManager.getServer().removeClient(clientID);
-            return;
+        }else{
+            gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
+            gameManager.setInactive(getPlayer());
         }
 
-        //else, we set the player as inactive
-        try{
-            gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
-            gameManager.disconnect(getPlayer());
-        }catch(Exception e){
-            //do nothing
-            System.out.println("Exception in disconnecting, " + e.getClass());
-        }
+        System.out.println(name + " has successfully been disconnected from the server");
     }
 
     public void send(ServerAnswer serverAnswer){
@@ -128,7 +117,7 @@ public class Client {
                 receiverInterface.publishMessage(serverAnswer);
 
         }catch(RemoteException e){
-            disconnect();
+            disconnectClient();
         }
 
     }

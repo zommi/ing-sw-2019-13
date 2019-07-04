@@ -1,15 +1,11 @@
 package server;
 
-import client.ReceiverInterface;
 import constants.Constants;
-import server.model.player.PlayerAbstract;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Collections;
-import java.util.List;
 
 
 public class ServerRMI implements Runnable {
@@ -19,7 +15,9 @@ public class ServerRMI implements Runnable {
     private final Registry registry;
 
 
-    public ServerRMI(Server server) throws RemoteException{
+
+
+    ServerRMI(Server server) throws RemoteException{
 
         registry = LocateRegistry.createRegistry(1099);
         this.server = server;
@@ -38,16 +36,11 @@ public class ServerRMI implements Runnable {
         }
     }
 
-    public void addMapClient(PlayerAbstract p) {
-        System.out.println("Trying to add the client to the map ");
-        //server.getGameManagerFromId(p.getClientID()).getController().addClientInMap(p);
-    }
-
-    public GameProxyInterface getGameProxy() {
+    GameProxyInterface getGameProxy() {
         return gameProxy;
     }
 
-    public GameManager getGameManagerFromId(int clientID){
+    GameManager getGameManagerFromId(int clientID){
         return server.getGameManagerFromId(clientID);
     }
 

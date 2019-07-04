@@ -1,19 +1,16 @@
 package server.model.player;
 
+import client.weapons.Cost;
 import client.weapons.Weapon;
 import constants.Color;
-import constants.Direction;
-import client.weapons.Cost;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.Game;
-import server.model.items.AmmoCube;
 import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -124,9 +121,9 @@ public abstract class PlayerAbstract implements Serializable {
 
     public abstract Color getKillerColor();
 
-    public abstract boolean isConnected();
+    public abstract boolean isActive();
 
-    public abstract void setConnected(boolean connected);
+    public abstract void setActive(boolean active);
 
     public abstract void addPoints(int i);
 

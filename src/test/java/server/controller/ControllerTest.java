@@ -4,28 +4,18 @@ import client.Info;
 import client.ReloadInfo;
 import client.SquareInfo;
 import client.powerups.PowerUpPack;
-import client.weapons.Weapon;
 import constants.Color;
-import constants.Constants;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import server.GameManager;
 import server.Server;
 import server.controller.turns.TurnPhase;
-import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
-import server.model.cards.WeaponCard;
 import server.model.game.Game;
-import server.model.game.GameState;
 import server.model.gameboard.GameBoard;
-import server.model.gameboard.PowerupDeck;
-import server.model.map.Square;
-import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +35,10 @@ class ControllerTest {
         pluto.setCurrentGame(controller.getCurrentGame());
         pippo.setCurrentGame(controller.getCurrentGame());
         nino.setCurrentGame(controller.getCurrentGame());
-        controller.getCurrentGame().addPlayer(mimmo);
-        controller.getCurrentGame().addPlayer(pluto);
-        controller.getCurrentGame().addPlayer(pippo);
-        controller.getCurrentGame().addPlayer(nino);
+        controller.getCurrentGame().addPlayerToGame(mimmo);
+        controller.getCurrentGame().addPlayerToGame(pluto);
+        controller.getCurrentGame().addPlayerToGame(pippo);
+        controller.getCurrentGame().addPlayerToGame(nino);
         mimmo.setPlayerCharacter(Figure.BANSHEE);
         pluto.setPlayerCharacter(Figure.DESTRUCTOR);
         pippo.setPlayerCharacter(Figure.SPROG);
@@ -84,7 +74,7 @@ class ControllerTest {
         PlayerAbstract player1 = new ConcretePlayer("Alessia");
         player1.getHand().addCard(game.getCurrentGameBoard().getPowerUpCard(8));
         player1.setCurrentGame(controller.getCurrentGame());
-        controller.getCurrentGame().addPlayer(player1);
+        controller.getCurrentGame().addPlayerToGame(player1);
         controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.END_TURN);
         controller.getCurrentGame().getTurnHandler().startNextPlayerTimer();
         GameBoard gameBoard = new GameBoard(1, 5);
@@ -100,9 +90,9 @@ class ControllerTest {
 
         PlayerAbstract player2 = new ConcretePlayer("Tommaso");
         player2.setPlayerCharacter(Figure.SPROG);
-        game.getActivePlayers().add(player2);
+        game.getPlayers().add(player2);
         player2.spawn(game.getCurrentGameBoard().getMap().getSquare(0,0));
-        controller.getCurrentGame().addPlayer(player2);
+        controller.getCurrentGame().addPlayerToGame(player2);
         SquareInfo squareInfo = new SquareInfo(0, 1);
         controller.getCurrentGame().getTurnHandler().setCurrentTurnPhase(TurnPhase.FIRST_ACTION);
         Info actionPowerup = new PowerUpPack(gameBoard.getPowerUpCard(8), squareInfo, "Tommaso");

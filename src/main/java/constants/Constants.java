@@ -8,15 +8,13 @@ import java.util.Properties;
 public class Constants {
 
     //match rules
-    public static final int MIN_PLAYERS = 1;
+    public static final int MIN_PLAYERS = 3;
     public static final int MAX_PLAYERS = 5;
-    public static final int MIN_PLAYERS_TO_CONTINUE = 1;
+    public static final int MIN_PLAYERS_TO_CONTINUE = 3;
 
     public static final long PING_DELAY_SEC = 1;
 
     public static final String ANSI_RESET = "\u001B[0m";
-
-    //public static final String REGISTRATION_ROOM_NAME = "gameproxy";
 
 
 

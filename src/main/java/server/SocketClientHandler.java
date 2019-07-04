@@ -47,10 +47,12 @@ public class SocketClientHandler implements Runnable {
                 System.out.println("IOException caught");
                 try{
                     if(clientID != -1){
-                        if(server.getClientFromId(clientID).getGameManager().isGameOver())
+                        if(server.getClientFromId(clientID).getGameManager().getGameStarted() == 0 &&
+                                server.getClientFromId(clientID).getGameManager().isGameOver())
                             server.removeClient(clientID);
                         else
-                            server.getClientFromId(clientID).disconnect();
+                            server.getClientFromId(clientID).disconnectClient();
+
                         keepThreadAlive = false;
                     }
                 }catch(NullPointerException npe){
@@ -84,7 +86,7 @@ public class SocketClientHandler implements Runnable {
                     .makeAsynchronousAction(clientID, ((AsynchronousInfo) info).getInfo());
         }
         else if(info instanceof ReconnectInfo){
-            server.getGameManagerFromId(clientID).reconnect(server.getClientFromId(clientID).getPlayer());
+            server.getGameManagerFromId(clientID).setActive(server.getClientFromId(clientID).getPlayer());
         }
         else{
             server.getGameManagerFromId(clientID).getController().makeAction(clientID, info);
@@ -97,7 +99,7 @@ public class SocketClientHandler implements Runnable {
             outputStream.writeObject(socketInfo);
             outputStream.flush();
         }catch(IOException e){
-            server.getClientFromId(clientID).disconnect();
+            server.getClientFromId(clientID).disconnectClient();
         }
 
     }
