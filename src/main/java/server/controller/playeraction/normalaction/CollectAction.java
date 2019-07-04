@@ -2,21 +2,16 @@ package server.controller.playeraction.normalaction;
 
 import client.CollectInfo;
 import client.MoveInfo;
-import constants.*;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.model.map.GameMap;
 import server.model.player.PlayerAbstract;
 
-import java.util.List;
-
 public class CollectAction implements Action {
-    /**
-     * list of directions the players specified in the MoveInfo packet
-     * (it can be empty if the player doesn't want to move)
-     */
-    private List<Direction> moves;
 
+    /**
+     * the controller of the game in which this action is made
+     */
     private Controller controller;
 
     /**

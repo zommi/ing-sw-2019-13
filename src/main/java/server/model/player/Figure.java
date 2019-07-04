@@ -20,15 +20,15 @@ public enum Figure {
     }
 
     public static Figure fromString(String name){
-        if(name.toUpperCase().equals("DESTRUCTOR"))
+        if(name.equalsIgnoreCase("DESTRUCTOR"))
             return DESTRUCTOR;
-        else if(name.toUpperCase().equals("BANSHEE"))
+        else if(name.equalsIgnoreCase("BANSHEE"))
             return BANSHEE;
-        else if(name.toUpperCase().equals("DOZER"))
+        else if(name.equalsIgnoreCase("DOZER"))
             return DOZER;
-        else if(name.toUpperCase().equals("VIOLET"))
+        else if(name.equalsIgnoreCase("VIOLET"))
             return VIOLET;
-        else if(name.toUpperCase().equals("SPROG"))
+        else if(name.equalsIgnoreCase("SPROG"))
             return SPROG;
         else
             return null;
@@ -45,17 +45,6 @@ public enum Figure {
 
     public int getId() {
         return this.id;
-    }
-
-    public static Figure getValue(int id){
-        switch(id) {
-            case 0 : return DESTRUCTOR;
-            case 1 : return BANSHEE;
-            case 2 : return DOZER;
-            case 3 : return VIOLET;
-            case 4 : return SPROG;
-            default: return null;
-        }
     }
 
     @Override

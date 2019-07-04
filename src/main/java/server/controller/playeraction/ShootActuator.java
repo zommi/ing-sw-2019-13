@@ -6,9 +6,22 @@ import server.controller.Controller;
 import server.model.cards.WeaponCard;
 import view.MessageAnswer;
 
-import java.util.Iterator;
-
+/**
+ * It is used to create an actuator and actuate a particular shoot info
+ * @author Matteo Pacciani
+ */
 public class ShootActuator {
+    /**
+     * Reloads the weapon of the shoot info if it is legal, actuate every micro effect included in the
+     * shoot info, dealing damage, marks and moving the players in every micro effect, according to the game's
+     * rules. Deals damage of every activated targeting scopes, removing them from the player hand.
+     * Sets the weapon used to unloaded, adding it to the playerboard so that it is visible to all the
+     * other players, removes all the powerups used for paying this action.
+     * Sends a message to all the other players.
+     *
+     * @param shootInfo the shoot info that is going to be actuated
+     * @param controller the controller of the corresponding game
+     */
     public void actuate(ShootInfo shootInfo, Controller controller){
 
         //final frenzy and reload
