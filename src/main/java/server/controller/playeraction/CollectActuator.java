@@ -48,6 +48,9 @@ public class CollectActuator {
                 //reloads weapon to discard
                 player.getWeaponCard(collectInfo.getWeaponToDiscard().getWeapon()).setReady(true);
 
+                //removes spawn from squares to update
+                controller.getSquaresToUpdate().remove(square);
+
                 //discard weapon from hand and from PLAYERBOARD and moves it into the spawn point
                 player.getHand().removeWeaponCard(collectInfo.getWeaponToDiscard());
                 player.getPlayerBoard().removeWeaponCard(collectInfo.getWeaponToDiscard());

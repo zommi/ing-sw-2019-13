@@ -42,7 +42,6 @@ public class SpawnPoint extends SquareAbstract implements Serializable {
         }
         weaponCards.remove(temp);
         controller.addSquareToUpdate(this);
-        //addItem(controller.drawWeapon());
     }
 
     @Override
