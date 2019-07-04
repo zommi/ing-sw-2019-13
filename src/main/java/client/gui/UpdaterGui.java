@@ -217,7 +217,7 @@ public class UpdaterGui extends Application implements Updater {
         if(object.equals("Respawn")){
             System.out.println("Respawn");
             Platform.runLater(() -> {
-                mainGuiController.spawnAfterDeath();
+                mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");;
                 mainGuiController.updateHand();
             });
         }
@@ -258,15 +258,15 @@ public class UpdaterGui extends Application implements Updater {
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.mainGuiController.enableAll();
                 if (this.model.isToSpawn()){
-                    mainGuiController.spawn();
+                    mainGuiController.logText("Choose a powerup and Spawn in that color! \n");
                 }else if(this.model.isToRespawn()){
-                    mainGuiController.spawnAfterDeath();
+                    mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");;
                 }
             } else {
                 this.mainGuiController.disableAll();
                 if(this.model.isToRespawn()){
                     mainGuiController.enableSpawn();
-                    mainGuiController.spawnAfterDeath();
+                    mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");
                 }
             }
         });
