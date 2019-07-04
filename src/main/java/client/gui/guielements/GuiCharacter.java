@@ -6,8 +6,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import server.model.player.PlayerBoard;
-import view.PlayerBoardAnswer;
 
+/**
+ * Class used to represent characters on squares
+ */
 public class GuiCharacter extends StackPane {
 
     private GuiTile position;
@@ -21,7 +23,8 @@ public class GuiCharacter extends StackPane {
         circle = new Circle();
         name = new Text(playerName);
         this.position = tile;
-        tile.getChildren().add(this);
+        //tile.getChildren().add(this);
+        tile.addCharacter(this);
         center(tile);
         circle.setStrokeWidth(2.0);
         circle.setStroke(Paint.valueOf("#000000"));
@@ -31,8 +34,10 @@ public class GuiCharacter extends StackPane {
     }
 
     public void setPosition(GuiTile tile){
+        this.position.removeCharacter(this);
         this.position.getChildren().remove(this);
-        tile.getChildren().add(this);
+        //tile.getChildren().add(this);
+        tile.addCharacter(this);
         center(tile);
         this.position = tile;
     }
@@ -40,7 +45,7 @@ public class GuiCharacter extends StackPane {
     private void center(GuiTile tile){
         circle.setCenterX(tile.getLayoutX() + tile.getSide());
         circle.setCenterY(tile.getLayoutY() + tile.getSide());
-        circle.setRadius(tile.getSide()/6.0);
+        circle.setRadius(tile.getSide()/10.0);
     }
 
     public GuiTile getPosition() {

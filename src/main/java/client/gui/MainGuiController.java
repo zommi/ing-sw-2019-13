@@ -710,9 +710,11 @@ public class MainGuiController implements GuiController {
         if(askedPlayers){
             List<GameCharacter> characters = this.model.getGameBoard().getResult().getActiveCharacters();
             for(GameCharacter character: characters){
-                CheckBox choice = new CheckBox(character.getConcretePlayer().getName());
-                box.getChildren().add(choice);
-                checkBoxList.add(choice);
+                if(model.getClientID() != character.getConcretePlayer().getClientID()) {
+                    CheckBox choice = new CheckBox(character.getConcretePlayer().getName());
+                    box.getChildren().add(choice);
+                    checkBoxList.add(choice);
+                }
             }
         }else{
             List<Room> rooms = this.model.getGameBoard().getResult().getMap().getRooms();
