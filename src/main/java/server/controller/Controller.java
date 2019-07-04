@@ -464,7 +464,6 @@ public class Controller {
         for (Color c : Color.values()) {
             if(c.isCharacterColor()) {
                 colorIntegerMap.put(c, currentGame.getCurrentGameBoard().getTrack().getTokensOfColor(c));
-                System.out.println(colorIntegerMap.get(c) + " " + c.name() + " tokens");
             }
 
         }

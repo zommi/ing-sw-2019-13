@@ -10,7 +10,7 @@ public class Constants {
     //match rules
     public static final int MIN_PLAYERS = 3;
     public static final int MAX_PLAYERS = 5;
-    public static final int MIN_PLAYERS_TO_CONTINUE = 3;
+    public static final int MIN_PLAYERS_TO_CONTINUE = 2;
 
     public static final long PING_DELAY_SEC = 1;
 

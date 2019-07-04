@@ -60,7 +60,7 @@ public class GameManager {
         System.out.println("Active players are now " + activePlayers.size());
 
 
-        if(activePlayers.size() < Constants.MIN_PLAYERS_TO_CONTINUE)
+        if(activePlayers.size() < Constants.MIN_PLAYERS_TO_CONTINUE && !gameOver)
             endGame();
         else
             System.out.println(playerAbstract.getName() + "'s turns will be skipped from now on");

@@ -47,7 +47,7 @@ public class SocketClientHandler implements Runnable {
                 System.out.println("IOException caught");
                 try{
                     if(clientID != -1){
-                        if(server.getClientFromId(clientID).getGameManager().getGameStarted() == 0 &&
+                        if(server.getClientFromId(clientID).getGameManager().getGameStarted() == 1 &&
                                 server.getClientFromId(clientID).getGameManager().isGameOver())
                             server.removeClient(clientID);
                         else
