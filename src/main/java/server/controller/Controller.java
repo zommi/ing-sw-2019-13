@@ -292,6 +292,10 @@ public class Controller {
         this.squaresToUpdate.add(square);
     }
 
+    public List<SquareAbstract> getSquaresToUpdate() {
+        return squaresToUpdate;
+    }
+
     public void restoreSquares() {
         for(SquareAbstract square : this.squaresToUpdate){
             if(square instanceof Square){
