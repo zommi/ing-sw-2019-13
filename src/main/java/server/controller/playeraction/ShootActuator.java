@@ -3,6 +3,10 @@ package server.controller.playeraction;
 
 import constants.Constants;
 import server.controller.Controller;
+import server.controller.playeraction.serverinfo.MacroInfo;
+import server.controller.playeraction.serverinfo.MicroInfo;
+import server.controller.playeraction.serverinfo.ScopeInfo;
+import server.controller.playeraction.serverinfo.ShootInfo;
 import server.model.cards.WeaponCard;
 import answers.MessageAnswer;
 

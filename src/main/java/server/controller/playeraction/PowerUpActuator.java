@@ -4,6 +4,7 @@ package server.controller.playeraction;
 import constants.Constants;
 import server.controller.Controller;
 import answers.MessageAnswer;
+import server.controller.playeraction.serverinfo.PowerUpInfo;
 
 public class PowerUpActuator {
 

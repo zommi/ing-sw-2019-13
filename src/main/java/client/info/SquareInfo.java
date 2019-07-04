@@ -2,7 +2,7 @@ package client.info;
 
 import java.io.Serializable;
 
-public class SquareInfo  implements Serializable {
+public class SquareInfo  implements Serializable,Info {
     private int row;
     private int col;
 

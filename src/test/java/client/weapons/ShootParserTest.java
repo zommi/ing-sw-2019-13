@@ -1,30 +1,13 @@
 package client.weapons;
 
-import client.CliInput;
-import client.GameModel;
-import client.InputAbstract;
-import exceptions.WrongGameStateException;
 import org.junit.jupiter.api.Test;
-import server.controller.playeraction.ShootInfo;
-import server.controller.playeraction.ShootValidator;
-import server.model.game.Game;
-import server.model.gameboard.GameBoard;
-import server.model.map.Room;
-import server.model.player.ConcretePlayer;
-import server.model.player.Figure;
-import server.model.player.PlayerAbstract;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ShootParserTest {
 
     @Test
-    void getWeaponInput() throws FileNotFoundException, WrongGameStateException {
+    void getWeaponInput() throws FileNotFoundException {
 
         /*File file = new File("./src/test/resources/weaponTest.txt");
         InputStream inputStream = new FileInputStream(file);

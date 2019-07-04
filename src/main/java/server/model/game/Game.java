@@ -2,7 +2,7 @@ package server.model.game;
 
 import constants.Color;
 import server.controller.Controller;
-import server.controller.turns.TurnHandler;
+import server.controller.TurnHandler;
 import server.model.cards.AmmoTile;
 import server.model.cards.WeaponCard;
 import server.model.gameboard.*;

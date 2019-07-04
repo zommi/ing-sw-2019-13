@@ -25,14 +25,6 @@ public class PowerUpCard implements CardInterface, AmmoTileItem, Serializable {
         this.cardId = cardId;
     }
 
-    public boolean isChosenForReload() {
-        return chosenForReload;
-    }
-
-    public void setChosenForReload(boolean chosenForReload) {
-        this.chosenForReload = chosenForReload;
-    }
-
     public PowerUp getPowerUp() {
         return this.powerUp;
     }

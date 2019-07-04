@@ -3,8 +3,8 @@ package server.controller.playeraction.normalaction;
 import client.weapons.ShootPack;
 import server.controller.Controller;
 import server.controller.playeraction.*;
+import server.controller.playeraction.serverinfo.ShootInfo;
 import server.model.game.Game;
-import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 
 public class ShootAction implements Action {

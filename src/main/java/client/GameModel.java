@@ -1,7 +1,7 @@
 package client;
 
 import answers.SetRespawnAnswer;
-import server.controller.turns.TurnPhase;
+import server.controller.TurnPhase;
 import server.model.game.GameState;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;

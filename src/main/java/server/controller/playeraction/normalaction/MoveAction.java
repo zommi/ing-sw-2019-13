@@ -1,7 +1,6 @@
 package server.controller.playeraction.normalaction;
 
 import server.controller.Controller;
-import server.controller.playeraction.Action;
 import server.controller.playeraction.MoveActuator;
 import client.info.MoveInfo;
 import server.controller.playeraction.MoveValidator;

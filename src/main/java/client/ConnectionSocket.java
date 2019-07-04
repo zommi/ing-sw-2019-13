@@ -1,7 +1,6 @@
 package client;
 
 import client.info.AsynchronousInfo;
-import client.info.Connection;
 import client.info.Info;
 import client.info.NameInfo;
 import constants.Constants;

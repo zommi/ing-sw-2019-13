@@ -5,6 +5,10 @@ import client.weapons.*;
 
 import constants.Color;
 import constants.Constants;
+import server.controller.playeraction.serverinfo.MacroInfo;
+import server.controller.playeraction.serverinfo.MicroInfo;
+import server.controller.playeraction.serverinfo.ScopeInfo;
+import server.controller.playeraction.serverinfo.ShootInfo;
 import server.model.cards.*;
 import server.model.game.Game;
 import server.model.game.GameState;

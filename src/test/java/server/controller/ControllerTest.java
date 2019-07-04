@@ -8,7 +8,6 @@ import constants.Color;
 import org.junit.jupiter.api.Test;
 import server.GameManager;
 import server.Server;
-import server.controller.turns.TurnPhase;
 import server.model.cards.PowerUpCard;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;

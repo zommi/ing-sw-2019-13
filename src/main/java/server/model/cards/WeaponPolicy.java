@@ -1,8 +1,8 @@
 package server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import server.controller.playeraction.MicroInfo;
-import server.controller.playeraction.ShootInfo;
+import server.controller.playeraction.serverinfo.MicroInfo;
+import server.controller.playeraction.serverinfo.ShootInfo;
 import server.model.map.Room;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;

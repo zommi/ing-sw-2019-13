@@ -9,6 +9,7 @@ import client.weapons.ScopePack;
 import client.weapons.ShootPack;
 import constants.Color;
 import org.junit.jupiter.api.Test;
+import server.controller.playeraction.serverinfo.ShootInfo;
 import server.model.cards.PowerUpCard;
 import server.model.game.Game;
 import server.model.game.GameState;

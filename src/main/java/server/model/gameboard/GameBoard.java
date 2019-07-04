@@ -2,7 +2,7 @@ package server.model.gameboard;
 
 import client.weapons.Weapon;
 import constants.Constants;
-import server.controller.turns.TurnPhase;
+import server.controller.TurnPhase;
 import server.model.cards.AmmoTile;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;

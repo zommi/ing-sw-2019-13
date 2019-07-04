@@ -1,6 +1,5 @@
 package client;
 
-import client.info.Connection;
 import answers.SocketInfo;
 
 import java.io.IOException;

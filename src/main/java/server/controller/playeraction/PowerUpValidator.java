@@ -2,7 +2,8 @@ package server.controller.playeraction;
 
 import client.powerups.PowerUpPack;
 import constants.Constants;
-import server.controller.turns.TurnPhase;
+import server.controller.playeraction.serverinfo.PowerUpInfo;
+import server.controller.TurnPhase;
 import server.model.game.Game;
 import server.model.gameboard.GameBoard;
 import server.model.map.SquareAbstract;

@@ -1,7 +1,7 @@
 package client.gui;
 
 import client.ActionParser;
-import client.info.Connection;
+import client.Connection;
 import client.GameModel;
 import client.Updater;
 import client.gui.guielements.GuiController;

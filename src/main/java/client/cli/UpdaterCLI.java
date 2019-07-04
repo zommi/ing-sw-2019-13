@@ -5,7 +5,7 @@ import client.*;
 import client.info.*;
 import constants.Color;
 import constants.Constants;
-import server.controller.turns.TurnPhase;
+import server.controller.TurnPhase;
 import server.model.cards.PowerUpCard;
 import server.model.cards.TagbackGrenade;
 import server.model.cards.TargetingScope;
