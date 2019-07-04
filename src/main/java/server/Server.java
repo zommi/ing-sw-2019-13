@@ -88,6 +88,9 @@ public class Server {
         return idToReturn;
     }
 
+    /**
+     * The method removes the object client from the hashmaps that link clients to id. It removes also the gamemanager of the client from the gamemanager list
+     */
     public void removeClient(int clientId){
         Client client = getClientFromId(clientId);
         String name = client.getName();
@@ -116,10 +119,16 @@ public class Server {
 
     }
 
+    /**
+     * The method adds an object Client to the list that links id to clients
+     */
     public synchronized void addClient(Client client){
         idToClient.put(client.getClientID(), client);
     }
 
+    /**
+     * The method adds a connection (socket or rmi) to the object client and adds the name of the client and his id to the hashmap that links them
+     */
     public synchronized Integer addConnection(String name, String connectionType, SocketClientHandler socketClientHandler, ReceiverInterface receiverInterface){
         SetupRequestAnswer setupRequestAnswer = new SetupRequestAnswer();
 

@@ -29,10 +29,17 @@ import java.util.concurrent.TimeUnit;
 public class UpdaterCLI  implements Updater,Runnable{
 
     private Scanner scanner;
+    /**
+     * Used to create the actions of the client
+     */
     private ActionParser actionParser;
-
+    /**
+     * The connection of the client (it can be rmi or socket)
+     */
     private Connection connection;
-
+    /**
+     * The gamemodel of the client, it is used to read some values sent by the server
+     */
     private GameModel gameModel;
     private boolean keepThreadAlive;
 
@@ -348,6 +355,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         }
     }
 
+    /**
+     * The method is used to print the final score on the console
+     */
     private void printFinalScore() {
         Map<PlayerAbstract, Integer> map = gameModel.getGameOverAnswer().getPlayerToPoint();
         System.out.print("\nThe final score is:\n");
@@ -358,6 +368,9 @@ public class UpdaterCLI  implements Updater,Runnable{
         System.out.println("\nThe winner is... " + gameModel.getGameOverAnswer().getWinner().printOnCli());
     }
 
+    /**
+     * The method is called when the tagback can be used by a client out of his turn
+     */
     private void playTagback() {
         int numberOfTagbacks = gameModel.getPlayerHand().getPlayerHand().getNumberOfTagbacks();
         if(numberOfTagbacks > 0){
