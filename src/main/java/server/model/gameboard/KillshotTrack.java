@@ -84,7 +84,7 @@ public class KillshotTrack implements Serializable {
 
     public int getTokensOfColor(Color c){
         int counter = 0;
-        for(int i = 0; i < initialSkulls; i++){
+        for(int i = 0; i < damageTokens.size(); i++){
             if(damageTokens.get(i) == c)counter+= multiplicityToken.get(i);
         }
         return counter;

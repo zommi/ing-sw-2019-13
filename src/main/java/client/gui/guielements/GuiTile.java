@@ -1,6 +1,8 @@
 package client.gui.guielements;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import server.model.map.Square;
@@ -14,19 +16,26 @@ public abstract class GuiTile extends StackPane {
 
     private int row;
 
+    private VBox box;
+
     public GuiTile(int height, int width, Paint paint){
         super();
+        box = new VBox();
         this.side = height;
         this.getChildren().add(new Rectangle(height,width,paint));
+        this.getChildren().add(box);
     }
 
 
     public GuiTile(int row, int col, int height, int width, Paint paint){
         super();
+        box = new VBox();
         this.col = col;
         this.row = row;
         this.side = height;
         this.getChildren().add(new Rectangle(height,width,paint));
+        box.setAlignment(Pos.CENTER);
+        this.getChildren().add(box);
     }
 
     public int getSide() {
@@ -39,6 +48,14 @@ public abstract class GuiTile extends StackPane {
 
     public int getRow() {
         return this.row;
+    }
+
+    public void addCharacter(GuiCharacter character){
+        this.box.getChildren().add(character);
+    }
+
+    public void removeCharacter(GuiCharacter character){
+        this.box.getChildren().remove(character);
     }
 
     public abstract void restore();

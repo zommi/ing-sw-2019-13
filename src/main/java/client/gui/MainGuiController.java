@@ -40,47 +40,98 @@ import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
 
+    /**
+     * Reference to the GridPane containing the weaponCards.
+     */
     @FXML
     private GridPane weaponHand;
 
+    /**
+     * Reference to the GridPane containing the powerup cards.
+     */
     @FXML
     private GridPane powerupHand;
 
+    /**
+     * Reference to the GridPane containing the action buttons.
+     */
     @FXML
     private GridPane buttonGrid;
 
+    /**
+     * Reference to the StackPane containing the map.
+     */
     @FXML
     private StackPane mapStackPane;
 
+    /**
+     * Reference to the TextArea containing the messages for the client.
+     */
     @FXML
     private TextArea textLogger;
 
+    /**
+     * Reference to the button that shows the scoreboard.
+     */
     @FXML
     private Button scoreboardButton;
 
+    /**
+     * Log of all the communication with the client
+     */
     private String log;
 
+    /**
+     * Reference to the local model of the client
+     */
     private GameModel model;
 
+    /**
+     * Reference to the updater, used to get common fields
+     */
     private UpdaterGui gui;
 
+    /**
+     * Reference to the parser that creates all infos
+     */
     private ActionParser actionParser;
 
+    /**
+     * List of squares of the map
+     */
     private List<GuiSquare> squares = new ArrayList<>();
 
+    /**
+     * List of spawnpoints of the map
+     */
     private List<GuiSpawnPoint> spawnPoints = new ArrayList<>();
 
+    /**
+     * List containing both squares and spawnpoints
+     */
     private List<GuiTile> tiles = new ArrayList<>();
 
-    private List<GuiTile> tilesToUpdate = new ArrayList<>();
-
+    /**
+     * Reference to the input abstract class that handles the parsing
+     * for the shoot action.
+     */
     private GuiInput input;
 
+    /**
+     * Map containing
+     */
     private Map<Integer,GuiCharacter> idClientGuiCharacterMap = new HashMap<>();
 
-    private final static double POWERUP_HEIGHT = 200;
-    private final static double POWERUP_WIDTH = 100;
+    /**
+     * Constant containing the standard height od powerup cards
+     */
+    private static final double POWERUP_HEIGHT = 200;
 
+    /**
+     * Method that initializes the gameboard with the map received
+     * from the server and initialiazes the log.
+     * It is called when the server notifies the start of the game.
+     */
     @Override
     public void init(){
         log = "Game started! \n";
@@ -93,14 +144,10 @@ public class MainGuiController implements GuiController {
         this.textLogger.setEditable(false);
     }
 
-    public void spawn() {
-        logText("Choose a powerup and Spawn in that color! \n");
-    }
-
-    public void spawnAfterDeath(){
-        logText("You died!\nChoose a powerup and Spawn in that color! \n");
-    }
-
+    /**
+     * Method that enables the action buttons. It is called when the server
+     * notifies a player has ended its turn and it's the client's turn.
+     */
     @Override
     public void enableAll() {
         for(GuiTile tile : tiles){
@@ -109,15 +156,13 @@ public class MainGuiController implements GuiController {
         for(Node buttonNode : buttonGrid.getChildren()){
             buttonNode.setDisable(false);
         }
-//        for(Node weaponNode : weaponHand.getChildren()){
-//            weaponNode.setDisable(false);
-//        }
-//        for(Node powerupNode : powerupHand.getChildren()){
-//            powerupNode.setDisable(false);
-//        }
         logText("It's your turn! \n");
     }
 
+    /**
+     * Method that enables the action buttons. It is called when the server
+     * notifies a player has ended its turn and it's not the client's turn.
+     */
     @Override
     public void disableAll() {
         for(GuiTile tile : tiles){
@@ -136,6 +181,10 @@ public class MainGuiController implements GuiController {
         logText("It's not your turn, disabled commands \n");
     }
 
+    /**
+     * Method that prints the map on the screen based on the map in the gameModel,
+     * this method is called only during the initialization process
+     */
     private void initializeMap() { //NOSONAR
         this.model = gui.getGameModel();
         GameMap map = model.getMap();
@@ -180,7 +229,6 @@ public class MainGuiController implements GuiController {
                         spawnPoint,
                         currentSquare.getCol()*2,
                         currentSquare.getRow()*2);
-                //spawnPoint.setOnMousePressed(e -> showWeapons(spawnPoint));
                 spawnPoint.setCardsOnSpawnPoint((SpawnPoint) currentSquare);
                 spawnPoint.setSpawnPoint((SpawnPoint) currentSquare);
             }
@@ -245,6 +293,15 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    /**
+     * Method called when a weapon is collected by the client. If the client
+     * has 3 cards in hand it also sends the information regarding the weapon to discard.
+     * @param event The mouse pressed.
+     * @param weaponCard The card drawn.
+     * @param cardToDiscardIndex The index of the card to discard,
+     *                           it is set to -1 if there is no swapping
+     * @param sp SpawnPoint of the card.
+     */
     @FXML
     private void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, int cardToDiscardIndex, GuiSpawnPoint sp) {
         GuiWeaponCard cardToAdd = weaponCard;
@@ -317,13 +374,16 @@ public class MainGuiController implements GuiController {
         return result.get();
     }
 
+    /**
+     * Method called when the players presses the MOVE action button,
+     * it sets the event on the tiles.
+     */
     public void enableMove(){
         if(!this.model.isToSpawn() || !this.model.isToRespawn()) {
             for (GuiTile tile : tiles) {
                 tile.setOnMousePressed(e -> {
                     Info moveInfo = this.actionParser.createMoveEvent(tile.getRow(), tile.getCol());
                     this.gui.getConnection().send(moveInfo);
-                    disableMouseEvent();
                 });
             }
             logText("Select a square to move!\n");
@@ -332,19 +392,23 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    /**
+     * Method called when the players presses the COLLECT action button,
+     * it sets the event on the tiles.
+     */
     public void enableCollect(MouseEvent mouseEvent) {
         if(!this.model.isToSpawn() || !this.model.isToRespawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
                     Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
                     this.gui.getConnection().send(collectInfo);
-                    this.tilesToUpdate.add(square);
+                    //this.tilesToUpdate.add(square);
                 });
             }
             for (GuiSpawnPoint sp : spawnPoints) {
                 sp.setOnMousePressed(e -> {
                     showWeapons(sp);
-                    this.tilesToUpdate.add(sp);
+                    //this.tilesToUpdate.add(sp);
                 });
             }
             logText("Select a square!\n");
@@ -353,6 +417,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    /**
+     * Method called when the players presses the SHOOT action button,
+     * it sets the event on the weapon cards in hand.
+     */
     public void enableShoot(MouseEvent mouseEvent) {
         if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a weapon to use!\n");
@@ -364,6 +432,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    /**
+     * Method called when the players presses the POWERUP action button,
+     * it sets the event on the weapon cards in hand.
+     */
     public void enablePowerup(MouseEvent mouseEvent){
         if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a powerup to use! \n");
@@ -373,17 +445,6 @@ public class MainGuiController implements GuiController {
         }else{
             logText("You first need to spawn!\n");
         }
-    }
-
-    private void disableMouseEvent() {
-        for(GuiTile tile : tiles){
-            tile.setOnMousePressed(null);
-        }
-    }
-
-    @Override
-    public void addGui(UpdaterGui updaterGui) {
-        this.gui = updaterGui;
     }
 
     private void setSpawn(PowerUpCard card) {
@@ -399,6 +460,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
+    /**
+     * Shows the scoreboard containing the playerboards of all the players.
+     * @param mouseEvent The pressing of the button.
+     */
     @FXML
     public void showScoreboard(MouseEvent mouseEvent) {
         final int PLAYERBOARDS_OFFSET = 1;
@@ -419,13 +484,21 @@ public class MainGuiController implements GuiController {
         alert.showAndWait();
     }
 
-    public void logText(String string){
+    /**
+     * Adds text to the log.
+     * @param string The message to add.
+     */
+    void logText(String string){
         log += string;
         this.textLogger.setText(log);
         textLogger.appendText("");
     }
 
-    public void updateHand() {
+    /**
+     * Updates the Weapon hand and powerup hand based on the information coming from the gamemodel,
+     * it is called by updaterGui whenever there is a playerhand notification.
+     */
+    void updateHand() {
         emptyHand();
         int i = 0;
         GuiWeaponCard cardToAdd;
@@ -500,8 +573,11 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    //metodo che gestisce la visualizzazione di giocatori e ammotile
-    public void updateGameboard() {
+    /**
+     * Updates the map based on the information contained in the gameModel, it is called when
+     * by the updaterGui when there is a gameboard notification. It handles the movement of players.
+     */
+    void updateGameboard() {
         if(this.model != null) {
             //update position of players
             int id = 0;
@@ -535,7 +611,7 @@ public class MainGuiController implements GuiController {
         return null;
     }
 
-    public GuiTile getTile(int row, int col){
+    private GuiTile getTile(int row, int col){
         for(GuiTile tile : tiles){
             if(tile.getCol() == col && tile.getRow() == row){
                 return tile;
@@ -544,13 +620,21 @@ public class MainGuiController implements GuiController {
         return null;
     }
 
-    public void restoreSquares() {
+    /**
+     * Updates the map based on the information contained in the gameModel, it is called when
+     * by the updaterGui when there is a gameboard notification.
+     * It handles the restoration of ammotiles and weapons on squares..
+     */
+    void restoreSquares() {
         for (GuiTile tile : tiles) {
             tile.setSquare(this.model.getMap().getSquare(tile.getRow(),tile.getCol()));
             tile.restore();
         }
     }
 
+    /**
+     * {@link InputAbstract#getChoice(MacroEffect)}
+     */
     public boolean askMacro(MacroEffect macroEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UTILITY);
@@ -560,6 +644,9 @@ public class MainGuiController implements GuiController {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * {@link InputAbstract#getChoice(MicroEffect)}
+     */
     public boolean askMicro(MicroEffect microEffect) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UTILITY);
@@ -569,6 +656,9 @@ public class MainGuiController implements GuiController {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     *{@link InputAbstract#chooseOneMacro(Weapon)}
+     */
     public MacroEffect chooseOneMacro(Weapon weapon) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -603,6 +693,10 @@ public class MainGuiController implements GuiController {
         return result.get();
     }
 
+    /**
+     *{@link InputAbstract#askPlayers(int)} (Weapon)}
+     * {@link InputAbstract#askRooms(int)}
+     */
     public List<String> askPlayersOrRooms(int maxTargetPlayerSize, boolean askedPlayers) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -616,9 +710,11 @@ public class MainGuiController implements GuiController {
         if(askedPlayers){
             List<GameCharacter> characters = this.model.getGameBoard().getResult().getActiveCharacters();
             for(GameCharacter character: characters){
-                CheckBox choice = new CheckBox(character.getConcretePlayer().getName());
-                box.getChildren().add(choice);
-                checkBoxList.add(choice);
+                if(model.getClientID() != character.getConcretePlayer().getClientID()) {
+                    CheckBox choice = new CheckBox(character.getConcretePlayer().getName());
+                    box.getChildren().add(choice);
+                    checkBoxList.add(choice);
+                }
             }
         }else{
             List<Room> rooms = this.model.getGameBoard().getResult().getMap().getRooms();
@@ -642,6 +738,9 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
+    /**
+     *{@link InputAbstract#askSquares(int)}
+     */
     public List<SquareInfo> askSquares(int maxSquares) {
         int iteration = 0;
         List<SquareInfo> result = new ArrayList<>();
@@ -665,6 +764,9 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
+    /**
+     *{@link InputAbstract#getMoveChoice()}
+     */
     public boolean getMoveChoice() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initStyle(StageStyle.UTILITY);
@@ -674,6 +776,9 @@ public class MainGuiController implements GuiController {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     *{@link InputAbstract#askPowerUps()}
+     */
     public List<PowerUpCard> askPowerups() {
         List<PowerUpCard> listToAsk = this.model.getPlayerHand().getPowerupHand();
         AtomicReference<List<PowerUpCard>> result = new AtomicReference<>();
@@ -705,6 +810,9 @@ public class MainGuiController implements GuiController {
         return result.get();
     }
 
+    /**
+     *{@link InputAbstract#askTargetingScopes()}
+     */
     public List<ScopePack> askTargetingScopes() {
         List<ScopePack> result = new ArrayList<>();
         if(model != null && !model.getPlayerHand().getPlayerHand().getTargetingScopes().isEmpty()){
@@ -743,6 +851,9 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
+    /**
+     *{@link GuiInput#manageScope(PowerUpCard)} )}
+     */
     public Color chooseAmmoColor() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
@@ -773,7 +884,10 @@ public class MainGuiController implements GuiController {
         this.input = input;
     }
 
-    public void handleGrenade() {
+    /**
+     *Method that asks the player if he wants to use a tagback Grenade if he has one.
+     */
+    void handleGrenade() {
         if(this.model.getPlayerHand().getPlayerHand().getNumberOfTagbacks() > 0) {
             List<PowerUpCard> grenadeList = new ArrayList<>();
             AtomicReference<List<PowerUpCard>> activatedGrenades = new AtomicReference<>();
@@ -827,6 +941,12 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
+    /**
+     * Method called when the Reload Button is pressed, it sends the info to the server.
+     * If the player doesn't have a weapon to reload or doesn't want to reload any weapon
+     * a empyt info is sent.
+     * @param mouseEvent the pressing of the button.
+     */
     public void reload(MouseEvent mouseEvent) {
         this.gui.getConnection().send(askReload());
     }
@@ -865,7 +985,11 @@ public class MainGuiController implements GuiController {
         return result;
     }
 
-    public void disconnectPopupShow() {
+    /**
+     * Shows a popup to the client in case of soft disconnection from the server,
+     * the player can reconnect by pressing the ok button
+     */
+    void disconnectPopupShow() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
         alert.setTitle("DISCONNECTED");
@@ -897,20 +1021,33 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    public void enableSpawn() {
+    /**
+     * Enables the spawn by pressing on a powerup
+     */
+    void enableSpawn() {
         for(Node card : powerupHand.getChildren()){
             card.setDisable(false);
         }
     }
 
-    public void gameOver() {
+    /**
+     * Shows a popup notifying the client of the end of the match.
+     * On close request the client is closed
+     */
+    void gameOver() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("GAME OVER");
-        alert.setContentText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner().getName()  + ", thank you for playing!");
+        alert.setHeaderText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner().getName()  + ", thank you for playing!");
+        alert.setContentText(null);
         alert.setGraphic(null);
         alert.setOnCloseRequest(e -> {
-            this.gui.changeStage("start_menu.fxml");
+            System.exit(0);
         });
         alert.showAndWait();
+    }
+
+    @Override
+    public void addGui(UpdaterGui updaterGui) {
+        this.gui = updaterGui;
     }
 }
