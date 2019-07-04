@@ -1,23 +1,25 @@
 package server.model.gameboard;
 
 import client.weapons.Weapon;
-import constants.Color;
 import constants.Constants;
 import server.controller.turns.TurnPhase;
 import server.model.cards.AmmoTile;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 import server.model.game.GameState;
-import server.model.map.*;
+import server.model.map.GameMap;
+import server.model.map.Room;
+import server.model.map.SpawnPoint;
+import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
 import server.model.player.GameCharacter;
-import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
-import java.util.HashMap;
-
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class containing all the different physical elements of a certain game.
@@ -130,7 +132,8 @@ public class GameBoard implements Serializable {
 
         for(SpawnPoint sp : listOfSpawnPoints){
             for(int i = 0; i < Constants.NUMBER_OF_WEAPON_PER_SPAWN_POINT; i++){
-                sp.addItem(this.weaponDeck.draw());
+                if(weaponDeck.getSize() != 0)
+                    sp.addItem(this.weaponDeck.draw());
             }
         }
     }

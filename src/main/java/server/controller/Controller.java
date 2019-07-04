@@ -18,6 +18,7 @@ import server.model.cards.WeaponCard;
 import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.map.GameMap;
+import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.ConcretePlayer;
@@ -143,7 +144,7 @@ public class Controller {
         TurnHandler turnHandler = currentGame.getTurnHandler();  //the phase depends on the action the player is sending!! it may be the first, the second or the third one
         ConcretePlayer currentPlayer = (ConcretePlayer) currentGame.getCurrentPlayer();
 
-        System.out.println("Processing " + action.getClass().toString().toUpperCase() +
+        System.out.println("Current player: " + currentPlayer.getName() + ", processing " + action.getClass().toString().toUpperCase() +
                 "\nWe are in the game state: " +currentGame.getCurrentState());
         System.out.println("We are in the action number: " +turnHandler.getCurrentTurnPhase());
 
@@ -296,7 +297,8 @@ public class Controller {
         for(SquareAbstract square : this.squaresToUpdate){
             if(square instanceof Square){
                 square.addItem(drawAmmo());
-            } else {
+            } else if(square instanceof SpawnPoint && ((SpawnPoint) square).getWeaponCards().size() < Constants.NUMBER_OF_WEAPON_PER_SPAWN_POINT &&
+                            currentGame.getCurrentGameBoard().getWeaponDeck().getSize() != 0){
                 square.addItem(drawWeapon());
             }
         }

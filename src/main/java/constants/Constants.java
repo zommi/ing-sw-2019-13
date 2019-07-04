@@ -8,9 +8,9 @@ import java.util.Properties;
 public class Constants {
 
     //match rules
-    public static final int MIN_PLAYERS = 2;
+    public static final int MIN_PLAYERS = 3;
     public static final int MAX_PLAYERS = 5;
-    public static final int MIN_PLAYERS_TO_CONTINUE = 1;
+    public static final int MIN_PLAYERS_TO_CONTINUE = 2;
 
     public static final long PING_DELAY_SEC = 1;
 
@@ -126,8 +126,8 @@ public class Constants {
             RMI_PORT = Integer.valueOf(properties.getProperty("app.registryPort"));
             REGISTRATION_ROOM_NAME = properties.getProperty("app.registrationRoomName");
             SOCKET_PORT = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
-            GAME_START_TIMER_MSEC = Integer.valueOf(properties.getProperty("app.actionTimer"));
-            ACTION_TIMEOUT_MSEC = Integer.valueOf(properties.getProperty("app.gameStartTimer"));
+            ACTION_TIMEOUT_MSEC = Integer.valueOf(properties.getProperty("app.actionTimer"));
+            GAME_START_TIMER_MSEC = Integer.valueOf(properties.getProperty("app.gameStartTimer"));
         }else{
             SERVER_ADDRESS = "localhost";
             REGISTRATION_ROOM_NAME = "gameproxy";
