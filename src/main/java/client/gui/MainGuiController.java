@@ -35,6 +35,7 @@ import server.model.cards.TagbackGrenade;
 import server.model.cards.WeaponCard;
 import server.model.map.*;
 import server.model.player.GameCharacter;
+import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
 import view.PlayerBoardAnswer;
 
@@ -583,13 +584,13 @@ public class MainGuiController implements GuiController {
                 if(character.getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
                     if (this.idClientGuiCharacterMap.get(id) == null) {
                         this.idClientGuiCharacterMap.put(id, placeEnemy(
-                                this.model.getPlayerBoard(id),
-                                model.getGameBoard().getResult().getActiveCharacters().get(id).getConcretePlayer().getName())
+                                character.getConcretePlayer().getPlayerBoard(),
+                                character.getConcretePlayer().getName())
                         );
                     } else {
                         this.idClientGuiCharacterMap.get(id).setPosition(getTile(
-                                this.model.getPlayerBoard(id).getRow(),
-                                this.model.getPlayerBoard(id).getCol()
+                                character.getConcretePlayer().getPlayerBoard().getRow(),
+                                character.getConcretePlayer().getPlayerBoard().getCol()
                         ));
                     }
                 }
@@ -599,10 +600,10 @@ public class MainGuiController implements GuiController {
         }
     }
 
-    private GuiCharacter placeEnemy(PlayerBoardAnswer playerBoard, String name) {
+    private GuiCharacter placeEnemy(PlayerBoard playerBoard, String name) {
         for(GuiTile tile : tiles){
             if(tile.getCol() == playerBoard.getCol() && tile.getRow() == playerBoard.getRow()){
-                return new GuiCharacter(tile,playerBoard.getResult(),name);
+                return new GuiCharacter(tile,playerBoard,name);
             }
         }
         return null;
@@ -716,7 +717,7 @@ public class MainGuiController implements GuiController {
         }else{
             List<Room> rooms = this.model.getGameBoard().getResult().getMap().getRooms();
             for(Room room: rooms){
-                CheckBox choice = new CheckBox(room.toString());
+                CheckBox choice = new CheckBox(room.getColor().toString());
                 box.getChildren().add(choice);
                 checkBoxList.add(choice);
             }

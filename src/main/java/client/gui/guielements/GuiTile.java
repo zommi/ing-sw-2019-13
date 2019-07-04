@@ -36,6 +36,7 @@ public abstract class GuiTile extends StackPane {
         this.getChildren().add(new Rectangle(height,width,paint));
         box.setAlignment(Pos.CENTER);
         this.getChildren().add(box);
+        this.getChildren().get(this.getChildren().size()-1).toFront();
     }
 
     public int getSide() {

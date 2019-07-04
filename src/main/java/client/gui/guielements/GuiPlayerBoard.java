@@ -50,7 +50,7 @@ public class GuiPlayerBoard extends StackPane {
         for(int i = 0; i < playerBoard.getResult().getDamageTaken(); i++){
             StackPane pane = new StackPane();
             Circle token = new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage().get(i).getNormalColor()));
-            Label label = new Label(String.valueOf(i));
+            Label label = new Label(String.valueOf(i+1));
             label.setAlignment(Pos.CENTER);
             pane.getChildren().add(token);
             pane.getChildren().add(label);
@@ -68,12 +68,6 @@ public class GuiPlayerBoard extends StackPane {
         }
         Label marksLabel = new Label("MARKS");
         marksGrid.add(marksLabel,playerBoard.getResult().getMarks().size(),0);
-
-        /*GridPane pointGrid = new GridPane();
-        for(int i = 0; i < Constants.POINTS_VALUES.length; i++){
-            pointGrid.add(new Label(((Integer) Constants.POINTS_VALUES[i]).toString()),i,0);
-        }
-        for(int i = 0; i < playerBoard.getResult().)*/
 
         GridPane ammoGrid = new GridPane();
         ammoGrid.setPadding(new Insets(1.0,1.0,1.0,1.0));
