@@ -1,6 +1,6 @@
 package client.gui;
 
-import client.SetupInfo;
+import client.info.SetupInfo;
 import client.gui.guielements.GuiController;
 import constants.Constants;
 import javafx.fxml.FXML;

@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.SquareInfo;
+import client.info.SquareInfo;
 import client.weapons.*;
 
 import constants.Color;

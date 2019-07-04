@@ -2,9 +2,8 @@ package client.powerups;
 
 import client.GameModel;
 import client.InputAbstract;
-import client.SquareInfo;
+import client.info.SquareInfo;
 import server.model.cards.*;
-import server.model.map.Square;
 
 public class PowerUpParser {
 

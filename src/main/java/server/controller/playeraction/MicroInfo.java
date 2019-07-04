@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.Info;
+import client.info.Info;
 import client.weapons.MicroEffect;
 import constants.Color;
 import server.model.map.Room;

@@ -1,6 +1,6 @@
 package client.weapons;
 
-import client.SquareInfo;
+import client.info.SquareInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

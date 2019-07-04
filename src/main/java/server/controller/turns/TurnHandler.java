@@ -1,9 +1,9 @@
 package server.controller.turns;
 
 import constants.Constants;
-import server.NextPlayerTimer;
-import server.SpawnTimer;
-import server.TagbackTimer;
+import server.timer.NextPlayerTimer;
+import server.timer.SpawnTimer;
+import server.timer.TagbackTimer;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
@@ -12,7 +12,7 @@ import server.controller.playeraction.normalaction.ShootAction;
 import server.model.game.GameState;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
-import view.GrenadeAnswer;
+import answers.GrenadeAnswer;
 
 import java.util.*;
 

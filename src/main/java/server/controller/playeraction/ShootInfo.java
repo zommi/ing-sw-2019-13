@@ -1,7 +1,7 @@
 package server.controller.playeraction;
 
-import client.Info;
-import client.ReloadInfo;
+import client.info.Info;
+import client.info.ReloadInfo;
 import client.weapons.Cost;
 import client.weapons.MicroEffect;
 import client.weapons.Weapon;

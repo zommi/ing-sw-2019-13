@@ -1,17 +1,13 @@
 package client;
 
 import client.cli.UpdaterCLI;
+import client.info.*;
 import client.powerups.PowerUpParser;
 import client.weapons.ShootParser;
-import client.weapons.Weapon;
-import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
-import server.model.map.Room;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ActionParser{
 

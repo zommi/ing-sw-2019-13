@@ -1,9 +1,7 @@
 package client.powerups;
 
-import client.Info;
-import client.SquareInfo;
-import constants.Color;
-import server.model.cards.PowerUp;
+import client.info.Info;
+import client.info.SquareInfo;
 import server.model.cards.PowerUpCard;
 
 public class PowerUpPack implements Info {

@@ -7,7 +7,8 @@ import server.model.game.Game;
 import server.model.game.GameState;
 import server.model.player.Figure;
 import server.model.player.PlayerAbstract;
-import view.*;
+import answers.*;
+import server.timer.GameStartTimer;
 
 import java.util.*;
 
@@ -48,7 +49,7 @@ public class GameManager {
         activePlayers.add(playerAbstract);
     }
 
-    void setInactive(PlayerAbstract playerAbstract){
+    public void setInactive(PlayerAbstract playerAbstract){
         if(!activePlayers.contains(playerAbstract)){
             System.out.println(playerAbstract.getName() + " is already set as inactive!");
             return;

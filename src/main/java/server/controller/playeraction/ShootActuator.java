@@ -4,7 +4,7 @@ package server.controller.playeraction;
 import constants.Constants;
 import server.controller.Controller;
 import server.model.cards.WeaponCard;
-import view.MessageAnswer;
+import answers.MessageAnswer;
 
 /**
  * It is used to create an actuator and actuate a particular shoot info

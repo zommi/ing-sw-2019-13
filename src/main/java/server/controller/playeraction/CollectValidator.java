@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.CollectInfo;
+import client.info.CollectInfo;
 import client.weapons.Cost;
 import constants.Constants;
 import server.model.cards.PowerUpCard;

@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.ReloadInfo;
+import client.info.ReloadInfo;
 import server.controller.Controller;
 import server.model.player.PlayerAbstract;
 

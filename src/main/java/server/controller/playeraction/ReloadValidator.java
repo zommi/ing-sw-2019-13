@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.ReloadInfo;
+import client.info.ReloadInfo;
 import client.weapons.Cost;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;

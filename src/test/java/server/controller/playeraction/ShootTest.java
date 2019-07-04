@@ -1,8 +1,8 @@
 package server.controller.playeraction;
 
 
-import client.ReloadInfo;
-import client.SquareInfo;
+import client.info.ReloadInfo;
+import client.info.SquareInfo;
 import client.weapons.MacroPack;
 import client.weapons.MicroPack;
 import client.weapons.ScopePack;

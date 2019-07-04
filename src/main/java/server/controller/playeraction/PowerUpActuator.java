@@ -3,7 +3,7 @@ package server.controller.playeraction;
 
 import constants.Constants;
 import server.controller.Controller;
-import view.MessageAnswer;
+import answers.MessageAnswer;
 
 public class PowerUpActuator {
 

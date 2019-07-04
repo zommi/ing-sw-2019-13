@@ -1,8 +1,9 @@
 package server;
 
 
-import client.*;
-import view.ServerAnswer;
+import answers.ServerAnswer;
+import answers.SocketInfo;
+import client.info.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

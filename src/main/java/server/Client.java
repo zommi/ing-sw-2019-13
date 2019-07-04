@@ -2,9 +2,9 @@ package server;
 
 import client.ReceiverInterface;
 import server.model.player.PlayerAbstract;
-import view.MessageAnswer;
-import view.PingAnswer;
-import view.ServerAnswer;
+import answers.MessageAnswer;
+import answers.PingAnswer;
+import answers.ServerAnswer;
 
 import java.rmi.RemoteException;
 

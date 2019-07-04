@@ -1,6 +1,6 @@
 package server.controller.playeraction;
 
-import client.CollectInfo;
+import client.info.CollectInfo;
 import constants.Constants;
 import server.controller.Controller;
 import server.model.cards.CollectableInterface;
@@ -9,7 +9,7 @@ import server.model.map.SpawnPoint;
 import server.model.map.Square;
 import server.model.map.SquareAbstract;
 import server.model.player.PlayerAbstract;
-import view.MessageAnswer;
+import answers.MessageAnswer;
 
 /**
  * Actuates the collect action

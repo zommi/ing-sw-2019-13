@@ -1,10 +1,13 @@
 package client;
 
+import client.info.AsynchronousInfo;
+import client.info.Connection;
+import client.info.Info;
+import client.info.NameInfo;
 import constants.Constants;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Properties;
 
 public class ConnectionSocket implements Connection {
 

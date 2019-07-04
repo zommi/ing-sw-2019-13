@@ -2,6 +2,10 @@ package client.gui;
 
 import client.*;
 import client.gui.guielements.*;
+import client.info.Info;
+import client.info.ReconnectInfo;
+import client.info.SquareInfo;
+import client.info.TagbackStopInfo;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.ScopePack;
@@ -37,7 +41,6 @@ import server.model.map.*;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
-import view.PlayerBoardAnswer;
 
 public class MainGuiController implements GuiController {
 
@@ -474,8 +477,8 @@ public class MainGuiController implements GuiController {
         alert.setOnCloseRequest(e -> alert.close());
         GridPane box = new GridPane();
         box.add(new GuiKillshotTrack(this.gui.getGameModel().getGameBoard().getResult().getTrack()),0,KILLSHOT_TRACK_INDEX);
-        for(int i = 0; i < this.gui.getGameModel().getGameBoard().getResult().getActiveCharacters().size() ; i++){
-            box.add(new GuiPlayerBoard(this.gui.getGameModel().getGameBoard().getPlayerBoard(i)),0,i + PLAYERBOARDS_OFFSET);
+        for(int i = 0; i < model.getGameBoard().getResult().getActiveCharacters().size() ; i++){
+            box.add(new GuiPlayerBoard(model.getGameBoard().getResult().getActiveCharacters().get(i).getConcretePlayer().getPlayerBoard()),0,i + PLAYERBOARDS_OFFSET);
         }
         alert.getDialogPane().setContent(box);
         alert.setOnCloseRequest(e -> alert.close());

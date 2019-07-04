@@ -1,6 +1,9 @@
 package server;
 
 import client.*;
+import client.info.Info;
+import client.info.NameInfo;
+import client.info.SetupInfo;
 import constants.Constants;
 import server.model.player.*;
 

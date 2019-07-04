@@ -1,5 +1,7 @@
 package client;
 
+import client.info.ReloadInfo;
+import client.info.SquareInfo;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.ScopePack;

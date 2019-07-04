@@ -1,10 +1,10 @@
 package server.controller.playeraction;
 
-import client.ReloadInfo;
+import client.info.ReloadInfo;
 import server.controller.Controller;
 import server.model.cards.WeaponCard;
 import server.model.player.PlayerAbstract;
-import view.MessageAnswer;
+import answers.MessageAnswer;
 
 public class ReloadActuator {
 

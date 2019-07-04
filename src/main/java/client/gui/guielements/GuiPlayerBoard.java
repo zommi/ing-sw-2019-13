@@ -4,22 +4,21 @@ import constants.Color;
 import constants.Constants;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.LightBase;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import server.model.cards.WeaponCard;
-import view.PlayerBoardAnswer;
+import server.model.player.PlayerBoard;
 
 public class GuiPlayerBoard extends StackPane {
 
-    private final int COLUMN = 3;
+    private static final int COLUMN = 3;
 
-    private final int ROW = 2;
+    private static final int ROW = 2;
 
-    public GuiPlayerBoard(PlayerBoardAnswer playerBoard){
+    public GuiPlayerBoard(PlayerBoard playerBoard){
         super();
         this.getStylesheets().add("style.css");
         this.setWidth(600.0);
@@ -47,9 +46,9 @@ public class GuiPlayerBoard extends StackPane {
         hpGrid.setPrefWidth(180.0);
         hpGrid.setPrefHeight(15.0);
         hpGrid.setAlignment(Pos.CENTER_LEFT);
-        for(int i = 0; i < playerBoard.getResult().getDamageTaken(); i++){
+        for(int i = 0; i < playerBoard.getDamageTaken(); i++){
             StackPane pane = new StackPane();
-            Circle token = new Circle(7,Paint.valueOf(playerBoard.getResult().getDamage().get(i).getNormalColor()));
+            Circle token = new Circle(7,Paint.valueOf(playerBoard.getDamage().get(i).getNormalColor()));
             Label label = new Label(String.valueOf(i+1));
             label.setAlignment(Pos.CENTER);
             pane.getChildren().add(token);
@@ -57,24 +56,24 @@ public class GuiPlayerBoard extends StackPane {
             hpGrid.add(pane,i,0);
         }
         Label hpLabel = new Label("HP");
-        hpGrid.add(hpLabel,playerBoard.getResult().getDamageTaken(),0);
+        hpGrid.add(hpLabel,playerBoard.getDamageTaken(),0);
 
         GridPane marksGrid = new GridPane();
         marksGrid.setPrefWidth(45.0);
         marksGrid.setPrefHeight(15.0);
         marksGrid.setAlignment(Pos.CENTER_LEFT);
-        for (int i = 0; i < playerBoard.getResult().getMarks().size() ; i++){
-            marksGrid.add(new Circle(5,Paint.valueOf(playerBoard.getResult().getMarks().get(i).getNormalColor())),i,0);
+        for (int i = 0; i < playerBoard.getMarks().size() ; i++){
+            marksGrid.add(new Circle(5,Paint.valueOf(playerBoard.getMarks().get(i).getNormalColor())),i,0);
         }
         Label marksLabel = new Label("MARKS");
-        marksGrid.add(marksLabel,playerBoard.getResult().getMarks().size(),0);
+        marksGrid.add(marksLabel,playerBoard.getMarks().size(),0);
 
         GridPane ammoGrid = new GridPane();
         ammoGrid.setPadding(new Insets(1.0,1.0,1.0,1.0));
         ammoGrid.setHgap(2.0);
         ammoGrid.setVgap(2.0);
 
-        for(int i = 0; i < playerBoard.getResult().getRedAmmo();i++){
+        for(int i = 0; i < playerBoard.getRedAmmo();i++){
             ammoGrid.add(
                     new Rectangle(10.0,10.0,Paint.valueOf(Color.RED.getNormalColor())),
                     i,
@@ -84,7 +83,7 @@ public class GuiPlayerBoard extends StackPane {
         Label redLabel = new Label("RED AMMO");
         ammoGrid.add(redLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,0);
 
-        for(int i = 0; i < playerBoard.getResult().getBlueAmmo();i++){
+        for(int i = 0; i < playerBoard.getBlueAmmo();i++){
             ammoGrid.add(
                     new Rectangle(10.0,10.0,Paint.valueOf(Color.BLUE.getNormalColor())),
                     i,
@@ -94,7 +93,7 @@ public class GuiPlayerBoard extends StackPane {
         Label blueLabel = new Label("BLUE AMMO");
         ammoGrid.add(blueLabel,Constants.MAX_AMMO_CUBES_PER_COLOR,1);
 
-        for(int i = 0; i < playerBoard.getResult().getYellowAmmo();i++){
+        for(int i = 0; i < playerBoard.getYellowAmmo();i++){
             ammoGrid.add(
                     new Rectangle(10.0,10.0,Paint.valueOf(Color.YELLOW.getNormalColor())),
                     i,
@@ -106,7 +105,7 @@ public class GuiPlayerBoard extends StackPane {
 
         GridPane unloadedWeaponsGrid = new GridPane();
         int index = 0;
-        for(WeaponCard card : playerBoard.getResult().getUnloadedWeapons()){
+        for(WeaponCard card : playerBoard.getUnloadedWeapons()){
             GuiWeaponCard cardToAdd = new GuiWeaponCard(
                     card,
                     index,

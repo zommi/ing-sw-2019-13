@@ -2,6 +2,7 @@ package client.cli;
 
 
 import client.*;
+import client.info.*;
 import constants.Color;
 import constants.Constants;
 import server.controller.turns.TurnPhase;
@@ -13,8 +14,8 @@ import server.model.map.SpawnPoint;
 import server.model.player.Figure;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
-import view.PlayerBoardAnswer;
-import view.PlayerHandAnswer;
+import answers.PlayerBoardAnswer;
+import answers.PlayerHandAnswer;
 
 import java.rmi.RemoteException;
 import java.util.*;

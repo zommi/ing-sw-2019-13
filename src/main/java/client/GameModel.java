@@ -1,12 +1,12 @@
 package client;
 
-import server.SetRespawnAnswer;
+import answers.SetRespawnAnswer;
 import server.controller.turns.TurnPhase;
 import server.model.game.GameState;
 import server.model.map.GameMap;
 import server.model.player.GameCharacter;
 import server.model.player.PlayerAbstract;
-import view.*;
+import answers.*;
 
 import java.io.Serializable;
 import java.util.*;

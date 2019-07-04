@@ -1,7 +1,7 @@
 package server.controller.playeraction.normalaction;
 
-import client.CollectInfo;
-import client.MoveInfo;
+import client.info.CollectInfo;
+import client.info.MoveInfo;
 import server.controller.Controller;
 import server.controller.playeraction.*;
 import server.model.map.GameMap;

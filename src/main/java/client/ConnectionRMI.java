@@ -1,8 +1,9 @@
 package client;
 
+import client.info.*;
 import constants.Constants;
 import server.GameProxyInterface;
-import view.ServerAnswer;
+import answers.ServerAnswer;
 
 import java.io.Serializable;
 import java.rmi.NotBoundException;

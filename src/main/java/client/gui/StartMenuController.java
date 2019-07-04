@@ -2,12 +2,11 @@ package client.gui;
 
 import client.ConnectionRMI;
 import client.ConnectionSocket;
-import client.SetupInfo;
+import client.info.SetupInfo;
 import client.gui.guielements.GuiController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import server.model.player.Figure;
 
 import java.rmi.RemoteException;
 

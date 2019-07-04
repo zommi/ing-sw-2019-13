@@ -1,7 +1,7 @@
 package client.gui;
 
 import client.ActionParser;
-import client.Connection;
+import client.info.Connection;
 import client.GameModel;
 import client.Updater;
 import client.gui.guielements.GuiController;
@@ -143,7 +143,7 @@ public class UpdaterGui extends Application implements Updater {
     /**
      * Method that is called whenever there is a change notified on the GameModel,
      * when this method is called based on the notification received different methods
-     * are called on the controller for the gui. This handles all updates on the view.
+     * are called on the controller for the gui. This handles all updates on the answers.
      * @param gameModel The object that is observed
      * @param object Parameter used to notify what has changed on the observed object
      */

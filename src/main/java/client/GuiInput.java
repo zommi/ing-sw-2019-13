@@ -2,19 +2,17 @@ package client;
 
 import client.gui.MainGuiController;
 import client.gui.UpdaterGui;
+import client.info.ReloadInfo;
+import client.info.SquareInfo;
 import client.weapons.MacroEffect;
 import client.weapons.MicroEffect;
 import client.weapons.ScopePack;
 import client.weapons.Weapon;
 import constants.Color;
-import javafx.application.Platform;
 import server.model.cards.PowerUpCard;
 import server.model.cards.WeaponCard;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GuiInput extends InputAbstract {
 

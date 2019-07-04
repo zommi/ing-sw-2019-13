@@ -1,11 +1,11 @@
 package server;
 
 import client.ReceiverInterface;
-import client.SetupInfo;
+import client.info.SetupInfo;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
-import view.*;
+import answers.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

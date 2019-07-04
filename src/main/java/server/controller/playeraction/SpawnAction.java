@@ -1,12 +1,11 @@
 package server.controller.playeraction;
-import client.SpawnInfo;
+import client.info.SpawnInfo;
 import server.controller.Controller;
-import server.model.cards.PowerUp;
 import server.model.cards.PowerUpCard;
 import server.model.gameboard.GameBoard;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerState;
-import view.MessageAnswer;
+import answers.MessageAnswer;
 
 import java.util.ArrayList;
 import java.util.List;

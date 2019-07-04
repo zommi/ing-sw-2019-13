@@ -1,12 +1,12 @@
 package server.controller;
 
-import client.*;
+import client.info.*;
 import client.powerups.PowerUpPack;
 import client.weapons.ShootPack;
 import constants.Color;
 import constants.Constants;
 import server.GameManager;
-import server.SetRespawnAnswer;
+import answers.SetRespawnAnswer;
 import server.controller.playeraction.*;
 import server.controller.playeraction.normalaction.CollectAction;
 import server.controller.playeraction.normalaction.MoveAction;
@@ -25,7 +25,7 @@ import server.model.player.ConcretePlayer;
 import server.model.player.PlayerAbstract;
 import server.model.player.PlayerBoard;
 import server.model.player.PlayerState;
-import view.*;
+import answers.*;
 
 import java.util.*;
 

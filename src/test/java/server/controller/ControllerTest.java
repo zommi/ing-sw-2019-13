@@ -1,8 +1,8 @@
 package server.controller;
 
-import client.Info;
-import client.ReloadInfo;
-import client.SquareInfo;
+import client.info.Info;
+import client.info.ReloadInfo;
+import client.info.SquareInfo;
 import client.powerups.PowerUpPack;
 import constants.Color;
 import org.junit.jupiter.api.Test;

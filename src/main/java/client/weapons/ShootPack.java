@@ -1,8 +1,8 @@
 package client.weapons;
 
-import client.Info;
-import client.ReloadInfo;
-import client.SquareInfo;
+import client.info.Info;
+import client.info.ReloadInfo;
+import client.info.SquareInfo;
 import server.model.cards.PowerUpCard;
 
 import java.util.ArrayList;

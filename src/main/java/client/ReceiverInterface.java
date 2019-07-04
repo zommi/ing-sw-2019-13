@@ -1,10 +1,9 @@
 package client;
 
-import view.ServerAnswer;
+import answers.ServerAnswer;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public interface ReceiverInterface extends Remote {
 

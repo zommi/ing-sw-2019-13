@@ -1,7 +1,7 @@
 package client;
 
-import server.SocketInfo;
-import view.ChangeCurrentPlayerAnswer;
+import client.info.Connection;
+import answers.SocketInfo;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
