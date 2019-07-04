@@ -127,6 +127,8 @@ public class MainGuiController implements GuiController {
      */
     private static final double POWERUP_HEIGHT = 200;
 
+    private static final String SPAWN_ALERT = "You first need to spawn!\n";
+
     /**
      * Method that initializes the gameboard with the map received
      * from the server and initialiazes the log.
@@ -304,13 +306,11 @@ public class MainGuiController implements GuiController {
      */
     @FXML
     private void drawWeapon(MouseEvent event, GuiWeaponCard weaponCard, int cardToDiscardIndex, GuiSpawnPoint sp) {
-        GuiWeaponCard cardToAdd = weaponCard;
+        weaponCard.setCursor(Cursor.HAND);
+        weaponCard.setFitWidth(weaponHand.getWidth()/3);
+        weaponCard.setFitHeight(weaponHand.getHeight());
 
-        cardToAdd.setCursor(Cursor.HAND);
-        cardToAdd.setFitWidth(weaponHand.getWidth()/3);
-        cardToAdd.setFitHeight(weaponHand.getHeight());
-
-        cardToAdd.setOnMousePressed(null);
+        weaponCard.setOnMousePressed(null);
 
         List<PowerUpCard> powerUpCards = this.model.getPlayerHand().getPowerupHand().isEmpty() ?
                 Collections.emptyList() :
@@ -388,7 +388,7 @@ public class MainGuiController implements GuiController {
             }
             logText("Select a square to move!\n");
         }else{
-            logText("You first need to spawn!\n");
+            logText(SPAWN_ALERT);
         }
     }
 
@@ -396,24 +396,22 @@ public class MainGuiController implements GuiController {
      * Method called when the players presses the COLLECT action button,
      * it sets the event on the tiles.
      */
-    public void enableCollect(MouseEvent mouseEvent) {
+    public void enableCollect() {
         if(!this.model.isToSpawn() || !this.model.isToRespawn()) {
             for (GuiSquare square : squares) {
                 square.setOnMousePressed(e -> {
                     Info collectInfo = this.actionParser.createCollectEvent(square.getRow(), square.getCol(), Constants.NO_CHOICE, null, Collections.emptyList());
                     this.gui.getConnection().send(collectInfo);
-                    //this.tilesToUpdate.add(square);
                 });
             }
             for (GuiSpawnPoint sp : spawnPoints) {
                 sp.setOnMousePressed(e -> {
                     showWeapons(sp);
-                    //this.tilesToUpdate.add(sp);
                 });
             }
             logText("Select a square!\n");
         } else {
-            logText("You first need to spawn!\n");
+            logText(SPAWN_ALERT);
         }
     }
 
@@ -421,14 +419,14 @@ public class MainGuiController implements GuiController {
      * Method called when the players presses the SHOOT action button,
      * it sets the event on the weapon cards in hand.
      */
-    public void enableShoot(MouseEvent mouseEvent) {
+    public void enableShoot() {
         if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a weapon to use!\n");
             for(Node card : weaponHand.getChildren()){
                 card.setDisable(false);
             }
         }else{
-            logText("You first need to spawn!\n");
+            logText(SPAWN_ALERT);
         }
     }
 
@@ -436,14 +434,14 @@ public class MainGuiController implements GuiController {
      * Method called when the players presses the POWERUP action button,
      * it sets the event on the weapon cards in hand.
      */
-    public void enablePowerup(MouseEvent mouseEvent){
+    public void enablePowerup(){
         if(!this.model.isToSpawn() || !this.model.isToRespawn()){
             logText("Select a powerup to use! \n");
             for(Node card : powerupHand.getChildren()){
                 card.setDisable(false);
             }
         }else{
-            logText("You first need to spawn!\n");
+            logText(SPAWN_ALERT);
         }
     }
 
@@ -462,10 +460,9 @@ public class MainGuiController implements GuiController {
 
     /**
      * Shows the scoreboard containing the playerboards of all the players.
-     * @param mouseEvent The pressing of the button.
      */
     @FXML
-    public void showScoreboard(MouseEvent mouseEvent) {
+    public void showScoreboard() {
         final int PLAYERBOARDS_OFFSET = 1;
         final int KILLSHOT_TRACK_INDEX = 0;
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -580,7 +577,7 @@ public class MainGuiController implements GuiController {
     void updateGameboard() {
         if(this.model != null) {
             //update position of players
-            int id = 0;
+            int id;
             for (GameCharacter character : model.getGameBoard().getResult().getActiveCharacters()) {
                 id = character.getConcretePlayer().getClientID();
                 if(character.getConcretePlayer().getPlayerState() != PlayerState.TOBESPAWNED) {
@@ -945,9 +942,8 @@ public class MainGuiController implements GuiController {
      * Method called when the Reload Button is pressed, it sends the info to the server.
      * If the player doesn't have a weapon to reload or doesn't want to reload any weapon
      * a empyt info is sent.
-     * @param mouseEvent the pressing of the button.
      */
-    public void reload(MouseEvent mouseEvent) {
+    public void reload() {
         this.gui.getConnection().send(askReload());
     }
 
@@ -1040,14 +1036,25 @@ public class MainGuiController implements GuiController {
         alert.setHeaderText("Game has ended, the winner is: " + this.model.getGameOverAnswer().getWinner().getName()  + ", thank you for playing!");
         alert.setContentText(null);
         alert.setGraphic(null);
-        alert.setOnCloseRequest(e -> {
-            System.exit(0);
-        });
+        alert.setOnCloseRequest(e -> System.exit(0));
         alert.showAndWait();
     }
 
     @Override
     public void addGui(UpdaterGui updaterGui) {
         this.gui = updaterGui;
+    }
+
+    /**
+     * Method called when the server disconnects
+     */
+    public void close() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("SERVER DISCONNECTED");
+        alert.setHeaderText("OH NO THE SERVER DID AN OPSIEEEE :(((");
+        alert.setContentText(null);
+        alert.setGraphic(null);
+        alert.setOnCloseRequest(e -> System.exit(1));
+        alert.showAndWait();
     }
 }

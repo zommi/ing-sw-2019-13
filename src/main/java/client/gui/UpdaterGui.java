@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class UpdaterGui extends Application implements Updater {
 
@@ -30,11 +29,6 @@ public class UpdaterGui extends Application implements Updater {
     private HashMap<String, GuiController> controllerMap = new HashMap<>();
 
     /**
-     * Controller for the shown stage
-     */
-    private GuiController currentController;
-
-    /**
      * Controller for the game stage, it can be used before the game has started
      */
     private MainGuiController mainGuiController;
@@ -45,8 +39,6 @@ public class UpdaterGui extends Application implements Updater {
     private Scene currentScene;
 
     private Stage stage;
-
-    private String stageName;
 
     /**
      * Type of connection chosen by the client
@@ -79,13 +71,14 @@ public class UpdaterGui extends Application implements Updater {
 
     private ActionParser actionParser;
 
-    private final String GUI = "gui.fxml";
-    private final String LOADING_SCREEN = "loading_screen.fxml";
-    private final String MAP_SELECTION= "map_selection.fxml";
-    private final String START_MENU = "start_menu.fxml";
+    private static final String GUI = "gui.fxml";
+    private static final String LOADING_SCREEN = "loading_screen.fxml";
+    private static final String MAP_SELECTION= "map_selection.fxml";
+    private static final String START_MENU = "start_menu.fxml";
+    private static final String RESPAWN_MESSAGE = "You died!\nChoose a powerup and Spawn in that color! \n";
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         set();
         this.stage = primaryStage;
         this.stage.setResizable(false);
@@ -101,18 +94,16 @@ public class UpdaterGui extends Application implements Updater {
      */
     public void set(){
         try {
-            List<String> fxmls = new ArrayList<String>(Arrays.asList(GUI,LOADING_SCREEN,MAP_SELECTION,START_MENU));
+            List<String> fxmls = new ArrayList<>(Arrays.asList(GUI,LOADING_SCREEN,MAP_SELECTION,START_MENU));
             for(String path: fxmls) {
                 FXMLLoader loader = new FXMLLoader((getClass().getResource(File.separatorChar + "fxml" + File.separatorChar +path)));
                 this.sceneMap.put(path, new Scene(loader.load()));
                 GuiController controller = loader.getController();
                 this.controllerMap.put(path, controller);
-                this.currentController = controller;
                 controller.addGui(this);
             }
             currentScene = sceneMap.get(START_MENU);
             mainGuiController = (MainGuiController)getControllerFromString(GUI);
-            this.stageName = START_MENU;
             this.actionParser = new ActionParser(this);
         }catch (Exception e){
             e.printStackTrace();
@@ -133,9 +124,7 @@ public class UpdaterGui extends Application implements Updater {
      * @param scene Name of the stage that needs to be shown
      */
     public void changeStage(String scene){
-        this.stageName = scene;
         currentScene = sceneMap.get(scene);
-        currentController = controllerMap.get(scene);
         stage.setScene(currentScene);
         format();
         stage.show();
@@ -172,7 +161,6 @@ public class UpdaterGui extends Application implements Updater {
                 if(model.getSetupRequestAnswer().isReconnection()){
                     mainGuiController.restoreSquares();
                     mainGuiController.updateGameboard();
-                    //mainGuiController.updateHand();
                 }
             });
         }
@@ -202,22 +190,18 @@ public class UpdaterGui extends Application implements Updater {
 
         if(object.equals("PlayerHand")){
             System.out.println("Hand Updated");
-            Platform.runLater(() -> {
-                mainGuiController.updateHand();
-            });
+            Platform.runLater(() -> mainGuiController.updateHand());
         }
 
         if(object.equals("Player died")){
             System.out.println("gameboard updated");
-            Platform.runLater(() -> {
-                mainGuiController.updateGameboard();
-            });
+            Platform.runLater(() -> mainGuiController.updateGameboard());
         }
 
         if(object.equals("Respawn")){
             System.out.println("Respawn");
             Platform.runLater(() -> {
-                mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");;
+                mainGuiController.logText(RESPAWN_MESSAGE);
                 mainGuiController.updateHand();
             });
         }
@@ -227,46 +211,39 @@ public class UpdaterGui extends Application implements Updater {
         }
 
         if(object.equals("Grenade")){
-            Platform.runLater(() -> {
-                mainGuiController.handleGrenade();
-            });
+            Platform.runLater(() -> mainGuiController.handleGrenade());
         }
 
         if(object.equals("Game Over")){
             System.out.println("Game over");
-            Platform.runLater(() -> {
-                mainGuiController.gameOver();
-            });
+            Platform.runLater(() -> mainGuiController.gameOver());
         }
 
         if(object.equals("Message")){
             System.out.println("message received");
-            Platform.runLater(() -> {
-                mainGuiController.logText(this.model.getMessage() + "\n");
-            });
+            Platform.runLater(() -> mainGuiController.logText(this.model.getMessage() + "\n"));
+        }
+
+        if(object.equals("Server offline")){
+            Platform.runLater(() -> mainGuiController.close());
         }
     }
 
 
-    public void handleTurn(){
+    private void handleTurn(){
         Platform.runLater(() -> {
-            try{
-                TimeUnit.MILLISECONDS.sleep(250);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
             if(getConnection().getClientID() == getConnection().getCurrentID()){
                 this.mainGuiController.enableAll();
                 if (this.model.isToSpawn()){
                     mainGuiController.logText("Choose a powerup and Spawn in that color! \n");
                 }else if(this.model.isToRespawn()){
-                    mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");;
+                    mainGuiController.logText(RESPAWN_MESSAGE);
                 }
             } else {
                 this.mainGuiController.disableAll();
                 if(this.model.isToRespawn()){
                     mainGuiController.enableSpawn();
-                    mainGuiController.logText("You died!\nChoose a powerup and Spawn in that color! \n");
+                    mainGuiController.logText(RESPAWN_MESSAGE);
                 }
             }
         });
@@ -276,15 +253,15 @@ public class UpdaterGui extends Application implements Updater {
         this.connection = connection;
     }
 
-    public void setModel(){
+    void setModel(){
         this.model = connection.getGameModel();
     }
 
-    public void setMapIndex(int mapIndex) {
+    void setMapIndex(int mapIndex) {
         this.mapIndex = mapIndex;
     }
 
-    public void setInitialSkulls(int initialSkulls) {
+    void setInitialSkulls(int initialSkulls) {
         this.initialSkulls = initialSkulls;
     }
 
@@ -296,19 +273,19 @@ public class UpdaterGui extends Application implements Updater {
         return character;
     }
 
-    public void setPlayerName(String name) {
+    void setPlayerName(String name) {
         this.playerName = name;
     }
 
-    public String getPlayerName() {
+    String getPlayerName() {
         return playerName;
     }
 
-    public int getMapIndex() {
+    int getMapIndex() {
         return mapIndex;
     }
 
-    public int getInitialSkulls() {
+    int getInitialSkulls() {
         return initialSkulls;
     }
 
@@ -320,7 +297,7 @@ public class UpdaterGui extends Application implements Updater {
         return this.model;
     }
 
-    public void attachToObserver() {
+    void attachToObserver() {
         this.model.addObserver(this);
     }
 
@@ -328,7 +305,7 @@ public class UpdaterGui extends Application implements Updater {
         return this.controllerMap.get(name);
     }
 
-    public ActionParser getActionParser() {
+    ActionParser getActionParser() {
         return actionParser;
     }
 

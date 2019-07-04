@@ -1,25 +1,18 @@
-# ing-sw-2019-13
-
 Gruppo 13
 
 Matteo Pacciani
-
 Tommaso Pegolotti
-
 Alessia Paccagnella
 
 Funzionalità sviluppate:
-
-    Regole complete
-    Socket
-    RMI
-    Gui
-    CLI
-    Partite Multiple
-
+    -Regole complete
+    -Socket
+    -RMI
+    -Gui
+    -CLI
+    -Partite Multiple
 
 Generare il jar:
-
     1)Posizionarsi nella cartella del progetto
     2)eseguire il comando : mvn clean
     3)eseguire il comando : mvn package
