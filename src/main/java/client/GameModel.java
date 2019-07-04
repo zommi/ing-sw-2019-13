@@ -133,6 +133,7 @@ public class GameModel extends Observable implements Serializable {
         else if(answer instanceof SetupConfirmAnswer){
             toSpawn = ((SetupConfirmAnswer) answer).isSpawn();
             toRespawn = ((SetupConfirmAnswer) answer).isRespawn();
+            serverOffline = ((SetupConfirmAnswer) answer).isServerOffline();
             setChanged();
             notifyObservers("setupConfirm");
         }

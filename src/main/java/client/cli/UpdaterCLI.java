@@ -4,15 +4,18 @@ package client.cli;
 import client.*;
 import constants.Color;
 import constants.Constants;
-import exceptions.NotEnoughPlayersException;
 import server.controller.turns.TurnPhase;
-import server.model.cards.*;
+import server.model.cards.PowerUpCard;
+import server.model.cards.TagbackGrenade;
+import server.model.cards.TargetingScope;
+import server.model.cards.WeaponCard;
 import server.model.map.SpawnPoint;
-import server.model.player.*;
+import server.model.player.Figure;
+import server.model.player.GameCharacter;
+import server.model.player.PlayerAbstract;
 import view.PlayerBoardAnswer;
 import view.PlayerHandAnswer;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -146,6 +149,11 @@ public class UpdaterCLI  implements Updater,Runnable{
                 e.printStackTrace();
             }
         }
+
+        //the setup confirm answer can set serverOffline if the client is sending the setup after his original
+        //  game has started
+        if(gameModel.isServerOffline())
+            return;
 
         //now we know what we have to ask to the user: it's all written into the setupAnswer
 

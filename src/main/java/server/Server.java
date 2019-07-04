@@ -214,7 +214,7 @@ public class Server {
         if(gameManager.getGameStarted() == 1){
             setupConfirmAnswer.setServerOffline(true);
             client.send(setupConfirmAnswer);
-            removeClient(clientId);
+            //removeClient(clientId);
             return;
         }
 

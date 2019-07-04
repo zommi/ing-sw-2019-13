@@ -54,11 +54,12 @@ public class GameManager {
             return;
         }
 
-        sendToSpecific(new DisconnectAnswer(), playerAbstract.getClientID());
+        if(server.getClientFromId(playerAbstract.getClientID()).isConnected())
+            sendToSpecific(new DisconnectAnswer(), playerAbstract.getClientID());
+
         playerAbstract.setActive(false);
         activePlayers.remove(playerAbstract);
         System.out.println("Active players are now " + activePlayers.size());
-
 
         if(activePlayers.size() < Constants.MIN_PLAYERS_TO_CONTINUE && !gameOver)
             endGame();

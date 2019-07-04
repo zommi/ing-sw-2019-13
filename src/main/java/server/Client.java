@@ -95,9 +95,9 @@ public class Client {
         receiverInterface = null;
 
         //if the game is not started, the client is gonna be completely removed from the server
-        if(gameManager.getGameStarted() == 0){
+        if(gameManager.getGameStarted() == 0 || !playerSetupComplete){
             gameManager.getServer().removeClient(clientID);
-        }else if(gameManager.getGameStarted() == 1 && !gameManager.isGameOver()){
+        }else if(gameManager.getGameStarted() == 1 && !gameManager.isGameOver() && playerSetupComplete){
             gameManager.sendEverybodyExcept(new MessageAnswer(name + " lost connection with the server"), clientID);
             gameManager.setInactive(getPlayer());
         }
