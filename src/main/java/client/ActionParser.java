@@ -9,6 +9,9 @@ import server.model.cards.WeaponCard;
 
 import java.util.List;
 
+/**
+ * Action Parser is used to create the actions to send to the server
+ */
 public class ActionParser{
 
     private GameModel gameModel;
