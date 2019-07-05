@@ -1,16 +1,23 @@
 package server.model.map;
 
+import constants.Color;
+import constants.Direction;
 import exceptions.NotAlignedException;
 import server.controller.Controller;
 import server.model.cards.CollectableInterface;
-import constants.Color;
-import constants.Direction;
-import server.model.gameboard.AmmoTileDeck;
 import server.model.player.GameCharacter;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
+/**
+ * A square of the {@link GameMap}. It could be a {@link SpawnPoint} with weapon to collect,
+ * or a simple {@link Square} with ammos.
+ * @author Matteo Pacciani
+ */
 public abstract class  SquareAbstract implements Serializable {
 
     protected List<GameCharacter> charactersList;

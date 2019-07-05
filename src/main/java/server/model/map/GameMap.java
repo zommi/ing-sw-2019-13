@@ -4,14 +4,15 @@ import constants.Color;
 import constants.Constants;
 import exceptions.NoSuchSquareException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
 
 
-
+/**
+ * Map of the game
+ * @author Matteo Pacciani
+ */
 public class GameMap implements Serializable, Iterable<SquareAbstract> {
 
     private static final int SQ_DIM = 4;
