@@ -131,7 +131,7 @@ public class Constants {
             GAME_START_TIMER_MSEC = Integer.valueOf(properties.getProperty("app.gameStartTimer"));
         }else{
             System.out.println("Default configuration loaded");
-            SERVER_ADDRESS = "localhost";
+            SERVER_ADDRESS = "192.168.1.200";
             REGISTRATION_ROOM_NAME = "gameproxy";
             RMI_PORT = 1099;
             SOCKET_PORT = 1337;
