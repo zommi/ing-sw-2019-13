@@ -125,15 +125,6 @@ public class ConcretePlayer extends PlayerAbstract {
         characterChosen = true;
     }
 
-    /**
-     * Uses a powerup in the player's hand
-     * @param powerupIndex int between 0 and 2 corresponding to a powerupCard
-     */
-    public void usePowerup(int powerupIndex) {
-        hand.playPowerup(powerupIndex);
-    }
-
-
     public void collect(Square square){
         this.playerBoard.processAmmoTile(square.getAmmoTile());
     }

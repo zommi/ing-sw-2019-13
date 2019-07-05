@@ -3,6 +3,7 @@ package constants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.registry.Registry;
 import java.util.Properties;
 
 public class Constants {
@@ -65,7 +66,7 @@ public class Constants {
     public static final int MAX_POWERUP_HAND = 3;       //default 3
 
     public static final int NUM_POWERUP_START = 2;      //default 2
-    public static final int NUM_AMMO_START = 100;         //default 1
+    public static final int NUM_AMMO_START = 1;         //default 1
 
     public static final int[] POINTS_VALUES = {8,6,4,2,1,1};
     public static final int[] FINAL_FRENZY_POINT_VALUE = {2,1,1,1};
@@ -133,9 +134,9 @@ public class Constants {
             System.out.println("Default configuration loaded");
             SERVER_ADDRESS = "localhost";
             REGISTRATION_ROOM_NAME = "gameproxy";
-            RMI_PORT = 1099;
+            RMI_PORT = Registry.REGISTRY_PORT;
             SOCKET_PORT = 1337;
-            GAME_START_TIMER_MSEC = 10*(long)1000;      //default 1 minute
+            GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
             ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
         }
 }

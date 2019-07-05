@@ -19,6 +19,9 @@ public class PowerupDeck implements Serializable {
      */
     private LinkedList<PowerUpCard> deck;
 
+    /**
+     * List of cards that is not updated when a card is drawn.
+     */
     private LinkedList<PowerUpCard> staticDeck;
 
     /**
@@ -46,7 +49,6 @@ public class PowerupDeck implements Serializable {
      */
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        //File file = new File(Constants.PATH_TO_POWERUP_JSON);
         InputStream powerupStream = getClass().getResourceAsStream(Constants.PATH_TO_POWERUP_JSON);
         BufferedReader reader = new BufferedReader(new InputStreamReader(powerupStream));
 
