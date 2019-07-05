@@ -19,6 +19,10 @@ public class WeaponDeck implements Serializable {
      * queue of weapon cards
      */
     private LinkedList<WeaponCard> deck;
+
+    /**
+     * List of weapon cards that is never updated.
+     */
     private LinkedList<WeaponCard> staticDeck;
 
     /**
@@ -82,20 +86,6 @@ public class WeaponDeck implements Serializable {
         }
 
         this.shuffle();
-
-        /*for(int i = 0; i < arrayOfWeapons.length-1; i++){
-            this.deck.push(new WeaponCard(arrayOfWeapons[i]));
-            this.staticDeck.push(new WeaponCard(arrayOfWeapons[i]));
-
-        }
-        Weapon weapon = null;
-        for(Weapon weapon1: arrayOfWeapons)
-            if(weapon1.getName().equals("Shockwave"))
-                weapon = weapon1;
-
-        this.deck.push(new WeaponCard(weapon));
-        this.staticDeck.push(new WeaponCard(weapon));*/
-
     }
 
 
@@ -104,7 +94,6 @@ public class WeaponDeck implements Serializable {
     }
 
     /**
-     *
      * @return the first card in the deck
      */
     public WeaponCard draw() {
@@ -128,7 +117,6 @@ public class WeaponDeck implements Serializable {
     }
 
     /**
-     *
      * @return the first card in the queue without removing it
      */
     public WeaponCard getTop(){
@@ -147,11 +135,4 @@ public class WeaponDeck implements Serializable {
         }
         return null;
     }
-
-    public WeaponCard getWeaponFromIndex(int index) {
-        return this.deck.get(index);
-    }
-
-
-
 }

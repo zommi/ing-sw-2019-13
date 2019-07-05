@@ -39,6 +39,7 @@ public class Server {
     private SocketServer socketServer;
 
     private List<GameManager> gameManagerList;
+
     private GameManager currentGameManager;
 
     private Map<Integer, Client> idToClient;

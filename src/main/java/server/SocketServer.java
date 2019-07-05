@@ -1,5 +1,7 @@
 package server;
 
+import constants.Constants;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +11,6 @@ public class SocketServer implements Runnable{
     private int port;
     private ExecutorService executorService;
     private Server server;
-
 
     SocketServer(int port, Server server){
         this.port = port;
@@ -21,7 +22,7 @@ public class SocketServer implements Runnable{
     public void run(){
         ServerSocket serverSocket;
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(Constants.SOCKET_PORT);
             System.out.println("SOCKET SERVER RUNNING");
 
             startAcceptingConnections(serverSocket);

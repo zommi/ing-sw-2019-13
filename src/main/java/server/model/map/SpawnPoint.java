@@ -4,8 +4,6 @@ import constants.Color;
 import server.controller.Controller;
 import server.model.cards.CollectableInterface;
 import server.model.cards.WeaponCard;
-import server.model.gameboard.AmmoTileDeck;
-import server.model.gameboard.WeaponDeck;
 
 import java.io.Serializable;
 import java.util.ArrayList;

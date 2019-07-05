@@ -3,6 +3,7 @@ package constants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.registry.Registry;
 import java.util.Properties;
 
 public class Constants {
@@ -124,7 +125,7 @@ public class Constants {
         if(fromConfig) {
             System.out.println("File configuration loaded");
             SERVER_ADDRESS = properties.getProperty("app.serverIp");
-            RMI_PORT = Integer.valueOf(properties.getProperty("app.registryPort"));
+            RMI_PORT = Registry.REGISTRY_PORT;
             REGISTRATION_ROOM_NAME = properties.getProperty("app.registrationRoomName");
             SOCKET_PORT = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
             ACTION_TIMEOUT_MSEC = Integer.valueOf(properties.getProperty("app.actionTimer"));
@@ -133,7 +134,7 @@ public class Constants {
             System.out.println("Default configuration loaded");
             SERVER_ADDRESS = "localhost";
             REGISTRATION_ROOM_NAME = "gameproxy";
-            RMI_PORT = 1099;
+            RMI_PORT = Registry.REGISTRY_PORT;
             SOCKET_PORT = 1337;
             GAME_START_TIMER_MSEC = 10*(long)1000;      //default 1 minute
             ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes

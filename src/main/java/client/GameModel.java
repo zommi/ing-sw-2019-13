@@ -15,30 +15,74 @@ public class GameModel extends Observable implements Serializable {
     // so that the GUI can be an observer of this class and
     // this class is an observer of the model GAMESTATE
 
-
+    /**
+     * Reference to the game board sent by the server.
+     */
     private GameBoardAnswer gameBoard;
+
+    /**
+     * Reference of a player's own hand.
+     */
     private PlayerHandAnswer playerHand;
+
+    /**
+     * Id of the client on the server.
+     */
     private int clientID;
 
+    /**
+     * Boolean set by the server when the player needs to spawn
+     * at the start of the game.
+     */
     private boolean toSpawn;
+
+    /**
+     * Boolean value set by the server when a player dies and he
+     * has to respawn.
+     */
     private boolean toRespawn;
 
-
+    /**
+     * Boolean value used for soft disconnection due to inactivity
+     */
     private boolean disconnected;
+
+    /**
+     * Boolean value set when the server goes offline
+     */
     private boolean serverOffline;
 
     private boolean gamemodelNotUpdated;
 
+    /**
+     * Last message received by the client from the server.
+     */
     private String message;
+
+    /**
+     * Message that asks the player information regarding the information
+     * needed for setup.
+     */
     private SetupRequestAnswer setupRequestAnswer;
+
+    /**
+     * Message that notifies the player of the end of the game and that contains
+     * the information regarding the winner.
+     */
     private GameOverAnswer gameOverAnswer;
 
+    /**
+     * Boolean that is set to true when the player can play a tagback grenade.
+     */
     private boolean playTagback;
 
+    /**
+     * Boolean set to true when the client receives a GameOverAnswer.
+     */
     private boolean gameOver;
 
 
-    public GameModel(){ //THERE IS A NEW gamemodel for every client!
+    public GameModel(){
         clientID = -9;
     }
 
