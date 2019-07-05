@@ -2,6 +2,7 @@ package server;
 
 import client.ReceiverInterface;
 import client.info.SetupInfo;
+import constants.Constants;
 import server.model.player.ConcretePlayer;
 import server.model.player.Figure;
 import server.model.player.PlayerState;
@@ -57,7 +58,7 @@ public class Server {
     }
 
     private void startSocketRmi() throws RemoteException{
-        socketServer = new SocketServer(1337, this);
+        socketServer = new SocketServer(Constants.SOCKET_PORT, this);
         serverRMI = new ServerRMI(this);
     }
 
