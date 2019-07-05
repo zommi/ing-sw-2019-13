@@ -136,7 +136,7 @@ public class Constants {
             REGISTRATION_ROOM_NAME = "gameproxy";
             RMI_PORT = Registry.REGISTRY_PORT;
             SOCKET_PORT = 1337;
-            GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
+            GAME_START_TIMER_MSEC = 30*(long)1000;      //default 30 seconds
             ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
         }
 }

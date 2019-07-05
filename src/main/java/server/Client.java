@@ -8,13 +8,41 @@ import answers.ServerAnswer;
 
 import java.rmi.RemoteException;
 
+/**
+ * Abstraction for rmi and socket clients. This object represents a connected client, and it is a kind of
+ * common interface.
+ * @author Matteo Pacciani
+ */
+
 public class Client {
+    /**
+     * the assigned id
+     */
     private int clientID;
+    /**
+     * Not null if this client is connected using socket
+     */
     private SocketClientHandler socketClientHandler;
+    /**
+     * Remote object of the rmi connected client, null if it's using socket
+     */
     private ReceiverInterface receiverInterface;
+    /**
+     * The game manager this client is assigned to
+     */
     private GameManager gameManager;
+    /**
+     * True if the player has completed his in-game player setup
+     */
     private boolean playerSetupComplete;
+    /**
+     * The name of the client
+     */
     private String name;
+    /**
+     * True if this client is designed as first player of his match: he will have to decide
+     * initial skulls and the map
+     */
     private boolean firstPlayer;
 
     public Client(int clientID, GameManager gameManager, String name){
@@ -70,6 +98,10 @@ public class Client {
         this.socketClientHandler = socketClientHandler;
     }
 
+    /**
+     * Checks if the client is connected to the server
+     * @return true if the client is connected, false otherwise
+     */
     public boolean isConnected(){
         if(socketClientHandler == null && receiverInterface == null)
             return false;
@@ -88,6 +120,10 @@ public class Client {
 
     }
 
+    /**
+     * Called when an exception is thrown, sets the client as disconnected so that it will be accepted when he
+     * will reconnect again
+     */
     public void disconnectClient(){
         System.out.println("Lost connection with " + name);
 
@@ -105,6 +141,10 @@ public class Client {
         System.out.println(name + " has successfully been disconnected from the server");
     }
 
+    /**
+     * Sends an answer to the client using socket or rmi
+     * @param serverAnswer the answer to send
+     */
     public void send(ServerAnswer serverAnswer){
 
         if(gameManager.isGameOver())

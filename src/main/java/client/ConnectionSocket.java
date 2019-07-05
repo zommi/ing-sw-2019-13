@@ -11,6 +11,8 @@ import java.net.Socket;
 /**
  * Starts a thread when the configure method is called either by the CLI or GUI, if socket connection has been selected
  * by the user
+ * @author Tommaso Pegolotti
+ * @author Matteo Pacciani
  */
 public class ConnectionSocket implements Connection {
 

@@ -7,7 +7,8 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 
 /**
- *
+ * Thread that listens to the server and reads the answers, processing them.
+ * @author Matteo Pacciani
  */
 public class ListenerSocketThread implements Runnable{
 
@@ -23,6 +24,10 @@ public class ListenerSocketThread implements Runnable{
         this.connectionSocket = connectionSocket;
     }
 
+    /**
+     * Waits for the server to send an update, and processes it. If the server goes offline,
+     * the game model is updated so that the client will be able to know it
+     */
     @Override
     public void run() {
         try {
@@ -35,11 +40,8 @@ public class ListenerSocketThread implements Runnable{
 
         while(true){ //NOSONAR
             try {
-                //System.out.println("waiting for a SocketInfo");
                 SocketInfo socketInfo = (SocketInfo) inputStream.readObject();
                 processSocketInfo(socketInfo);
-                //System.out.println("SocketInfo processed");
-
 
             }catch (IOException e) {
                 System.out.println("Error while reading input");
@@ -52,6 +54,10 @@ public class ListenerSocketThread implements Runnable{
         }
     }
 
+    /**
+     * Process the info reading the current data of the match, like the current player and so on
+     * @param socketInfo the info sent by the server
+     */
     private void processSocketInfo(SocketInfo socketInfo){
 
         if(socketInfo.getStartGame() != -1)
