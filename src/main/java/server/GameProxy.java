@@ -16,26 +16,14 @@ import java.util.concurrent.TimeUnit;
 public class GameProxy implements GameProxyInterface, Serializable {
 
     private ServerRMI serverRMI;
-    private List<PlayerAbstract> player = new ArrayList<>();
-    private Map<Integer, ReceiverInterface> clientRMIadded = new HashMap<>();
-
 
     protected GameProxy(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI = serverRMI;
-        UnicastRemoteObject.exportObject(this, 1099);
+        UnicastRemoteObject.exportObject(this, Constants.RMI_PORT);
     }
 
     public String getCurrentCharacter(int clientID) throws RemoteException{
         return serverRMI.getGameManagerFromId(clientID).getController().getCurrentCharacterName();
-    }
-
-
-    public int getClientID(ReceiverInterface receiverInterface){
-        for(Map.Entry<Integer, ReceiverInterface> entry : clientRMIadded.entrySet()){
-            if(entry.getValue() == receiverInterface)
-                return entry.getKey();
-        }
-        return -2; //this should never happen
     }
 
     @Override

@@ -19,7 +19,7 @@ public class ServerRMI implements Runnable {
 
     ServerRMI(Server server) throws RemoteException{
 
-        registry = LocateRegistry.createRegistry(1099);
+        registry = LocateRegistry.createRegistry(Constants.RMI_PORT);
         this.server = server;
     }
 
