@@ -6,9 +6,21 @@ import server.model.cards.WeaponCard;
 
 import java.util.List;
 
+/**
+ * Info: send to the server an action to reload the weapons
+ */
 public class ReloadInfo implements Info{
+    /**
+     * List of weapon cards to reload
+     */
     private List<WeaponCard> weaponCards;
+    /**
+     * List of powerup cards to pay with
+     */
     private List<PowerUpCard> powerUpCards;
+    /**
+     * Cost of the reload action
+     */
     private Cost cost;
 
     public ReloadInfo(List<WeaponCard> weaponCards, List<PowerUpCard> powerUpCards){
