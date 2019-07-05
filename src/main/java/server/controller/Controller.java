@@ -24,20 +24,37 @@ import answers.*;
 
 import java.util.*;
 
+/**
+ * Main controller class that handles all the actions of the clients and sends them updates.
+ */
 public class Controller {
 
+    /**
+     * Id of the current client
+     */
     private int currentID;
 
+    /**
+     * Current Game
+     */
     private Game currentGame;
 
+    /**
+     * Map of the current Game
+     */
     private GameMap currentMap;
 
     private GameManager gameManager;
 
     private List<SquareAbstract> squaresToUpdate;
 
+    /**
+     * List of players that need to be respawned
+     */
     private List<PlayerAbstract> playersToRespawn;
-
+    /**
+     * Boolean that indicates if the final frenzy is on
+     */
     private boolean finalFrenzy;
 
     private PlayerAbstract firstFrenzyPlayer;
