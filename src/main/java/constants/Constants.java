@@ -125,7 +125,7 @@ public class Constants {
         if(fromConfig) {
             System.out.println("File configuration loaded");
             SERVER_ADDRESS = properties.getProperty("app.serverIp");
-            RMI_PORT = Registry.REGISTRY_PORT;
+            RMI_PORT = Integer.valueOf(properties.getProperty("app.registryPort"));
             REGISTRATION_ROOM_NAME = properties.getProperty("app.registrationRoomName");
             SOCKET_PORT = Integer.valueOf(properties.getProperty("app.serverSocketPort"));
             ACTION_TIMEOUT_MSEC = Integer.valueOf(properties.getProperty("app.actionTimer"));
@@ -136,7 +136,7 @@ public class Constants {
             REGISTRATION_ROOM_NAME = "gameproxy";
             RMI_PORT = Registry.REGISTRY_PORT;
             SOCKET_PORT = 1337;
-            GAME_START_TIMER_MSEC = 10*(long)1000;      //default 1 minute
+            GAME_START_TIMER_MSEC = 5*(long)1000;      //default 1 minute
             ACTION_TIMEOUT_MSEC =  3*60*(long)1000;      //default 3 minutes
         }
 }
