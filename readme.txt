@@ -17,6 +17,9 @@ Generare il jar:
     2)eseguire il comando : mvn clean
     3)eseguire il comando : mvn package
 
+Le configurazioni del gioco possono essere modificate nel file config.properties all'interno della cartella
+configfolder
+
 Come iniziare il gioco:
 
     Da intellij :
