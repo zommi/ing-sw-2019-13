@@ -115,7 +115,7 @@ public class Constants {
             configFile = new FileInputStream(Constants.PATH_TO_CONFIG);
             properties.load(configFile);
             configFile.close();
-            fromConfig = true;
+            //fromConfig = true;
         }
         catch(IOException e1) {
             //fromConfig = false
@@ -129,7 +129,7 @@ public class Constants {
             ACTION_TIMEOUT_MSEC = Integer.valueOf(properties.getProperty("app.actionTimer"));
             GAME_START_TIMER_MSEC = Integer.valueOf(properties.getProperty("app.gameStartTimer"));
         }else{
-            SERVER_ADDRESS = "localhost";
+            SERVER_ADDRESS = "192.168.1.102";
             REGISTRATION_ROOM_NAME = "gameproxy";
             RMI_PORT = 1099;
             SOCKET_PORT = 1337;

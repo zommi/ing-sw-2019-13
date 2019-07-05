@@ -112,8 +112,6 @@ public class Client {
 
         if (socketClientHandler != null)
             socketClientHandler.publishSocketMessage(serverAnswer);
-        if (socketClientHandler != null)
-            socketClientHandler.publishSocketMessage(serverAnswer);
         else if(receiverInterface != null) {
 
             new Thread(){

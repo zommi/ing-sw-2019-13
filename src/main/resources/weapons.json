@@ -1085,6 +1085,7 @@
         "microEffects" : [
           {
             "moveFlag" : true,
+            "mandatory" : true,
             "generatePlayerFlag" : true,
             "policies" : [
               {
