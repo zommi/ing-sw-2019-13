@@ -11,9 +11,15 @@ import answers.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * The gamemodel class is what allows the client to interact with the server,
+ * this is a light version of the model and it contains all the information
+ * a player can read at any given point. It implements the observable interface
+ * because both GUI and CLI are notified whenever there is a change on the gamemodel.
+ *
+ * The gamemodel is updated updated by the server thanks to specific Answers.
+ */
 public class GameModel extends Observable implements Serializable {
-    // so that the GUI can be an observer of this class and
-    // this class is an observer of the model GAMESTATE
 
     /**
      * Reference to the game board sent by the server.

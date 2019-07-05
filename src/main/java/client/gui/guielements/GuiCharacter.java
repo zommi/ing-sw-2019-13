@@ -45,7 +45,7 @@ public class GuiCharacter extends StackPane {
     private void center(GuiTile tile){
         circle.setCenterX(tile.getLayoutX() + tile.getSide());
         circle.setCenterY(tile.getLayoutY() + tile.getSide());
-        circle.setRadius(tile.getSide()/10.0);
+        circle.setRadius(tile.getSide()/12.0);
     }
 
     public GuiTile getPosition() {
