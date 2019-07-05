@@ -8,6 +8,10 @@ import constants.Constants;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Starts a thread when the configure method is called either by the CLI or GUI, if socket connection has been selected
+ * by the user
+ */
 public class ConnectionSocket implements Connection {
 
     private Socket socket;
@@ -71,6 +75,10 @@ public class ConnectionSocket implements Connection {
         return this.startGame;
     }
 
+    /**
+     * Starts the thread that will be listening on the server socket and thus receive server answers
+     * @param name the name chosen by the user
+     */
     //must get client id from the server and set it
     public void configure(String name) {
         try {

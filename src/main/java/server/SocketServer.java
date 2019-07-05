@@ -5,6 +5,12 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Creates a socket that accept client connections. When a client socket is created, it is passed to a new thread
+ * that will handle that client as long as it is connected.
+ * @author Tommaso Pegolotti
+ * @author Matteo Pacciani
+ */
 public class SocketServer implements Runnable{
     private int port;
     private ExecutorService executorService;
@@ -33,6 +39,10 @@ public class SocketServer implements Runnable{
         }
     }
 
+    /**
+     * Accepts socket connections as long as the server is running. Starts a new thread for every socket connected client
+     * @param serverSocket the server socket
+     */
     private void startAcceptingConnections(ServerSocket serverSocket){
             while (true) {    //NOSONAR
                 try {
