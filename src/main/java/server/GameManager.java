@@ -12,8 +12,16 @@ import server.timer.GameStartTimer;
 
 import java.util.*;
 
+/**
+ * This class manages a single game. When the game starts, a new game manager is created, to have multiple matches running at the
+ * same time. This class is also responsible for communicating with the players of this particular match.
+ * @author Matteo Pacciani
+ */
 public class GameManager {
 
+    /**
+     * A reference to the {@link Server} that is the same for all the created game managers
+     */
     private Server server;
     private Controller controller;
     private Game game;
@@ -22,14 +30,34 @@ public class GameManager {
     private int initialSkulls;
     private boolean mapSkullsSet;
 
+    /**
+     * This list contains the players waiting for the match to start, when the game is not started yet.
+     * When the game starts, this list keeps track of all the active players, removing those who disconnect
+     * because of inactivity
+     */
     private List<PlayerAbstract> activePlayers = new ArrayList<>();
+    /**
+     * True if there are no players in this particular game manager
+     */
     private boolean noPlayer;
 
+    /**
+     * Equals 1 if the game is started, 0 otherwise
+     */
     private int gameStarted;
+    /**
+     * True if the timer is running but has not been triggered yet
+     */
     private boolean gameStarting;
+    /**
+     * True if the game is over
+     */
     private boolean gameOver;
 
     private Timer timer;
+    /**
+     * The timer task responsible for starting the match
+     */
     private TimerTask startTimerTask;
 
 
@@ -49,6 +77,13 @@ public class GameManager {
         activePlayers.add(playerAbstract);
     }
 
+    /**
+     * Sets the player as inactive after the inactivity timer has been triggered
+     * If the players are below the minimum required to continue the match,
+     * the game is ended. The turns of the passed player won't be played until he does not
+     * reconnect sending a {@link ReconnectAnswer}.
+     * @param playerAbstract the player to set as inactive
+     */
     public void setInactive(PlayerAbstract playerAbstract){
         if(!activePlayers.contains(playerAbstract)){
             System.out.println(playerAbstract.getName() + " is already set as inactive!");
@@ -68,6 +103,11 @@ public class GameManager {
             System.out.println(playerAbstract.getName() + "'s turns will be skipped from now on");
     }
 
+    /**
+     * Called when a {@link ReconnectAnswer} is sent by the client that was previously disconnected.
+     * Sets the passed player as active, so that his turns will be played again
+     * @param playerAbstract the player to set as active
+     */
     public void setActive(PlayerAbstract playerAbstract){
         //cannot be called if game is not started, the player in fact will be excluded from the game in that case
 
@@ -90,6 +130,10 @@ public class GameManager {
         sendToSpecific(new ReconnectAnswer(), playerAbstract.getClientID());
     }
 
+    /**
+     * Ends the game, distributing the last points and sending {@link GameOverAnswer}
+     * to all the players of this game
+     */
     public void endGame(){
         game.getTurnHandler().getCurrentTimerTask().cancel();
         controller.distributeEndGamePoints();
@@ -146,6 +190,10 @@ public class GameManager {
         this.noPlayer = noPlayer;
     }
 
+    /**
+     * Called if the designed first player disconnects before sending the setup
+     * Skulls and maps are decided arbitrarily
+     */
     public void defaultSetup(){
         initialSkulls = Constants.MIN_SKULLS;
         mapChoice = 1;
@@ -160,6 +208,10 @@ public class GameManager {
         return this.gameStarted;
     }
 
+    /**
+     * Called by the trigger {@link GameStartTimer}. Starts the match setting up the first turn
+     * and sending updates to the connected clients
+     */
     public void startMatch(){
 
         //timer has expired
@@ -221,6 +273,12 @@ public class GameManager {
         sendToEverybody(null);
     }
 
+    /**
+     * Adds a player to the starting game. If the minimum number of players is reached,
+     * the {@link GameStartTimer} is started.
+     * @param player the player to add to the match
+     * @return true if the player has been added successfully
+     */
     public synchronized boolean addPlayerBeforeMatchStarts(PlayerAbstract player){
         if(gameStarted == 1)
             return false;
@@ -251,6 +309,11 @@ public class GameManager {
         return true;
     }
 
+    /**
+     * Removes a player from the active players list
+     * Cancels the timer if the number of players goes below the minimum to start the match
+     * @param name the name of the player to remove
+     */
     public void removePlayerFromActivePlayers(String name) {
 
         //removing from "temp" activePlayers
@@ -277,6 +340,10 @@ public class GameManager {
             game.removePlayer(game.getPlayer(name));*/
     }
 
+    /**
+     * Gets a figure that no one has chosen yet
+     * @return the first free figure
+     */
     public synchronized Figure getFreeFigure(){
 
         //assuming maximum number of player has not been reached
@@ -287,6 +354,11 @@ public class GameManager {
         return null; //this should never happen
     }
 
+    /**
+     * Checks if the selected figure is free or not
+     * @param nameChar the name of the figure to check
+     * @return true if the selected figure is free
+     */
     public synchronized boolean isCharacterFree(String nameChar){
         System.out.println("Checking if the character is already taken by someone else");
         System.out.println("In my list I have " + activePlayers.size() +" players, i will check if they already have chosen their characters");
@@ -301,12 +373,22 @@ public class GameManager {
         return true;
     }
 
+
+    /**
+     * Sends an answer to a specific client
+     * @param serverAnswer the answer to send
+     * @param clientID the id of the client to send the answer to
+     */
     public void sendToSpecific(ServerAnswer serverAnswer, int clientID){
             if(server.getClientFromId(clientID) != null){
                 server.getClientFromId(clientID).send(serverAnswer);
             }
     }
 
+    /**
+     * Sends an answer to all the clients of this game
+     * @param serverAnswer the answer to send
+     */
     public void sendToEverybody(ServerAnswer serverAnswer){
         if(game != null) {
             for (PlayerAbstract playerAbstract : game.getPlayers()) {
@@ -315,6 +397,11 @@ public class GameManager {
         }
     }
 
+    /**
+     * Sends an answer to all the players of this game, except the selected client
+     * @param serverAnswer the answer to send
+     * @param clientId the client who won't receive the answer
+     */
     public void sendEverybodyExcept(ServerAnswer serverAnswer, int clientId){
         if(game != null) {
             for (PlayerAbstract playerAbstract : game.getPlayers()) {
@@ -350,6 +437,9 @@ public class GameManager {
         mapChoice = numMap;
     }
 
+    /**
+     * Sets up the {@link Game}, passing the map and the initial skulls
+     */
     public void createController(){
         System.out.println("Instantiating the controller");
         controller = new Controller(mapChoice, initialSkulls, this);

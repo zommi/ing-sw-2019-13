@@ -38,11 +38,25 @@ public class Server {
      */
     private SocketServer socketServer;
 
+
+    /**
+     * A list where all the created gameManagers are stored
+     */
     private List<GameManager> gameManagerList;
+
+    /**
+     * The gameManager to which new clients will be added to
+     */
     private GameManager currentGameManager;
 
+    /**
+     * Maps client ids to {@link Client} objects
+     */
     private Map<Integer, Client> idToClient;
 
+    /**
+     * Maps client names to client ids
+     */
     private Map<String, Integer> nameToId;
 
 
@@ -57,6 +71,10 @@ public class Server {
         gameManagerList.add(currentGameManager);
     }
 
+    /**
+     * Creates the Runnable object that will be passed to the executor later
+     * @throws RemoteException
+     */
     private void startSocketRmi() throws RemoteException{
         socketServer = new SocketServer(Constants.SOCKET_PORT, this);
         serverRMI = new ServerRMI(this);
@@ -82,6 +100,10 @@ public class Server {
         return serverRMI.getGameProxy();
     }
 
+    /**
+     * Get a new incremental unique id to assing to the connecting client
+     * @return
+     */
     public synchronized int getNewClientId(){
         int idToReturn = nextClientId;
         System.out.println("Added the clientID " + nextClientId);
@@ -90,7 +112,9 @@ public class Server {
     }
 
     /**
-     * The method removes the object client from the hashmaps that link clients to id. It removes also the gamemanager of the client from the gamemanager list
+     * Removes the client from the database of the server
+     * If the game is started and the client has not chosen the game character yet, it is excluded from active players list
+     * Also removes the gameManager if this client was the last one connected to that gameManager
      */
     public void removeClient(int clientId){
         Client client = getClientFromId(clientId);
@@ -121,14 +145,17 @@ public class Server {
     }
 
     /**
-     * The method adds an object Client to the list that links id to clients
+     * The method adds a Client object to the map that links id to clients
      */
     public synchronized void addClient(Client client){
         idToClient.put(client.getClientID(), client);
     }
 
     /**
-     * The method adds a connection (socket or rmi) to the object client and adds the name of the client and his id to the hashmap that links them
+     * Handles client connections. Distinguishes if client had already connected before, or if it is still connected.
+     * Creates a new {@link Client} object if it is connecting for the first time.
+     * Sends a setup request to only ask things that are needed by the server.
+     *
      */
     public synchronized Integer addConnection(String name, String connectionType, SocketClientHandler socketClientHandler, ReceiverInterface receiverInterface){
         SetupRequestAnswer setupRequestAnswer = new SetupRequestAnswer();
@@ -195,6 +222,12 @@ public class Server {
         return clientID;
     }
 
+    /**
+     * Called when the client sends a setup answer containing infos as maps, skulls and game character.
+     * Adds the client to the list of players that wait for the match to start
+     * @param clientId the id of the client
+     * @param setupInfo the sent setup info
+     */
     public synchronized void setupPlayer(int clientId, SetupInfo setupInfo){
 
         Client client = getClientFromId(clientId);
@@ -284,6 +317,10 @@ public class Server {
         return currentGameManager;
     }
 
+    /**
+     * sets the current game manager, adding it to the game manager lists to store it
+     * @param currentGameManager the current game manager
+     */
     public void setCurrentGameManager(GameManager currentGameManager) {
         this.currentGameManager = currentGameManager;
         gameManagerList.add(currentGameManager);

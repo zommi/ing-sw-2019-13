@@ -40,7 +40,6 @@ public class KillshotTrack implements Serializable {
     }
 
     /**
-     *
      * @return the value of remainingSulls
      */
     public int getRemainingSkulls() {
@@ -52,20 +51,12 @@ public class KillshotTrack implements Serializable {
     }
 
     /**
-     *
      * @param index index of a cell in multiplicityToken
      * @return the number of token at index
      */
     public int getMulticiplity(int index) {
         return this.multiplicityToken.get(index);
     }
-
-    /**
-     *
-     * @param index index of a cell in multiplicityToken
-     * @return the color of the token at index
-     */
-    public Color getColorAtIndex(int index){return this.damageTokens.get(index);}
 
     /**
      * removes a skull from the kill shot track

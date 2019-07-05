@@ -10,11 +10,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Thread that manages the connection with a particular client.
+ * @author Matteo Pacciani
+ */
 public class SocketClientHandler implements Runnable {
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
+    /**
+     * The id of the client managed by this thread
+     */
     private Integer clientID;
 
     private Server server;
@@ -35,6 +42,10 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Waits for an action and processes it. If the client disconnects, an IOException is caught
+     * and the client is either removed or disconnected. In both case, the thread is stopped
+     */
     @Override
     public void run() {
 
@@ -67,6 +78,10 @@ public class SocketClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Processes the action calling the methods of {@link GameManager}.
+     * @param info the received action
+     */
     private void processAction(Info info) {
         if(info instanceof NameInfo){
             NameInfo nameInfo = (NameInfo) info;
@@ -106,6 +121,10 @@ public class SocketClientHandler implements Runnable {
     }
 
 
+    /**
+     * Sends the answer to the client
+     * @param answer
+     */
     public void publishSocketMessage(ServerAnswer answer){
         //sends the answer to the client through the output stream, encapsulating the answer in a SocketInfo object
         //if the match is started, various IDs are added to the SocketInfo object to let the client know about the match status

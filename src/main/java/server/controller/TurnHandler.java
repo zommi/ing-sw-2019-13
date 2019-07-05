@@ -14,7 +14,6 @@ import java.util.*;
 
 public class TurnHandler {
 
-
     private TurnPhase currentTurnPhase;
 
     private TurnPhase lastPhase;

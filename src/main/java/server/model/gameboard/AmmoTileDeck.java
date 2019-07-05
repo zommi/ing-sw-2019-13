@@ -17,7 +17,7 @@ import java.util.*;
 public class AmmoTileDeck implements Serializable {
 
 
-    LinkedList<AmmoTile> deck = new LinkedList<>();
+    private LinkedList<AmmoTile> deck = new LinkedList<>();
 
     /**
      * Default constructor using initializeDeck to create the list of tiles
@@ -37,7 +37,6 @@ public class AmmoTileDeck implements Serializable {
      */
     public void initializeDeck() throws ReadJsonErrorException {
         ObjectMapper mapper = new ObjectMapper();
-        //File file = new File(Constants.PATH_TO_AMMOTILE_JSON);
         InputStream inputStream = getClass().getResourceAsStream(Constants.PATH_TO_AMMOTILE_JSON);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
