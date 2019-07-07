@@ -64,6 +64,8 @@ public class UpdaterGui extends Application implements Updater {
 
     private boolean mapInitialized;
 
+    private boolean handInit;
+
     /**
      * Reference to the light model used.
      */
@@ -174,6 +176,10 @@ public class UpdaterGui extends Application implements Updater {
                     mapInitialized = true;
                     handleTurn();
                 }
+                if(!handInit){
+                    mainGuiController.updateHand();
+                    handInit = true;
+                }
                 mainGuiController.restoreSquares();
                 mainGuiController.updateGameboard();
             });
@@ -190,7 +196,12 @@ public class UpdaterGui extends Application implements Updater {
 
         if(object.equals("PlayerHand")){
             System.out.println("Hand Updated");
-            Platform.runLater(() -> mainGuiController.updateHand());
+            Platform.runLater(() -> {
+                if(mapInitialized){
+                    mainGuiController.updateHand();
+                    handInit = true;
+                }
+            });
         }
 
         if(object.equals("Player died")){

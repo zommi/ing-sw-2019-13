@@ -281,6 +281,11 @@ public class UpdaterCLI  implements Updater,Runnable{
             //this is to avoid (printing wrong informations && blocking on input)
             waitAfterAction();
 
+            if(gameModel.getGameBoard() == null){
+                continue;
+            }
+
+
             if (connection.getStartGame() == 1) {
 
                 actionParser.addGameModel(gameModel);
